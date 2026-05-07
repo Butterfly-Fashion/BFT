@@ -13,3 +13,4 @@ Creating turbopack project { dir: 'C:\\Users\\butte\\codes\\ecommerce-demo\\web'
  GET / 200 in 269ms (next.js: 3ms, application-code: 265ms)
  GET /register 200 in 119ms (next.js: 57ms, application-code: 62ms)
  GET / 200 in 338ms (next.js: 4ms, application-code: 334ms)
+ GET / 200 in 1077ms (next.js: 7ms, application-code: 1070ms)
