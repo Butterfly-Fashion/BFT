@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "PowerShell(tree -L 3 c:\\\\Users\\\\butte\\\\codes\\\\ecommerce-demo -I 'node_modules|\\\\.next' 2>$null)",
+      "Bash(where stripe *)",
+      "Bash(powershell.exe -Command \"Get-Command stripe -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(npm run *)",
+      "Skill(update-config)",
+      "Skill(update-config:*)",
+      "Bash(winget search *)"
+    ],
+    "defaultMode": "bypassPermissions"
+  }
+}
