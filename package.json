@@ -1,15 +1,20 @@
 {
-  "name": "world-fan-gear-b2b-platform",
+  "name": "world-fan-gear-platform",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "install:web": "npm install --prefix web",
-    "dev": "npm run dev --prefix web",
-    "build": "npm run build --prefix web",
-    "lint": "npm run lint --prefix web",
-    "seed": "npm run seed --prefix web",
-    "import:products": "npm run import:products --prefix web",
-    "start": "npm run start --prefix web"
+    "install:b2b": "npm install --prefix web-b2b",
+    "install:b2c": "npm install --prefix web-b2c",
+    "dev:b2b": "npm run dev --prefix web-b2b",
+    "dev:b2c": "npm run dev --prefix web-b2c",
+    "build:b2b": "npm run build --prefix web-b2b",
+    "build:b2c": "npm run build --prefix web-b2c",
+    "start:b2b": "npm run start --prefix web-b2b",
+    "start:b2c": "npm run start --prefix web-b2c",
+    "lint:b2b": "npm run lint --prefix web-b2b",
+    "lint:b2c": "npm run lint --prefix web-b2c",
+    "seed": "npm run seed --prefix web-b2b",
+    "import:products": "npm run import:products --prefix web-b2b"
   }
 }

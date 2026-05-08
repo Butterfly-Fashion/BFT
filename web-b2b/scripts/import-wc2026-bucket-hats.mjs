@@ -114,7 +114,7 @@ async function main() {
   const payload = [];
 
   for (const p of PRODUCTS) {
-    const localPath = `/asset/images/caps/${p.slug}.${p.ext}`;
+    const localPath = `/asset/images/Caps/${p.slug}.${p.ext}`;
     console.log(`Processing: ${p.name}`);
     try {
       await downloadImage(p.imageSourceUrl, localPath);
