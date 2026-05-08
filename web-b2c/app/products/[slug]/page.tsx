@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { formatCAD } from "@/lib/money";
 import { ProductActions } from "./product-actions";
-import { ProductImage } from "@/components/store/product-image";
+import { ProductGallery } from "@/components/store/product-gallery";
 import { ProductCard } from "@/components/store/product-card";
 import Link from "next/link";
 
@@ -38,19 +38,11 @@ export default async function ProductDetailPage({ params }: Props) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
         {/* Image */}
         <div className="order-1">
-          <div
-            className="relative rounded-2xl aspect-square w-full shadow-sm overflow-hidden"
-            style={{ background: product.placeholderGradient }}
-          >
-            <ProductImage
-              src={product.imageUrl}
-              alt={product.name}
-              placeholderGradient={product.placeholderGradient}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain"
-              priority
-            />
-          </div>
+          <ProductGallery
+            src={product.imageUrl}
+            alt={product.name}
+            placeholderGradient={product.placeholderGradient}
+          />
         </div>
 
         {/* Details */}
@@ -94,19 +86,6 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* Interactive: size + qty + cart — client component */}
           <ProductActions product={product} />
 
-          {/* Trust line */}
-          <div className="mt-6 pt-6 border-t border-gray-100 grid grid-cols-3 gap-4 text-center">
-            {[
-              ["🚚", "Free over $99"],
-              ["↩", "30-day returns"],
-              ["🔒", "Secure checkout"],
-            ].map(([icon, label]) => (
-              <div key={label}>
-                <div className="text-lg mb-0.5">{icon}</div>
-                <p className="text-[11px] text-gray-500 font-medium">{label}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 

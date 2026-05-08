@@ -1,0 +1,35 @@
+
+> fifa2026-ca-b2c@1.0.0 dev
+> next dev --hostname 0.0.0.0 --port 3001
+
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3001
+   - Network:      http://0.0.0.0:3001
+
+ ✓ Starting...
+ ✓ Ready in 1625ms
+ ○ Compiling /products ...
+ ✓ Compiled /products in 1511ms (699 modules)
+ GET /products 200 in 2675ms
+ ○ Compiling / ...
+ ✓ Compiled / in 692ms (719 modules)
+ GET / 200 in 1272ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 526ms (876 modules)
+ GET /admin 200 in 734ms
+ ✓ Compiled /api/admin/orders in 271ms (893 modules)
+ GET /api/admin/orders?password=admin 401 in 414ms
+ GET /admin?password=admin 200 in 509ms
+   Reload env: .env.local
+ ✓ Compiled in 3.2s (892 modules)
+ ✓ Compiled /api/admin/orders in 159ms (617 modules)
+ GET /api/admin/orders?password=admin 401 in 298ms
+ GET /api/admin/orders?password=admin 401 in 330ms
+ GET /admin?password=admin 200 in 613ms
+ GET /admin?password=admin 200 in 1010ms
+ GET /api/admin/orders?password=admin 401 in 18ms
+ GET /admin?password=admin 200 in 262ms
+ GET / 200 in 316ms
+   Reload env: .env.local
+ ✓ Compiled in 308ms (869 modules)
+ GET / 200 in 169ms

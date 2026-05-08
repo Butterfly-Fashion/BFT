@@ -1,4 +1,5 @@
 import sourceData from "./source-products.json";
+import { getB2CDescription, getB2CName } from "./product-copy";
 import type { Product } from "./types";
 
 interface RawProduct {
@@ -26,10 +27,10 @@ const raw = sourceData as RawProduct[];
 export const products: Product[] = raw.map((p, i) => ({
   id: String(i + 1),
   slug: p.slug,
-  name: p.name,
+  name: getB2CName(p.name, p.category),
   category: p.category,
   price: p.base_price,
-  description: p.description,
+  description: getB2CDescription(p.name, p.category),
   imageUrl: p.image_source_url,
   placeholderGradient:
     CATEGORY_GRADIENTS[p.category] ??
@@ -53,4 +54,14 @@ export function getFeaturedProducts(): Product[] {
     (p) => !p.name.toLowerCase().includes("canada")
   );
   return [...canadaFirst, ...rest].slice(0, 8);
+}
+
+export function getTrendingProducts(): Product[] {
+  const canadaFirst = products.filter((p) =>
+    p.name.toLowerCase().includes("canada")
+  );
+  const rest = products.filter(
+    (p) => !p.name.toLowerCase().includes("canada")
+  );
+  return [...canadaFirst, ...rest].slice(0, 4);
 }

@@ -5,6 +5,7 @@ import { useCart } from "@/components/store/cart-provider";
 import { useToast } from "@/components/store/toast-provider";
 import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { Lock, RotateCcw, Truck } from "lucide-react";
 
 interface Props {
   product: Product;
@@ -112,6 +113,21 @@ export function ProductActions({ product }: Props) {
         >
           Buy Now
         </button>
+      </div>
+
+      <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
+        <div className="flex flex-col items-center gap-1">
+          <Truck className="h-5 w-5 text-[#C41E3A]" />
+          <span className="text-[11px] font-semibold text-gray-600">Free over $99</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <RotateCcw className="h-5 w-5 text-[#C41E3A]" />
+          <span className="text-[11px] font-semibold text-gray-600">14-day returns</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <Lock className="h-5 w-5 text-[#C41E3A]" />
+          <span className="text-[11px] font-semibold text-gray-600">Secure checkout</span>
+        </div>
       </div>
     </div>
   );

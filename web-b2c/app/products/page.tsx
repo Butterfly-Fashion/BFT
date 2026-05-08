@@ -1,4 +1,5 @@
 import { ProductCard } from "@/components/store/product-card";
+import { ProductSortSelect } from "@/components/store/product-sort-select";
 import { products } from "@/lib/products";
 import { CATEGORIES } from "@/lib/types";
 import Link from "next/link";
@@ -11,22 +12,37 @@ export const metadata: Metadata = {
 };
 
 interface Props {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; search?: string; sort?: string }>;
 }
 
 export default async function ProductsPage({ searchParams }: Props) {
-  const { category } = await searchParams;
+  const { category, search = "", sort = "default" } = await searchParams;
+  const normalizedSearch = search.trim().toLowerCase();
 
-  const filtered = category
+  const categoryFiltered = category
     ? products.filter((p) => p.category === category)
     : products;
+  const searched = normalizedSearch
+    ? categoryFiltered.filter((p) => p.name.toLowerCase().includes(normalizedSearch))
+    : categoryFiltered;
+  const filtered = [...searched];
+
+  if (sort === "price-asc") {
+    filtered.sort((a, b) => a.price - b.price);
+  }
+  if (sort === "price-desc") {
+    filtered.sort((a, b) => b.price - a.price);
+  }
+  if (sort === "name") {
+    filtered.sort((a, b) => a.name.localeCompare(b.name));
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       {/* Page header */}
       <div className="mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-          {category ?? "All Products"}
+          {search ? `Results for "${search}"` : category ?? "All Products"}
         </h1>
         <p className="text-gray-500 text-sm">
           {filtered.length} {filtered.length === 1 ? "product" : "products"}
@@ -63,6 +79,10 @@ export default async function ProductsPage({ searchParams }: Props) {
         })}
       </div>
 
+      <div className="mb-6 flex items-center justify-end">
+        <ProductSortSelect value={sort} />
+      </div>
+
       {/* Product grid */}
       {filtered.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
@@ -72,12 +92,14 @@ export default async function ProductsPage({ searchParams }: Props) {
         </div>
       ) : (
         <div className="py-24 text-center">
-          <p className="text-gray-400 text-sm">No products found in this category.</p>
+          <p className="text-gray-400 text-sm">
+            {search ? `No products found for "${search}".` : "No products found in this category."}
+          </p>
           <Link
-            href="/products"
+            href={category ? `/products?category=${encodeURIComponent(category)}` : "/products"}
             className="mt-4 inline-block text-sm font-semibold text-gray-700 hover:text-gray-900 underline"
           >
-            View all products
+            {search ? "Clear search" : "View all products"}
           </Link>
         </div>
       )}

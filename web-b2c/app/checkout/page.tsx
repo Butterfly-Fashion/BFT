@@ -116,6 +116,36 @@ export default function CheckoutPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10">Checkout</h1>
 
+      <div className="flex items-center gap-0 mb-10 overflow-x-auto pb-1">
+        {["Cart", "Information", "Payment"].map((step, i) => (
+          <div key={step} className="flex items-center shrink-0">
+            <div className="flex items-center gap-2">
+              <div
+                className={[
+                  "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
+                  i === 1
+                    ? "bg-[#C41E3A] text-white"
+                    : i < 1
+                      ? "bg-gray-900 text-white"
+                      : "bg-gray-200 text-gray-400",
+                ].join(" ")}
+              >
+                {i < 1 ? "✓" : i + 1}
+              </div>
+              <span
+                className={[
+                  "text-sm font-semibold",
+                  i === 1 ? "text-gray-900" : "text-gray-400",
+                ].join(" ")}
+              >
+                {step}
+              </span>
+            </div>
+            {i < 2 && <div className="w-8 h-px bg-gray-200 mx-3" />}
+          </div>
+        ))}
+      </div>
+
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-5 gap-10">
         {/* Left — shipping info */}
         <div className="lg:col-span-3 space-y-6">

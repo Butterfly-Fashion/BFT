@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
 import { ToastProvider } from "@/components/store/toast-provider";
+import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-CA" className={inter.variable}>
       <body className="bg-[#FAFAFA] text-gray-900 antialiased min-h-screen flex flex-col">
+        <AnnouncementBar />
         <CartProvider>
           <ToastProvider>
             <Header />

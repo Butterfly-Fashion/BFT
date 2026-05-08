@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { useState } from "react";
+import type { FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import { CartDrawer } from "@/components/store/cart-drawer";
@@ -17,9 +19,23 @@ const navLinks = [
 ];
 
 export function Header() {
+  const router = useRouter();
   const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const query = searchQ.trim();
+
+    if (!query) return;
+
+    router.push(`/products?search=${encodeURIComponent(query)}`);
+    setSearchOpen(false);
+    setSearchQ("");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -51,6 +67,14 @@ export function Header() {
         {/* Right side */}
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setSearchOpen((v) => !v)}
+            aria-label="Search"
+            className="p-1 text-gray-700 hover:text-[#C41E3A] transition-colors"
+          >
+            <Search className="w-5 h-5" />
+          </button>
+
+          <button
             onClick={() => setDrawerOpen(true)}
             aria-label="Cart"
             className="relative flex items-center gap-1.5 text-gray-900 hover:text-[#C41E3A] transition-colors duration-150"
@@ -75,6 +99,27 @@ export function Header() {
       </div>
 
       <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+
+      <div
+        className={clsx(
+          "border-t border-gray-100 bg-white overflow-hidden transition-all duration-200",
+          searchOpen ? "max-h-20" : "max-h-0"
+        )}
+      >
+        <form onSubmit={handleSearch} className="flex items-center gap-3 px-4 py-3 max-w-6xl mx-auto">
+          <Search className="w-4 h-4 text-gray-400 shrink-0" />
+          <input
+            value={searchQ}
+            onChange={(event) => setSearchQ(event.target.value)}
+            placeholder="Search products..."
+            className="flex-1 text-sm outline-none bg-transparent text-gray-900 placeholder-gray-400"
+            autoFocus={searchOpen}
+          />
+          <button type="submit" className="text-xs font-semibold text-[#C41E3A] hover:underline">
+            Go
+          </button>
+        </form>
+      </div>
 
       {/* Mobile nav drawer */}
       <div
