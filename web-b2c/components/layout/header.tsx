@@ -6,18 +6,20 @@ import { useCart } from "@/components/store/cart-provider";
 import { useState } from "react";
 import clsx from "clsx";
 import { ButterflyLogo } from "@/components/butterfly-logo";
+import { CartDrawer } from "@/components/store/cart-drawer";
 
 const navLinks = [
   { href: "/products", label: "Shop All" },
-  { href: "/products?category=Jerseys", label: "Jerseys" },
-  { href: "/products?category=Hats", label: "Hats" },
-  { href: "/products?category=Accessories", label: "Accessories" },
-  { href: "/products?category=Collectibles", label: "Collectibles" },
+  { href: "/products?category=Boxing+Gloves", label: "Boxing Gloves" },
+  { href: "/products?category=Caps", label: "Caps" },
+  { href: "/products?category=Bucket+Hats", label: "Bucket Hats" },
+  { href: "/products?category=Car+Flags", label: "Car Flags" },
 ];
 
 export function Header() {
   const { itemCount } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -48,8 +50,8 @@ export function Header() {
 
         {/* Right side */}
         <div className="flex items-center gap-3">
-          <Link
-            href="/cart"
+          <button
+            onClick={() => setDrawerOpen(true)}
             aria-label="Cart"
             className="relative flex items-center gap-1.5 text-gray-900 hover:text-[#C41E3A] transition-colors duration-150"
           >
@@ -59,7 +61,7 @@ export function Header() {
                 {itemCount > 99 ? "99+" : itemCount}
               </span>
             )}
-          </Link>
+          </button>
 
           {/* Mobile menu toggle */}
           <button
@@ -71,6 +73,8 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      <CartDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
 
       {/* Mobile nav drawer */}
       <div

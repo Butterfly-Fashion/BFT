@@ -31,34 +31,34 @@ export function Footer() {
             </li>
             <li>
               <Link
-                href="/products?category=Jerseys"
+                href="/products?category=Boxing+Gloves"
                 className="hover:text-white transition-colors"
               >
-                Jerseys
+                Boxing Gloves
               </Link>
             </li>
             <li>
               <Link
-                href="/products?category=Hats"
+                href="/products?category=Caps"
                 className="hover:text-white transition-colors"
               >
-                Hats
+                Caps
               </Link>
             </li>
             <li>
               <Link
-                href="/products?category=Accessories"
+                href="/products?category=Bucket+Hats"
                 className="hover:text-white transition-colors"
               >
-                Accessories
+                Bucket Hats
               </Link>
             </li>
             <li>
               <Link
-                href="/products?category=Collectibles"
+                href="/products?category=Car+Flags"
                 className="hover:text-white transition-colors"
               >
-                Collectibles
+                Car Flags
               </Link>
             </li>
           </ul>

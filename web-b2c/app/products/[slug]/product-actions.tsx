@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCart } from "@/components/store/cart-provider";
+import { useToast } from "@/components/store/toast-provider";
 import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +12,7 @@ interface Props {
 
 export function ProductActions({ product }: Props) {
   const { addItem } = useCart();
+  const { showToast } = useToast();
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     product.sizes?.[0]
@@ -33,6 +35,7 @@ export function ProductActions({ product }: Props) {
     addItem(buildCartItem());
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
+    showToast("Added to cart ✓");
   };
 
   const handleBuyNow = () => {

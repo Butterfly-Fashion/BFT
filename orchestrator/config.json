@@ -1,0 +1,8 @@
+{
+  "claude_model": "claude-sonnet-4-6",
+  "max_iterations": 10,
+  "max_retries_per_step": 2,
+  "codex_timeout_seconds": 300,
+  "codex_cmd": ["npx", "--yes", "codex"],
+  "codex_flags": ["--approval-mode", "full-auto"]
+}

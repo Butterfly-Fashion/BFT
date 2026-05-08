@@ -30,7 +30,8 @@ export default function CartPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+    <>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 pb-20 md:pb-0">
       <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Your Cart</h1>
 
       {/* Free shipping progress */}
@@ -163,5 +164,21 @@ export default function CartPage() {
         </div>
       </div>
     </div>
+    {/* Mobile sticky checkout bar */}
+    <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
+      <div className="text-sm">
+        <span className="font-bold text-gray-900">{formatCAD(subtotal + shipping)}</span>
+        <span className="text-gray-400 text-xs ml-1">
+          {shipping === 0 ? "- Free shipping" : `- +${formatCAD(shipping)} shipping`}
+        </span>
+      </div>
+      <Link
+        href="/checkout"
+        className="shrink-0 px-6 py-2.5 bg-[#C41E3A] text-white font-semibold rounded-full text-sm hover:bg-[#A01830] transition-colors"
+      >
+        Checkout -&gt;
+      </Link>
+    </div>
+    </>
   );
 }
