@@ -10,6 +10,16 @@ interface CheckoutBody {
   shipping: number;
   tax: number;
   total: number;
+  address?: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    apartment?: string;
+    city: string;
+    province: string;
+    postalCode: string;
+    country: string;
+  };
 }
 
 export async function POST(req: NextRequest) {
@@ -20,7 +30,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { orderId, items, customerEmail, shipping, tax } = body;
+  const { orderId, items, customerEmail, shipping, tax, address } = body;
 
   if (!orderId || !items?.length) {
     return NextResponse.json({ error: "Missing orderId or items" }, { status: 400 });
@@ -71,7 +81,17 @@ export async function POST(req: NextRequest) {
       line_items,
       success_url: `${base}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/checkout`,
-      metadata: { order_id: orderId },
+      metadata: {
+        order_id: orderId,
+        ...(address && {
+          shipping_name: `${address.firstName} ${address.lastName}`,
+          shipping_address: [address.address, address.apartment].filter(Boolean).join(", "),
+          shipping_city: address.city,
+          shipping_province: address.province,
+          shipping_postal: address.postalCode,
+          shipping_country: address.country,
+        }),
+      },
     });
 
     return NextResponse.json({ url: session.url });

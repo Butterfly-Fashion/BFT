@@ -81,6 +81,16 @@ export default function CheckoutPage() {
           shipping,
           tax,
           total,
+          address: {
+            firstName: form.firstName,
+            lastName: form.lastName,
+            address: form.address,
+            apartment: form.apartment,
+            city: form.city,
+            province: form.province,
+            postalCode: form.postalCode,
+            country: form.country,
+          },
         }),
       });
 

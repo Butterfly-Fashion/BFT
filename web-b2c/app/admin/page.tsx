@@ -10,6 +10,12 @@ interface AdminOrder {
   amount: number;
   currency: string | null;
   date: string;
+  shippingName: string | null;
+  shippingAddress: string | null;
+  shippingCity: string | null;
+  shippingProvince: string | null;
+  shippingPostal: string | null;
+  shippingCountry: string | null;
 }
 
 interface AdminPageProps {
@@ -112,7 +118,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <thead className="bg-gray-50 text-xs uppercase tracking-widest text-gray-500">
             <tr>
               <th className="px-4 py-3 font-bold">Order ID</th>
-              <th className="px-4 py-3 font-bold">Email</th>
+              <th className="px-4 py-3 font-bold">Customer</th>
+              <th className="px-4 py-3 font-bold">Shipping Address</th>
               <th className="px-4 py-3 font-bold">Amount</th>
               <th className="px-4 py-3 font-bold">Date</th>
             </tr>
@@ -130,7 +137,21 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                   <td className="px-4 py-3 font-semibold text-gray-900">
                     {order.orderId ?? order.id}
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{order.email ?? "No email"}</td>
+                  <td className="px-4 py-3 text-gray-600">
+                    {order.shippingName && <p className="font-semibold text-gray-900">{order.shippingName}</p>}
+                    <p>{order.email ?? "No email"}</p>
+                  </td>
+                  <td className="px-4 py-3 text-gray-600 text-sm">
+                    {order.shippingAddress ? (
+                      <div>
+                        <p>{order.shippingAddress}</p>
+                        <p>{order.shippingCity}, {order.shippingProvince} {order.shippingPostal}</p>
+                        <p>{order.shippingCountry}</p>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 italic">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 font-bold text-[#C41E3A]">
                     {formatAmount(order.amount, order.currency)}
                   </td>
