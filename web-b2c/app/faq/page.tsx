@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { absoluteUrl, jsonLd } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "FAQ" };
+export const metadata: Metadata = {
+  title: "FAQ",
+  description:
+    "Answers about World Fan Gear shipping, returns, payments, and Canada 2026-inspired fan merchandise.",
+  alternates: {
+    canonical: "/faq",
+  },
+};
 
 const faqs = [
   {
@@ -34,8 +42,26 @@ const faqs = [
 ];
 
 export default function FAQPage() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+    url: absoluteUrl("/faq"),
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqJsonLd) }}
+      />
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Frequently Asked Questions</h1>
 
       <div className="space-y-6">

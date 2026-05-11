@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Shop All Products",
   description:
     "Browse the full World Fan Gear collection — boxing gloves, caps, bucket hats, and car flags for Canadian fans.",
+  alternates: {
+    canonical: "/products",
+  },
 };
 
 interface Props {

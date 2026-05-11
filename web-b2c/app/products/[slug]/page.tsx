@@ -5,6 +5,14 @@ import { formatCAD } from "@/lib/money";
 import { ProductActions } from "./product-actions";
 import { ProductGallery } from "@/components/store/product-gallery";
 import { ProductCard } from "@/components/store/product-card";
+import {
+  absoluteUrl,
+  breadcrumbJsonLd,
+  jsonLd,
+  productJsonLd,
+  productSeoDescription,
+  productSeoTitle,
+} from "@/lib/seo";
 import Link from "next/link";
 
 interface Props {
@@ -19,11 +27,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) return {};
+  const canonical = `/products/${product.slug}`;
   return {
-    title: product.name,
-    description: product.description,
+    title: productSeoTitle(product),
+    description: productSeoDescription(product),
+    alternates: {
+      canonical,
+    },
     openGraph: {
-      images: [{ url: product.imageUrl }],
+      title: productSeoTitle(product),
+      description: productSeoDescription(product),
+      url: absoluteUrl(canonical),
+      type: "website",
+      images: [{ url: absoluteUrl(product.imageUrl) }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: productSeoTitle(product),
+      description: productSeoDescription(product),
+      images: [absoluteUrl(product.imageUrl)],
     },
   };
 }
@@ -32,9 +54,23 @@ export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: product.category, url: `/products?category=${encodeURIComponent(product.category)}` },
+    { name: product.name, url: `/products/${product.slug}` },
+  ]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(productJsonLd(product)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbs) }}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
         {/* Image */}
         <div className="order-1">

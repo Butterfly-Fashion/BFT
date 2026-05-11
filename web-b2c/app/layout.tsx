@@ -8,6 +8,7 @@ import { ToastProvider } from "@/components/store/toast-provider";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { jsonLd, organizationJsonLd, SITE_URL, websiteJsonLd } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,12 +17,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "World Fan Gear | Canada 2026",
     template: "%s | World Fan Gear",
   },
   description:
-    "Premium World Cup 2026 merchandise for Canadian fans. Shop jerseys, hats, scarves, and collectibles. Free shipping over $99. Ships from Toronto.",
+    "Canada 2026-inspired soccer fan merchandise for Canadian fans. Shop caps, bucket hats, car flags, and souvenirs with free shipping over $99 CAD.",
   keywords: [
     "World Cup 2026",
     "Canada soccer merchandise",
@@ -30,9 +32,24 @@ export const metadata: Metadata = {
     "FIFA 2026 Canada",
   ],
   openGraph: {
+    title: "World Fan Gear | Canada 2026",
+    description:
+      "Shop Canada 2026-inspired soccer fan gear shipping across Canada from Toronto.",
+    url: SITE_URL,
     siteName: "World Fan Gear",
     locale: "en_CA",
     type: "website",
+    images: [{ url: "/asset/hero-banner.jpg", width: 1717, height: 916 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "World Fan Gear | Canada 2026",
+    description:
+      "Shop Canada 2026-inspired soccer fan gear shipping across Canada from Toronto.",
+    images: ["/asset/hero-banner.jpg"],
+  },
+  alternates: {
+    canonical: "/",
   },
 };
 
@@ -48,6 +65,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </ToastProvider>
         </CartProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(websiteJsonLd()) }}
+        />
         <Analytics />
         <SpeedInsights />
       </body>

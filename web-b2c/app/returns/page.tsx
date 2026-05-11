@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Returns & Exchanges" };
+export const metadata: Metadata = {
+  title: "Returns & Exchanges",
+  description:
+    "World Fan Gear returns and exchanges policy for Canada 2026-inspired soccer fan merchandise shipped in Canada.",
+  alternates: {
+    canonical: "/returns",
+  },
+};
 
 export default function ReturnsPage() {
   return (

@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Shipping Policy" };
+export const metadata: Metadata = {
+  title: "Shipping Policy",
+  description:
+    "World Fan Gear shipping policy for Canada 2026-inspired fan merchandise, including free shipping over $99 CAD across Canada.",
+  alternates: {
+    canonical: "/shipping",
+  },
+};
 
 export default function ShippingPage() {
   return (

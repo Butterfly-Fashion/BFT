@@ -4,6 +4,7 @@ import { CategoryStrip } from "@/components/store/category-strip";
 import { ProductCard } from "@/components/store/product-card";
 import { SocialProof } from "@/components/store/social-proof";
 import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
+import { collectionPages, teamPages } from "@/lib/seo-pages";
 import Link from "next/link";
 
 export default function HomePage() {
@@ -77,6 +78,45 @@ export default function HomePage() {
       </section>
 
       <SocialProof />
+
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
+        <div className="grid gap-10 md:grid-cols-2">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+              Shop by Team
+            </p>
+            <h2 className="text-2xl font-bold text-gray-900">Find your colours</h2>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {teamPages.map((team) => (
+                <Link
+                  key={team.slug}
+                  href={`/teams/${team.slug}`}
+                  className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 hover:border-gray-400 hover:text-gray-900"
+                >
+                  {team.team}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+              Shop by Gear
+            </p>
+            <h2 className="text-2xl font-bold text-gray-900">Match-day essentials</h2>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {collectionPages.map((collection) => (
+                <Link
+                  key={collection.slug}
+                  href={`/collections/${collection.slug}`}
+                  className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-600 hover:border-gray-400 hover:text-gray-900"
+                >
+                  {collection.h1}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <CategoryStrip />
 

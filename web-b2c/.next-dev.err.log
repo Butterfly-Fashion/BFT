@@ -3,3 +3,116 @@
     at JSON.parse (<anonymous>) {
   page: '/'
 }
+ ⨯ Error: Cannot find module './vendor-chunks/@vercel.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\sitemap.xml\route.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\page.js:476:47)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\page.js:479:3) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/blog'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/@vercel.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\sitemap.xml\route.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\[slug]\page.js:509:47)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\[slug]\page.js:512:3) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/blog/world-cup-2026-fan-gear-canada'
+}
+ ⨯ Error: Cannot find module './vendor-chunks/@vercel.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\sitemap.xml\route.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\[slug]\page.js:509:47)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\app\blog\[slug]\page.js:512:3) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array],
+  page: '/blog/world-cup-car-flags-canada'
+}
+ ⨯ Error: Cannot find module './611.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:325)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:371) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './611.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:325)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:371) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './611.js'
+Require stack:
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\webpack-runtime.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\require.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\load-components.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\utils.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\options.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\swc\index.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\config.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\next.js
+- C:\Users\butte\codes\ecommerce-demo\web-b2c\node_modules\next\dist\server\lib\start-server.js
+    at <unknown> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:325)
+    at Object.<anonymous> (C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\server\pages\_document.js:1:371) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\cache\webpack\client-development-fallback\0.pack.gz'
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\butte\codes\ecommerce-demo\web-b2c\.next\cache\webpack\client-development-fallback\0.pack.gz'

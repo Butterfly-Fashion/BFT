@@ -31,7 +31,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                href="/products?category=Boxing+Gloves"
+                href="/collections/souvenir-boxing-gloves"
                 className="hover:text-white transition-colors"
               >
                 Boxing Gloves
@@ -39,7 +39,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                href="/products?category=Caps"
+                href="/collections/world-cup-caps"
                 className="hover:text-white transition-colors"
               >
                 Caps
@@ -47,7 +47,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                href="/products?category=Bucket+Hats"
+                href="/collections/world-cup-bucket-hats"
                 className="hover:text-white transition-colors"
               >
                 Bucket Hats
@@ -55,10 +55,15 @@ export function Footer() {
             </li>
             <li>
               <Link
-                href="/products?category=Car+Flags"
+                href="/collections/world-cup-car-flags"
                 className="hover:text-white transition-colors"
               >
                 Car Flags
+              </Link>
+            </li>
+            <li>
+              <Link href="/blog" className="hover:text-white transition-colors">
+                Fan Gear Guides
               </Link>
             </li>
           </ul>
