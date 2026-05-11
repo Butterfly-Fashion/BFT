@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
@@ -46,6 +48,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </ToastProvider>
         </CartProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

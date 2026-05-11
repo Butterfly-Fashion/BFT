@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
@@ -15,6 +17,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={inter.className}>
       <body>
         <CartProvider>{children}</CartProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
