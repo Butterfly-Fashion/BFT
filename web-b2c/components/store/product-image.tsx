@@ -24,7 +24,7 @@ export function ProductImage({
 }: Props) {
   const [errored, setErrored] = useState(false);
 
-  if (errored) {
+  if (errored || !src) {
     return (
       <div
         className="absolute inset-0"
