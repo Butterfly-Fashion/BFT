@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import type Stripe from "stripe";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "jameskimkim1@gmail.com";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "support@fifa2026.ca";
 const FROM = process.env.EMAIL_FROM ?? "World Fan Gear <orders@fifa2026.ca>";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
 
@@ -58,7 +58,7 @@ export async function sendAdminOrderEmail(
   const html = `
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 
@@ -165,7 +165,7 @@ export async function sendCustomerConfirmationEmail(
   const html = `
 <!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 

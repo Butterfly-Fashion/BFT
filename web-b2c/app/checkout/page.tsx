@@ -7,6 +7,7 @@ import {
   formatCAD,
   calculateShipping,
   calculateTax,
+  getTaxLabel,
 } from "@/lib/money";
 import { CANADIAN_PROVINCES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
@@ -35,7 +36,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const shipping = calculateShipping(subtotal);
-  const tax = calculateTax(subtotal);
+  const tax = calculateTax(subtotal, form.province);
   const total = subtotal + shipping + tax;
 
   const handleChange = (
@@ -250,6 +251,9 @@ export default function CheckoutPage() {
                   placeholder="Postal code"
                   value={form.postalCode}
                   onChange={handleChange}
+                  pattern="[A-Za-z][0-9][A-Za-z]\s?[0-9][A-Za-z][0-9]"
+                  title="Enter a valid Canadian postal code (e.g. M5V 3L9)"
+                  maxLength={7}
                   className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors uppercase"
                 />
               </div>
@@ -321,7 +325,7 @@ export default function CheckoutPage() {
                 </span>
               </div>
               <div className="flex justify-between text-gray-600">
-                <span>Tax (HST 13%)</span>
+                <span>{getTaxLabel(form.province)}</span>
                 <span className="font-medium">{formatCAD(tax)}</span>
               </div>
             </div>

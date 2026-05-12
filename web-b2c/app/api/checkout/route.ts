@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
           unit_amount: Math.round(item.price * 100),
           product_data: {
             name: item.name,
-            ...(item.size ? { description: `Size: ${item.size}` } : {}),
+            description: item.size ? `Size: ${item.size}` : undefined,
           },
         },
       }));

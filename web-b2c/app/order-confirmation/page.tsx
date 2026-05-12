@@ -47,6 +47,8 @@ function OrderConfirmationInner() {
         }
 
         const { orderId, fallbackOrder } = data;
+        let confirmedOrder: Order | null = null;
+
         if (orderId) {
           const raw = localStorage.getItem(`b2c-pending-${orderId}`);
           if (raw) {
@@ -55,29 +57,23 @@ function OrderConfirmationInner() {
               localStorage.setItem("b2c-last-order", raw);
               localStorage.removeItem(`b2c-pending-${orderId}`);
               setOrder(pending);
+              confirmedOrder = pending;
             } catch {
               setOrder(fallbackOrder ?? null);
+              confirmedOrder = fallbackOrder ?? null;
             }
           } else if (fallbackOrder) {
             // Different device / cleared localStorage — use Stripe data
             localStorage.setItem("b2c-last-order", JSON.stringify(fallbackOrder));
             setOrder(fallbackOrder);
+            confirmedOrder = fallbackOrder;
           }
         }
 
         // 결제 확인 후 장바구니 비우기 (checkout에서 미리 지우지 않음)
         clearCart();
 
-        // GA4 purchase event — fire with whichever order object we have
-        const confirmedOrder = (() => {
-          if (orderId) {
-            const raw = localStorage.getItem("b2c-last-order");
-            if (raw) {
-              try { return JSON.parse(raw) as Order; } catch { /* fall through */ }
-            }
-          }
-          return fallbackOrder ?? null;
-        })();
+        // GA4 purchase event
         if (confirmedOrder) {
           trackPurchase({
             id: confirmedOrder.id,
