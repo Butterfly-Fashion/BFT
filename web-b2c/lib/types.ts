@@ -1,3 +1,8 @@
+export interface PlayerCard {
+  name: string;
+  imageUrl: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
@@ -11,6 +16,7 @@ export interface Product {
   inStock: boolean;
   badge?: string;
   sizes?: string[];
+  playerCards?: PlayerCard[];
 }
 
 export interface CartItem {
@@ -73,6 +79,7 @@ export const CATEGORIES = [
   "Caps",
   "Bucket Hats",
   "Car Flags",
+  "Sticker Packs",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];

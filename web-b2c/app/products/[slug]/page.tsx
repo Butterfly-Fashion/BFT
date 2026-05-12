@@ -14,6 +14,8 @@ import {
   productSeoTitle,
 } from "@/lib/seo";
 import Link from "next/link";
+import Image from "next/image";
+import type { PlayerCard } from "@/lib/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -125,8 +127,49 @@ export default async function ProductDetailPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Player cards section — sticker box only */}
+      {product.playerCards && product.playerCards.length > 0 && (
+        <PlayerCardsSection cards={product.playerCards} />
+      )}
+
       {/* Related products from same category */}
       <RelatedProducts currentSlug={product.slug} category={product.category} />
+    </div>
+  );
+}
+
+function PlayerCardsSection({ cards }: { cards: PlayerCard[] }) {
+  return (
+    <div className="mt-16">
+      <div className="mb-6">
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
+          Featured in This Box
+        </p>
+        <h2 className="text-xl font-bold text-gray-900">
+          Pull These Stars & Hundreds More
+        </h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Each 50-pack box includes stickers from all 48 World Cup nations. These are just some of the stars you could pull.
+        </p>
+      </div>
+      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+        {cards.map((card) => (
+          <div key={card.name} className="group flex flex-col items-center gap-1.5">
+            <div className="relative w-full aspect-2/3 rounded-xl overflow-hidden shadow-sm border border-gray-100 group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
+              <Image
+                src={card.imageUrl}
+                alt={card.name}
+                fill
+                sizes="(max-width: 640px) 25vw, (max-width: 768px) 16vw, 12vw"
+                className="object-cover"
+              />
+            </div>
+            <p className="text-[10px] font-semibold text-gray-600 text-center leading-tight line-clamp-2">
+              {card.name}
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
