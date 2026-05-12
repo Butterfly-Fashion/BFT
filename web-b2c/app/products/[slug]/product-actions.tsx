@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/components/store/cart-provider";
 import { useToast } from "@/components/store/toast-provider";
 import type { Product } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { Lock, RotateCcw, Truck } from "lucide-react";
+import { trackViewItem, trackAddToCart } from "@/lib/gtag";
 
 interface Props {
   product: Product;
@@ -20,6 +21,16 @@ export function ProductActions({ product }: Props) {
   );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    trackViewItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      category: product.category,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.id]);
 
   const buildCartItem = () => ({
     id: product.id,
@@ -37,6 +48,14 @@ export function ProductActions({ product }: Props) {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     showToast("Added to cart ✓");
+    trackAddToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+      size: selectedSize,
+      category: product.category,
+    });
   };
 
   const handleBuyNow = () => {

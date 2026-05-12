@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
+import { GA_ID } from "@/lib/gtag";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
 import { ToastProvider } from "@/components/store/toast-provider";
@@ -51,6 +53,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  verification: {
+    google: "google-site-verification-token-here", // TODO: replace with token from Google Search Console
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -75,6 +80,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <Analytics />
         <SpeedInsights />
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}', { send_page_view: true });
+            `,
+          }}
+        />
       </body>
     </html>
   );

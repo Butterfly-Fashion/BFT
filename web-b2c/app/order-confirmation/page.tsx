@@ -8,6 +8,7 @@ import { ProductImage } from "@/components/store/product-image";
 import { useCart } from "@/components/store/cart-provider";
 import { getProvinceName } from "@/lib/types";
 import Link from "next/link";
+import { trackPurchase } from "@/lib/gtag";
 
 type Status = "loading" | "success" | "failed" | "no-order";
 
@@ -66,6 +67,27 @@ function OrderConfirmationInner() {
 
         // 결제 확인 후 장바구니 비우기 (checkout에서 미리 지우지 않음)
         clearCart();
+
+        // GA4 purchase event — fire with whichever order object we have
+        const confirmedOrder = (() => {
+          if (orderId) {
+            const raw = localStorage.getItem("b2c-last-order");
+            if (raw) {
+              try { return JSON.parse(raw) as Order; } catch { /* fall through */ }
+            }
+          }
+          return fallbackOrder ?? null;
+        })();
+        if (confirmedOrder) {
+          trackPurchase({
+            id: confirmedOrder.id,
+            total: confirmedOrder.total,
+            shipping: confirmedOrder.shipping,
+            tax: confirmedOrder.tax,
+            items: confirmedOrder.items,
+          });
+        }
+
         setStatus("success");
       } catch {
         setStatus("failed");

@@ -5,6 +5,7 @@ import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { formatCAD, calculateShipping, calculateTax, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { trackBeginCheckout } from "@/lib/gtag";
 
 interface Props {
   open: boolean;
@@ -186,7 +187,19 @@ export function CartDrawer({ open, onClose }: Props) {
               {/* CTAs */}
               <Link
                 href="/checkout"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  trackBeginCheckout({
+                    value: subtotal + shipping + tax,
+                    items: items.map((i) => ({
+                      id: i.id,
+                      name: i.name,
+                      price: i.price,
+                      quantity: i.quantity,
+                      size: i.size,
+                    })),
+                  });
+                }}
                 className="block w-full py-3 bg-[#C41E3A] text-white font-bold rounded-full text-center text-sm hover:bg-[#A01830] transition-colors shadow-sm"
               >
                 Checkout — {formatCAD(subtotal + shipping + tax)}

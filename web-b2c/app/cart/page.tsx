@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { calculateShipping, calculateTax, formatCAD, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { trackBeginCheckout } from "@/lib/gtag";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
@@ -163,6 +164,18 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
+                onClick={() =>
+                  trackBeginCheckout({
+                    value: estimatedTotal,
+                    items: items.map((i) => ({
+                      id: i.id,
+                      name: i.name,
+                      price: i.price,
+                      quantity: i.quantity,
+                      size: i.size,
+                    })),
+                  })
+                }
                 className="mt-5 block w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full text-center hover:bg-[#A01830] transition-colors text-sm shadow-sm"
               >
                 Checkout — {formatCAD(estimatedTotal)}
@@ -192,6 +205,18 @@ export default function CartPage() {
         </div>
         <Link
           href="/checkout"
+          onClick={() =>
+            trackBeginCheckout({
+              value: estimatedTotal,
+              items: items.map((i) => ({
+                id: i.id,
+                name: i.name,
+                price: i.price,
+                quantity: i.quantity,
+                size: i.size,
+              })),
+            })
+          }
           className="shrink-0 px-6 py-2.5 bg-[#C41E3A] text-white font-semibold rounded-full text-sm hover:bg-[#A01830] transition-colors"
         >
           Checkout
