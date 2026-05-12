@@ -47,6 +47,11 @@ export interface Order {
   createdAt: string;
 }
 
+export function getProvinceName(code: string): string {
+  const found = CANADIAN_PROVINCES.find((p) => p.code === code);
+  return found ? found.name : code;
+}
+
 export const CANADIAN_PROVINCES = [
   { code: "AB", name: "Alberta" },
   { code: "BC", name: "British Columbia" },

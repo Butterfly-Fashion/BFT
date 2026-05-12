@@ -122,7 +122,7 @@ export function ProductActions({ product }: Props) {
         </div>
         <div className="flex flex-col items-center gap-1">
           <RotateCcw className="h-5 w-5 text-[#C41E3A]" />
-          <span className="text-[11px] font-semibold text-gray-600">14-day returns</span>
+          <span className="text-[11px] font-semibold text-gray-600">30-day returns</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <Lock className="h-5 w-5 text-[#C41E3A]" />

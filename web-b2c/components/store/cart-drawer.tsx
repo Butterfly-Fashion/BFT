@@ -4,7 +4,7 @@ import Link from "next/link";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { formatCAD, calculateShipping, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { formatCAD, calculateShipping, calculateTax, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
 
 interface Props {
   open: boolean;
@@ -14,6 +14,7 @@ interface Props {
 export function CartDrawer({ open, onClose }: Props) {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
   const shipping = calculateShipping(subtotal);
+  const tax = calculateTax(subtotal);
   const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
@@ -173,9 +174,13 @@ export function CartDrawer({ open, onClose }: Props) {
                   {shipping === 0 ? "Free 🎉" : formatCAD(shipping)}
                 </span>
               </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-500">Tax (HST 13%)</span>
+                <span className="text-sm font-semibold text-gray-900">{formatCAD(tax)}</span>
+              </div>
               <div className="flex justify-between items-center border-t border-gray-100 pt-2">
                 <span className="font-bold text-gray-900">Estimated Total</span>
-                <span className="font-black text-lg text-[#C41E3A]">{formatCAD(subtotal + shipping)}</span>
+                <span className="font-black text-lg text-[#C41E3A]">{formatCAD(subtotal + shipping + tax)}</span>
               </div>
 
               {/* CTAs */}
@@ -184,7 +189,7 @@ export function CartDrawer({ open, onClose }: Props) {
                 onClick={onClose}
                 className="block w-full py-3 bg-[#C41E3A] text-white font-bold rounded-full text-center text-sm hover:bg-[#A01830] transition-colors shadow-sm"
               >
-                Checkout — {formatCAD(subtotal + shipping)}
+                Checkout — {formatCAD(subtotal + shipping + tax)}
               </Link>
               <Link
                 href="/cart"

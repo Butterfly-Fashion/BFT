@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
+import { verifyAdminCookie } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const password = searchParams.get("password");
-  const adminPassword = process.env.ADMIN_PASSWORD;
+export async function GET() {
+  const isAuthenticated = await verifyAdminCookie();
 
-  if (!adminPassword || password !== adminPassword) {
+  if (!isAuthenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -58,11 +57,11 @@ export async function GET(request: Request) {
         shippingCountry: pi.metadata?.shipping_country ?? null,
       }));
 
-    const paidSessions = [...sessionOrders, ...piOrders].sort(
+    const paidOrders = [...sessionOrders, ...piOrders].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
-    return NextResponse.json(paidSessions);
+    return NextResponse.json(paidOrders);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to load orders";
     return NextResponse.json({ error: message }, { status: 500 });

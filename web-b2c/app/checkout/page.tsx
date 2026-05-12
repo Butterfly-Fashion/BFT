@@ -100,7 +100,7 @@ export default function CheckoutPage() {
       }
 
       const { url } = await res.json();
-      clearCart();
+      // clearCart는 결제 완료 확인 후 order-confirmation에서 호출
       window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");

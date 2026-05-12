@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 import { ProductImage } from "@/components/store/product-image";
+import { useCart } from "@/components/store/cart-provider";
+import { getProvinceName } from "@/lib/types";
 import Link from "next/link";
 
 type Status = "loading" | "success" | "failed" | "no-order";
@@ -12,6 +14,7 @@ type Status = "loading" | "success" | "failed" | "no-order";
 function OrderConfirmationInner() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const { clearCart } = useCart();
 
   const [order, setOrder] = useState<Order | null>(null);
   const [status, setStatus] = useState<Status>("loading");
@@ -42,7 +45,7 @@ function OrderConfirmationInner() {
           return;
         }
 
-        const { orderId } = data;
+        const { orderId, fallbackOrder } = data;
         if (orderId) {
           const raw = localStorage.getItem(`b2c-pending-${orderId}`);
           if (raw) {
@@ -52,11 +55,17 @@ function OrderConfirmationInner() {
               localStorage.removeItem(`b2c-pending-${orderId}`);
               setOrder(pending);
             } catch {
-              setOrder(null);
+              setOrder(fallbackOrder ?? null);
             }
+          } else if (fallbackOrder) {
+            // Different device / cleared localStorage — use Stripe data
+            localStorage.setItem("b2c-last-order", JSON.stringify(fallbackOrder));
+            setOrder(fallbackOrder);
           }
         }
 
+        // 결제 확인 후 장바구니 비우기 (checkout에서 미리 지우지 않음)
+        clearCart();
         setStatus("success");
       } catch {
         setStatus("failed");
@@ -64,6 +73,7 @@ function OrderConfirmationInner() {
     }
 
     verify();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
   if (status === "loading") {
@@ -199,7 +209,7 @@ function OrderConfirmationInner() {
               {order.address.address}
               {order.address.apartment && `, ${order.address.apartment}`}
               <br />
-              {order.address.city}, {order.address.province}
+              {order.address.city}, {getProvinceName(order.address.province)}
               {"  "}
               {order.address.postalCode}
               <br />

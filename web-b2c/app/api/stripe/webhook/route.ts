@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
+import { sendAdminOrderEmail, sendCustomerConfirmationEmail } from "@/lib/email";
 import type Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
@@ -28,6 +29,18 @@ export async function POST(req: NextRequest) {
       const session = event.data.object as Stripe.Checkout.Session;
       const orderId = session.metadata?.order_id;
       console.log(`[webhook] Payment completed — order ${orderId}, session ${session.id}`);
+
+      try {
+        const stripe = stripeClient();
+        const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+        await Promise.all([
+          sendAdminOrderEmail(session, lineItems.data),
+          sendCustomerConfirmationEmail(session, lineItems.data),
+        ]);
+      } catch (err) {
+        // Email errors must not fail the webhook — Stripe retries on non-2xx
+        console.error(`[webhook] Email sending failed for order ${orderId}:`, err);
+      }
       break;
     }
     case "checkout.session.expired": {

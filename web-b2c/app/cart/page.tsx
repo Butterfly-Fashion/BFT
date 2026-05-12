@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { calculateShipping, formatCAD, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { calculateShipping, calculateTax, formatCAD, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
   const shipping = calculateShipping(subtotal);
-  const estimatedTotal = subtotal + shipping;
+  const tax = calculateTax(subtotal);
+  const estimatedTotal = subtotal + shipping + tax;
   const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const freeShippingProgress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
@@ -147,9 +148,9 @@ export default function CartPage() {
                     {shipping === 0 ? "Free" : formatCAD(shipping)}
                   </span>
                 </div>
-                <div className="flex justify-between text-gray-500 text-xs">
-                  <span>Taxes</span>
-                  <span>Calculated at checkout</span>
+                <div className="flex justify-between text-gray-600">
+                  <span>Tax (HST 13%)</span>
+                  <span className="font-medium text-gray-900">{formatCAD(tax)}</span>
                 </div>
               </div>
 
@@ -164,7 +165,7 @@ export default function CartPage() {
                 href="/checkout"
                 className="mt-5 block w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full text-center hover:bg-[#A01830] transition-colors text-sm shadow-sm"
               >
-                Checkout - {formatCAD(estimatedTotal)}
+                Checkout — {formatCAD(estimatedTotal)}
               </Link>
 
               <p className="mt-2 text-center text-[11px] text-gray-400">

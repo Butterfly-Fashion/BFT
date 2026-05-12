@@ -1,0 +1,262 @@
+import nodemailer from "nodemailer";
+import type Stripe from "stripe";
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "jameskimkim1@gmail.com";
+const FROM = process.env.EMAIL_FROM ?? "World Fan Gear <orders@fifa2026.ca>";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
+
+function isSmtpConfigured(): boolean {
+  return Boolean(
+    process.env.SMTP_HOST &&
+    process.env.SMTP_USER &&
+    process.env.SMTP_PASS
+  );
+}
+
+function createTransport() {
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT ?? 587),
+    secure: Number(process.env.SMTP_PORT ?? 587) === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+}
+
+function formatLineItemsHtml(lineItems: Stripe.LineItem[]): string {
+  const rows = lineItems.map((item) => {
+    const name = (item.description ?? "Item").replace(/\n/g, " ");
+    const qty = item.quantity ?? 1;
+    const price = ((item.amount_total ?? 0) / 100).toFixed(2);
+    return `
+      <tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">${name}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:center;">${qty}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:right;">$${price} CAD</td>
+      </tr>`;
+  });
+  return rows.join("");
+}
+
+// Admin notification email — sent to jameskimkim1@gmail.com on every paid order
+export async function sendAdminOrderEmail(
+  session: Stripe.Checkout.Session,
+  lineItems: Stripe.LineItem[]
+): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping admin notification email");
+    return;
+  }
+
+  const meta = session.metadata ?? {};
+  const orderId = meta.order_id ?? session.id;
+  const total = ((session.amount_total ?? 0) / 100).toFixed(2);
+  const stripeUrl = `https://dashboard.stripe.com/payments/${session.payment_intent}`;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+
+    <div style="background:#C41E3A;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">New Order Received</h1>
+    </div>
+
+    <div style="padding:28px;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;width:130px;">Order ID</td>
+          <td style="padding:6px 0;font-weight:bold;font-size:13px;font-family:monospace;">${orderId}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;">Customer Email</td>
+          <td style="padding:6px 0;font-size:13px;">${session.customer_email ?? "—"}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;vertical-align:top;">Ship To</td>
+          <td style="padding:6px 0;font-size:13px;line-height:1.6;">
+            ${meta.shipping_name ?? "—"}<br>
+            ${meta.shipping_address ?? ""}<br>
+            ${meta.shipping_city ?? ""}, ${meta.shipping_province ?? ""} ${meta.shipping_postal ?? ""}<br>
+            ${meta.shipping_country ?? ""}
+          </td>
+        </tr>
+      </table>
+
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;">Items Ordered</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #f0f0f0;border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr style="background:#f9f9f9;">
+            <th style="padding:8px 12px;text-align:left;font-size:12px;color:#888;font-weight:600;">Product</th>
+            <th style="padding:8px 12px;text-align:center;font-size:12px;color:#888;font-weight:600;">Qty</th>
+            <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;font-weight:600;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${formatLineItemsHtml(lineItems)}
+        </tbody>
+      </table>
+
+      <div style="margin-top:20px;padding:16px;background:#f9f9f9;border-radius:8px;text-align:right;">
+        <span style="font-size:18px;font-weight:bold;color:#C41E3A;">Total: $${total} CAD</span>
+      </div>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="${stripeUrl}"
+          style="display:inline-block;padding:12px 28px;background:#C41E3A;color:#fff;text-decoration:none;border-radius:24px;font-size:13px;font-weight:bold;">
+          View in Stripe Dashboard →
+        </a>
+      </div>
+    </div>
+
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `New Order #${orderId} — $${total} CAD | World Fan Gear`,
+    html,
+  });
+
+  console.log(`[email] Admin notification sent to ${ADMIN_EMAIL} for order ${orderId}`);
+}
+
+// Customer confirmation email — sent to the buyer
+export async function sendCustomerConfirmationEmail(
+  session: Stripe.Checkout.Session,
+  lineItems: Stripe.LineItem[]
+): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping customer confirmation email");
+    return;
+  }
+
+  const customerEmail = session.customer_email;
+  if (!customerEmail) {
+    console.warn("[email] No customer email in session — skipping customer email");
+    return;
+  }
+
+  const meta = session.metadata ?? {};
+  const orderId = meta.order_id ?? session.id;
+  const total = ((session.amount_total ?? 0) / 100).toFixed(2);
+  const firstName = (meta.shipping_name ?? "").split(" ")[0] || "there";
+
+  // Filter out Shipping and Tax lines — only show actual products
+  const productItems = lineItems.filter(
+    (item) =>
+      item.description !== "Shipping" &&
+      item.description !== "Tax (HST 13%)"
+  );
+  const shippingItem = lineItems.find((item) => item.description === "Shipping");
+  const taxItem = lineItems.find((item) => item.description === "Tax (HST 13%)");
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+
+    <div style="background:#C41E3A;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Order Confirmed!</h1>
+    </div>
+
+    <div style="padding:28px;">
+      <p style="font-size:15px;color:#333;line-height:1.6;">
+        Hi <strong>${firstName}</strong>, thanks for your order!<br>
+        We've received your payment and your gear is on its way.
+      </p>
+
+      <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">
+        <tr>
+          <td style="padding:4px 0;color:#888;font-size:13px;width:110px;">Order ID</td>
+          <td style="padding:4px 0;font-weight:bold;font-size:13px;font-family:monospace;">${orderId}</td>
+        </tr>
+      </table>
+
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin:20px 0 8px;">Items</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #f0f0f0;border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr style="background:#f9f9f9;">
+            <th style="padding:8px 12px;text-align:left;font-size:12px;color:#888;font-weight:600;">Product</th>
+            <th style="padding:8px 12px;text-align:center;font-size:12px;color:#888;font-weight:600;">Qty</th>
+            <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;font-weight:600;">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${formatLineItemsHtml(productItems)}
+        </tbody>
+      </table>
+
+      <div style="margin-top:12px;padding:12px 16px;background:#f9f9f9;border-radius:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:4px;">
+          <span>Shipping</span>
+          <span>${shippingItem ? `$${((shippingItem.amount_total ?? 0) / 100).toFixed(2)} CAD` : "Free"}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:8px;">
+          <span>Tax (HST)</span>
+          <span>${taxItem ? `$${((taxItem.amount_total ?? 0) / 100).toFixed(2)} CAD` : "$0.00"}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:bold;color:#111;border-top:1px solid #e5e5e5;padding-top:8px;">
+          <span>Total</span>
+          <span style="color:#C41E3A;">$${total} CAD</span>
+        </div>
+      </div>
+
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin:24px 0 8px;">Shipping To</h3>
+      <p style="font-size:13px;color:#333;line-height:1.8;margin:0;">
+        ${meta.shipping_name ?? ""}<br>
+        ${meta.shipping_address ?? ""}<br>
+        ${meta.shipping_city ?? ""}, ${meta.shipping_province ?? ""} ${meta.shipping_postal ?? ""}<br>
+        ${meta.shipping_country ?? ""}
+      </p>
+
+      <div style="margin-top:28px;padding:16px;background:#fff8f8;border:1px solid #fde8e8;border-radius:8px;">
+        <p style="font-size:13px;color:#666;margin:0;">
+          Questions about your order? Reply to this email or contact us at
+          <a href="mailto:support@fifa2026.ca" style="color:#C41E3A;">support@fifa2026.ca</a>
+        </p>
+      </div>
+
+      <div style="margin-top:24px;text-align:center;">
+        <a href="${SITE}/products"
+          style="display:inline-block;padding:12px 28px;background:#C41E3A;color:#fff;text-decoration:none;border-radius:24px;font-size:13px;font-weight:bold;">
+          Continue Shopping →
+        </a>
+      </div>
+    </div>
+
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">
+        World Fan Gear · Ships from Toronto, Canada<br>
+        <a href="${SITE}/returns" style="color:#aaa;">Returns Policy</a> ·
+        <a href="${SITE}/shipping" style="color:#aaa;">Shipping Info</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: customerEmail,
+    subject: `Your World Fan Gear order #${orderId} is confirmed!`,
+    html,
+  });
+
+  console.log(`[email] Customer confirmation sent to ${customerEmail} for order ${orderId}`);
+}
