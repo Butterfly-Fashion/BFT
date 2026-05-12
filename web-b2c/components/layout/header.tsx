@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/products", label: "Shop All" },
   { href: "/collections/world-cup-caps", label: "Caps" },
   { href: "/collections/world-cup-car-flags", label: "Car Flags" },
+  { href: "/products?category=Sticker+Packs", label: "Sticker Packs" },
   { href: "/blog", label: "Guides" },
 ];
 
