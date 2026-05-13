@@ -10,6 +10,7 @@ interface CheckoutBody {
   shipping: number;
   tax: number;
   total: number;
+  deliveryMethod?: "shipping" | "pickup";
   address?: {
     firstName: string;
     lastName: string;
@@ -30,7 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { orderId, items, customerEmail, shipping, tax, address } = body;
+  const { orderId, items, customerEmail, shipping, tax, address, deliveryMethod } = body;
 
   if (!orderId || !items?.length) {
     return NextResponse.json({ error: "Missing orderId or items" }, { status: 400 });
@@ -83,6 +84,7 @@ export async function POST(req: NextRequest) {
       cancel_url: `${base}/checkout`,
       metadata: {
         order_id: orderId,
+        delivery_method: deliveryMethod ?? "shipping",
         ...(address && {
           shipping_name: `${address.firstName} ${address.lastName}`,
           shipping_address: [address.address, address.apartment].filter(Boolean).join(", "),

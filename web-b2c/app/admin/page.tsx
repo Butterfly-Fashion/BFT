@@ -80,6 +80,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     amount: number;
     currency: string | null;
     date: string;
+    deliveryMethod: string | null;
     shippingName: string | null;
     shippingAddress: string | null;
     shippingCity: string | null;
@@ -114,6 +115,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       amount: (s.amount_total ?? 0) / 100,
       currency: s.currency,
       date: new Date(s.created * 1000).toISOString(),
+      deliveryMethod: s.metadata?.delivery_method ?? null,
       shippingName: s.metadata?.shipping_name ?? null,
       shippingAddress: s.metadata?.shipping_address ?? null,
       shippingCity: s.metadata?.shipping_city ?? null,
@@ -136,6 +138,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         amount: pi.amount / 100,
         currency: pi.currency,
         date: new Date(pi.created * 1000).toISOString(),
+        deliveryMethod: pi.metadata?.delivery_method ?? null,
         shippingName: pi.metadata?.shipping_name ?? null,
         shippingAddress: pi.metadata?.shipping_address ?? null,
         shippingCity: pi.metadata?.shipping_city ?? null,
@@ -217,7 +220,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                       <LineItemsList items={order.lineItems} />
                     </td>
                     <td className="px-4 py-3 text-gray-600 text-sm">
-                      {order.shippingAddress ? (
+                      {order.deliveryMethod === "pickup" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-700 border border-green-200">
+                          🏪 Pickup
+                        </span>
+                      ) : order.shippingAddress ? (
                         <div>
                           <p>{order.shippingAddress}</p>
                           <p>
