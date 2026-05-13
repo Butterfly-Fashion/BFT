@@ -8,10 +8,13 @@ import {
   calculateShipping,
   calculateTax,
   getTaxLabel,
+  FLAT_SHIPPING,
 } from "@/lib/money";
 import { CANADIAN_PROVINCES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import Link from "next/link";
+
+type DeliveryMethod = "shipping" | "pickup";
 
 const EMPTY_ADDRESS: CheckoutAddress = {
   firstName: "",
@@ -30,12 +33,13 @@ function generateOrderId(): string {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal, clearCart } = useCart();
+  const { items, subtotal } = useCart();
   const [form, setForm] = useState<CheckoutAddress>(EMPTY_ADDRESS);
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("shipping");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const shipping = calculateShipping(subtotal);
+  const shipping = deliveryMethod === "pickup" ? 0 : calculateShipping(subtotal);
   const tax = calculateTax(subtotal, form.province);
   const total = subtotal + shipping + tax;
 
@@ -82,6 +86,7 @@ export default function CheckoutPage() {
           shipping,
           tax,
           total,
+          deliveryMethod,
           address: {
             firstName: form.firstName,
             lastName: form.lastName,
@@ -101,7 +106,6 @@ export default function CheckoutPage() {
       }
 
       const { url } = await res.json();
-      // clearCart는 결제 완료 확인 후 order-confirmation에서 호출
       window.location.href = url;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -158,8 +162,43 @@ export default function CheckoutPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-        {/* Left — shipping info */}
         <div className="lg:col-span-3 space-y-6">
+
+          {/* Delivery Method */}
+          <fieldset>
+            <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+              Delivery Method
+            </legend>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setDeliveryMethod("shipping")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
+                  deliveryMethod === "shipping"
+                    ? "border-[#C41E3A] bg-red-50"
+                    : "border-gray-200 bg-white hover:border-gray-400"
+                }`}
+              >
+                <span className="text-xl">🚚</span>
+                <span className="text-sm font-bold text-gray-900">Shipping</span>
+                <span className="text-xs text-gray-500">{formatCAD(FLAT_SHIPPING)} flat rate</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDeliveryMethod("pickup")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
+                  deliveryMethod === "pickup"
+                    ? "border-[#C41E3A] bg-red-50"
+                    : "border-gray-200 bg-white hover:border-gray-400"
+                }`}
+              >
+                <span className="text-xl">🏪</span>
+                <span className="text-sm font-bold text-gray-900">Pickup</span>
+                <span className="text-xs text-green-600 font-semibold">Free</span>
+              </button>
+            </div>
+          </fieldset>
+
           {/* Contact */}
           <fieldset>
             <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
@@ -175,15 +214,6 @@ export default function CheckoutPage() {
                 onChange={handleChange}
                 className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
               />
-            </div>
-          </fieldset>
-
-          {/* Shipping */}
-          <fieldset>
-            <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
-              Shipping Address
-            </legend>
-            <div className="space-y-3">
               <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
@@ -204,68 +234,102 @@ export default function CheckoutPage() {
                   className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
                 />
               </div>
-              <input
-                type="text"
-                name="address"
-                required
-                placeholder="Street address"
-                value={form.address}
-                onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
-              />
-              <input
-                type="text"
-                name="apartment"
-                placeholder="Apartment, suite, unit (optional)"
-                value={form.apartment}
-                onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
-              />
-              <input
-                type="text"
-                name="city"
-                required
-                placeholder="City"
-                value={form.city}
-                onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
-              />
-              <div className="grid grid-cols-2 gap-3">
-                <select
-                  name="province"
-                  required
-                  value={form.province}
-                  onChange={handleChange}
-                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
-                >
-                  {CANADIAN_PROVINCES.map((p) => (
-                    <option key={p.code} value={p.code}>
-                      {p.name}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  name="postalCode"
-                  required
-                  placeholder="Postal code"
-                  value={form.postalCode}
-                  onChange={handleChange}
-                  pattern="[A-Za-z][0-9][A-Za-z]\s?[0-9][A-Za-z][0-9]"
-                  title="Enter a valid Canadian postal code (e.g. M5V 3L9)"
-                  maxLength={7}
-                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors uppercase"
-                />
-              </div>
-              <input
-                type="text"
-                name="country"
-                value="Canada"
-                readOnly
-                className="w-full h-12 px-4 rounded-xl border border-gray-100 text-sm text-gray-500 bg-gray-50 cursor-not-allowed"
-              />
             </div>
           </fieldset>
+
+          {/* Shipping Address — only when shipping */}
+          {deliveryMethod === "shipping" && (
+            <fieldset>
+              <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+                Shipping Address
+              </legend>
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  name="address"
+                  required
+                  placeholder="Street address"
+                  value={form.address}
+                  onChange={handleChange}
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                />
+                <input
+                  type="text"
+                  name="apartment"
+                  placeholder="Apartment, suite, unit (optional)"
+                  value={form.apartment}
+                  onChange={handleChange}
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                />
+                <input
+                  type="text"
+                  name="city"
+                  required
+                  placeholder="City"
+                  value={form.city}
+                  onChange={handleChange}
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                />
+                <div className="grid grid-cols-2 gap-3">
+                  <select
+                    name="province"
+                    required
+                    value={form.province}
+                    onChange={handleChange}
+                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  >
+                    {CANADIAN_PROVINCES.map((p) => (
+                      <option key={p.code} value={p.code}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    name="postalCode"
+                    required
+                    placeholder="Postal code"
+                    value={form.postalCode}
+                    onChange={handleChange}
+                    pattern="[A-Za-z][0-9][A-Za-z]\s?[0-9][A-Za-z][0-9]"
+                    title="Enter a valid Canadian postal code (e.g. M5V 3L9)"
+                    maxLength={7}
+                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors uppercase"
+                  />
+                </div>
+                <input
+                  type="text"
+                  name="country"
+                  value="Canada"
+                  readOnly
+                  className="w-full h-12 px-4 rounded-xl border border-gray-100 text-sm text-gray-500 bg-gray-50 cursor-not-allowed"
+                />
+              </div>
+            </fieldset>
+          )}
+
+          {/* Province for tax — pickup only */}
+          {deliveryMethod === "pickup" && (
+            <fieldset>
+              <legend className="text-sm font-bold text-gray-900 mb-1 uppercase tracking-wide">
+                Province
+              </legend>
+              <p className="text-xs text-gray-400 mb-3">Used for tax calculation</p>
+              <select
+                name="province"
+                required
+                value={form.province}
+                onChange={handleChange}
+                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+              >
+                {CANADIAN_PROVINCES.map((p) => (
+                  <option key={p.code} value={p.code}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
+          )}
 
           {error && (
             <p className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-lg">{error}</p>
