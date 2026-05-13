@@ -1,4 +1,4 @@
-import { Hero } from "@/components/store/hero";
+import { HeroCarousel } from "@/components/store/hero-carousel";
 import { TrustStrip } from "@/components/store/trust-strip";
 import { CategoryStrip } from "@/components/store/category-strip";
 import { ProductCard } from "@/components/store/product-card";
@@ -13,7 +13,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero />
+      <HeroCarousel />
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div className="flex items-end justify-between mb-8">
