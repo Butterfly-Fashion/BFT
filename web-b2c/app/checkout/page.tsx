@@ -40,7 +40,8 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const shipping = deliveryMethod === "pickup" ? 0 : calculateShipping(subtotal);
-  const tax = calculateTax(subtotal, form.province);
+  const taxProvince = deliveryMethod === "pickup" ? "ON" : form.province;
+  const tax = calculateTax(subtotal, taxProvince);
   const total = subtotal + shipping + tax;
 
   const handleChange = (
@@ -308,28 +309,6 @@ export default function CheckoutPage() {
             </fieldset>
           )}
 
-          {/* Province for tax — pickup only */}
-          {deliveryMethod === "pickup" && (
-            <fieldset>
-              <legend className="text-sm font-bold text-gray-900 mb-1 uppercase tracking-wide">
-                Province
-              </legend>
-              <p className="text-xs text-gray-400 mb-3">Used for tax calculation</p>
-              <select
-                name="province"
-                required
-                value={form.province}
-                onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
-              >
-                {CANADIAN_PROVINCES.map((p) => (
-                  <option key={p.code} value={p.code}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
-          )}
 
           {error && (
             <p className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-lg">{error}</p>
@@ -389,7 +368,7 @@ export default function CheckoutPage() {
                 </span>
               </div>
               <div className="flex justify-between text-gray-600">
-                <span>{getTaxLabel(form.province)}</span>
+                <span>{getTaxLabel(taxProvince)}</span>
                 <span className="font-medium">{formatCAD(tax)}</span>
               </div>
             </div>
