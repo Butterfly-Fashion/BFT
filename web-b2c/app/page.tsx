@@ -7,6 +7,8 @@ import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { collectionPages, teamPages } from "@/lib/seo-pages";
 import Link from "next/link";
 
+const SHOW_FREE_SHIPPING_BANNER = false;
+
 export default function HomePage() {
   const featured = getFeaturedProducts();
   const trending = getTrendingProducts();
@@ -120,27 +122,29 @@ export default function HomePage() {
 
       <CategoryStrip />
 
-      {/* Promo Banner */}
-      <section className="bg-gray-900 text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-3">
-            Limited Time
-          </p>
-          <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-            Free Shipping on Orders Over $99
-          </h2>
-          <p className="text-gray-400 mb-8 text-sm max-w-md mx-auto">
-            Stock up for the tournament. Gear up the whole family and save on
-            shipping automatically at checkout.
-          </p>
-          <Link
-            href="/products"
-            className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors duration-150 text-sm"
-          >
-            Shop Now
-          </Link>
-        </div>
-      </section>
+      {/* Promo Banner — toggle SHOW_FREE_SHIPPING_BANNER to enable */}
+      {SHOW_FREE_SHIPPING_BANNER && (
+        <section className="bg-gray-900 text-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-3">
+              Limited Time
+            </p>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+              Free Shipping on Orders Over $99
+            </h2>
+            <p className="text-gray-400 mb-8 text-sm max-w-md mx-auto">
+              Stock up for the tournament. Gear up the whole family and save on
+              shipping automatically at checkout.
+            </p>
+            <Link
+              href="/products"
+              className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors duration-150 text-sm"
+            >
+              Shop Now
+            </Link>
+          </div>
+        </section>
+      )}
     </>
   );
 }
