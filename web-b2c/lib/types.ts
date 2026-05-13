@@ -12,6 +12,7 @@ export interface Product {
   comparePrice?: number;
   description: string;
   imageUrl: string;
+  additionalImages?: string[];
   placeholderGradient: string;
   inStock: boolean;
   badge?: string;

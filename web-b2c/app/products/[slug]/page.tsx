@@ -80,6 +80,7 @@ export default async function ProductDetailPage({ params }: Props) {
             src={product.imageUrl}
             alt={product.name}
             placeholderGradient={product.placeholderGradient}
+            additionalImages={product.additionalImages}
           />
         </div>
 

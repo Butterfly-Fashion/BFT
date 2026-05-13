@@ -71,6 +71,31 @@ const EXTRA_PRODUCTS: Product[] = [
     placeholderGradient: STICKER_GRADIENT,
     inStock: true,
   },
+  {
+    id: String(raw.length + 3),
+    slug: "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+    name: "Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box",
+    category: "Sticker Packs",
+    price: 130,
+    description:
+      "The ultimate World Cup 2026 collector's bundle. Get the Official Panini Sticker Album and the full 50-Pack Sticker Box together — over 250 stickers featuring all 48 nations, including Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, and more. Everything you need to start and fill your 2026 collection in one package. Perfect for collectors, fans, and as a gift for kids and soccer lovers.",
+    imageUrl: "/asset/stickers/fwc26_bundle_main.png",
+    additionalImages: [
+      "/asset/stickers/fwc26_box.png",
+      "/asset/stickers/fwc26_stickerbook_cover.png",
+    ],
+    placeholderGradient: STICKER_GRADIENT,
+    inStock: true,
+    badge: "Bundle",
+    playerCards: [
+      { name: "Lionel Messi", imageUrl: "/asset/stickers/messi200.jpg" },
+      { name: "Kylian Mbappé", imageUrl: "/asset/stickers/mbappe200.jpg" },
+      { name: "Harry Kane", imageUrl: "/asset/stickers/kane200.jpg" },
+      { name: "Lamine Yamal", imageUrl: "/asset/stickers/yamal200.jpg" },
+      { name: "Virgil van Dijk", imageUrl: "/asset/stickers/vandijk200.jpg" },
+      { name: "Hwang Hee-chan", imageUrl: "/asset/stickers/hwang200.jpg" },
+    ],
+  },
 ];
 
 export const products: Product[] = [

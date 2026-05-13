@@ -7,11 +7,12 @@ interface ProductGalleryProps {
   src: string;
   alt: string;
   placeholderGradient: string;
+  additionalImages?: string[];
 }
 
-export function ProductGallery({ src, alt, placeholderGradient }: ProductGalleryProps) {
+export function ProductGallery({ src, alt, placeholderGradient, additionalImages }: ProductGalleryProps) {
+  const images = [src, ...(additionalImages ?? [])];
   const [selectedImage, setSelectedImage] = useState(src);
-  const images = [src];
 
   return (
     <div className="space-y-3">
@@ -29,25 +30,29 @@ export function ProductGallery({ src, alt, placeholderGradient }: ProductGallery
         />
       </div>
 
-      <div className="flex gap-3">
-        {images.map((image) => (
-          <button
-            key={image}
-            type="button"
-            onClick={() => setSelectedImage(image)}
-            className="relative h-20 w-20 overflow-hidden rounded-xl border-2 border-gray-900 bg-white"
-            aria-label={`View ${alt}`}
-          >
-            <ProductImage
-              src={image}
-              alt={alt}
-              placeholderGradient={placeholderGradient}
-              sizes="80px"
-              className="object-contain"
-            />
-          </button>
-        ))}
-      </div>
+      {images.length > 1 && (
+        <div className="flex gap-3">
+          {images.map((image, i) => (
+            <button
+              key={image}
+              type="button"
+              onClick={() => setSelectedImage(image)}
+              aria-label={`View image ${i + 1}`}
+              className={`relative h-20 w-20 overflow-hidden rounded-xl border-2 bg-white transition-colors ${
+                selectedImage === image ? "border-gray-900" : "border-gray-200 hover:border-gray-400"
+              }`}
+            >
+              <ProductImage
+                src={image}
+                alt={alt}
+                placeholderGradient={placeholderGradient}
+                sizes="80px"
+                className="object-contain"
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
