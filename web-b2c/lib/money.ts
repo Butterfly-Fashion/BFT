@@ -10,6 +10,15 @@ export const FLAT_SHIPPING = 9.99;
 // Set to true to re-enable free shipping over FREE_SHIPPING_THRESHOLD
 const FREE_SHIPPING_ENABLED = false;
 
+// Province-based flat shipping tiers (CAD)
+export const PROVINCE_SHIPPING_RATES: Record<string, number> = {
+  ON: 9.99,  QC: 9.99,
+  BC: 14.99, AB: 14.99,
+  MB: 12.99, SK: 12.99,
+  NB: 14.99, NS: 14.99, NL: 19.99, PE: 14.99,
+  NT: 29.99, NU: 29.99, YT: 29.99,
+};
+
 // Province tax rates (GST/HST/PST) — CRA compliant
 export const PROVINCE_TAX_RATES: Record<string, number> = {
   AB: 0.05,       // GST only
@@ -43,9 +52,9 @@ export const PROVINCE_TAX_LABELS: Record<string, string> = {
   YT: "GST (5%)",
 };
 
-export function calculateShipping(subtotal: number): number {
+export function calculateShipping(subtotal: number, province = "ON"): number {
   if (FREE_SHIPPING_ENABLED && subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
-  return FLAT_SHIPPING;
+  return PROVINCE_SHIPPING_RATES[province] ?? FLAT_SHIPPING;
 }
 
 export function calculateTax(subtotal: number, province = "ON"): number {

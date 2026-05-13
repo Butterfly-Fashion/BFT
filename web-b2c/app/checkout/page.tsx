@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/lib/money";
 import { CANADIAN_PROVINCES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
+import type { ShippingRate } from "@/app/api/shipping-rates/route";
 import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
@@ -36,11 +37,49 @@ export default function CheckoutPage() {
   const { items, subtotal } = useCart();
   const [form, setForm] = useState<CheckoutAddress>(EMPTY_ADDRESS);
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("shipping");
+  const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
+  const [selectedRate, setSelectedRate] = useState<ShippingRate | null>(null);
+  const [fetchingRates, setFetchingRates] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const shipping = deliveryMethod === "pickup" ? 0 : calculateShipping(subtotal);
+  // Auto-fetch Shippo rates when postal code is complete
+  useEffect(() => {
+    if (deliveryMethod !== "shipping") return;
+    const postal = form.postalCode.replace(/\s/g, "");
+    if (postal.length < 6) {
+      setShippingRates([]);
+      setSelectedRate(null);
+      return;
+    }
+    let cancelled = false;
+    setFetchingRates(true);
+    fetch("/api/shipping-rates", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ postal: form.postalCode, province: form.province, city: form.city }),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.rates?.length) {
+          setShippingRates(data.rates);
+          setSelectedRate(data.rates[0]);
+        } else {
+          setShippingRates([]);
+          setSelectedRate(null);
+        }
+      })
+      .catch(() => { if (!cancelled) { setShippingRates([]); setSelectedRate(null); } })
+      .finally(() => { if (!cancelled) setFetchingRates(false); });
+    return () => { cancelled = true; };
+  }, [form.postalCode, form.province, form.city, deliveryMethod]);
+
   const taxProvince = deliveryMethod === "pickup" ? "ON" : form.province;
+  const shipping =
+    deliveryMethod === "pickup"
+      ? 0
+      : selectedRate?.amount ?? calculateShipping(subtotal, form.province);
   const tax = calculateTax(subtotal, taxProvince);
   const total = subtotal + shipping + tax;
 
@@ -182,7 +221,7 @@ export default function CheckoutPage() {
               >
                 <span className="text-xl">🚚</span>
                 <span className="text-sm font-bold text-gray-900">Shipping</span>
-                <span className="text-xs text-gray-500">{formatCAD(FLAT_SHIPPING)} flat rate</span>
+                <span className="text-xs text-gray-500">From {formatCAD(FLAT_SHIPPING)}</span>
               </button>
               <button
                 type="button"
@@ -309,6 +348,52 @@ export default function CheckoutPage() {
             </fieldset>
           )}
 
+          {/* Shippo shipping rate picker */}
+          {deliveryMethod === "shipping" && (fetchingRates || shippingRates.length > 0) && (
+            <fieldset>
+              <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+                Shipping Method
+              </legend>
+              {fetchingRates ? (
+                <div className="flex items-center gap-2 text-sm text-gray-500 py-2">
+                  <svg className="animate-spin w-4 h-4 text-[#C41E3A]" viewBox="0 0 24 24" fill="none">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+                  </svg>
+                  Fetching shipping rates…
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {shippingRates.map((rate) => (
+                    <button
+                      key={rate.id}
+                      type="button"
+                      onClick={() => setSelectedRate(rate)}
+                      className={`w-full flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-colors ${
+                        selectedRate?.id === rate.id
+                          ? "border-[#C41E3A] bg-red-50"
+                          : "border-gray-200 bg-white hover:border-gray-400"
+                      }`}
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {rate.provider} — {rate.service}
+                        </p>
+                        {rate.days != null && (
+                          <p className="text-xs text-gray-400">
+                            {rate.days} business day{rate.days !== 1 ? "s" : ""}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-sm font-bold text-gray-900 shrink-0 ml-4">
+                        {formatCAD(rate.amount)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </fieldset>
+          )}
 
           {error && (
             <p className="text-sm text-red-600 bg-red-50 px-4 py-3 rounded-lg">{error}</p>
