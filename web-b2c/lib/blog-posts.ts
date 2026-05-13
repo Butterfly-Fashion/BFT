@@ -1038,7 +1038,7 @@ export const blogPosts: BlogPost[] = [
         heading: "The official album is the backbone of the collection",
         body: [
           "The Panini FIFA World Cup 2026 Official Sticker Album features dedicated pages for all 48 nations, tournament venues, and player profiles. Without the album, the stickers are just individual cards; with it, the whole collection becomes a structured experience.",
-          "The album costs only $5 CAD and is the essential first purchase before opening any packs.",
+          "The album costs only $8.99 CAD and is the essential first purchase before opening any packs.",
         ],
       },
       {
@@ -1120,7 +1120,7 @@ export const blogPosts: BlogPost[] = [
         heading: "Using the album to track progress",
         body: [
           "Most collectors find the album doubles as a progress tracker — counting empty spots tells you how far you have to go, and completing a full team page is a satisfying checkpoint.",
-          "Set team-by-team goals rather than trying to track the full sticker set at once. At $5 CAD, the album is the lowest-cost entry point in the entire collecting experience.",
+          "Set team-by-team goals rather than trying to track the full sticker set at once. At $8.99 CAD, the album is the lowest-cost entry point in the entire collecting experience.",
         ],
       },
     ],
@@ -1374,7 +1374,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Souvenirs by budget",
         body: [
-          "Under $10: The Panini sticker album at $5 CAD is the best value souvenir on the market. It documents the entire tournament collection and becomes a keepsake at the end of the competition.",
+          "Under $10: The Panini sticker album at $8.99 CAD is the best value souvenir on the market. It documents the entire tournament collection and becomes a keepsake at the end of the competition.",
           "Under $25: Mini boxing gloves and car flags are both in this range and make strong individual gifts or add-ons to a larger fan gear purchase.",
         ],
       },
@@ -1388,7 +1388,7 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       { q: "What are the best World Cup 2026 souvenirs for Canadian fans?", a: "The Panini sticker album, mini boxing gloves, car flags, and reversible bucket hats are the strongest value souvenirs for the 2026 tournament." },
-      { q: "What is the cheapest World Cup souvenir worth buying?", a: "The Panini FIFA World Cup 2026 Official Sticker Album at $5 CAD is the best value souvenir available." },
+      { q: "What is the cheapest World Cup souvenir worth buying?", a: "The Panini FIFA World Cup 2026 Official Sticker Album at $8.99 CAD is the best value souvenir available." },
     ],
   },
   // ── May 28 ──────────────────────────────────────────────────────────────
@@ -1975,7 +1975,7 @@ export const blogPosts: BlogPost[] = [
         heading: "The Panini sticker box as a premium gift",
         body: [
           "A 50-pack Panini sticker box is the premium soccer dad gift for World Cup 2026. It is a high-value item that sustains enjoyment across the entire tournament — opening packs throughout June and July keeps the collecting experience running parallel to the actual matches.",
-          "Pair the sticker box with the official album ($5 CAD) so the recipient can immediately start placing stickers when they open the gift.",
+          "Pair the sticker box with the official album ($8.99 CAD) so the recipient can immediately start placing stickers when they open the gift.",
         ],
       },
       {

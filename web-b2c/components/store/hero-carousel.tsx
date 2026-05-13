@@ -131,7 +131,7 @@ function BundleSlide() {
   return (
     <div className="relative w-full h-full">
       <Image
-        src="/asset/stickers/fwc26_bundle_main.png"
+        src="/asset/stickers/fwc26_bundle_ad.webp"
         alt="Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box"
         fill
         className="object-cover object-center"

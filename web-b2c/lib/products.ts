@@ -64,7 +64,7 @@ const EXTRA_PRODUCTS: Product[] = [
     slug: "panini-fifa-world-cup-2026-official-sticker-album",
     name: "Panini FIFA World Cup 2026 Official Sticker Album",
     category: "Sticker Packs",
-    price: 5,
+    price: 8.99,
     description:
       "The official Panini FIFA World Cup 2026 sticker album. Features dedicated pages for all 48 teams and their squads. Pair with the 50-pack sticker box to build your complete World Cup collection. A must-have for every fan.",
     imageUrl: "/asset/stickers/fwc26_stickerbook_cover.png",
