@@ -66,6 +66,7 @@ export default function CheckoutPage() {
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
   const [selectedRate, setSelectedRate] = useState<ShippingRate | null>(null);
   const [fetchingRates, setFetchingRates] = useState(false);
+  const [rateDebug, setRateDebug] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -96,12 +97,14 @@ export default function CheckoutPage() {
         if (data.rates?.length) {
           setShippingRates(data.rates);
           setSelectedRate(data.rates[0]);
+          setRateDebug(null);
         } else {
           setShippingRates([]);
           setSelectedRate(null);
+          setRateDebug(data.debug ?? null);
         }
       })
-      .catch(() => { if (!cancelled) { setShippingRates([]); setSelectedRate(null); } })
+      .catch((e) => { if (!cancelled) { setShippingRates([]); setSelectedRate(null); setRateDebug(String(e)); } })
       .finally(() => { if (!cancelled) setFetchingRates(false); });
     return () => { cancelled = true; };
   }, [form.postalCode, form.province, form.city, deliveryMethod]);
@@ -458,9 +461,14 @@ export default function CheckoutPage() {
 
               {/* no rates fallback */}
               {!fetchingRates && shippingRates.length === 0 && form.postalCode.replace(/\s/g, "").length >= 6 && (
-                <p className="text-xs text-gray-500 py-2 px-3 bg-gray-50 rounded-lg">
-                  Could not fetch live rates — a flat rate of {formatCAD(calculateShipping(subtotal, form.province))} will apply.
-                </p>
+                <div className="py-2 px-3 bg-gray-50 rounded-lg space-y-1">
+                  <p className="text-xs text-gray-500">
+                    Could not fetch live rates — a flat rate of {formatCAD(calculateShipping(subtotal, form.province))} will apply.
+                  </p>
+                  {rateDebug && (
+                    <p className="text-[11px] text-red-500 font-mono break-all">{rateDebug}</p>
+                  )}
+                </div>
               )}
             </fieldset>
           )}
