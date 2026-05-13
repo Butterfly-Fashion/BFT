@@ -17,6 +17,32 @@ import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
 
+const CARRIER_META: Record<string, { label: string; bg: string; text: string }> = {
+  CANADA_POST:  { label: "Canada Post", bg: "#CC0000", text: "#fff" },
+  UPS:          { label: "UPS",         bg: "#351C15", text: "#FFB500" },
+  FEDEX:        { label: "FedEx",       bg: "#4D148C", text: "#FF6600" },
+  PUROLATOR:    { label: "Purolator",   bg: "#003876", text: "#fff" },
+  DHL_EXPRESS:  { label: "DHL",         bg: "#FFCC00", text: "#D40511" },
+  USPS:         { label: "USPS",        bg: "#004B87", text: "#fff" },
+};
+
+function carrierMeta(provider: string) {
+  const key = provider.toUpperCase().replace(/[\s-]/g, "_");
+  return CARRIER_META[key] ?? { label: provider, bg: "#374151", text: "#fff" };
+}
+
+function CarrierBadge({ provider }: { provider: string }) {
+  const { label, bg, text } = carrierMeta(provider);
+  return (
+    <span
+      className="inline-flex items-center justify-center rounded-md px-2 py-0.5 text-[11px] font-black tracking-wide shrink-0"
+      style={{ background: bg, color: text, minWidth: 56 }}
+    >
+      {label}
+    </span>
+  );
+}
+
 const EMPTY_ADDRESS: CheckoutAddress = {
   firstName: "",
   lastName: "",
@@ -353,49 +379,88 @@ export default function CheckoutPage() {
             </fieldset>
           )}
 
-          {/* Shippo shipping rate picker */}
-          {deliveryMethod === "shipping" && (fetchingRates || shippingRates.length > 0) && (
+          {/* Shipping carrier picker */}
+          {deliveryMethod === "shipping" && (
             <fieldset>
-              <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
+              <legend className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide">
                 Shipping Method
               </legend>
-              {fetchingRates ? (
-                <div className="flex items-center gap-2 text-sm text-gray-500 py-2">
-                  <svg className="animate-spin w-4 h-4 text-[#C41E3A]" viewBox="0 0 24 24" fill="none">
+
+              {/* hint before postal is filled */}
+              {!fetchingRates && shippingRates.length === 0 && form.postalCode.replace(/\s/g, "").length < 6 && (
+                <p className="text-xs text-gray-400 py-2 px-3 bg-gray-50 rounded-lg">
+                  Enter your postal code above to see available carriers and rates.
+                </p>
+              )}
+
+              {/* spinner */}
+              {fetchingRates && (
+                <div className="flex items-center gap-2 text-sm text-gray-500 py-3 px-3 bg-gray-50 rounded-lg">
+                  <svg className="animate-spin w-4 h-4 text-[#C41E3A] shrink-0" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
                   </svg>
-                  Fetching shipping rates…
+                  Fetching rates from Canada Post, UPS and more…
                 </div>
-              ) : (
+              )}
+
+              {/* rate cards */}
+              {!fetchingRates && shippingRates.length > 0 && (
                 <div className="space-y-2">
-                  {shippingRates.map((rate) => (
-                    <button
-                      key={rate.id}
-                      type="button"
-                      onClick={() => setSelectedRate(rate)}
-                      className={`w-full flex items-center justify-between rounded-xl border-2 px-4 py-3 text-left transition-colors ${
-                        selectedRate?.id === rate.id
-                          ? "border-[#C41E3A] bg-red-50"
-                          : "border-gray-200 bg-white hover:border-gray-400"
-                      }`}
-                    >
-                      <div>
-                        <p className="text-sm font-semibold text-gray-900">
-                          {rate.provider} — {rate.service}
-                        </p>
-                        {rate.days != null && (
-                          <p className="text-xs text-gray-400">
-                            {rate.days} business day{rate.days !== 1 ? "s" : ""}
+                  {shippingRates.map((rate) => {
+                    const selected = selectedRate?.id === rate.id;
+                    return (
+                      <button
+                        key={rate.id}
+                        type="button"
+                        onClick={() => setSelectedRate(rate)}
+                        className={`w-full flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all ${
+                          selected
+                            ? "border-[#C41E3A] bg-red-50 shadow-sm"
+                            : "border-gray-200 bg-white hover:border-gray-400"
+                        }`}
+                      >
+                        {/* radio dot */}
+                        <span className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center ${
+                          selected ? "border-[#C41E3A]" : "border-gray-300"
+                        }`}>
+                          {selected && <span className="w-2 h-2 rounded-full bg-[#C41E3A]" />}
+                        </span>
+
+                        {/* carrier badge */}
+                        <CarrierBadge provider={rate.provider} />
+
+                        {/* service info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 truncate">
+                            {rate.service}
                           </p>
-                        )}
-                      </div>
-                      <span className="text-sm font-bold text-gray-900 shrink-0 ml-4">
-                        {formatCAD(rate.amount)}
-                      </span>
-                    </button>
-                  ))}
+                          {rate.days != null && (
+                            <p className="text-xs text-gray-400">
+                              Est. {rate.days} business day{rate.days !== 1 ? "s" : ""}
+                            </p>
+                          )}
+                        </div>
+
+                        {/* price */}
+                        <span className={`text-sm font-bold shrink-0 ${selected ? "text-[#C41E3A]" : "text-gray-900"}`}>
+                          {formatCAD(rate.amount)}
+                        </span>
+                      </button>
+                    );
+                  })}
+
+                  <p className="text-[11px] text-gray-400 pt-1 px-1">
+                    Rates provided by carriers via Shippo. Sorted by price.
+                  </p>
                 </div>
+              )}
+
+              {/* no rates fallback */}
+              {!fetchingRates && shippingRates.length === 0 && form.postalCode.replace(/\s/g, "").length >= 6 && (
+                <p className="text-xs text-gray-500 py-2 px-3 bg-gray-50 rounded-lg">
+                  Could not fetch live rates — a flat rate of {formatCAD(calculateShipping(subtotal, form.province))} will apply.
+                </p>
               )}
             </fieldset>
           )}
