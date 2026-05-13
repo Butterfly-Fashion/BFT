@@ -15,14 +15,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ rates: [], fallback: true }, { status: 200 });
   }
 
-  let body: { postal: string; province: string; city?: string };
+  let body: { postal: string; province: string; city?: string; weightKg?: number };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { postal, province, city } = body;
+  const { postal, province, city, weightKg } = body;
   if (!postal || !province) {
     return NextResponse.json({ error: "postal and province required" }, { status: 400 });
   }
@@ -54,11 +54,11 @@ export async function POST(req: NextRequest) {
         },
         parcels: [
           {
-            length: "30",
+            length: "35",
             width: "25",
-            height: "10",
+            height: "15",
             distance_unit: "cm",
-            weight: "0.8",
+            weight: String((weightKg ?? 0.5).toFixed(2)),
             mass_unit: "kg",
           },
         ],

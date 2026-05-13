@@ -50,6 +50,7 @@ export async function GET(req: NextRequest) {
         size: undefined,
         imageUrl: "",
         placeholderGradient: "linear-gradient(135deg, #f0f0f0, #e0e0e0)",
+        weightKg: 0.5,
       })),
       address: {
         firstName,

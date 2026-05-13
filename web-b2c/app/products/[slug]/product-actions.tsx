@@ -41,6 +41,7 @@ export function ProductActions({ product }: Props) {
     size: selectedSize,
     imageUrl: product.imageUrl,
     placeholderGradient: product.placeholderGradient,
+    weightKg: product.weightKg ?? 0.5,
   });
 
   const handleAddToCart = () => {

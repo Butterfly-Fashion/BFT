@@ -15,6 +15,15 @@ interface RawProduct {
   barcode?: string | null;
 }
 
+// Default weight per category (kg)
+const CATEGORY_WEIGHTS: Record<string, number> = {
+  "Boxing Gloves": 1.2,
+  "Caps": 0.2,
+  "Bucket Hats": 0.2,
+  "Car Flags": 0.3,
+  "Sticker Packs": 0.15,
+};
+
 const CATEGORY_GRADIENTS: Record<string, string> = {
   "Boxing Gloves": "linear-gradient(145deg, #8b0000 0%, #c41e3a 100%)",
   "Caps": "linear-gradient(145deg, #1a1a2e 0%, #2d4a7a 100%)",
@@ -40,6 +49,7 @@ const EXTRA_PRODUCTS: Product[] = [
     placeholderGradient: STICKER_GRADIENT,
     inStock: true,
     badge: "50 Packs",
+    weightKg: 1.5,
     playerCards: [
       { name: "Lionel Messi", imageUrl: "/asset/stickers/messi200.jpg" },
       { name: "Kylian Mbappé", imageUrl: "/asset/stickers/mbappe200.jpg" },
@@ -70,6 +80,7 @@ const EXTRA_PRODUCTS: Product[] = [
     imageUrl: "/asset/stickers/fwc26_stickerbook_cover.png",
     placeholderGradient: STICKER_GRADIENT,
     inStock: true,
+    weightKg: 0.3,
   },
   {
     id: String(raw.length + 3),
@@ -87,6 +98,7 @@ const EXTRA_PRODUCTS: Product[] = [
     placeholderGradient: STICKER_GRADIENT,
     inStock: true,
     badge: "Bundle",
+    weightKg: 1.8,
     playerCards: [
       { name: "Lionel Messi", imageUrl: "/asset/stickers/messi200.jpg" },
       { name: "Kylian Mbappé", imageUrl: "/asset/stickers/mbappe200.jpg" },
@@ -111,6 +123,7 @@ export const products: Product[] = [
       CATEGORY_GRADIENTS[p.category] ??
       "linear-gradient(145deg, #555 0%, #888 100%)",
     inStock: true,
+    weightKg: CATEGORY_WEIGHTS[p.category] ?? 0.5,
   })),
   ...EXTRA_PRODUCTS,
 ];
@@ -134,11 +147,20 @@ export function getFeaturedProducts(): Product[] {
 }
 
 export function getTrendingProducts(): Product[] {
+  const prioritySlugs = [
+    "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+    "panini-fifa-world-cup-2026-official-sticker-album",
+  ];
+  const priority = prioritySlugs
+    .map((slug) => products.find((p) => p.slug === slug))
+    .filter((product): product is Product => Boolean(product));
   const canadaFirst = products.filter((p) =>
-    p.name.toLowerCase().includes("canada")
+    p.name.toLowerCase().includes("canada") &&
+    !prioritySlugs.includes(p.slug)
   );
   const rest = products.filter(
-    (p) => !p.name.toLowerCase().includes("canada")
+    (p) => !p.name.toLowerCase().includes("canada") &&
+    !prioritySlugs.includes(p.slug)
   );
-  return [...canadaFirst, ...rest].slice(0, 4);
+  return [...priority, ...canadaFirst, ...rest].slice(0, 4);
 }

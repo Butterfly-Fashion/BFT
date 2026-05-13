@@ -18,6 +18,7 @@ export interface Product {
   badge?: string;
   sizes?: string[];
   playerCards?: PlayerCard[];
+  weightKg?: number;
 }
 
 export interface CartItem {
@@ -29,6 +30,7 @@ export interface CartItem {
   size?: string;
   imageUrl: string;
   placeholderGradient: string;
+  weightKg: number;
 }
 
 export interface CheckoutAddress {

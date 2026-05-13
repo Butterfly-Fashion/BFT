@@ -57,7 +57,12 @@ export default function CheckoutPage() {
     fetch("/api/shipping-rates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ postal: form.postalCode, province: form.province, city: form.city }),
+      body: JSON.stringify({
+          postal: form.postalCode,
+          province: form.province,
+          city: form.city,
+          weightKg: items.reduce((sum, item) => sum + item.weightKg * item.quantity, 0),
+        }),
     })
       .then((r) => r.json())
       .then((data) => {
