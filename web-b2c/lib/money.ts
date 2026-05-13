@@ -7,6 +7,8 @@ export function formatCAD(amount: number): string {
 
 export const FREE_SHIPPING_THRESHOLD = 99;
 export const FLAT_SHIPPING = 9.99;
+// Set to true to re-enable free shipping over FREE_SHIPPING_THRESHOLD
+const FREE_SHIPPING_ENABLED = false;
 
 // Province tax rates (GST/HST/PST) — CRA compliant
 export const PROVINCE_TAX_RATES: Record<string, number> = {
@@ -42,7 +44,8 @@ export const PROVINCE_TAX_LABELS: Record<string, string> = {
 };
 
 export function calculateShipping(subtotal: number): number {
-  return subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING;
+  if (FREE_SHIPPING_ENABLED && subtotal >= FREE_SHIPPING_THRESHOLD) return 0;
+  return FLAT_SHIPPING;
 }
 
 export function calculateTax(subtotal: number, province = "ON"): number {

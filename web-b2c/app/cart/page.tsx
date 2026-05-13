@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { calculateShipping, calculateTax, formatCAD, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { calculateShipping, calculateTax, formatCAD } from "@/lib/money";
 import { trackBeginCheckout } from "@/lib/gtag";
 
 export default function CartPage() {
@@ -12,9 +12,6 @@ export default function CartPage() {
   const shipping = calculateShipping(subtotal);
   const tax = calculateTax(subtotal);
   const estimatedTotal = subtotal + shipping + tax;
-  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-  const freeShippingProgress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
-
   if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
@@ -37,28 +34,6 @@ export default function CartPage() {
     <>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 pb-20 md:pb-0">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Your Cart</h1>
-
-        {freeShippingRemaining > 0 ? (
-          <div className="bg-white border border-gray-100 rounded-xl px-4 pt-3 pb-4 mb-8">
-            <div className="h-1.5 rounded-full bg-gray-200 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-[#C41E3A] transition-all"
-                style={{ width: `${freeShippingProgress}%` }}
-              />
-            </div>
-            <p className="mt-3 text-sm font-medium text-gray-700">
-              Add{" "}
-              <span className="font-bold text-[#C41E3A]">
-                {formatCAD(freeShippingRemaining)}
-              </span>{" "}
-              more for free shipping
-            </p>
-          </div>
-        ) : (
-          <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-8 text-sm text-green-700 font-medium">
-            You qualify for free shipping!
-          </div>
-        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-4">

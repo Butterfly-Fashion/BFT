@@ -4,7 +4,7 @@ import Link from "next/link";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { formatCAD, calculateShipping, calculateTax, FREE_SHIPPING_THRESHOLD } from "@/lib/money";
+import { formatCAD, calculateShipping, calculateTax } from "@/lib/money";
 import { trackBeginCheckout } from "@/lib/gtag";
 
 interface Props {
@@ -16,8 +16,6 @@ export function CartDrawer({ open, onClose }: Props) {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
   const shipping = calculateShipping(subtotal);
   const tax = calculateTax(subtotal);
-  const freeShippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
-  const progress = Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100);
 
   return (
     <>
@@ -58,21 +56,6 @@ export function CartDrawer({ open, onClose }: Props) {
           </button>
         </div>
 
-        {/* Free shipping bar */}
-        {items.length > 0 && (
-          <div className="px-5 py-2 border-b border-gray-100 bg-gray-50">
-            <div className="flex justify-between text-xs text-gray-500 mb-1.5">
-              <span>{freeShippingRemaining > 0 ? `Add ${formatCAD(freeShippingRemaining)} for free shipping` : "🎉 You've unlocked free shipping!"}</span>
-              <span className="font-semibold text-[#C41E3A]">{Math.round(progress)}%</span>
-            </div>
-            <div className="h-1.5 rounded-full bg-gray-200 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-[#C41E3A] transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
-        )}
 
         {/* Empty state */}
         {items.length === 0 ? (
