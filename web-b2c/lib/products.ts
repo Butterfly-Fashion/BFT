@@ -25,7 +25,7 @@ export function dbProductToProduct(p: DbProduct): Product {
     slug: p.slug,
     name: p.name,
     category: p.category,
-    price: p.price,
+    price: Number(p.price) || 0,
     comparePrice: p.compare_at_price ?? undefined,
     description: p.description ?? "",
     imageUrl: p.images?.[0]?.url ?? "",

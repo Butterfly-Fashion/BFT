@@ -38,7 +38,7 @@ export function productJsonLd(product: Product) {
       "@type": "Offer",
       url: absoluteUrl(`/products/${product.slug}`),
       priceCurrency: "CAD",
-      price: product.price.toFixed(2),
+      price: (product.price ?? 0).toFixed(2),
       availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: {
