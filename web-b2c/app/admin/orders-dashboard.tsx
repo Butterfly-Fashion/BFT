@@ -59,6 +59,7 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [seeding, setSeeding] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   // Side panel edit state
@@ -127,6 +128,22 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Save failed" });
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleSeedDemo() {
+    if (!confirm("Insert 10 demo orders into the database? Existing demo orders will be overwritten.")) return;
+    setSeeding(true);
+    try {
+      const res = await fetch("/api/admin/seed-demo", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Seed failed");
+      alert(`Done! ${data.inserted} demo orders inserted.`);
+      await fetchOrders();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Seed failed");
+    } finally {
+      setSeeding(false);
     }
   }
 
@@ -279,6 +296,13 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
                 Stripe fallback — run Supabase migration to unlock full features
               </span>
             )}
+            <button
+              onClick={handleSeedDemo}
+              disabled={seeding}
+              className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50"
+            >
+              {seeding ? "Seeding…" : "⚡ Seed Demo Data"}
+            </button>
             <button
               onClick={handleSyncStripe}
               disabled={syncing}
