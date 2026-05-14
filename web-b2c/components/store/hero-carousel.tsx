@@ -77,18 +77,6 @@ function StickerBoxSlide() {
             Messi, Mbappé, Kane, Yamal &amp; more
           </p>
 
-          {/* price */}
-          <div className="mt-3 flex items-baseline gap-2">
-            <span className="text-white font-black"
-              style={{ fontSize: "clamp(1rem, 2.8vw, 2.2rem)" }}>
-              $125
-            </span>
-            <span className="text-blue-300 font-semibold"
-              style={{ fontSize: "clamp(0.6rem, 1.1vw, 0.85rem)" }}>
-              CAD
-            </span>
-          </div>
-
           <Link
             href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs"
             className="mt-4 inline-flex items-center gap-1.5 self-start bg-[#FFD700] hover:bg-yellow-400 active:scale-95 text-[#0d1b3e] font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150"
@@ -131,10 +119,10 @@ function BundleSlide() {
   return (
     <div className="relative w-full h-full">
       <Image
-        src="/asset/stickers/fwc26_bundle_ad.webp"
+        src="/asset/stickers/fwc26_bundle_main.png"
         alt="Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box"
         fill
-        className="object-cover object-center"
+        className="object-contain object-center bg-[#0d1b3e] p-[5%]"
         sizes="(max-width: 640px) 100vw, (max-width: 1280px) calc(100vw - 48px), 1152px"
       />
       <Link
