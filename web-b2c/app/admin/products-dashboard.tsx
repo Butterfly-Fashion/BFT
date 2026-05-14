@@ -6,7 +6,7 @@ import type { DbProduct, DbProductImage, ProductStatus } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 
 const CATEGORIES = ["Boxing Gloves", "Caps", "Bucket Hats", "Car Flags", "Sticker Packs"];
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 25;
 
 interface ProductsResponse {
   products: DbProduct[];
@@ -33,6 +33,10 @@ function StatusBadge({ status }: { status: ProductStatus }) {
       {status}
     </span>
   );
+}
+
+function shouldBypassImageOptimization(src: string): boolean {
+  return src.startsWith("blob:") || src.startsWith("data:");
 }
 
 const EMPTY = {
@@ -315,13 +319,16 @@ export default function ProductsDashboard() {
                   {filtered.map((p) => {
                     const imgUrl = p.images?.[0]?.url;
                     return (
-                      <tr key={p.id} onClick={() => openEdit(p)}
-                        className={`cursor-pointer transition-colors hover:bg-gray-50 bg-white ${selected?.id === p.id ? "bg-blue-50 hover:bg-blue-50" : ""}`}>
+                      <tr
+                        key={p.id}
+                        onClick={() => openEdit(p)}
+                        className={`cursor-pointer hover:bg-gray-50 bg-white ${selected?.id === p.id ? "bg-blue-50 hover:bg-blue-50" : ""}`}
+                      >
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                               {imgUrl ? (
-                                <Image src={imgUrl} alt={p.name} width={40} height={40} className="h-full w-full object-cover" unoptimized={imgUrl.startsWith("http")} />
+                                <Image src={imgUrl} alt={p.name} width={40} height={40} sizes="40px" className="h-full w-full object-cover" />
                               ) : (
                                 <div className="h-full w-full flex items-center justify-center text-gray-300 text-xs">-</div>
                               )}
@@ -457,7 +464,15 @@ export default function ProductsDashboard() {
                       {images.map((img, i) => (
                         <div key={i} className="relative group">
                           <div className="h-16 w-16 rounded-lg overflow-hidden border border-gray-200">
-                            <Image src={img.url} alt={img.alt} width={64} height={64} className="h-full w-full object-cover" unoptimized={img.url.startsWith("http")} />
+                            <Image
+                              src={img.url}
+                              alt={img.alt}
+                              width={64}
+                              height={64}
+                              sizes="64px"
+                              className="h-full w-full object-cover"
+                              unoptimized={shouldBypassImageOptimization(img.url)}
+                            />
                           </div>
                           {i === 0 && <span className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[9px] text-center py-0.5 rounded-b-lg">Main</span>}
                           <button onClick={() => setImages((prev) => prev.filter((_, j) => j !== i))}
@@ -473,7 +488,7 @@ export default function ProductsDashboard() {
                       {pending.map((f, i) => (
                         <div key={i} className="relative group">
                           <div className="h-16 w-16 rounded-lg overflow-hidden border border-dashed border-blue-300">
-                            <Image src={f.preview} alt="pending" width={64} height={64} className="h-full w-full object-cover" unoptimized />
+                            <Image src={f.preview} alt="pending" width={64} height={64} sizes="64px" className="h-full w-full object-cover" unoptimized />
                           </div>
                           <button onClick={() => { URL.revokeObjectURL(f.preview); setPending((p) => p.filter((_, j) => j !== i)); }}
                             className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-white text-xs hidden group-hover:flex items-center justify-center">
