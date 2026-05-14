@@ -15,7 +15,7 @@ export async function GET() {
     const supabase = supabaseAdmin();
     const { data, error } = await supabase
       .from("orders")
-      .select("id,order_number,stripe_session_id,stripe_payment_intent,channel,delivery_method,status,customer_email,customer_name,shipping_address,subtotal,shipping_cost,tax_amount,total,carrier,tracking_number,tracking_url,admin_note,created_at,updated_at")
+      .select("id,order_number,stripe_session_id,stripe_payment_intent,channel,delivery_method,status,customer_email,customer_name,shipping_address,subtotal,shipping_cost,tax_amount,total,carrier,tracking_number,tracking_url,shippo_rate_id,shippo_label_url,admin_note,created_at,updated_at")
       .order("created_at", { ascending: false })
       .limit(50);
 

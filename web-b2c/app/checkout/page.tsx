@@ -177,6 +177,8 @@ export default function CheckoutPage() {
           tax,
           total,
           deliveryMethod,
+          shippoRateId: selectedRate?.id ?? null,
+          carrier: selectedRate?.provider ?? null,
           address: {
             firstName: form.firstName,
             lastName: form.lastName,

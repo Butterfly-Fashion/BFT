@@ -123,6 +123,8 @@ async function saveOrderToSupabase(
         shipping_cost: shippingCost,
         tax_amount: taxAmount,
         total,
+        shippo_rate_id: meta.shippo_rate_id ?? null,
+        carrier: meta.carrier ?? null,
       },
       { onConflict: "stripe_session_id" }
     )

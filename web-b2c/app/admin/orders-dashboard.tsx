@@ -85,6 +85,7 @@ export default function OrdersDashboard() {
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [creatingLabel, setCreatingLabel] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   // Side panel edit state
@@ -256,6 +257,37 @@ export default function OrdersDashboard() {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Email failed" });
     } finally {
       setSendingEmail(false);
+    }
+  }
+
+  async function handleCreateLabel() {
+    if (!selected || selected._source !== "supabase") return;
+    if (!confirm(`Purchase shipping label for order ${selected.order_number}?\nThis will charge your Shippo account.`)) return;
+    setCreatingLabel(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}/create-label`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to create label");
+      const updated: DbOrder = {
+        ...selected,
+        shippo_label_url: data.label_url,
+        tracking_number: data.tracking_number ?? selected.tracking_number,
+        tracking_url: data.tracking_url ?? selected.tracking_url,
+        carrier: data.carrier ?? selected.carrier,
+        status: "packing",
+      };
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updated : o)));
+      setSelected(updated);
+      setEditStatus("packing");
+      setEditTracking(data.tracking_number ?? "");
+      setEditTrackingUrl(data.tracking_url ?? "");
+      setEditCarrier(data.carrier ?? "");
+      setSaveMsg({ type: "ok", text: "Label created! Print it below." });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Label creation failed" });
+    } finally {
+      setCreatingLabel(false);
     }
   }
 
@@ -583,6 +615,66 @@ export default function OrdersDashboard() {
                   </div>
                 </div>
               </div>
+
+              {/* Shipping Label */}
+              {selected.delivery_method !== "pickup" && isEditable && (
+                <div className="border-b border-gray-100 px-5 py-4">
+                  <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Shipping Label</p>
+
+                  {selected.shippo_label_url ? (
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-3 py-2">
+                        <span className="text-green-600 text-sm">✓</span>
+                        <span className="text-xs font-semibold text-green-700">Label created</span>
+                      </div>
+                      {selected.tracking_number && (
+                        <p className="text-xs font-mono text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
+                          {selected.carrier && <span className="font-bold text-gray-800 mr-2">{selected.carrier}</span>}
+                          {selected.tracking_number}
+                        </p>
+                      )}
+                      <a
+                        href={selected.shippo_label_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full rounded-full bg-gray-900 py-2.5 text-sm font-bold text-white hover:bg-gray-700 transition-colors"
+                      >
+                        🖨️ Print / Download Label
+                      </a>
+                      {selected.tracking_url && (
+                        <a
+                          href={selected.tracking_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-1.5 w-full rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-500 hover:border-gray-400 hover:text-gray-700 transition-colors"
+                        >
+                          Track Package →
+                        </a>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      {!selected.shippo_rate_id && (
+                        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                          No rate ID — this order was placed before label tracking was enabled. Enter tracking manually below.
+                        </p>
+                      )}
+                      {selected.shippo_rate_id && (
+                        <button
+                          onClick={handleCreateLabel}
+                          disabled={creatingLabel}
+                          className="w-full rounded-full bg-[#003876] py-2.5 text-sm font-bold text-white hover:bg-[#002a5a] transition-colors disabled:opacity-60"
+                        >
+                          {creatingLabel ? "Purchasing label…" : "🏷️ Create Shipping Label"}
+                        </button>
+                      )}
+                      <p className="text-[11px] text-gray-400 text-center">
+                        Purchases a label via Shippo using the rate the customer selected at checkout.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Edit form */}
               <div className="px-5 py-4 space-y-4">

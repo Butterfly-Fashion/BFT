@@ -143,6 +143,8 @@ export interface DbOrder {
   carrier: string | null;
   tracking_number: string | null;
   tracking_url: string | null;
+  shippo_rate_id: string | null;
+  shippo_label_url: string | null;
   admin_note: string | null;
   created_at: string;
   updated_at: string;
