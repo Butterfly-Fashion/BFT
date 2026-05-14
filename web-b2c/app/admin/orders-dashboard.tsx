@@ -26,6 +26,26 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
   refunded: "bg-gray-100 text-gray-500 border-gray-300",
 };
 
+const ROW_BG: Record<OrderStatus, string> = {
+  paid: "bg-white hover:bg-slate-50",
+  packing: "bg-amber-50 hover:bg-amber-100",
+  shipped: "bg-yellow-50 hover:bg-yellow-100",
+  ready_for_pickup: "bg-yellow-50 hover:bg-yellow-100",
+  completed: "bg-green-50 hover:bg-green-100",
+  cancelled: "bg-gray-100 hover:bg-gray-200",
+  refunded: "bg-gray-100 hover:bg-gray-200",
+};
+
+const ROW_ACCENT: Record<OrderStatus, string> = {
+  paid: "border-l-gray-300",
+  packing: "border-l-amber-400",
+  shipped: "border-l-yellow-400",
+  ready_for_pickup: "border-l-yellow-400",
+  completed: "border-l-green-400",
+  cancelled: "border-l-gray-400",
+  refunded: "border-l-gray-400",
+};
+
 const CARRIERS = ["Canada Post", "UPS", "FedEx", "Purolator", "DHL", "Other"];
 
 type Tab = "all" | OrderStatus | "issues";
@@ -407,13 +427,15 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
                   <th className="px-4 py-3 font-bold text-right">Total</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-gray-100">
                 {filtered.map((order) => (
                   <tr
                     key={order.id}
                     onClick={() => openPanel(order)}
-                    className={`cursor-pointer transition-colors hover:bg-gray-50 ${
-                      selected?.id === order.id ? "bg-blue-50 hover:bg-blue-50" : ""
+                    className={`cursor-pointer border-l-4 transition-all duration-100 ${ROW_ACCENT[order.status]} ${
+                      selected?.id === order.id
+                        ? `${ROW_BG[order.status].split(" ")[0]} ring-1 ring-inset ring-[#C41E3A]/20 shadow-sm`
+                        : `${ROW_BG[order.status]} hover:shadow-sm`
                     }`}
                   >
                     <td className="px-4 py-3">
