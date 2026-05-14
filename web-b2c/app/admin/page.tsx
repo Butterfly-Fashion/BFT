@@ -1,6 +1,6 @@
 import { verifyAdminCookie } from "@/lib/admin-auth";
 import { adminLogin, adminLogout } from "./actions";
-import OrdersDashboard from "./orders-dashboard";
+import AdminShell from "./admin-shell";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -50,5 +50,5 @@ export default async function AdminPage({
     );
   }
 
-  return <OrdersDashboard logoutAction={adminLogout} />;
+  return <AdminShell logoutAction={adminLogout} />;
 }

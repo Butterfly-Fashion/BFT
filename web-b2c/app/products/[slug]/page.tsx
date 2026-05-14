@@ -1,4 +1,4 @@
-import { getProductBySlug, products } from "@/lib/products";
+import { getProductBySlugFromDb, getAllSlugs, getAllProducts } from "@/lib/products";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { formatCAD } from "@/lib/money";
@@ -22,12 +22,13 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  const slugs = await getAllSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlugFromDb(slug);
   if (!product) return {};
   const canonical = `/products/${product.slug}`;
   return {
@@ -54,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlugFromDb(slug);
   if (!product) notFound();
   const breadcrumbs = breadcrumbJsonLd([
     { name: "Home", url: "/" },
@@ -175,14 +176,15 @@ function PlayerCardsSection({ cards }: { cards: PlayerCard[] }) {
   );
 }
 
-function RelatedProducts({
+async function RelatedProducts({
   currentSlug,
   category,
 }: {
   currentSlug: string;
   category: string;
 }) {
-  const related = products
+  const all = await getAllProducts();
+  const related = all
     .filter((p) => p.category === category && p.slug !== currentSlug)
     .slice(0, 4);
 

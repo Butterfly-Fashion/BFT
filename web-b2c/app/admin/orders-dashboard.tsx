@@ -65,7 +65,7 @@ function StatusBadge({ status }: { status: OrderStatus }) {
   );
 }
 
-export default function OrdersDashboard({ logoutAction }: { logoutAction: () => Promise<void> }) {
+export default function OrdersDashboard() {
   const [orders, setOrders] = useState<DbOrder[]>([]);
   const [source, setSource] = useState<"supabase" | "stripe" | null>(null);
   const [loading, setLoading] = useState(true);
@@ -300,16 +300,11 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
   const isEditable = selected?._source === "supabase";
 
   return (
-    <div className="flex h-screen flex-col bg-gray-50">
+    <div className="flex h-full flex-col bg-gray-50">
       {/* Header */}
       <div className="border-b border-gray-200 bg-white px-6 py-4">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
-              World Fan Gear
-            </p>
-            <h1 className="text-2xl font-black text-gray-900">Orders</h1>
-          </div>
+          <h2 className="text-2xl font-black text-gray-900">Orders</h2>
           <div className="flex items-center gap-4">
             {source === "stripe" && (
               <span className="rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-xs font-semibold text-amber-700">
@@ -336,12 +331,6 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
               {loading ? "Loading…" : "Refresh"}
-            </button>
-            <button
-              onClick={() => logoutAction()}
-              className="text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors"
-            >
-              Log out
             </button>
           </div>
         </div>

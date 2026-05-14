@@ -1,28 +1,7 @@
-import sourceData from "./source-products.json";
+import { supabaseAdmin } from "./supabase";
+import type { DbProduct, Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
-import type { Product } from "./types";
-
-interface RawProduct {
-  slug: string;
-  name: string;
-  description: string;
-  category: string;
-  base_price: number;
-  image_source_url: string;
-  image_url: string;
-  source?: string;
-  sku?: string;
-  barcode?: string | null;
-}
-
-// Default weight per category (kg)
-const CATEGORY_WEIGHTS: Record<string, number> = {
-  "Boxing Gloves": 1.2,
-  "Caps": 0.2,
-  "Bucket Hats": 0.2,
-  "Car Flags": 0.3,
-  "Sticker Packs": 0.15,
-};
+import sourceData from "./source-products.json";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
   "Boxing Gloves": "linear-gradient(145deg, #8b0000 0%, #c41e3a 100%)",
@@ -32,42 +11,71 @@ const CATEGORY_GRADIENTS: Record<string, string> = {
   "Sticker Packs": "linear-gradient(145deg, #0d3b6e 0%, #1565c0 100%)",
 };
 
+const CATEGORY_WEIGHTS: Record<string, number> = {
+  "Boxing Gloves": 1.2,
+  "Caps": 0.2,
+  "Bucket Hats": 0.2,
+  "Car Flags": 0.3,
+  "Sticker Packs": 0.15,
+};
+
+export function dbProductToProduct(p: DbProduct): Product {
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: p.category,
+    price: p.price,
+    comparePrice: p.compare_at_price ?? undefined,
+    description: p.description ?? "",
+    imageUrl: p.images?.[0]?.url ?? "",
+    additionalImages: p.images?.slice(1).map((i) => i.url),
+    placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
+    inStock: p.in_stock,
+    badge: p.badge ?? undefined,
+    weightKg: p.weight_kg,
+    playerCards: p.player_cards ?? undefined,
+  };
+}
+
+// ─── Static fallback (used when DB unavailable) ──────────────────────────────
+
+interface RawProduct {
+  slug: string;
+  name: string;
+  description: string;
+  category: string;
+  base_price: number;
+  image_source_url: string;
+}
+
 const raw = sourceData as RawProduct[];
 
-const STICKER_GRADIENT = CATEGORY_GRADIENTS["Sticker Packs"];
-
-const EXTRA_PRODUCTS: Product[] = [
+const staticProducts: Product[] = [
+  ...raw.map((p, i) => ({
+    id: String(i + 1),
+    slug: p.slug,
+    name: getB2CName(p.name, p.category),
+    category: p.category,
+    price: p.base_price,
+    description: getB2CDescription(p.name, p.category),
+    imageUrl: p.image_source_url,
+    placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
+    inStock: true,
+    weightKg: CATEGORY_WEIGHTS[p.category] ?? 0.5,
+  })),
   {
     id: String(raw.length + 1),
     slug: "panini-fifa-world-cup-2026-sticker-box-50-packs",
     name: "Panini FIFA World Cup 2026 Sticker Box – 50 Packs",
     category: "Sticker Packs",
     price: 125,
-    description:
-      "The ultimate collector's haul. Each box contains 50 Panini sticker packs — over 250 stickers featuring players from all 48 nations at the FIFA World Cup 2026. Pull stars like Messi, Mbappé, Kane, Yamal, and more. Perfect for collectors, fans, and trading with friends.",
+    description: "The ultimate collector's haul. Each box contains 50 Panini sticker packs — over 250 stickers featuring players from all 48 nations.",
     imageUrl: "/asset/stickers/world_cup_sticker_box_50.png",
-    placeholderGradient: STICKER_GRADIENT,
+    placeholderGradient: CATEGORY_GRADIENTS["Sticker Packs"],
     inStock: true,
     badge: "50 Packs",
     weightKg: 1.5,
-    playerCards: [
-      { name: "Lionel Messi", imageUrl: "/asset/stickers/messi200.jpg" },
-      { name: "Kylian Mbappé", imageUrl: "/asset/stickers/mbappe200.jpg" },
-      { name: "Harry Kane", imageUrl: "/asset/stickers/kane200.jpg" },
-      { name: "Lamine Yamal", imageUrl: "/asset/stickers/yamal200.jpg" },
-      { name: "Raphinha", imageUrl: "/asset/stickers/raphinha200.jpg" },
-      { name: "Virgil van Dijk", imageUrl: "/asset/stickers/vandijk200.jpg" },
-      { name: "Cristian Romero", imageUrl: "/asset/stickers/romero200.jpg" },
-      { name: "Pedro Porro", imageUrl: "/asset/stickers/porro200.jpg" },
-      { name: "Luis Díaz", imageUrl: "/asset/stickers/diaz200.jpg" },
-      { name: "Mohammed Kudus", imageUrl: "/asset/stickers/kudus200.jpg" },
-      { name: "Miguel Almirón", imageUrl: "/asset/stickers/almiron200.jpg" },
-      { name: "Hwang Hee-chan", imageUrl: "/asset/stickers/hwang200.jpg" },
-      { name: "Abdukodir Khusanov", imageUrl: "/asset/stickers/khusanov200.jpg" },
-      { name: "Édouard Mendy", imageUrl: "/asset/stickers/mendy200.jpg" },
-      { name: "Ché Adams", imageUrl: "/asset/stickers/adams200.jpg" },
-      { name: "Duckens Nazon", imageUrl: "/asset/stickers/nazon200.jpg" },
-    ],
   },
   {
     id: String(raw.length + 2),
@@ -75,10 +83,9 @@ const EXTRA_PRODUCTS: Product[] = [
     name: "Panini FIFA World Cup 2026 Official Sticker Album",
     category: "Sticker Packs",
     price: 8.99,
-    description:
-      "The official Panini FIFA World Cup 2026 sticker album. Features dedicated pages for all 48 teams and their squads. Pair with the 50-pack sticker box to build your complete World Cup collection. A must-have for every fan.",
+    description: "The official Panini FIFA World Cup 2026 sticker album. Features dedicated pages for all 48 teams.",
     imageUrl: "/asset/stickers/fwc26_stickerbook_cover.png",
-    placeholderGradient: STICKER_GRADIENT,
+    placeholderGradient: CATEGORY_GRADIENTS["Sticker Packs"],
     inStock: true,
     weightKg: 0.3,
   },
@@ -88,79 +95,93 @@ const EXTRA_PRODUCTS: Product[] = [
     name: "Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box",
     category: "Sticker Packs",
     price: 130,
-    description:
-      "The ultimate World Cup 2026 collector's bundle. Get the Official Panini Sticker Album and the full 50-Pack Sticker Box together — over 250 stickers featuring all 48 nations, including Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, and more. Everything you need to start and fill your 2026 collection in one package. Perfect for collectors, fans, and as a gift for kids and soccer lovers.",
+    description: "The ultimate World Cup 2026 collector's bundle. Album + 50-Pack Box together.",
     imageUrl: "/asset/stickers/fwc26_bundle_main.png",
-    additionalImages: [
-      "/asset/stickers/fwc26_box.png",
-      "/asset/stickers/fwc26_stickerbook_cover.png",
-    ],
-    placeholderGradient: STICKER_GRADIENT,
+    placeholderGradient: CATEGORY_GRADIENTS["Sticker Packs"],
     inStock: true,
     badge: "Bundle",
     weightKg: 1.8,
-    playerCards: [
-      { name: "Lionel Messi", imageUrl: "/asset/stickers/messi200.jpg" },
-      { name: "Kylian Mbappé", imageUrl: "/asset/stickers/mbappe200.jpg" },
-      { name: "Harry Kane", imageUrl: "/asset/stickers/kane200.jpg" },
-      { name: "Lamine Yamal", imageUrl: "/asset/stickers/yamal200.jpg" },
-      { name: "Virgil van Dijk", imageUrl: "/asset/stickers/vandijk200.jpg" },
-      { name: "Hwang Hee-chan", imageUrl: "/asset/stickers/hwang200.jpg" },
-    ],
   },
 ];
 
-export const products: Product[] = [
-  ...raw.map((p, i) => ({
-    id: String(i + 1),
-    slug: p.slug,
-    name: getB2CName(p.name, p.category),
-    category: p.category,
-    price: p.base_price,
-    description: getB2CDescription(p.name, p.category),
-    imageUrl: p.image_source_url,
-    placeholderGradient:
-      CATEGORY_GRADIENTS[p.category] ??
-      "linear-gradient(145deg, #555 0%, #888 100%)",
-    inStock: true,
-    weightKg: CATEGORY_WEIGHTS[p.category] ?? 0.5,
-  })),
-  ...EXTRA_PRODUCTS,
-];
+// ─── DB-backed async functions ────────────────────────────────────────────────
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+export async function getAllProducts(): Promise<Product[]> {
+  try {
+    const supabase = supabaseAdmin();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("status", "active")
+      .order("created_at", { ascending: true });
+    if (error || !data?.length) return staticProducts;
+    return (data as DbProduct[]).map(dbProductToProduct);
+  } catch {
+    return staticProducts;
+  }
 }
 
-export function getProductsByCategory(category: string): Product[] {
-  return products.filter((p) => p.category === category);
+export async function getProductBySlugFromDb(slug: string): Promise<Product | undefined> {
+  try {
+    const supabase = supabaseAdmin();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+    if (error || !data) return staticProducts.find((p) => p.slug === slug);
+    return dbProductToProduct(data as DbProduct);
+  } catch {
+    return staticProducts.find((p) => p.slug === slug);
+  }
 }
 
-export function getFeaturedProducts(): Product[] {
-  const canadaFirst = products.filter((p) =>
-    p.name.toLowerCase().includes("canada")
-  );
-  const rest = products.filter(
-    (p) => !p.name.toLowerCase().includes("canada")
-  );
+export async function getAllSlugs(): Promise<string[]> {
+  try {
+    const supabase = supabaseAdmin();
+    const { data, error } = await supabase.from("products").select("slug").eq("status", "active");
+    if (error || !data?.length) return staticProducts.map((p) => p.slug);
+    return data.map((p: { slug: string }) => p.slug);
+  } catch {
+    return staticProducts.map((p) => p.slug);
+  }
+}
+
+export async function getProductsByCategory(category: string): Promise<Product[]> {
+  const all = await getAllProducts();
+  return all.filter((p) => p.category === category);
+}
+
+export async function getFeaturedProducts(): Promise<Product[]> {
+  const all = await getAllProducts();
+  const canadaFirst = all.filter((p) => p.name.toLowerCase().includes("canada"));
+  const rest = all.filter((p) => !p.name.toLowerCase().includes("canada"));
   return [...canadaFirst, ...rest].slice(0, 8);
 }
 
-export function getTrendingProducts(): Product[] {
-  const prioritySlugs = [
+export async function getTrendingProducts(): Promise<Product[]> {
+  const all = await getAllProducts();
+  const priority = [
     "panini-fifa-world-cup-2026-bundle-album-sticker-box",
     "panini-fifa-world-cup-2026-official-sticker-album",
-  ];
-  const priority = prioritySlugs
-    .map((slug) => products.find((p) => p.slug === slug))
-    .filter((product): product is Product => Boolean(product));
-  const canadaFirst = products.filter((p) =>
-    p.name.toLowerCase().includes("canada") &&
-    !prioritySlugs.includes(p.slug)
+  ]
+    .map((slug) => all.find((p) => p.slug === slug))
+    .filter((p): p is Product => Boolean(p));
+  const canadaFirst = all.filter(
+    (p) => p.name.toLowerCase().includes("canada") && !priority.find((x) => x.slug === p.slug)
   );
-  const rest = products.filter(
-    (p) => !p.name.toLowerCase().includes("canada") &&
-    !prioritySlugs.includes(p.slug)
+  const rest = all.filter(
+    (p) => !p.name.toLowerCase().includes("canada") && !priority.find((x) => x.slug === p.slug)
   );
   return [...priority, ...canadaFirst, ...rest].slice(0, 4);
+}
+
+// ─── Sync exports for backward compatibility ──────────────────────────────────
+// These are kept only for SSG generateStaticParams which needs sync slugs at build time.
+// Pages should prefer the async functions above.
+
+export const products: Product[] = staticProducts;
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return staticProducts.find((p) => p.slug === slug);
 }

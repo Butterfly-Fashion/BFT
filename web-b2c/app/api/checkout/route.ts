@@ -41,18 +41,36 @@ export async function POST(req: NextRequest) {
     const stripe = stripeClient();
     const base = siteUrl();
 
+    // Fetch stripe_price_id for each cart item from Supabase
+    const { supabaseAdmin } = await import("@/lib/supabase");
+    const supabase = supabaseAdmin();
+    const slugs = items.map((i) => i.slug).filter(Boolean);
+    const { data: dbProducts } = slugs.length
+      ? await supabase.from("products").select("slug, stripe_price_id").in("slug", slugs)
+      : { data: [] };
+    const priceMap = new Map<string, string>();
+    for (const p of dbProducts ?? []) {
+      if (p.stripe_price_id) priceMap.set(p.slug, p.stripe_price_id);
+    }
+
     const line_items: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[] =
-      items.map((item) => ({
-        quantity: item.quantity,
-        price_data: {
-          currency: "cad",
-          unit_amount: Math.round(item.price * 100),
-          product_data: {
-            name: item.name,
-            description: item.size ? `Size: ${item.size}` : undefined,
+      items.map((item) => {
+        const stripePriceId = item.slug ? priceMap.get(item.slug) : undefined;
+        if (stripePriceId) {
+          return { quantity: item.quantity, price: stripePriceId };
+        }
+        return {
+          quantity: item.quantity,
+          price_data: {
+            currency: "cad",
+            unit_amount: Math.round(item.price * 100),
+            product_data: {
+              name: item.name,
+              description: item.size ? `Size: ${item.size}` : undefined,
+            },
           },
-        },
-      }));
+        };
+      });
 
     if (shipping > 0) {
       line_items.push({

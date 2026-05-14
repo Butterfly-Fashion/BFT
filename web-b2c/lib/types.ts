@@ -149,3 +149,33 @@ export interface DbOrder {
   items?: DbOrderItem[];
   _source?: "supabase" | "stripe";
 }
+
+// ─── Supabase product management ────────────────────────────────────────────
+
+export type ProductStatus = "active" | "draft" | "archived";
+
+export interface DbProductImage {
+  url: string;
+  alt: string;
+}
+
+export interface DbProduct {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  description: string | null;
+  price: number;
+  compare_at_price: number | null;
+  weight_kg: number;
+  badge: string | null;
+  in_stock: boolean;
+  stock_qty: number | null;
+  status: ProductStatus;
+  images: DbProductImage[];
+  player_cards: PlayerCard[] | null;
+  stripe_product_id: string | null;
+  stripe_price_id: string | null;
+  created_at: string;
+  updated_at: string;
+}

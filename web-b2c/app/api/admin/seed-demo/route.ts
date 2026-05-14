@@ -249,7 +249,7 @@ export async function POST() {
 
     const { data: order, error: orderErr } = await supabase
       .from("orders")
-      .upsert(orderData, { onConflict: "stripe_session_id" })
+      .upsert(orderData as never, { onConflict: "stripe_session_id" })
       .select("id")
       .single();
 
