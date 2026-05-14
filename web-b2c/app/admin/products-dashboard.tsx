@@ -192,12 +192,10 @@ export default function ProductsDashboard() {
             <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500">{products.length}</span>
           </div>
           <div className="flex items-center gap-2">
-            {products.length === 0 && (
-              <button onClick={handleSeed} disabled={seeding}
-                className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50">
-                {seeding ? "Seeding..." : "⚡ Seed All Products"}
-              </button>
-            )}
+            <button onClick={handleSeed} disabled={seeding}
+              className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50">
+              {seeding ? "Seeding..." : "⚡ Seed All Products"}
+            </button>
             <button onClick={fetchProducts} disabled={loading}
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50">
               {loading ? "Loading..." : "Refresh"}
