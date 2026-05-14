@@ -2,11 +2,10 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Truck, Store, AlertCircle, ShoppingCart, Plus, MapPin, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Truck, Store, AlertCircle, ShoppingCart, Plus, MapPin, Pencil, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
-import { createOrderRequestAction, getShippingRatesAction } from "@/app/actions";
+import { createOrderRequestAction } from "@/app/actions";
 import { useCart } from "@/components/store/cart-provider";
-import { Profile } from "@/lib/types";
 
 const ADDR_STORAGE_KEY = "wfg_saved_addresses";
 
@@ -65,21 +64,14 @@ function normalizeStoredAddress(value: unknown, index: number): SavedAddress | n
   };
 }
 
-export function OrderRequestForm({ profile }: { profile: Profile }) {
-  const defaultAddressStr = `${profile.business_address}, ${profile.city}, ${profile.province} ${profile.postal_code}, ${profile.country}`;
+export function OrderRequestForm({ defaultAddress }: { defaultAddress: string }) {
   const cart = useCart();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [deliveryMethod, setDeliveryMethod] = useState<"Pickup" | "Shipping">("Pickup");
-  const [shippingAddress, setShippingAddress] = useState(defaultAddressStr);
+  const [shippingAddress, setShippingAddress] = useState(defaultAddress);
   const [customerNotes, setCustomerNotes] = useState("");
   const [error, setError] = useState("");
-
-  // Shippo states
-  const [shippingRates, setShippingRates] = useState<any[]>([]);
-  const [selectedRate, setSelectedRate] = useState<any>(null);
-  const [isFetchingRates, setIsFetchingRates] = useState(false);
-  const [hasFetchedRates, setHasFetchedRates] = useState(false);
 
   // Saved addresses
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
@@ -111,7 +103,7 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
 
   function selectDefaultAddress() {
     setSelectedAddressId("default");
-    setShippingAddress(defaultAddressStr);
+    setShippingAddress(defaultAddress);
     setShowAddNew(false);
     setEditingAddressId(null);
   }
@@ -195,59 +187,6 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
     setAddressForm(EMPTY_ADDRESS_FORM);
   }
 
-  // Fetch shipping rates when address or cart changes
-  useEffect(() => {
-    if (deliveryMethod === "Shipping" && shippingAddress && cart.items.length > 0 && !showAddNew) {
-      let structuredAddress: any = null;
-      if (selectedAddressId === "default") {
-        structuredAddress = {
-          name: profile.contact_name || profile.business_name,
-          street1: profile.business_address,
-          city: profile.city,
-          state: profile.province,
-          zip: profile.postal_code,
-          country: profile.country,
-        };
-      } else {
-        const addr = savedAddresses.find((a) => a.id === selectedAddressId);
-        if (addr) {
-          structuredAddress = {
-            name: addr.nickname,
-            street1: addr.street,
-            city: addr.city,
-            state: addr.province,
-            zip: addr.postalCode,
-            country: addr.country,
-          };
-        }
-      }
-
-      if (structuredAddress && structuredAddress.street1) {
-        setIsFetchingRates(true);
-        setHasFetchedRates(false);
-        setSelectedRate(null);
-        getShippingRatesAction({
-          address: structuredAddress,
-          items: cart.items.map((item) => ({ productId: item.productId, quantity: item.quantity })),
-        }).then((result) => {
-          if ("rates" in result && result.rates) {
-            setShippingRates(result.rates);
-            if (result.rates.length > 0) setSelectedRate(result.rates[0]);
-          } else if ("error" in result) {
-            setError(result.error);
-            setShippingRates([]);
-          }
-          setIsFetchingRates(false);
-          setHasFetchedRates(true);
-        });
-      }
-    } else {
-      setShippingRates([]);
-      setSelectedRate(null);
-      setHasFetchedRates(false);
-    }
-  }, [deliveryMethod, shippingAddress, cart.items, selectedAddressId, profile, showAddNew, savedAddresses]);
-
   const { cartTotal, cartCount } = useMemo(
     () => cart.items.reduce(
       (acc, item) => ({
@@ -259,11 +198,6 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
     [cart.items]
   );
 
-  const finalTotal = useMemo(() => {
-    const shippingFee = selectedRate ? Number(selectedRate.amount) : 0;
-    return cartTotal + shippingFee;
-  }, [cartTotal, selectedRate]);
-
   function submit() {
     setError("");
     startTransition(async () => {
@@ -272,9 +206,6 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
         deliveryMethod,
         shippingAddress,
         customerNotes,
-        shippoRateId: selectedRate?.id,
-        shippingFee: selectedRate ? Number(selectedRate.amount) : 0,
-        carrierName: selectedRate ? `${selectedRate.carrier} ${selectedRate.service}` : undefined,
       });
       if ("error" in result && result.error) setError(result.error);
       if ("orderId" in result && result.orderId) {
@@ -283,8 +214,6 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
       }
     });
   }
-
-  const isShippingDisabled = deliveryMethod === "Shipping" && hasFetchedRates && shippingRates.length === 0;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_340px] lg:items-start">
@@ -319,7 +248,7 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
                       {method}
                     </span>
                     <span className="mt-0.5 block text-xs font-semibold text-slate-500">
-                      {method === "Pickup" ? "We confirm pickup timing after review." : "Choose from available carrier rates."}
+                      {method === "Pickup" ? "We confirm pickup timing after review." : "We confirm shipping cost after review."}
                     </span>
                   </div>
                 </label>
@@ -356,7 +285,7 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
                       <MapPin size={10} />
                       Default (registered address)
                     </p>
-                    <p className="mt-0.5 font-semibold text-slate-800">{defaultAddressStr}</p>
+                    <p className="mt-0.5 font-semibold text-slate-800">{defaultAddress}</p>
                   </div>
                 </label>
 
@@ -522,57 +451,6 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
                   Shipping to: {shippingAddress}
                 </div>
               )}
-
-              {/* Shipping Rates Selection */}
-              {deliveryMethod === "Shipping" && !showAddNew && (
-                <div className="mt-5">
-                  <h3 className="mb-3 text-sm font-black text-slate-900">Choose shipping carrier</h3>
-                  {isFetchingRates ? (
-                    <div className="flex items-center gap-2 py-4 text-sm font-semibold text-slate-500">
-                      <Loader2 className="animate-spin" size={16} />
-                      Calculating real-time rates...
-                    </div>
-                  ) : shippingRates.length > 0 ? (
-                    <div className="grid gap-2">
-                      {shippingRates.map((rate) => (
-                        <label
-                          key={rate.id}
-                          className={`flex cursor-pointer items-center justify-between rounded-lg border p-3 transition-all ${
-                            selectedRate?.id === rate.id
-                              ? "border-(--primary) bg-slate-50 ring-1 ring-(--primary)/10"
-                              : "border-slate-200 hover:border-slate-300"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <input
-                              type="radio"
-                              name="shipping_rate"
-                              className="accent-(--primary)"
-                              checked={selectedRate?.id === rate.id}
-                              onChange={() => setSelectedRate(rate)}
-                            />
-                            <div>
-                              <p className="text-sm font-bold text-slate-900">
-                                {rate.carrier} — {rate.service}
-                              </p>
-                              <p className="text-xs font-semibold text-slate-500">
-                                {rate.estimated_days ? `Est. ${rate.estimated_days} days` : rate.duration_terms || "Standard delivery"}
-                              </p>
-                            </div>
-                          </div>
-                          <span className="text-sm font-black text-slate-900">
-                            {formatMoney(Number(rate.amount))}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  ) : hasFetchedRates ? (
-                    <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-700">
-                      Shipping is currently unavailable for this address. Please choose "Pickup" instead or contact support.
-                    </div>
-                  ) : null}
-                </div>
-              )}
             </>
           )}
 
@@ -640,31 +518,16 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
         </div>
 
         <div className="border-t border-slate-200 p-4">
-          <div className="mb-2 flex items-center justify-between text-sm font-semibold text-slate-600">
-            <span>Subtotal ({cartCount} items)</span>
-            <span className="font-bold text-slate-900">{formatMoney(cartTotal)}</span>
+          <div className="mb-3 flex items-center justify-between text-sm font-semibold text-slate-600">
+            <span>{cartCount} items</span>
+            <span className="text-base font-black text-slate-900">{formatMoney(cartTotal)}</span>
           </div>
-          {deliveryMethod === "Shipping" && (
-            <div className="mb-3 flex items-center justify-between text-sm font-semibold text-slate-600">
-              <span>Shipping</span>
-              <span className="font-bold text-slate-900">
-                {selectedRate ? formatMoney(Number(selectedRate.amount)) : isFetchingRates ? "..." : "TBD"}
-              </span>
-            </div>
-          )}
-          <div className="mb-4 flex items-center justify-between border-t border-slate-100 pt-3 text-base font-black">
-            <span>Total</span>
-            <span className="text-lg text-(--primary)">{formatMoney(finalTotal)}</span>
-          </div>
-
           <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-amber-800">
-            {deliveryMethod === "Shipping" && !selectedRate
-              ? isShippingDisabled ? "Shipping unavailable. Please choose Pickup." : "Select a shipping method to see final total."
-              : "Final pricing confirmed after review. No payment collected now."}
+            Est. subtotal only — final pricing confirmed after review. No payment collected now.
           </div>
           <button
             className="btn-primary w-full py-3 text-sm text-white"
-            disabled={isPending || !cart.items.length || (deliveryMethod === "Shipping" && !selectedRate)}
+            disabled={isPending || !cart.items.length}
             onClick={submit}
             type="button"
           >

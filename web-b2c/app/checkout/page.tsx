@@ -3,16 +3,11 @@
 import { useState, useEffect } from "react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import {
-  formatCAD,
-  calculateShipping,
-  calculateTax,
-  getTaxLabel,
-  FLAT_SHIPPING,
-} from "@/lib/money";
+import { formatCAD, calculateTax, getTaxLabel } from "@/lib/money";
 import { CANADIAN_PROVINCES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import type { ShippingRate } from "@/app/api/shipping-rates/route";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
@@ -207,6 +202,26 @@ export default function CheckoutPage() {
       setSubmitting(false);
     }
   };
+
+  if (!CHECKOUT_ENABLED) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-3">
+          Checkout Paused
+        </p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          We are updating shipping options
+        </h1>
+        <p className="text-sm leading-6 text-gray-500 mb-8">{CHECKOUT_DISABLED_MESSAGE}</p>
+        <Link
+          href="/cart"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition-colors text-sm"
+        >
+          Return to Cart
+        </Link>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
