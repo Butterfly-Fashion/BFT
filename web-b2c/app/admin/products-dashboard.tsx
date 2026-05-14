@@ -48,7 +48,6 @@ const EMPTY = {
 export default function ProductsDashboard() {
   const [products, setProducts] = useState<DbProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -57,7 +56,7 @@ export default function ProductsDashboard() {
   const [selected, setSelected] = useState<DbProduct | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
@@ -67,18 +66,14 @@ export default function ProductsDashboard() {
   const [pending, setPending] = useState<{ file: File; preview: string }[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const fetchProducts = useCallback(async (opts?: { append?: boolean; offset?: number }) => {
-    const append = opts?.append ?? false;
-    if (append) {
-      setLoadingMore(true);
-    } else {
-      setLoading(true);
-    }
+  const fetchProducts = useCallback(async (pageNum = 1) => {
+    setPage(pageNum);
+    setLoading(true);
     setError(null);
     try {
       const params = new URLSearchParams({
         limit: String(PAGE_SIZE),
-        offset: String(opts?.offset ?? 0),
+        offset: String((pageNum - 1) * PAGE_SIZE),
       });
       if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
       if (catFilter !== "all") params.set("category", catFilter);
@@ -87,14 +82,12 @@ export default function ProductsDashboard() {
       const res = await fetch(`/api/admin/products?${params.toString()}`);
       if (!res.ok) throw new Error("HTTP " + res.status);
       const data: ProductsResponse = await res.json();
-      setProducts((prev) => (append ? [...prev, ...(data.products ?? [])] : data.products ?? []));
+      setProducts(data.products ?? []);
       setTotalProducts(data.total ?? 0);
-      setHasMore(Boolean(data.hasMore));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally {
       setLoading(false);
-      setLoadingMore(false);
     }
   }, [catFilter, debouncedSearch, statusFilter]);
 
@@ -233,6 +226,7 @@ export default function ProductsDashboard() {
   }
 
   const filtered = products;
+  const totalPages = Math.ceil(totalProducts / PAGE_SIZE);
 
   const panelOpen = isNew || selected !== null;
 
@@ -244,7 +238,7 @@ export default function ProductsDashboard() {
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-black text-gray-900">Products</h2>
             <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500">
-              {products.length}/{totalProducts}
+              {totalProducts}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -252,7 +246,7 @@ export default function ProductsDashboard() {
               className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50">
               {seeding ? "Seeding..." : "⚡ Seed All Products"}
             </button>
-            <button onClick={() => fetchProducts()} disabled={loading}
+            <button onClick={() => fetchProducts(page)} disabled={loading}
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50">
               {loading ? "Loading..." : "Refresh"}
             </button>
@@ -355,16 +349,14 @@ export default function ProductsDashboard() {
                   })}
                 </tbody>
               </table>
-              {hasMore && (
-                <div className="border-t border-gray-100 bg-white py-4 text-center">
-                  <button
-                    onClick={() => fetchProducts({ append: true, offset: products.length })}
-                    disabled={loadingMore}
-                    className="rounded-full border border-gray-200 px-5 py-2 text-sm font-semibold text-gray-600 hover:border-gray-400 disabled:opacity-50"
-                  >
-                    {loadingMore ? "Loading..." : "Load more"}
-                  </button>
-                </div>
+              {totalProducts > PAGE_SIZE && (
+                <Pagination
+                  page={page}
+                  totalPages={Math.ceil(totalProducts / PAGE_SIZE)}
+                  totalItems={totalProducts}
+                  pageSize={PAGE_SIZE}
+                  onPage={fetchProducts}
+                />
               )}
             </>
           )}
@@ -533,6 +525,69 @@ export default function ProductsDashboard() {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function Pagination({ page, totalPages, totalItems, pageSize, onPage }: {
+  page: number;
+  totalPages: number;
+  totalItems: number;
+  pageSize: number;
+  onPage: (p: number) => void;
+}) {
+  const from = (page - 1) * pageSize + 1;
+  const to = Math.min(page * pageSize, totalItems);
+
+  const pages: (number | "…")[] = [];
+  if (totalPages <= 7) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    if (page > 3) pages.push("…");
+    for (let i = Math.max(2, page - 1); i <= Math.min(totalPages - 1, page + 1); i++) pages.push(i);
+    if (page < totalPages - 2) pages.push("…");
+    pages.push(totalPages);
+  }
+
+  return (
+    <div className="border-t border-gray-100 bg-white px-4 py-3 flex items-center justify-between">
+      <p className="text-xs text-gray-400">
+        {from}–{to} of {totalItems}
+      </p>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPage(page - 1)}
+          disabled={page === 1}
+          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        >
+          ← Prev
+        </button>
+        {pages.map((p, i) =>
+          p === "…" ? (
+            <span key={`ellipsis-${i}`} className="px-1 text-xs text-gray-300">…</span>
+          ) : (
+            <button
+              key={p}
+              onClick={() => onPage(p)}
+              className={`min-w-7.5 px-2 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                p === page
+                  ? "bg-[#C41E3A] text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              {p}
+            </button>
+          )
+        )}
+        <button
+          onClick={() => onPage(page + 1)}
+          disabled={page === totalPages}
+          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        >
+          Next →
+        </button>
       </div>
     </div>
   );
