@@ -88,19 +88,8 @@ export async function POST() {
   let skipped = 0;
   const errors: string[] = [];
 
-  // Build full product list
+  // Build full product list — EXTRA_PRODUCTS first so they're never skipped by timeout
   const allProducts = [
-    ...raw.map((p) => ({
-      slug: p.slug,
-      name: getB2CName(p.name, p.category),
-      category: p.category,
-      description: getB2CDescription(p.name, p.category),
-      price: p.base_price,
-      weight_kg: CATEGORY_WEIGHTS[p.category] ?? 0.5,
-      image_url: p.image_source_url,
-      badge: null as string | null,
-      player_cards: null as unknown[] | null,
-    })),
     ...EXTRA_PRODUCTS.map((p) => ({
       slug: p.slug,
       name: p.name,
@@ -111,6 +100,17 @@ export async function POST() {
       image_url: p.image_source_url,
       badge: p.badge,
       player_cards: p.player_cards,
+    })),
+    ...raw.map((p) => ({
+      slug: p.slug,
+      name: getB2CName(p.name, p.category),
+      category: p.category,
+      description: getB2CDescription(p.name, p.category),
+      price: p.base_price,
+      weight_kg: CATEGORY_WEIGHTS[p.category] ?? 0.5,
+      image_url: p.image_source_url,
+      badge: null as string | null,
+      player_cards: null as unknown[] | null,
     })),
   ];
 
