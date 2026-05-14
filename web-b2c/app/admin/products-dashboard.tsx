@@ -1,11 +1,22 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import type { DbProduct, DbProductImage, ProductStatus } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 
 const CATEGORIES = ["Boxing Gloves", "Caps", "Bucket Hats", "Car Flags", "Sticker Packs"];
+const PAGE_SIZE = 50;
+
+interface ProductsResponse {
+  products: DbProduct[];
+  total: number;
+  hasMore: boolean;
+}
+
+interface ProductDetailResponse {
+  product: DbProduct;
+}
 const STATUS_COLORS: Record<ProductStatus, string> = {
   active: "bg-green-50 text-green-700 border-green-200",
   draft: "bg-gray-100 text-gray-500 border-gray-300",
@@ -33,11 +44,16 @@ const EMPTY = {
 export default function ProductsDashboard() {
   const [products, setProducts] = useState<DbProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [catFilter, setCatFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState<"all" | ProductStatus>("all");
   const [selected, setSelected] = useState<DbProduct | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
@@ -47,20 +63,41 @@ export default function ProductsDashboard() {
   const [pending, setPending] = useState<{ file: File; preview: string }[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
+  const fetchProducts = useCallback(async (opts?: { append?: boolean; offset?: number }) => {
+    const append = opts?.append ?? false;
+    if (append) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+    }
     setError(null);
     try {
-      const res = await fetch("/api/admin/products");
+      const params = new URLSearchParams({
+        limit: String(PAGE_SIZE),
+        offset: String(opts?.offset ?? 0),
+      });
+      if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
+      if (catFilter !== "all") params.set("category", catFilter);
+      if (statusFilter !== "all") params.set("status", statusFilter);
+
+      const res = await fetch(`/api/admin/products?${params.toString()}`);
       if (!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-      setProducts(data.products ?? []);
+      const data: ProductsResponse = await res.json();
+      setProducts((prev) => (append ? [...prev, ...(data.products ?? [])] : data.products ?? []));
+      setTotalProducts(data.total ?? 0);
+      setHasMore(Boolean(data.hasMore));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
-  }, []);
+  }, [catFilter, debouncedSearch, statusFilter]);
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setDebouncedSearch(search), 250);
+    return () => window.clearTimeout(id);
+  }, [search]);
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
@@ -69,8 +106,8 @@ export default function ProductsDashboard() {
     setImages([]); setPending([]); setSaveMsg(null);
   }
 
-  function openEdit(p: DbProduct) {
-    setSelected(p); setIsNew(false);
+  async function openEdit(p: DbProduct) {
+    setSelected(p); setIsNew(false); setDetailLoading(true);
     setForm({
       name: p.name, slug: p.slug, category: p.category,
       description: p.description ?? "", price: String(p.price),
@@ -81,6 +118,28 @@ export default function ProductsDashboard() {
       status: p.status,
     });
     setImages(p.images ?? []); setPending([]); setSaveMsg(null);
+
+    try {
+      const res = await fetch(`/api/admin/products/${p.id}`);
+      const data: ProductDetailResponse = await res.json();
+      if (!res.ok) throw new Error("Failed to load product details");
+      const detail = data.product;
+      setSelected(detail);
+      setForm({
+        name: detail.name, slug: detail.slug, category: detail.category,
+        description: detail.description ?? "", price: String(detail.price),
+        compare_at_price: detail.compare_at_price != null ? String(detail.compare_at_price) : "",
+        weight_kg: String(detail.weight_kg), badge: detail.badge ?? "",
+        in_stock: detail.in_stock,
+        stock_qty: detail.stock_qty != null ? String(detail.stock_qty) : "",
+        status: detail.status,
+      });
+      setImages(detail.images ?? []);
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed to load product details" });
+    } finally {
+      setDetailLoading(false);
+    }
   }
 
   function closePanel() {
@@ -169,16 +228,7 @@ export default function ProductsDashboard() {
     } finally { setSeeding(false); }
   }
 
-  const filtered = useMemo(() => {
-    let r = products;
-    if (catFilter !== "all") r = r.filter((p) => p.category === catFilter);
-    if (statusFilter !== "all") r = r.filter((p) => p.status === statusFilter);
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      r = r.filter((p) => p.name.toLowerCase().includes(q) || p.slug.includes(q));
-    }
-    return r;
-  }, [products, catFilter, statusFilter, search]);
+  const filtered = products;
 
   const panelOpen = isNew || selected !== null;
 
@@ -189,14 +239,16 @@ export default function ProductsDashboard() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-black text-gray-900">Products</h2>
-            <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500">{products.length}</span>
+            <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-500">
+              {products.length}/{totalProducts}
+            </span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={handleSeed} disabled={seeding}
               className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50">
               {seeding ? "Seeding..." : "⚡ Seed All Products"}
             </button>
-            <button onClick={fetchProducts} disabled={loading}
+            <button onClick={() => fetchProducts()} disabled={loading}
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50">
               {loading ? "Loading..." : "Refresh"}
             </button>
@@ -248,53 +300,66 @@ export default function ProductsDashboard() {
               )}
             </div>
           ) : (
-            <table className="w-full text-left text-sm">
-              <thead className="sticky top-0 bg-gray-50 text-xs uppercase tracking-wider text-gray-500 border-b border-gray-200">
-                <tr>
-                  <th className="px-4 py-3 font-bold">Product</th>
-                  <th className="px-4 py-3 font-bold hidden md:table-cell">Category</th>
-                  <th className="px-4 py-3 font-bold">Price</th>
-                  <th className="px-4 py-3 font-bold hidden md:table-cell">Stock</th>
-                  <th className="px-4 py-3 font-bold">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filtered.map((p) => {
-                  const imgUrl = p.images?.[0]?.url;
-                  return (
-                    <tr key={p.id} onClick={() => openEdit(p)}
-                      className={`cursor-pointer transition-colors hover:bg-gray-50 bg-white ${selected?.id === p.id ? "bg-blue-50 hover:bg-blue-50" : ""}`}>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
-                            {imgUrl ? (
-                              <Image src={imgUrl} alt={p.name} width={40} height={40} className="h-full w-full object-cover" unoptimized={imgUrl.startsWith("http")} />
-                            ) : (
-                              <div className="h-full w-full flex items-center justify-center text-gray-300 text-xs">-</div>
-                            )}
+            <>
+              <table className="w-full text-left text-sm">
+                <thead className="sticky top-0 bg-gray-50 text-xs uppercase tracking-wider text-gray-500 border-b border-gray-200">
+                  <tr>
+                    <th className="px-4 py-3 font-bold">Product</th>
+                    <th className="px-4 py-3 font-bold hidden md:table-cell">Category</th>
+                    <th className="px-4 py-3 font-bold">Price</th>
+                    <th className="px-4 py-3 font-bold hidden md:table-cell">Stock</th>
+                    <th className="px-4 py-3 font-bold">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filtered.map((p) => {
+                    const imgUrl = p.images?.[0]?.url;
+                    return (
+                      <tr key={p.id} onClick={() => openEdit(p)}
+                        className={`cursor-pointer transition-colors hover:bg-gray-50 bg-white ${selected?.id === p.id ? "bg-blue-50 hover:bg-blue-50" : ""}`}>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                              {imgUrl ? (
+                                <Image src={imgUrl} alt={p.name} width={40} height={40} className="h-full w-full object-cover" unoptimized={imgUrl.startsWith("http")} />
+                              ) : (
+                                <div className="h-full w-full flex items-center justify-center text-gray-300 text-xs">-</div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-900 text-xs leading-tight line-clamp-1">{p.name}</p>
+                              <p className="text-xs text-gray-400 font-mono">{p.slug}</p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="font-semibold text-gray-900 text-xs leading-tight line-clamp-1">{p.name}</p>
-                            <p className="text-xs text-gray-400 font-mono">{p.slug}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3 hidden md:table-cell"><span className="text-xs text-gray-600">{p.category}</span></td>
-                      <td className="px-4 py-3">
-                        <p className="font-bold text-gray-900">{formatCAD(p.price)}</p>
-                        {p.compare_at_price && <p className="text-xs text-gray-400 line-through">{formatCAD(p.compare_at_price)}</p>}
-                      </td>
-                      <td className="px-4 py-3 hidden md:table-cell">
-                        {p.stock_qty != null
-                          ? <span className={`text-xs font-semibold ${p.stock_qty <= 5 ? "text-red-500" : "text-gray-600"}`}>{p.stock_qty} units</span>
-                          : <span className="text-xs text-gray-400">-</span>}
-                      </td>
-                      <td className="px-4 py-3"><StatusBadge status={p.status} /></td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td className="px-4 py-3 hidden md:table-cell"><span className="text-xs text-gray-600">{p.category}</span></td>
+                        <td className="px-4 py-3">
+                          <p className="font-bold text-gray-900">{formatCAD(p.price)}</p>
+                          {p.compare_at_price && <p className="text-xs text-gray-400 line-through">{formatCAD(p.compare_at_price)}</p>}
+                        </td>
+                        <td className="px-4 py-3 hidden md:table-cell">
+                          {p.stock_qty != null
+                            ? <span className={`text-xs font-semibold ${p.stock_qty <= 5 ? "text-red-500" : "text-gray-600"}`}>{p.stock_qty} units</span>
+                            : <span className="text-xs text-gray-400">-</span>}
+                        </td>
+                        <td className="px-4 py-3"><StatusBadge status={p.status} /></td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              {hasMore && (
+                <div className="border-t border-gray-100 bg-white py-4 text-center">
+                  <button
+                    onClick={() => fetchProducts({ append: true, offset: products.length })}
+                    disabled={loadingMore}
+                    className="rounded-full border border-gray-200 px-5 py-2 text-sm font-semibold text-gray-600 hover:border-gray-400 disabled:opacity-50"
+                  >
+                    {loadingMore ? "Loading..." : "Load more"}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -311,6 +376,11 @@ export default function ProductsDashboard() {
             </div>
             <div className="flex-1 overflow-y-auto">
               <div className="px-5 py-4 space-y-4">
+                {detailLoading && (
+                  <div className="rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-xs font-semibold text-blue-600">
+                    Loading full product details...
+                  </div>
+                )}
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Product Name *</label>
                   <input type="text" value={form.name}
@@ -434,7 +504,7 @@ export default function ProductsDashboard() {
                     {saveMsg.text}
                   </div>
                 )}
-                <button onClick={handleSave} disabled={saving}
+                <button onClick={handleSave} disabled={saving || detailLoading}
                   className="w-full rounded-full bg-[#C41E3A] py-2.5 text-sm font-bold text-white hover:bg-[#A01830] transition-colors disabled:opacity-60">
                   {saving ? "Saving..." : isNew ? "Create Product" : "Save Changes"}
                 </button>

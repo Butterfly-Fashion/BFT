@@ -5,6 +5,23 @@ import { verifyAdminCookie } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
+// GET /api/admin/products/[id] — full product details for edit panel
+export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const isAuthenticated = await verifyAdminCookie();
+  if (!isAuthenticated) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+  const supabase = supabaseAdmin();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) return NextResponse.json({ error: "Product not found" }, { status: 404 });
+  return NextResponse.json({ product: data });
+}
+
 // PATCH /api/admin/products/[id] — update product; creates new Stripe Price if price changed
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const isAuthenticated = await verifyAdminCookie();

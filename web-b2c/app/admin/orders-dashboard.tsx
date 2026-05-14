@@ -52,7 +52,12 @@ type Tab = "all" | OrderStatus | "issues";
 
 interface OrdersResponse {
   orders: DbOrder[];
-  source: "supabase" | "stripe";
+  source: "supabase";
+}
+
+interface OrderDetailResponse {
+  order: DbOrder;
+  error?: string;
 }
 
 function StatusBadge({ status }: { status: OrderStatus }) {
@@ -67,7 +72,7 @@ function StatusBadge({ status }: { status: OrderStatus }) {
 
 export default function OrdersDashboard() {
   const [orders, setOrders] = useState<DbOrder[]>([]);
-  const [source, setSource] = useState<"supabase" | "stripe" | null>(null);
+  const [source, setSource] = useState<"supabase" | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +81,7 @@ export default function OrdersDashboard() {
   const [deliveryFilter, setDeliveryFilter] = useState<"all" | "shipping" | "pickup">("all");
 
   const [selected, setSelected] = useState<DbOrder | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [syncing, setSyncing] = useState(false);
@@ -106,14 +112,35 @@ export default function OrdersDashboard() {
 
   useEffect(() => { fetchOrders(); }, [fetchOrders]);
 
-  function openPanel(order: DbOrder) {
+  async function openPanel(order: DbOrder) {
     setSelected(order);
+    setDetailLoading(true);
     setEditStatus(order.status);
     setEditCarrier(order.carrier ?? "");
     setEditTracking(order.tracking_number ?? "");
     setEditTrackingUrl(order.tracking_url ?? "");
     setEditNote(order.admin_note ?? "");
     setSaveMsg(null);
+
+    try {
+      const res = await fetch(`/api/admin/orders/${order.id}`);
+      const data: OrderDetailResponse = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to load order details");
+      const detailed = { ...data.order, _source: "supabase" as const };
+      setSelected(detailed);
+      setEditStatus(detailed.status);
+      setEditCarrier(detailed.carrier ?? "");
+      setEditTracking(detailed.tracking_number ?? "");
+      setEditTrackingUrl(detailed.tracking_url ?? "");
+      setEditNote(detailed.admin_note ?? "");
+    } catch (e) {
+      setSaveMsg({
+        type: "err",
+        text: e instanceof Error ? e.message : "Failed to load order details",
+      });
+    } finally {
+      setDetailLoading(false);
+    }
   }
 
   function closePanel() {
@@ -289,9 +316,9 @@ export default function OrdersDashboard() {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-black text-gray-900">Orders</h2>
           <div className="flex items-center gap-4">
-            {source === "stripe" && (
-              <span className="rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-xs font-semibold text-amber-700">
-                Stripe fallback — run Supabase migration to unlock full features
+            {source === "supabase" && (
+              <span className="rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700">
+                Supabase orders
               </span>
             )}
             <button
@@ -418,20 +445,7 @@ export default function OrdersDashboard() {
                       <p className="text-xs text-gray-500">{order.customer_email ?? "—"}</p>
                     </td>
                     <td className="px-4 py-3 hidden md:table-cell">
-                      {order.items && order.items.length > 0 ? (
-                        <ul className="space-y-0.5">
-                          {order.items.slice(0, 2).map((item: DbOrderItem, i: number) => (
-                            <li key={i} className="text-xs text-gray-600">
-                              <span className="font-semibold">{item.quantity}×</span> {item.name}
-                            </li>
-                          ))}
-                          {order.items.length > 2 && (
-                            <li className="text-xs text-gray-400">+{order.items.length - 2} more</li>
-                          )}
-                        </ul>
-                      ) : (
-                        <span className="text-xs text-gray-400 italic">—</span>
-                      )}
+                      <span className="text-xs text-gray-400">Open for items</span>
                     </td>
                     <td className="px-4 py-3">
                       {order.delivery_method === "pickup" ? (
@@ -503,7 +517,15 @@ export default function OrdersDashboard() {
               </div>
 
               {/* Items */}
-              {selected.items && selected.items.length > 0 && (
+              {detailLoading ? (
+                <div className="border-b border-gray-100 px-5 py-4">
+                  <div className="mb-3 h-3 w-20 animate-pulse rounded bg-gray-100" />
+                  <div className="space-y-2">
+                    <div className="h-3 w-full animate-pulse rounded bg-gray-100" />
+                    <div className="h-3 w-4/5 animate-pulse rounded bg-gray-100" />
+                  </div>
+                </div>
+              ) : selected.items && selected.items.length > 0 && (
                 <div className="border-b border-gray-100 px-5 py-4">
                   <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Items</p>
                   <ul className="space-y-1.5">

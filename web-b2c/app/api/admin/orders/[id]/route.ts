@@ -11,6 +11,39 @@ const ALLOWED_CARRIERS = [
   "Canada Post", "UPS", "FedEx", "Purolator", "DHL", "Other",
 ];
 
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const isAuthenticated = await verifyAdminCookie();
+  if (!isAuthenticated) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { id } = await params;
+
+  try {
+    const supabase = supabaseAdmin();
+    const { data, error } = await supabase
+      .from("orders")
+      .select("*, items:order_items(*)")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
+      throw error;
+    }
+
+    return NextResponse.json({ order: { ...data, _source: "supabase" } });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to load order";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }

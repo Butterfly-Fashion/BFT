@@ -2,23 +2,61 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { stripeClient } from "@/lib/stripe";
 import { verifyAdminCookie } from "@/lib/admin-auth";
-import type { DbProduct } from "@/lib/types";
+import type { DbProductImage } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/admin/products — list all products
-export async function GET() {
+// GET /api/admin/products — lightweight product list
+export async function GET(req: NextRequest) {
   const isAuthenticated = await verifyAdminCookie();
   if (!isAuthenticated) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const { searchParams } = new URL(req.url);
+  const limit = Math.min(Number(searchParams.get("limit") ?? 50), 100);
+  const offset = Math.max(Number(searchParams.get("offset") ?? 0), 0);
+  const search = searchParams.get("search")?.trim();
+  const category = searchParams.get("category");
+  const status = searchParams.get("status");
+
   const supabase = supabaseAdmin();
-  const { data, error } = await supabase
+  let query = supabase
     .from("products")
-    .select("*")
-    .order("created_at", { ascending: false });
+    .select(
+      "id,name,slug,category,price,compare_at_price,in_stock,stock_qty,status,images,stripe_product_id,stripe_price_id,created_at,updated_at",
+      { count: "exact" }
+    );
+
+  if (category && category !== "all") {
+    query = query.eq("category", category);
+  }
+
+  if (status && status !== "all") {
+    query = query.eq("status", status);
+  }
+
+  if (search) {
+    query = query.or(`name.ilike.%${search}%,slug.ilike.%${search}%`);
+  }
+
+  const { data, error, count } = await query
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  return NextResponse.json({ products: data });
+  const products = (data ?? []).map((product) => ({
+    ...product,
+    images: Array.isArray(product.images)
+      ? (product.images as DbProductImage[]).slice(0, 1)
+      : [],
+  }));
+
+  return NextResponse.json({
+    products,
+    total: count ?? products.length,
+    limit,
+    offset,
+    hasMore: offset + products.length < (count ?? products.length),
+  });
 }
 
 // POST /api/admin/products — create product + auto-create Stripe Product/Price

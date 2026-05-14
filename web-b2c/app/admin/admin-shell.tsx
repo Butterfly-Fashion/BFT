@@ -1,10 +1,28 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import OrdersDashboard from "./orders-dashboard";
-import ProductsDashboard from "./products-dashboard";
 
 type Section = "orders" | "products";
+
+const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading orders..." />,
+});
+
+const ProductsDashboard = dynamic(() => import("./products-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading products..." />,
+});
+
+function AdminSectionLoader({ label }: { label: string }) {
+  return (
+    <div className="flex h-full items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+        <p className="text-sm font-semibold text-gray-400">{label}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminShell({ logoutAction }: { logoutAction: () => Promise<void> }) {
   const [section, setSection] = useState<Section>("orders");
