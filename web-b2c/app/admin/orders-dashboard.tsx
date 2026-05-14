@@ -27,7 +27,7 @@ const STATUS_COLORS: Record<OrderStatus, string> = {
 };
 
 const ROW_BG: Record<OrderStatus, string> = {
-  paid: "bg-white hover:bg-slate-50",
+  paid: "bg-white hover:bg-gray-100",
   packing: "bg-amber-50 hover:bg-amber-100",
   shipped: "bg-yellow-50 hover:bg-yellow-100",
   ready_for_pickup: "bg-yellow-50 hover:bg-yellow-100",
