@@ -86,3 +86,66 @@ export const CATEGORIES = [
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
+
+// ─── Supabase order management ──────────────────────────────────────────────
+
+export type OrderStatus =
+  | "paid"
+  | "packing"
+  | "shipped"
+  | "ready_for_pickup"
+  | "completed"
+  | "cancelled"
+  | "refunded";
+
+export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
+  paid: "New",
+  packing: "Packing",
+  shipped: "Shipped",
+  ready_for_pickup: "Pickup Ready",
+  completed: "Completed",
+  cancelled: "Cancelled",
+  refunded: "Refunded",
+};
+
+export interface DbOrderItem {
+  id: string;
+  order_id: string;
+  name: string;
+  slug: string | null;
+  size: string | null;
+  quantity: number;
+  unit_price: number;
+  image_url: string | null;
+}
+
+export interface DbOrder {
+  id: string;
+  order_number: string;
+  stripe_session_id: string;
+  stripe_payment_intent: string | null;
+  channel: string;
+  delivery_method: "shipping" | "pickup" | null;
+  status: OrderStatus;
+  customer_email: string | null;
+  customer_name: string | null;
+  shipping_address: {
+    street: string;
+    city: string;
+    province: string;
+    postal: string;
+    country: string;
+  } | null;
+  subtotal: number | null;
+  shipping_cost: number | null;
+  tax_amount: number | null;
+  total: number | null;
+  carrier: string | null;
+  tracking_number: string | null;
+  tracking_url: string | null;
+  admin_note: string | null;
+  created_at: string;
+  updated_at: string;
+  items?: DbOrderItem[];
+  _source?: "supabase" | "stripe";
+}
