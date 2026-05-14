@@ -79,6 +79,7 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
   const [shippingRates, setShippingRates] = useState<any[]>([]);
   const [selectedRate, setSelectedRate] = useState<any>(null);
   const [isFetchingRates, setIsFetchingRates] = useState(false);
+  const [hasFetchedRates, setHasFetchedRates] = useState(false);
 
   // Saved addresses
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
@@ -223,6 +224,7 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
 
       if (structuredAddress && structuredAddress.street1) {
         setIsFetchingRates(true);
+        setHasFetchedRates(false);
         setSelectedRate(null);
         getShippingRatesAction({
           address: structuredAddress,
@@ -236,11 +238,13 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
             setShippingRates([]);
           }
           setIsFetchingRates(false);
+          setHasFetchedRates(true);
         });
       }
     } else {
       setShippingRates([]);
       setSelectedRate(null);
+      setHasFetchedRates(false);
     }
   }, [deliveryMethod, shippingAddress, cart.items, selectedAddressId, profile, showAddNew, savedAddresses]);
 
@@ -279,6 +283,8 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
       }
     });
   }
+
+  const isShippingDisabled = deliveryMethod === "Shipping" && hasFetchedRates && shippingRates.length === 0;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_340px] lg:items-start">
@@ -560,9 +566,9 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
                         </label>
                       ))}
                     </div>
-                  ) : shippingAddress ? (
-                    <div className="rounded-lg border border-amber-100 bg-amber-50 p-3 text-xs font-semibold text-amber-700">
-                      We couldn't find automatic rates for this address. Our team will manually calculate shipping after review.
+                  ) : hasFetchedRates ? (
+                    <div className="rounded-lg border border-red-100 bg-red-50 p-3 text-xs font-semibold text-red-700">
+                      Shipping is currently unavailable for this address. Please choose "Pickup" instead or contact support.
                     </div>
                   ) : null}
                 </div>
@@ -653,12 +659,12 @@ export function OrderRequestForm({ profile }: { profile: Profile }) {
 
           <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-amber-800">
             {deliveryMethod === "Shipping" && !selectedRate
-              ? "Select a shipping method to see final total."
+              ? isShippingDisabled ? "Shipping unavailable. Please choose Pickup." : "Select a shipping method to see final total."
               : "Final pricing confirmed after review. No payment collected now."}
           </div>
           <button
             className="btn-primary w-full py-3 text-sm text-white"
-            disabled={isPending || !cart.items.length || (deliveryMethod === "Shipping" && !selectedRate && shippingRates.length > 0)}
+            disabled={isPending || !cart.items.length || (deliveryMethod === "Shipping" && !selectedRate)}
             onClick={submit}
             type="button"
           >
