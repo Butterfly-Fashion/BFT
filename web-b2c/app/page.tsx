@@ -9,9 +9,11 @@ import Link from "next/link";
 
 const SHOW_FREE_SHIPPING_BANNER = false;
 
-export default function HomePage() {
-  const featured = getFeaturedProducts();
-  const trending = getTrendingProducts();
+export default async function HomePage() {
+  const [featured, trending] = await Promise.all([
+    getFeaturedProducts(),
+    getTrendingProducts(),
+  ]);
 
   return (
     <>

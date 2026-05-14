@@ -1,6 +1,6 @@
 import { ProductCard } from "@/components/store/product-card";
 import { ProductSortSelect } from "@/components/store/product-sort-select";
-import { products } from "@/lib/products";
+import { getAllProducts } from "@/lib/products";
 import { CATEGORIES } from "@/lib/types";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -22,9 +22,10 @@ export default async function ProductsPage({ searchParams }: Props) {
   const { category, search = "", sort = "default" } = await searchParams;
   const normalizedSearch = search.trim().toLowerCase();
 
+  const allProducts = await getAllProducts();
   const categoryFiltered = category
-    ? products.filter((p) => p.category === category)
-    : products;
+    ? allProducts.filter((p) => p.category === category)
+    : allProducts;
   const searched = normalizedSearch
     ? categoryFiltered.filter((p) => p.name.toLowerCase().includes(normalizedSearch))
     : categoryFiltered;
@@ -62,10 +63,10 @@ export default async function ProductsPage({ searchParams }: Props) {
               : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
           }`}
         >
-          All ({products.length})
+          All ({allProducts.length})
         </Link>
         {CATEGORIES.map((cat) => {
-          const count = products.filter((p) => p.category === cat).length;
+          const count = allProducts.filter((p) => p.category === cat).length;
           return (
             <Link
               key={cat}

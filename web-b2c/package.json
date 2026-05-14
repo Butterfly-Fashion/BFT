@@ -6,7 +6,8 @@
     "dev": "next dev --hostname 0.0.0.0 --port 3001",
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 3001",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "env:switch": "node -e \"const b=require('child_process').execSync('git branch --show-current').toString().trim(),src='web-b2c/.env.local.'+b,fs=require('fs');fs.existsSync(src)?(fs.copyFileSync(src,'web-b2c/.env.local'),console.log('✅ .env.local switched to ['+b+'] — restart dev server')):console.log('⚠️  No env file for branch: '+b)\""
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",

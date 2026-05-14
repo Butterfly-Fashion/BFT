@@ -260,3 +260,195 @@ export async function sendCustomerConfirmationEmail(
 
   console.log(`[email] Customer confirmation sent to ${customerEmail} for order ${orderId}`);
 }
+
+// Shipping tracking email — sent when admin marks order as shipped
+export async function sendTrackingEmail(params: {
+  orderNumber: string;
+  customerEmail: string;
+  customerName: string | null;
+  carrier: string;
+  trackingNumber: string;
+  trackingUrl: string | null;
+  items: Array<{ name: string; quantity: number; unitPrice: number }>;
+  total: number;
+}): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping tracking email");
+    return;
+  }
+
+  const { orderNumber, customerEmail, customerName, carrier, trackingNumber, trackingUrl, items, total } = params;
+  const firstName = (customerName ?? "").split(" ")[0] || "there";
+
+  const itemRows = items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">${i.name}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:center;">${i.quantity}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:right;">$${(i.unitPrice * i.quantity).toFixed(2)} CAD</td>
+      </tr>`
+    )
+    .join("");
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+
+    <div style="background:#C41E3A;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Your Order Has Shipped!</h1>
+    </div>
+
+    <div style="padding:28px;">
+      <p style="font-size:15px;color:#333;line-height:1.6;">
+        Hi <strong>${firstName}</strong>, great news — your order is on its way!
+      </p>
+
+      <div style="background:#f0f7ff;border:1px solid #cce0ff;border-radius:8px;padding:20px;margin:20px 0;">
+        <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Tracking Info</p>
+        <p style="margin:0 0 4px;font-size:15px;font-weight:bold;color:#111;">${carrier}</p>
+        <p style="margin:0 0 ${trackingUrl ? "16px" : "0"};font-size:14px;color:#444;font-family:monospace;">${trackingNumber}</p>
+        ${
+          trackingUrl
+            ? `<a href="${trackingUrl}" style="display:inline-block;padding:10px 24px;background:#1a6fcc;color:#fff;text-decoration:none;border-radius:20px;font-size:13px;font-weight:bold;">Track Your Package →</a>`
+            : ""
+        }
+      </div>
+
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin:20px 0 8px;">Order #${orderNumber}</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #f0f0f0;border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr style="background:#f9f9f9;">
+            <th style="padding:8px 12px;text-align:left;font-size:12px;color:#888;font-weight:600;">Product</th>
+            <th style="padding:8px 12px;text-align:center;font-size:12px;color:#888;font-weight:600;">Qty</th>
+            <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;font-weight:600;">Price</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>
+
+      <div style="margin-top:12px;text-align:right;">
+        <span style="font-size:16px;font-weight:bold;color:#C41E3A;">Total: $${total.toFixed(2)} CAD</span>
+      </div>
+
+      <div style="margin-top:24px;padding:16px;background:#fff8f8;border:1px solid #fde8e8;border-radius:8px;">
+        <p style="font-size:13px;color:#666;margin:0;">
+          Questions? Reply to this email or contact
+          <a href="mailto:jameskimkim1@gmail.com" style="color:#C41E3A;">jameskimkim1@gmail.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · Ships from North York, Canada</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: customerEmail,
+    subject: `Your order #${orderNumber} has shipped — ${carrier} ${trackingNumber}`,
+    html,
+  });
+
+  console.log(`[email] Tracking email sent to ${customerEmail} for order ${orderNumber}`);
+}
+
+// Pickup ready email — sent when admin marks pickup order as ready
+export async function sendPickupReadyEmail(params: {
+  orderNumber: string;
+  customerEmail: string;
+  customerName: string | null;
+  items: Array<{ name: string; quantity: number; unitPrice: number }>;
+  total: number;
+}): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping pickup ready email");
+    return;
+  }
+
+  const { orderNumber, customerEmail, customerName, items, total } = params;
+  const firstName = (customerName ?? "").split(" ")[0] || "there";
+
+  const itemRows = items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;">${i.name}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:center;">${i.quantity}</td>
+        <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;text-align:right;">$${(i.unitPrice * i.quantity).toFixed(2)} CAD</td>
+      </tr>`
+    )
+    .join("");
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+
+    <div style="background:#16a34a;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Your Order Is Ready for Pickup!</h1>
+    </div>
+
+    <div style="padding:28px;">
+      <p style="font-size:15px;color:#333;line-height:1.6;">
+        Hi <strong>${firstName}</strong>, your order is ready to be picked up!
+      </p>
+
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin:20px 0;">
+        <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Pickup Location</p>
+        <p style="margin:0;font-size:14px;color:#111;">178 Bentworth Ave, North York, ON M6A 1P7</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#666;">Mon–Sat: 9 AM – 7 PM &nbsp;|&nbsp; Sun: 11 AM – 4 PM</p>
+      </div>
+
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin:20px 0 8px;">Order #${orderNumber}</h3>
+      <table style="width:100%;border-collapse:collapse;border:1px solid #f0f0f0;border-radius:8px;overflow:hidden;">
+        <thead>
+          <tr style="background:#f9f9f9;">
+            <th style="padding:8px 12px;text-align:left;font-size:12px;color:#888;font-weight:600;">Product</th>
+            <th style="padding:8px 12px;text-align:center;font-size:12px;color:#888;font-weight:600;">Qty</th>
+            <th style="padding:8px 12px;text-align:right;font-size:12px;color:#888;font-weight:600;">Price</th>
+          </tr>
+        </thead>
+        <tbody>${itemRows}</tbody>
+      </table>
+
+      <div style="margin-top:12px;text-align:right;">
+        <span style="font-size:16px;font-weight:bold;color:#16a34a;">Total: $${total.toFixed(2)} CAD</span>
+      </div>
+
+      <div style="margin-top:24px;padding:16px;background:#fff8f8;border:1px solid #fde8e8;border-radius:8px;">
+        <p style="font-size:13px;color:#666;margin:0;">
+          Questions? Contact us at
+          <a href="mailto:jameskimkim1@gmail.com" style="color:#C41E3A;">jameskimkim1@gmail.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · 178 Bentworth Ave, North York, Canada</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: customerEmail,
+    subject: `Your order #${orderNumber} is ready for pickup!`,
+    html,
+  });
+
+  console.log(`[email] Pickup ready email sent to ${customerEmail} for order ${orderNumber}`);
+}
