@@ -1,20 +1,28 @@
 import Shippo from 'shippo';
-import { requireEnv } from './env';
 
-const shippo = new Shippo(process.env.SHIPPO_API_KEY || '');
-
-// Default origin address (Butterfly Fashion Trading, Toronto)
-// In a real app, these should be in environment variables or a settings table
+// Use correct origin address from B2C site which is known to work
 const ORIGIN_ADDRESS = {
-  name: 'Butterfly Fashion Trading',
-  street1: '123 Fashion St', // Placeholder
-  city: 'Toronto',
-  state: 'ON',
-  zip: 'M5V 2L1',
+  name: process.env.STORE_NAME || 'World Fan Gear',
+  street1: process.env.STORE_STREET || '178 Bentworth Ave',
+  city: process.env.STORE_CITY || 'North York',
+  state: process.env.STORE_PROVINCE || 'ON',
+  zip: process.env.STORE_POSTAL || 'M6A 1P7',
   country: 'CA',
   phone: '416-555-0199',
-  email: 'orders@butterflyfashion.com',
+  email: 'orders@worldfangear.com',
 };
+
+// Handle shippo package being a function or a constructor
+function getShippoClient() {
+    const apiKey = process.env.SHIPPO_API_KEY || '';
+    if (typeof Shippo === 'function') {
+        return (Shippo as any)(apiKey);
+    }
+    // @ts-ignore
+    return new Shippo(apiKey);
+}
+
+const shippo = getShippoClient();
 
 export async function getShippingRates(destination: {
   name: string;
@@ -34,8 +42,6 @@ export async function getShippingRates(destination: {
   distance_unit?: string;
 }>) {
   try {
-    // Basic parcel calculation: sum of weights
-    // For a more advanced implementation, we'd use multiple parcels or a box packer
     const totalWeight = items.reduce((sum, item) => sum + (Number(item.weight) * item.quantity), 0);
     const weightUnit = items[0]?.weight_unit || 'oz';
 
@@ -43,17 +49,21 @@ export async function getShippingRates(destination: {
       address_from: ORIGIN_ADDRESS,
       address_to: destination,
       parcels: [{
-        length: 12, // Default parcel size if not specified
+        length: 12,
         width: 12,
         height: 12,
         distance_unit: 'in',
-        weight: totalWeight || 1, // Minimum weight 1
+        weight: totalWeight || 1,
         mass_unit: weightUnit,
       }],
       async: false,
     });
 
-    // Filter and format rates
+    if (!shipment.rates) {
+        console.error('Shippo shipment created but no rates returned:', shipment);
+        return [];
+    }
+
     return shipment.rates.map((rate: any) => ({
       id: rate.object_id,
       carrier: rate.provider,
