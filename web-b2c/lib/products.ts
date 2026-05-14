@@ -11,12 +11,15 @@ const CATEGORY_GRADIENTS: Record<string, string> = {
   "Sticker Packs": "linear-gradient(145deg, #0d3b6e 0%, #1565c0 100%)",
 };
 
+// Per-category shipping weights (kg) — product + typical packaging materials
+// Sources: eBay/Amazon listings, Canada Post guides, manufacturer specs
 const CATEGORY_WEIGHTS: Record<string, number> = {
-  "Boxing Gloves": 1.2,
-  "Caps": 0.2,
-  "Bucket Hats": 0.2,
-  "Car Flags": 0.3,
-  "Sticker Packs": 0.15,
+  "Boxing Gloves": 0.30, // mini souvenir 6-8" display gloves ~150-200g + box
+  "Caps":          0.25, // snapback/fitted ~100g + cardboard box 150g
+  "Bucket Hats":   0.20, // foldable fan hat ~100-150g + poly mailer
+  "Car Flags":     0.12, // polyester flag + clip/pole + poly bag ~80-120g
+  "Sticker Packs": 0.15, // sticker sheets + cardboard mailer
+  "Accessories":   0.15,
 };
 
 export function dbProductToProduct(p: DbProduct): Product {

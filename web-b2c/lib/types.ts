@@ -168,6 +168,9 @@ export interface DbProduct {
   price: number;
   compare_at_price: number | null;
   weight_kg: number;
+  box_length_cm: number | null;
+  box_width_cm: number | null;
+  box_height_cm: number | null;
   badge: string | null;
   in_stock: boolean;
   stock_qty: number | null;

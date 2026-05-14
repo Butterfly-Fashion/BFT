@@ -562,8 +562,16 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>Shipping</span>
-                <span className={`font-medium ${shipping === 0 ? "text-green-600" : ""}`}>
-                  {shipping === 0 ? "Free" : formatCAD(shipping)}
+                <span className={`font-medium ${deliveryMethod === "pickup" ? "text-green-600" : ""}`}>
+                  {deliveryMethod === "pickup"
+                    ? "Free"
+                    : selectedRate
+                      ? formatCAD(selectedRate.amount)
+                      : fetchingRates
+                        ? "Calculating…"
+                        : form.postalCode.replace(/\s/g, "").length >= 6
+                          ? "—"
+                          : "Enter address"}
                 </span>
               </div>
               <div className="flex justify-between text-gray-600">
@@ -574,7 +582,11 @@ export default function CheckoutPage() {
 
             <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between font-bold text-gray-900">
               <span>Total</span>
-              <span>{formatCAD(total)}</span>
+              <span>
+                {deliveryMethod === "shipping" && !selectedRate
+                  ? "—"
+                  : formatCAD(total)}
+              </span>
             </div>
 
             <button

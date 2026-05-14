@@ -468,6 +468,11 @@ export async function upsertProductAction(formData: FormData) {
     ? await saveProductImage(imageFile, slug)
     : null;
 
+  const rawWeightKg = formData.get("weight_kg");
+  const rawBoxL = formData.get("box_length_cm");
+  const rawBoxW = formData.get("box_width_cm");
+  const rawBoxH = formData.get("box_height_cm");
+
   const payload = {
     name,
     slug,
@@ -480,6 +485,10 @@ export async function upsertProductAction(formData: FormData) {
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
     is_bulk_available: formData.get("is_bulk_available") === "on",
     is_hidden: formData.get("is_hidden") === "on",
+    weight_kg: rawWeightKg ? Number(rawWeightKg) : null,
+    box_length_cm: rawBoxL ? Number(rawBoxL) : null,
+    box_width_cm: rawBoxW ? Number(rawBoxW) : null,
+    box_height_cm: rawBoxH ? Number(rawBoxH) : null,
     updated_at: new Date().toISOString(),
   };
   if (id) await admin.from("products").update(payload).eq("id", id);

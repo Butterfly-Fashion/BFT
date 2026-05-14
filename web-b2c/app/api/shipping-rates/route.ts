@@ -9,13 +9,32 @@ export interface ShippingRate {
   days: number | null;
 }
 
+// Pick a standard box based on total weight to avoid always quoting the same box.
+// Dimensional weight (L×W×H / 5000 for kg) is checked — we use the larger value.
+// Standard box sizes chosen to match common Canada Post / UPS rate breaks.
+function selectBox(weightKg: number): { length: string; width: string; height: string } {
+  if (weightKg <= 0.30) {
+    // Small: stickers, single car flag, single sticker pack
+    return { length: "22", width: "18", height: "6" };
+  }
+  if (weightKg <= 0.80) {
+    // Medium: single cap/hat/gloves, 2-3 light items
+    return { length: "32", width: "24", height: "12" };
+  }
+  if (weightKg <= 2.00) {
+    // Large: sticker box, multiple caps, mixed order
+    return { length: "42", width: "32", height: "16" };
+  }
+  // XL: bulk order
+  return { length: "50", width: "40", height: "22" };
+}
+
 // GET /api/shipping-rates — config check (safe, no secrets exposed)
 export async function GET() {
   const apiKey = process.env.SHIPPO_API_KEY;
   if (!apiKey) {
     return NextResponse.json({ configured: false, reason: "SHIPPO_API_KEY not set" });
   }
-  // verify key by calling Shippo carrier accounts
   try {
     const res = await fetch("https://api.goshippo.com/carrier_accounts/?results=1", {
       headers: { Authorization: `ShippoToken ${apiKey}` },
@@ -49,6 +68,13 @@ export async function POST(req: NextRequest) {
   }
 
   const weight = Math.max(0.1, weightKg ?? 0.5);
+  const box = selectBox(weight);
+
+  // Dimensional weight check — carriers bill max(actual, dim weight)
+  // Canada Post/UPS: dim weight (kg) = L×W×H(cm) / 5000
+  const dimWeightKg =
+    (parseFloat(box.length) * parseFloat(box.width) * parseFloat(box.height)) / 5000;
+  const billableWeight = Math.max(weight, dimWeightKg);
 
   const shippoPayload = {
     address_from: {
@@ -56,7 +82,7 @@ export async function POST(req: NextRequest) {
       street1: process.env.STORE_STREET ?? "178 Bentworth Ave",
       city: process.env.STORE_CITY ?? "North York",
       state: process.env.STORE_PROVINCE ?? "ON",
-      zip: process.env.STORE_POSTAL ?? "M6A 1P7",
+      zip: (process.env.STORE_POSTAL ?? "M6A1P7").replace(/\s/g, ""),
       country: "CA",
     },
     address_to: {
@@ -70,11 +96,11 @@ export async function POST(req: NextRequest) {
     },
     parcels: [
       {
-        length: "35",
-        width: "25",
-        height: "15",
+        length: box.length,
+        width: box.width,
+        height: box.height,
         distance_unit: "cm",
-        weight: weight.toFixed(2),
+        weight: billableWeight.toFixed(2),
         mass_unit: "kg",
       },
     ],

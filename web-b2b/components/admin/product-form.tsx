@@ -20,6 +20,10 @@ type ProductFormProps = {
     availability_status: string;
     is_bulk_available: boolean;
     is_hidden: boolean;
+    weight_kg?: number | null;
+    box_length_cm?: number | null;
+    box_width_cm?: number | null;
+    box_height_cm?: number | null;
   };
 };
 
@@ -86,6 +90,45 @@ export function ProductForm({ mode, product }: ProductFormProps) {
               </label>
               <label className="label">Base price<input className="field" name="base_price" defaultValue={product?.base_price ?? ""} required step="0.01" type="number" /></label>
             </div>
+            {/* Shipping — weight & box dimensions for accurate carrier quotes */}
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Shipping</p>
+              <p className="mt-1 mb-3 text-xs font-semibold text-slate-500">
+                Enter the actual weight and box size <strong>including packaging</strong>. Used to calculate exact carrier rates — inaccurate values cause losses.
+              </p>
+              <div className="grid gap-4 md:grid-cols-2">
+                <label className="label">
+                  Weight (kg, incl. packaging)
+                  <input
+                    className="field"
+                    name="weight_kg"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    placeholder="e.g. 0.25"
+                    defaultValue={product?.weight_kg ?? ""}
+                  />
+                </label>
+                <div>
+                  <p className="text-xs font-bold text-slate-700 mb-1">Box dimensions (cm, incl. packaging)</p>
+                  <div className="grid grid-cols-3 gap-2">
+                    <label className="label text-xs">
+                      Length
+                      <input className="field" name="box_length_cm" type="number" step="0.1" min="1" placeholder="L" defaultValue={product?.box_length_cm ?? ""} />
+                    </label>
+                    <label className="label text-xs">
+                      Width
+                      <input className="field" name="box_width_cm" type="number" step="0.1" min="1" placeholder="W" defaultValue={product?.box_width_cm ?? ""} />
+                    </label>
+                    <label className="label text-xs">
+                      Height
+                      <input className="field" name="box_height_cm" type="number" step="0.1" min="1" placeholder="H" defaultValue={product?.box_height_cm ?? ""} />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs font-black uppercase tracking-wide text-slate-500">System IDs (optional)</p>
               <p className="mt-1 text-xs font-semibold text-slate-500">
