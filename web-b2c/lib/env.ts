@@ -16,7 +16,7 @@ export const env = {
   stripeSecretKey: optional("STRIPE_SECRET_KEY"),
   stripePublishableKey: optional("STRIPE_PUBLISHABLE_KEY"),
   stripeWebhookSecret: optional("STRIPE_WEBHOOK_SECRET"),
-  emailFrom: optional("EMAIL_FROM", "FIFA 2026 Fan Store <orders@fifa2026.ca>"),
+  emailFrom: optional("EMAIL_FROM", "World Fan Gear <jameskimkim1@gmail.com>"),
   smtpHost: optional("SMTP_HOST"),
   smtpPort: parseInt(optional("SMTP_PORT", "587")),
   smtpUser: optional("SMTP_USER"),

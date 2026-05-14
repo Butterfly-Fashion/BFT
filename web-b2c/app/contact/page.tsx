@@ -21,22 +21,22 @@ export default function ContactPage() {
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4 shadow-sm">
           <div>
             <p className="font-semibold text-gray-900 mb-1">Email</p>
-            <a href="mailto:support@fifa2026.ca" className="text-[#C41E3A] hover:underline">
-              support@fifa2026.ca
+            <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">
+              jameskimkim1@gmail.com
             </a>
             <p className="text-gray-400 text-xs mt-1">We respond within 1–2 business days.</p>
           </div>
 
           <div>
             <p className="font-semibold text-gray-900 mb-1">Business Hours</p>
-            <p>Monday – Friday: 9 AM – 6 PM EST</p>
-            <p>Saturday: 10 AM – 4 PM EST</p>
-            <p>Sunday: Closed</p>
+            <p>Monday – Friday: 9 AM – 7 PM EST</p>
+            <p>Saturday: 9 AM – 7 PM EST</p>
+            <p>Sunday: 11 AM – 4 PM EST</p>
           </div>
 
           <div>
             <p className="font-semibold text-gray-900 mb-1">Based in</p>
-            <p>Toronto, Ontario, Canada</p>
+            <p>North York, Ontario, Canada</p>
           </div>
         </div>
 

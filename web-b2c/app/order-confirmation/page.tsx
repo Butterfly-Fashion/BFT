@@ -270,7 +270,7 @@ function OrderConfirmationInner() {
           Continue Shopping
         </Link>
         <a
-          href="mailto:support@fifa2026.ca"
+          href="mailto:jameskimkim1@gmail.com"
           className="inline-flex items-center justify-center px-8 py-3.5 border border-gray-200 text-gray-600 font-semibold rounded-full hover:border-gray-400 transition-colors text-sm"
         >
           Contact Support

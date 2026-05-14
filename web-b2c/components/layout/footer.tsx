@@ -14,7 +14,7 @@ export function Footer() {
           </div>
           <p className="text-sm leading-relaxed">
             Premium World Cup 2026 merchandise for Canadian fans. Shipped from
-            Toronto, Canada.
+            North York, Canada.
           </p>
           <p className="text-xs mt-4 text-gray-500">
             Not affiliated with FIFA or any official organizing body.
@@ -89,10 +89,10 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="mailto:support@fifa2026.ca"
+                href="mailto:jameskimkim1@gmail.com"
                 className="hover:text-white transition-colors"
               >
-                support@fifa2026.ca
+                jameskimkim1@gmail.com
               </a>
             </li>
           </ul>

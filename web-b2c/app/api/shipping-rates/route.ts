@@ -53,10 +53,10 @@ export async function POST(req: NextRequest) {
   const shippoPayload = {
     address_from: {
       name: process.env.STORE_NAME ?? "World Fan Gear",
-      street1: process.env.STORE_STREET ?? "100 King St W",
-      city: process.env.STORE_CITY ?? "Toronto",
+      street1: process.env.STORE_STREET ?? "178 Bentworth Ave",
+      city: process.env.STORE_CITY ?? "North York",
       state: process.env.STORE_PROVINCE ?? "ON",
-      zip: process.env.STORE_POSTAL ?? "M5X 1A9",
+      zip: process.env.STORE_POSTAL ?? "M6A 1P7",
       country: "CA",
     },
     address_to: {

@@ -1,8 +1,8 @@
 import nodemailer from "nodemailer";
 import type Stripe from "stripe";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "support@fifa2026.ca";
-const FROM = process.env.EMAIL_FROM ?? "World Fan Gear <orders@fifa2026.ca>";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "jameskimkim1@gmail.com";
+const FROM = process.env.EMAIL_FROM ?? "World Fan Gear <jameskimkim1@gmail.com>";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
 
 function isSmtpConfigured(): boolean {
@@ -227,7 +227,7 @@ export async function sendCustomerConfirmationEmail(
       <div style="margin-top:28px;padding:16px;background:#fff8f8;border:1px solid #fde8e8;border-radius:8px;">
         <p style="font-size:13px;color:#666;margin:0;">
           Questions about your order? Reply to this email or contact us at
-          <a href="mailto:support@fifa2026.ca" style="color:#C41E3A;">support@fifa2026.ca</a>
+          <a href="mailto:jameskimkim1@gmail.com" style="color:#C41E3A;">jameskimkim1@gmail.com</a>
         </p>
       </div>
 
@@ -241,7 +241,7 @@ export async function sendCustomerConfirmationEmail(
 
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
       <p style="font-size:11px;color:#aaa;margin:0;">
-        World Fan Gear · Ships from Toronto, Canada<br>
+        World Fan Gear · Ships from North York, Canada<br>
         <a href="${SITE}/returns" style="color:#aaa;">Returns Policy</a> ·
         <a href="${SITE}/shipping" style="color:#aaa;">Shipping Info</a>
       </p>

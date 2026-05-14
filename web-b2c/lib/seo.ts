@@ -71,7 +71,7 @@ export function organizationJsonLd() {
     logo: absoluteUrl("/asset/logo.jpg"),
     contactPoint: {
       "@type": "ContactPoint",
-      email: "support@fifa2026.ca",
+      email: "jameskimkim1@gmail.com",
       contactType: "customer support",
       areaServed: "CA",
       availableLanguage: ["en"],
