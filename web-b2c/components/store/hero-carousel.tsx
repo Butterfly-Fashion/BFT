@@ -145,7 +145,6 @@ function BundleSlide() {
 const SLIDES: Slide[] = [
   { id: "hero",        render: () => <HeroSlide /> },
   { id: "sticker-box", render: () => <StickerBoxSlide /> },
-  { id: "bundle",      render: () => <BundleSlide /> },
 ];
 
 export function HeroCarousel() {
