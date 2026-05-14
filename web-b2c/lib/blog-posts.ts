@@ -400,6 +400,102 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
+    slug: "world-cup-2026-sticker-bundle-canada",
+    title: "World Cup 2026 Sticker Bundle Guide for Canadian Collectors",
+    description:
+      "Why the Panini FIFA World Cup 2026 bundle is the easiest way to start collecting with the official album and a 50-pack sticker box together.",
+    publishedAt: "2026-05-14",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/fwc26_bundle_main.png",
+    heroAlt: "Panini FIFA World Cup 2026 sticker bundle with album and 50-pack box",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "Start with the bundle, not separate guesses",
+        body: [
+          "The easiest way to begin a World Cup sticker collection is to buy the album and sticker box together. The album gives the collection structure, while the 50-pack box gives enough stickers to make real progress on day one.",
+          "For Canadian collectors shopping before the rush, the bundle keeps the first purchase simple. There is no need to remember the album separately or open packs before you have a place to organize them.",
+        ],
+      },
+      {
+        heading: "A better first gift for new collectors",
+        body: [
+          "Sticker collecting is most enjoyable when the recipient can start immediately. A bundle feels complete because it includes both the display piece and the opening experience.",
+          "It works well for kids, families, soccer dads, and longtime collectors who want the full World Cup 2026 ritual from the first pack.",
+        ],
+      },
+      {
+        heading: "Built for a full-tournament habit",
+        body: [
+          "Instead of opening every pack at once, collectors can open a few before big matches and place the stickers after the final whistle. That turns the bundle into a repeat match-day activity through the tournament.",
+          "Duplicates become useful too. Keep them sorted for trades with friends, classmates, coworkers, or other fans at watch parties.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What comes in the World Cup 2026 sticker bundle?",
+        a: "The bundle includes the official sticker album and a 50-pack sticker box, so collectors can start organizing and opening stickers right away.",
+      },
+      {
+        q: "Is the sticker bundle a good gift?",
+        a: "Yes. It is a complete collector gift because it includes both the album and enough packs to make the first collecting session feel exciting.",
+      },
+    ],
+  },
+  {
+    slug: "why-buy-world-cup-sticker-box-50-packs",
+    title: "Why Buy a 50-Pack World Cup 2026 Sticker Box?",
+    description:
+      "A practical look at why the 50-pack Panini FIFA World Cup 2026 sticker box is the serious collector choice for opening, trading, and album progress.",
+    publishedAt: "2026-05-14",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
+    heroAlt: "Panini FIFA World Cup 2026 sticker box with 50 packs",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "A box gives the collection momentum",
+        body: [
+          "Opening one or two packs is fun, but a 50-pack box is where the collection starts to feel real. With more than 250 stickers, collectors can fill pages, build duplicate piles, and see which teams are coming together quickly.",
+          "That momentum matters because World Cup collecting is part hobby and part ritual. A box gives fans enough packs to return to the album across several match days.",
+        ],
+      },
+      {
+        heading: "Better for trading than small pack runs",
+        body: [
+          "Trading only works when you have duplicates. A larger box naturally creates a stronger swap pile, which makes it easier to fill gaps without buying pack after pack.",
+          "For families or friend groups, one box can become a shared opening session. Everyone compares pulls, trades duplicates, and follows different teams in the album.",
+        ],
+      },
+      {
+        heading: "Pair it with the official album",
+        body: [
+          "The 50-pack box is strongest when paired with the official album. Without the album, stickers are loose collectibles; with the album, every pull has a clear destination.",
+          "If you are buying for someone else, the bundle is the safest version because it includes both pieces in one purchase.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How many stickers are in the 50-pack sticker box?",
+        a: "A 50-pack box includes more than 250 stickers, based on five stickers per pack.",
+      },
+      {
+        q: "Should I buy the sticker box or the bundle?",
+        a: "Buy the box if you already have the album. Buy the bundle if you are starting from scratch or giving it as a gift.",
+      },
+    ],
+  },
+  {
     slug: "world-cup-bucket-hats",
     title: "Why Bucket Hats Are Perfect for World Cup Match Days",
     description:
@@ -491,6 +587,102 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "official-world-cup-2026-sticker-album-guide",
+    title: "Official World Cup 2026 Sticker Album: Why It Matters",
+    description:
+      "A collector-friendly guide to the Panini FIFA World Cup 2026 Official Sticker Album and why it should be the first item in every sticker setup.",
+    publishedAt: "2026-05-15",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
+    heroAlt: "Panini FIFA World Cup 2026 official sticker album cover",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-official-sticker-album",
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+    ],
+    sections: [
+      {
+        heading: "The album turns stickers into a collection",
+        body: [
+          "A sticker pack is exciting for a few minutes. The album is what turns that excitement into a full World Cup project. It shows the teams, the empty spots, and the progress that keeps collectors coming back.",
+          "For new collectors, buying the album first prevents loose stickers from piling up before there is a clear system for organizing them.",
+        ],
+      },
+      {
+        heading: "A low-cost entry into World Cup collecting",
+        body: [
+          "The official album is the most affordable way to join the collecting experience. It gives fans a permanent place to record the tournament even before they commit to a full sticker box.",
+          "Families can start with the album, then add packs or a 50-pack box once the collecting habit has started.",
+        ],
+      },
+      {
+        heading: "Best paired with the bundle",
+        body: [
+          "The album is essential, but the bundle is the cleanest first purchase because it includes both the album and the 50-pack box. That means collectors can start filling pages immediately.",
+          "If you are shopping for a gift, the bundle feels more complete than the album alone.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Do I need the official album to collect World Cup stickers?",
+        a: "Yes. The album gives the collection structure and helps you track which stickers you still need.",
+      },
+      {
+        q: "Can I give the sticker album as a gift by itself?",
+        a: "Yes, but pairing it with sticker packs or the bundle creates a better first collecting experience.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-sticker-bundle-gift-idea",
+    title: "World Cup 2026 Sticker Bundle Gift Idea",
+    description:
+      "Why the Panini FIFA World Cup 2026 sticker bundle is a strong gift for soccer fans, kids, families, and collectors in Canada.",
+    publishedAt: "2026-05-15",
+    category: "Gift Guide",
+    heroImage: "/asset/stickers/fwc26_bundle_ad.webp",
+    heroAlt: "World Cup 2026 sticker bundle promotional image with album and sticker box",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+    ],
+    sections: [
+      {
+        heading: "A gift that lasts longer than one match",
+        body: [
+          "The best soccer gifts keep being used after the first reaction. A sticker bundle does that because every pack opened and every page filled gives the recipient another small World Cup moment.",
+          "It is especially useful for families because collecting works before kickoff, during halftime, and after matches when everyone is still talking about the game.",
+        ],
+      },
+      {
+        heading: "Simple for gift buyers",
+        body: [
+          "Sizing is always the hard part with apparel gifts. The sticker bundle avoids that completely. You do not need to know a hat size, clothing size, or preferred fit.",
+          "If the recipient likes soccer, collecting, or World Cup traditions, the bundle is easy to understand and easy to enjoy.",
+        ],
+      },
+      {
+        heading: "Make it a watch party centerpiece",
+        body: [
+          "Put the box on the table before a match and let guests open a pack each. It creates a natural shared activity without needing complicated games or rules.",
+          "After the match, the album becomes the place where the day is remembered through the stickers pulled during that session.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Who is the sticker bundle best for?",
+        a: "It works well for kids, families, collectors, soccer dads, and fans who enjoy opening packs during tournament season.",
+      },
+      {
+        q: "Is the sticker bundle better than buying only packs?",
+        a: "For gifts, yes. The album makes the packs more useful because the recipient can organize stickers immediately.",
+      },
+    ],
+  },
   // ── May 16 ──────────────────────────────────────────────────────────────
   {
     slug: "argentina-fan-gear-canada",
@@ -566,6 +758,102 @@ export const blogPosts: BlogPost[] = [
       { q: "Is Brazil gear a good World Cup gift?", a: "Yes. Yellow Brazil items are easy to recognize and make strong gifts for any soccer fan." },
     ],
   },
+  {
+    slug: "how-to-start-panini-world-cup-2026-collection",
+    title: "How to Start a Panini World Cup 2026 Sticker Collection",
+    description:
+      "A simple starter guide for Canadian fans who want to collect Panini FIFA World Cup 2026 stickers with the album, box, and bundle.",
+    publishedAt: "2026-05-16",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/fwc26_box.png",
+    heroAlt: "Panini FIFA World Cup 2026 sticker box product image",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "Buy the album before opening packs",
+        body: [
+          "The cleanest start is album first. Once the album is ready, every sticker has a place and every empty spot becomes part of the collecting goal.",
+          "If you want the simplest first purchase, choose the bundle. It gives you the album and the 50-pack box together so the collection can begin immediately.",
+        ],
+      },
+      {
+        heading: "Open in small sessions",
+        body: [
+          "Opening a full box in one sitting is fun, but spreading packs across match days makes the experience last. Open a few before big games, place them in the album, and set duplicates aside.",
+          "This rhythm keeps the collection connected to the tournament instead of turning it into a one-day activity.",
+        ],
+      },
+      {
+        heading: "Create a duplicate system early",
+        body: [
+          "Duplicates are not wasted stickers. They are trading currency. Keep a small envelope or box for extras and sort them by team or sticker number.",
+          "When friends or family start collecting too, a sorted duplicate pile makes trades fast and keeps everyone moving toward a fuller album.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What should I buy first for a World Cup sticker collection?",
+        a: "Start with the official album, then add packs. The bundle is the easiest option because it includes both.",
+      },
+      {
+        q: "Should I open all 50 packs at once?",
+        a: "You can, but opening a few packs across multiple match days makes the collecting experience last longer.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-2026-sticker-box-vs-bundle",
+    title: "World Cup 2026 Sticker Box vs Bundle: Which Should You Buy?",
+    description:
+      "Compare the Panini FIFA World Cup 2026 sticker box and bundle so you can choose the right option for collectors, gifts, and family openings.",
+    publishedAt: "2026-05-16",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/fwc26_bundle_main.png",
+    heroAlt: "Panini FIFA World Cup 2026 bundle product image with album and box",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "Choose the box if you already own the album",
+        body: [
+          "The 50-pack box is the right purchase when you already have the official album. It gives you a large opening session and enough stickers to make visible progress across many pages.",
+          "It is also useful for collectors who need more duplicates for trading or want a second wave of packs after the first album sections are filled.",
+        ],
+      },
+      {
+        heading: "Choose the bundle if you are starting fresh",
+        body: [
+          "The bundle is the better first purchase because it includes the album and the box together. That matters for new collectors who want to open packs immediately and place stickers in the right spots.",
+          "For gifts, the bundle is the safer choice because it feels complete as soon as it is opened.",
+        ],
+      },
+      {
+        heading: "For families, the bundle is easier",
+        body: [
+          "Families often want one purchase that covers everyone. The album becomes the shared progress board, and the box supplies enough packs for several people to participate.",
+          "That makes the bundle a natural fit for World Cup watch parties, kids' activities, and weekend collecting sessions.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is the World Cup sticker bundle worth it?",
+        a: "Yes, especially for first-time collectors because it includes both the album and the 50-pack box.",
+      },
+      {
+        q: "When should I buy only the 50-pack box?",
+        a: "Buy only the box when you already own the official album or need more packs for trading and completion.",
+      },
+    ],
+  },
   // ── May 17 ──────────────────────────────────────────────────────────────
   {
     slug: "mexico-fan-gear-canada",
@@ -639,6 +927,102 @@ export const blogPosts: BlogPost[] = [
     faqs: [
       { q: "What France fan gear is available in Canada for 2026?", a: "France caps, car flags, and mini souvenir boxing gloves are available for Canadian fans ahead of World Cup 2026." },
       { q: "Is France gear a good gift for soccer fans in Canada?", a: "Yes. France is a top team with a strong Canadian fan base, making Les Bleus items well-received gifts." },
+    ],
+  },
+  {
+    slug: "world-cup-2026-stickers-for-kids-and-families",
+    title: "World Cup 2026 Stickers for Kids and Families",
+    description:
+      "How Panini FIFA World Cup 2026 sticker packs, the official album, and the bundle can become an easy family activity during tournament season.",
+    publishedAt: "2026-05-17",
+    category: "Family Guide",
+    heroImage: "/asset/stickers/yamal200.jpg",
+    heroAlt: "World Cup 2026 soccer player sticker product image",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "A screen-light activity for match days",
+        body: [
+          "Sticker collecting gives kids something hands-on to do before kickoff, during halftime, or after the final whistle. It keeps the World Cup feeling active even for younger fans who may not follow every minute of the match.",
+          "The album adds a simple goal: find the right page, match the number, and place the sticker carefully.",
+        ],
+      },
+      {
+        heading: "The bundle keeps setup simple",
+        body: [
+          "For families, the bundle is the easiest starting point because it includes both the album and enough packs for several collecting sessions.",
+          "Parents do not need to build a complicated activity. Open packs, sort new stickers, set duplicates aside, and let kids watch the album fill up over time.",
+        ],
+      },
+      {
+        heading: "Make duplicates part of the fun",
+        body: [
+          "Duplicates are a chance to teach trading, sharing, and organization. Kids can compare extras with siblings, cousins, classmates, or friends at watch parties.",
+          "A small duplicate envelope turns the collection into a social activity instead of a solo project.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Are World Cup sticker packs good for kids?",
+        a: "Yes. They are a simple collecting activity for kids, though younger children should be supervised with small stickers and packaging.",
+      },
+      {
+        q: "What is the easiest family sticker setup?",
+        a: "The bundle is easiest because it includes the official album and a 50-pack box in one purchase.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-2026-sticker-pack-opening-rituals",
+    title: "World Cup 2026 Sticker Pack Opening Rituals",
+    description:
+      "Ideas for turning Panini FIFA World Cup 2026 sticker packs into a pre-game, halftime, and watch party ritual for collectors.",
+    publishedAt: "2026-05-17",
+    category: "Sticker Packs",
+    heroImage: "/asset/stickers/messi200.jpg",
+    heroAlt: "World Cup 2026 soccer player sticker product image for collectors",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+    ],
+    sections: [
+      {
+        heading: "Open one pack before kickoff",
+        body: [
+          "A simple pre-game ritual makes sticker collecting feel connected to the match. Open one pack before kickoff, place any new stickers in the album, and keep the duplicates ready for later trades.",
+          "If the pack includes a player from one of the teams playing that day, it becomes an easy conversation starter.",
+        ],
+      },
+      {
+        heading: "Use halftime for sorting and trades",
+        body: [
+          "Halftime is the perfect window for sticker activity. It is long enough to sort a few stickers, compare duplicates, and make quick trades without missing the match.",
+          "At watch parties, put the box and album near the snack table so collectors can join in naturally.",
+        ],
+      },
+      {
+        heading: "Save special packs for big matches",
+        body: [
+          "Collectors often enjoy saving a few packs for opening day, rivalry matches, knockout rounds, or the final. This gives the box a longer life across the tournament.",
+          "The 50-pack box works especially well for this because it gives you enough packs to create multiple small rituals instead of one short opening session.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How can I make sticker collecting more fun during the World Cup?",
+        a: "Open packs before kickoff, sort duplicates at halftime, and save some packs for major matches.",
+      },
+      {
+        q: "Is a 50-pack box good for watch parties?",
+        a: "Yes. It gives guests enough packs to share, compare pulls, and trade duplicates during the event.",
+      },
     ],
   },
   // ── May 18 ──────────────────────────────────────────────────────────────
@@ -1023,7 +1407,7 @@ export const blogPosts: BlogPost[] = [
     description: "Everything you need to know about Panini FIFA World Cup 2026 sticker packs — how they work, what is inside, and how to complete the album.",
     publishedAt: "2026-05-23",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
     heroAlt: "Panini FIFA World Cup 2026 sticker packs collector guide",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
     sections: [
@@ -1060,7 +1444,7 @@ export const blogPosts: BlogPost[] = [
     description: "A beginner's guide to collecting Panini FIFA World Cup 2026 stickers — where to start, how to trade, and tips for filling the album faster.",
     publishedAt: "2026-05-23",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/fwc26_bundle_main.png",
     heroAlt: "World Cup 2026 sticker collecting guide for beginners",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
     sections: [
@@ -1098,7 +1482,7 @@ export const blogPosts: BlogPost[] = [
     description: "A complete guide to the Panini FIFA World Cup 2026 Official Sticker Album — what is inside, how to organize it, and tips for completion.",
     publishedAt: "2026-05-24",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
     heroAlt: "Panini FIFA World Cup 2026 Official Sticker Album guide",
     productSlugs: ["panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-sticker-box-50-packs"],
     sections: [
@@ -1135,7 +1519,7 @@ export const blogPosts: BlogPost[] = [
     description: "Tips for trading Panini FIFA World Cup 2026 duplicate stickers — how to organize swaps, find trading partners, and complete the album faster.",
     publishedAt: "2026-05-24",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/fwc26_box.png",
     heroAlt: "World Cup 2026 sticker swap trading tips guide",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
     sections: [
@@ -2223,7 +2607,7 @@ export const blogPosts: BlogPost[] = [
     description: "The top players to watch at World Cup 2026 and what fan gear to buy to support them — Messi, Mbappé, Kane, Yamal, and more.",
     publishedAt: "2026-06-08",
     category: "Tournament Guide",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/mbappe200.jpg",
     heroAlt: "World Cup 2026 top players to watch fan gear guide",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "argentina-flag-3d-embroidered-cap", "france-flag-3d-embroidered-cap", "england-flag-3d-embroidered-cap"],
     sections: [
@@ -3048,7 +3432,7 @@ export const blogPosts: BlogPost[] = [
     description: "Panini World Cup 2026 sticker collecting tips for mid-tournament — how to fill the gaps, where to trade, and how to stay on track for a complete album.",
     publishedAt: "2026-06-19",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/fwc26_box.png",
     heroAlt: "Panini World Cup 2026 sticker album mid-tournament collecting tips",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
     sections: [
@@ -3085,7 +3469,7 @@ export const blogPosts: BlogPost[] = [
     description: "Tips and strategies for completing the Panini FIFA World Cup 2026 Official Sticker Album — trading, gap analysis, and the most efficient path to a full collection.",
     publishedAt: "2026-06-19",
     category: "Sticker Packs",
-    heroImage: "/asset/hero-banner.jpg",
+    heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
     heroAlt: "How to complete Panini World Cup 2026 sticker album tips",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
     sections: [
