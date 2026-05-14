@@ -17,13 +17,13 @@ const STATUS_LABELS: StatusLabel = {
 };
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
-  paid: "bg-blue-50 text-blue-700 border-blue-200",
+  paid: "bg-white text-gray-500 border-gray-200",
   packing: "bg-amber-50 text-amber-700 border-amber-200",
-  shipped: "bg-purple-50 text-purple-700 border-purple-200",
-  ready_for_pickup: "bg-orange-50 text-orange-700 border-orange-200",
-  completed: "bg-green-50 text-green-700 border-green-200",
-  cancelled: "bg-red-50 text-red-700 border-red-200",
-  refunded: "bg-gray-100 text-gray-600 border-gray-200",
+  shipped: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  ready_for_pickup: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  completed: "bg-green-50 text-green-600 border-green-200",
+  cancelled: "bg-gray-100 text-gray-500 border-gray-300",
+  refunded: "bg-gray-100 text-gray-500 border-gray-300",
 };
 
 const CARRIERS = ["Canada Post", "UPS", "FedEx", "Purolator", "DHL", "Other"];
@@ -58,6 +58,7 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
   const [selected, setSelected] = useState<DbOrder | null>(null);
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   // Side panel edit state
@@ -124,6 +125,70 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
       setSaveMsg({ type: "ok", text: "Saved!" });
     } catch (e) {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Save failed" });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleSyncStripe() {
+    if (!confirm("Sync all paid Stripe orders to Supabase? This may take a moment.")) return;
+    setSyncing(true);
+    try {
+      const res = await fetch("/api/admin/sync-stripe", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Sync failed");
+      alert(`Sync complete: ${data.imported} imported, ${data.skipped} skipped.`);
+      await fetchOrders();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Sync failed");
+    } finally {
+      setSyncing(false);
+    }
+  }
+
+  async function handleCancelOrder() {
+    if (!selected || selected._source !== "supabase") return;
+    if (!confirm(`Cancel order ${selected.order_number}? This cannot be undone.`)) return;
+    setSaving(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "cancelled" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed");
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? { ...data.order, _source: "supabase" as const } : o)));
+      setSelected({ ...data.order, _source: "supabase" as const });
+      setEditStatus("cancelled");
+      setSaveMsg({ type: "ok", text: "Order cancelled." });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed" });
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleMarkRefunded() {
+    if (!selected || selected._source !== "supabase") return;
+    if (!confirm(`Mark order ${selected.order_number} as refunded?`)) return;
+    setSaving(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "refunded" }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed");
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? { ...data.order, _source: "supabase" as const } : o)));
+      setSelected({ ...data.order, _source: "supabase" as const });
+      setEditStatus("refunded");
+      setSaveMsg({ type: "ok", text: "Order marked as refunded." });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed" });
     } finally {
       setSaving(false);
     }
@@ -214,6 +279,13 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
                 Stripe fallback — run Supabase migration to unlock full features
               </span>
             )}
+            <button
+              onClick={handleSyncStripe}
+              disabled={syncing}
+              className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-100 transition-colors disabled:opacity-50"
+            >
+              {syncing ? "Syncing…" : "↓ Sync from Stripe"}
+            </button>
             <button
               onClick={fetchOrders}
               disabled={loading}
@@ -497,9 +569,11 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
                     disabled={!isEditable}
                     className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400"
                   >
-                    {(Object.entries(STATUS_LABELS) as [OrderStatus, string][]).map(([val, label]) => (
-                      <option key={val} value={val}>{label}</option>
-                    ))}
+                    {(Object.entries(STATUS_LABELS) as [OrderStatus, string][])
+                      .filter(([val]) => val !== "cancelled" && val !== "refunded")
+                      .map(([val, label]) => (
+                        <option key={val} value={val}>{label}</option>
+                      ))}
                   </select>
                 </div>
 
@@ -588,6 +662,25 @@ export default function OrdersDashboard({ logoutAction }: { logoutAction: () => 
                         ? "📨 Send Pickup Ready Email"
                         : "📨 Send Tracking Email"}
                   </button>
+                )}
+
+                {isEditable && selected.status !== "cancelled" && selected.status !== "refunded" && (
+                  <div className="flex gap-2 pt-1">
+                    <button
+                      onClick={handleCancelOrder}
+                      disabled={saving}
+                      className="flex-1 rounded-full border border-red-200 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 hover:border-red-300 transition-colors disabled:opacity-50"
+                    >
+                      Cancel Order
+                    </button>
+                    <button
+                      onClick={handleMarkRefunded}
+                      disabled={saving}
+                      className="flex-1 rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                    >
+                      Mark Refunded
+                    </button>
+                  </div>
                 )}
 
                 {selected.stripe_payment_intent && (
