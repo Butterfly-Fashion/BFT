@@ -13,7 +13,6 @@ import {
 import { CANADIAN_PROVINCES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import type { ShippingRate } from "@/app/api/shipping-rates/route";
-import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
@@ -67,27 +66,21 @@ export default function CheckoutPage() {
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
   const [selectedRate, setSelectedRate] = useState<ShippingRate | null>(null);
   const [fetchingRates, setFetchingRates] = useState(false);
-  const [hasFetchedRates, setHasFetchedRates] = useState(false);
   const [rateDebug, setRateDebug] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Auto-fetch Shippo rates when postal code is complete
   useEffect(() => {
-    if (deliveryMethod !== "shipping") {
-      setHasFetchedRates(false);
-      return;
-    }
+    if (deliveryMethod !== "shipping") return;
     const postal = form.postalCode.replace(/\s/g, "");
     if (postal.length < 6) {
       setShippingRates([]);
       setSelectedRate(null);
-      setHasFetchedRates(false);
       return;
     }
     let cancelled = false;
     setFetchingRates(true);
-    setHasFetchedRates(false);
     fetch("/api/shipping-rates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -110,51 +103,19 @@ export default function CheckoutPage() {
           setSelectedRate(null);
           setRateDebug(data.debug ?? null);
         }
-        setHasFetchedRates(true);
       })
-      .catch((e) => {
-        if (!cancelled) {
-          setShippingRates([]);
-          setSelectedRate(null);
-          setRateDebug(String(e));
-          setHasFetchedRates(true);
-        }
-      })
+      .catch((e) => { if (!cancelled) { setShippingRates([]); setSelectedRate(null); setRateDebug(String(e)); } })
       .finally(() => { if (!cancelled) setFetchingRates(false); });
     return () => { cancelled = true; };
-  }, [form.postalCode, form.province, form.city, deliveryMethod, items]);
+  }, [form.postalCode, form.province, form.city, deliveryMethod]);
 
   const taxProvince = deliveryMethod === "pickup" ? "ON" : form.province;
   const shipping =
     deliveryMethod === "pickup"
       ? 0
-      : selectedRate?.amount ?? 0; // Remove calculateShipping fallback
+      : selectedRate?.amount ?? calculateShipping(subtotal, form.province);
   const tax = calculateTax(subtotal, taxProvince);
   const total = subtotal + shipping + tax;
-
-  const isShippingUnavailable = deliveryMethod === "shipping" && hasFetchedRates && shippingRates.length === 0;
-
-  if (!CHECKOUT_ENABLED) {
-    return (
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-3">
-          Checkout Paused
-        </p>
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">
-          We are updating shipping options
-        </h1>
-        <p className="text-sm leading-6 text-gray-500 mb-8">
-          {CHECKOUT_DISABLED_MESSAGE}
-        </p>
-        <Link
-          href="/cart"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-gray-900 text-white font-semibold rounded-full hover:bg-gray-800 transition-colors text-sm"
-        >
-          Return to Cart
-        </Link>
-      </div>
-    );
-  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -168,11 +129,6 @@ export default function CheckoutPage() {
 
     if (items.length === 0) {
       setError("Your cart is empty.");
-      return;
-    }
-
-    if (deliveryMethod === "shipping" && !selectedRate) {
-      setError("Please select a shipping carrier to proceed.");
       return;
     }
 
@@ -299,7 +255,7 @@ export default function CheckoutPage() {
               >
                 <span className="text-xl">🚚</span>
                 <span className="text-sm font-bold text-gray-900">Shipping</span>
-                <span className="text-xs text-gray-500">Carrier rates apply</span>
+                <span className="text-xs text-gray-500">From {formatCAD(FLAT_SHIPPING)}</span>
               </button>
               <button
                 type="button"
@@ -434,7 +390,7 @@ export default function CheckoutPage() {
               </legend>
 
               {/* hint before postal is filled */}
-              {!fetchingRates && shippingRates.length === 0 && !hasFetchedRates && form.postalCode.replace(/\s/g, "").length < 6 && (
+              {!fetchingRates && shippingRates.length === 0 && form.postalCode.replace(/\s/g, "").length < 6 && (
                 <p className="text-xs text-gray-400 py-2 px-3 bg-gray-50 rounded-lg">
                   Enter your postal code above to see available carriers and rates.
                 </p>
@@ -503,15 +459,15 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              {/* no rates failure */}
-              {!fetchingRates && hasFetchedRates && shippingRates.length === 0 && (
-                <div className="py-3 px-4 bg-amber-50 border border-amber-100 rounded-xl space-y-1">
-                  <p className="text-sm font-bold text-amber-900 flex items-center gap-2">
-                    <span>⚠️</span> Shipping unavailable
+              {/* no rates fallback */}
+              {!fetchingRates && shippingRates.length === 0 && form.postalCode.replace(/\s/g, "").length >= 6 && (
+                <div className="py-2 px-3 bg-gray-50 rounded-lg space-y-1">
+                  <p className="text-xs text-gray-500">
+                    Could not fetch live rates — a flat rate of {formatCAD(calculateShipping(subtotal, form.province))} will apply.
                   </p>
-                  <p className="text-xs text-amber-800 leading-relaxed">
-                    We could not find shipping carriers for this address. Please switch to <strong>Pickup</strong> to complete your order, or contact us for help.
-                  </p>
+                  {rateDebug && (
+                    <p className="text-[11px] text-red-500 font-mono break-all">{rateDebug}</p>
+                  )}
                 </div>
               )}
             </fieldset>
@@ -587,10 +543,10 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
-              disabled={submitting || (deliveryMethod === "shipping" && !selectedRate)}
+              disabled={submitting}
               className="mt-6 w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {submitting ? "Redirecting to payment…" : isShippingUnavailable ? "Shipping unavailable — use Pickup" : `Pay ${formatCAD(total)}`}
+              {submitting ? "Redirecting to payment…" : `Pay ${formatCAD(total)}`}
             </button>
 
             <p className="mt-3 text-center text-[11px] text-gray-400">
