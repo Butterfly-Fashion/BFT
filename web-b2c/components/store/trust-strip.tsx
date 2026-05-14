@@ -3,8 +3,8 @@ import { Truck, RotateCcw, ShieldCheck, Leaf } from "lucide-react";
 const signals = [
   {
     icon: Truck,
-    title: "Free Shipping",
-    body: "On orders over $99 CAD",
+    title: "Canada-Wide Delivery",
+    body: "Ships from Toronto, ON",
   },
   {
     icon: RotateCcw,
@@ -13,7 +13,7 @@ const signals = [
   },
   {
     icon: ShieldCheck,
-    title: "Secure Checkout",
+    title: "Secure Payments",
     body: "SSL encrypted payments",
   },
   {

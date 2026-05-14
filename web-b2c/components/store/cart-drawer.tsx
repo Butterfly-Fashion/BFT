@@ -5,6 +5,7 @@ import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { formatCAD, calculateShipping, calculateTax } from "@/lib/money";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 
 interface Props {
@@ -169,8 +170,12 @@ export function CartDrawer({ open, onClose }: Props) {
 
               {/* CTAs */}
               <Link
-                href="/checkout"
+                href={CHECKOUT_ENABLED ? "/checkout" : "/cart"}
                 onClick={() => {
+                  if (!CHECKOUT_ENABLED) {
+                    onClose();
+                    return;
+                  }
                   onClose();
                   trackBeginCheckout({
                     value: subtotal + shipping + tax,
@@ -185,8 +190,13 @@ export function CartDrawer({ open, onClose }: Props) {
                 }}
                 className="block w-full py-3 bg-[#C41E3A] text-white font-bold rounded-full text-center text-sm hover:bg-[#A01830] transition-colors shadow-sm"
               >
-                Checkout — {formatCAD(subtotal + shipping + tax)}
+                {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(subtotal + shipping + tax)}` : "Checkout Paused"}
               </Link>
+              {!CHECKOUT_ENABLED && (
+                <p className="rounded-xl bg-amber-50 px-4 py-3 text-center text-xs font-medium leading-5 text-amber-900">
+                  {CHECKOUT_DISABLED_MESSAGE}
+                </p>
+              )}
               <Link
                 href="/cart"
                 onClick={onClose}

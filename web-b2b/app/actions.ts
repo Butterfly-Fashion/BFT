@@ -8,6 +8,7 @@ import { z } from "zod";
 import { calculateTotals } from "@/lib/money";
 import { sendEmail } from "@/lib/email";
 import { createOrderCheckoutSession } from "@/lib/stripe";
+import { getShippingRates } from "@/lib/shippo";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { requireAdmin, requireProfile } from "@/lib/auth";
 import { siteUrl } from "@/lib/env";
@@ -93,6 +94,44 @@ async function saveProductImage(file: File, slug: string) {
   const bytes = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(uploadDir, safeName), bytes);
   return `/asset/images/admin-products/${safeName}`;
+}
+
+export async function getShippingRatesAction(input: {
+  address: {
+    name: string;
+    street1: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  };
+  items: Array<{ productId: string; quantity: number }>;
+}) {
+  try {
+    const profile = await requireProfile();
+    const supabase = await createSupabaseServerClient();
+
+    const productIds = input.items.map((item) => item.productId);
+    const { data: products } = await supabase.from("products").select("*").in("id", productIds);
+    if (!products) return { error: "Failed to load products" };
+
+    const productMap = new Map(products.map((p) => [p.id, p]));
+    const shippoItems = input.items.map((item) => {
+      const product = productMap.get(item.productId);
+      return {
+        name: product?.name || "Product",
+        quantity: item.quantity,
+        weight: Number(product?.weight) || 16, // Default to 16oz (1lb) if missing
+        weight_unit: product?.weight_unit || "oz",
+      };
+    });
+
+    const rates = await getShippingRates(input.address, shippoItems);
+    return { rates };
+  } catch (error: any) {
+    console.error("Shipping rates error:", error);
+    return { error: error.message || "Failed to fetch shipping rates. Please check your address." };
+  }
 }
 
 const registerSchema = z
@@ -210,6 +249,9 @@ export async function createOrderRequestAction(input: {
   deliveryMethod: "Pickup" | "Shipping";
   shippingAddress: string;
   customerNotes?: string;
+  shippoRateId?: string;
+  shippingFee?: number;
+  carrierName?: string;
 }) {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
@@ -243,7 +285,10 @@ export async function createOrderRequestAction(input: {
       lineTotal: Number((quantity * unitPrice).toFixed(2)),
     };
   });
-  const totals = calculateTotals(itemSnapshots.map((item) => ({ quantity: item.quantity, unitPrice: item.unitPrice })));
+  const totals = calculateTotals(
+    itemSnapshots.map((item) => ({ quantity: item.quantity, unitPrice: item.unitPrice })),
+    { shipping: input.shippingFee || 0 }
+  );
 
   const { data: order, error: orderError } = await supabase
     .from("orders")
@@ -252,13 +297,15 @@ export async function createOrderRequestAction(input: {
       status: "Pending Review",
       payment_status: "Unpaid",
       subtotal: totals.subtotal,
-      shipping_fee: 0,
+      shipping_fee: input.shippingFee || 0,
       discount_amount: 0,
       tax_amount: totals.tax,
       total_amount: totals.total,
       delivery_method: input.deliveryMethod,
       shipping_address: input.deliveryMethod === "Shipping" ? input.shippingAddress : null,
       customer_notes: input.customerNotes || null,
+      shippo_rate_id: input.shippoRateId || null,
+      carrier_name: input.carrierName || null,
     })
     .select()
     .single();
@@ -480,6 +527,12 @@ export async function upsertProductAction(formData: FormData) {
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
     is_bulk_available: formData.get("is_bulk_available") === "on",
     is_hidden: formData.get("is_hidden") === "on",
+    weight: Number(formData.get("weight") || 0) || null,
+    weight_unit: String(formData.get("weight_unit") || "oz"),
+    length: Number(formData.get("length") || 0) || null,
+    width: Number(formData.get("width") || 0) || null,
+    height: Number(formData.get("height") || 0) || null,
+    distance_unit: String(formData.get("distance_unit") || "in"),
     updated_at: new Date().toISOString(),
   };
   if (id) await admin.from("products").update(payload).eq("id", id);

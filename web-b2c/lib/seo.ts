@@ -17,7 +17,7 @@ export function productSeoTitle(product: Product): string {
 }
 
 export function productSeoDescription(product: Product): string {
-  return `Shop ${product.name} from World Fan Gear. Canada 2026-inspired soccer fan merchandise shipping from Toronto, with free shipping over $99 CAD.`;
+  return `Shop ${product.name} from World Fan Gear. Canada 2026-inspired soccer fan merchandise shipping from Toronto.`;
 }
 
 export function productJsonLd(product: Product) {

@@ -24,8 +24,8 @@ const faqs = [
     a: "Standard shipping takes 5–10 business days within Canada. Orders are processed within 1–2 business days.",
   },
   {
-    q: "Do you offer free shipping?",
-    a: "Yes! All orders over $99 CAD ship for free within Canada.",
+    q: "How much does shipping cost?",
+    a: "Shipping is calculated at checkout based on the destination province or territory. Orders ship from Toronto, Ontario.",
   },
   {
     q: "Can I change or cancel my order?",

@@ -132,11 +132,11 @@ export default async function HomePage() {
               Limited Time
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold mb-4">
-              Free Shipping on Orders Over $99
+              Canada-Wide Delivery from Toronto
             </h2>
             <p className="text-gray-400 mb-8 text-sm max-w-md mx-auto">
-              Stock up for the tournament. Gear up the whole family and save on
-              shipping automatically at checkout.
+              Stock up for the tournament. Gear up the whole family with match-day
+              essentials delivered across Canada.
             </p>
             <Link
               href="/products"

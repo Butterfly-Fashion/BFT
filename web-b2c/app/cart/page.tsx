@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { calculateShipping, calculateTax, formatCAD } from "@/lib/money";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 
 export default function CartPage() {
@@ -12,6 +13,7 @@ export default function CartPage() {
   const shipping = calculateShipping(subtotal);
   const tax = calculateTax(subtotal);
   const estimatedTotal = subtotal + shipping + tax;
+  const checkoutHref = CHECKOUT_ENABLED ? "/checkout" : "/cart";
   if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
@@ -138,8 +140,9 @@ export default function CartPage() {
               </div>
 
               <Link
-                href="/checkout"
-                onClick={() =>
+                href={checkoutHref}
+                onClick={() => {
+                  if (!CHECKOUT_ENABLED) return;
                   trackBeginCheckout({
                     value: estimatedTotal,
                     items: items.map((i) => ({
@@ -149,15 +152,15 @@ export default function CartPage() {
                       quantity: i.quantity,
                       size: i.size,
                     })),
-                  })
-                }
+                  });
+                }}
                 className="mt-5 block w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full text-center hover:bg-[#A01830] transition-colors text-sm shadow-sm"
               >
-                Checkout — {formatCAD(estimatedTotal)}
+                {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(estimatedTotal)}` : "Checkout Paused"}
               </Link>
 
               <p className="mt-2 text-center text-[11px] text-gray-400">
-                No account needed - guest checkout available
+                {CHECKOUT_ENABLED ? "No account needed - guest checkout available" : CHECKOUT_DISABLED_MESSAGE}
               </p>
 
               <Link
@@ -175,12 +178,13 @@ export default function CartPage() {
         <div className="text-sm">
           <span className="font-bold text-gray-900">{formatCAD(estimatedTotal)}</span>
           <span className="text-gray-400 text-xs ml-1">
-            {shipping === 0 ? "- Free shipping" : `- +${formatCAD(shipping)} shipping`}
+            {shipping === 0 ? "- Pickup available" : `- +${formatCAD(shipping)} shipping`}
           </span>
         </div>
         <Link
-          href="/checkout"
-          onClick={() =>
+          href={checkoutHref}
+          onClick={() => {
+            if (!CHECKOUT_ENABLED) return;
             trackBeginCheckout({
               value: estimatedTotal,
               items: items.map((i) => ({
@@ -190,11 +194,11 @@ export default function CartPage() {
                 quantity: i.quantity,
                 size: i.size,
               })),
-            })
-          }
+            });
+          }}
           className="shrink-0 px-6 py-2.5 bg-[#C41E3A] text-white font-semibold rounded-full text-sm hover:bg-[#A01830] transition-colors"
         >
-          Checkout
+          {CHECKOUT_ENABLED ? "Checkout" : "Paused"}
         </Link>
       </div>
     </>

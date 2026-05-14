@@ -23,7 +23,7 @@ export default async function CartPage() {
             No payment collected now — we review and send a <strong>Pay Now</strong> link after approval.
           </p>
         </div>
-        <OrderRequestForm defaultAddress={defaultAddress} />
+        <OrderRequestForm profile={profile} />
       </main>
     </>
   );

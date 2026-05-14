@@ -7,7 +7,7 @@ export function formatCAD(amount: number): string {
 
 export const FREE_SHIPPING_THRESHOLD = 99;
 export const FLAT_SHIPPING = 9.99;
-// Set to true to re-enable free shipping over FREE_SHIPPING_THRESHOLD
+// Set to true to waive shipping over FREE_SHIPPING_THRESHOLD
 const FREE_SHIPPING_ENABLED = false;
 
 // Province-based flat shipping tiers (CAD)

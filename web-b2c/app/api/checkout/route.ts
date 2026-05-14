@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { stripeClient, siteUrl } from "@/lib/stripe";
 import type { CartItem } from "@/lib/types";
 
@@ -24,6 +25,13 @@ interface CheckoutBody {
 }
 
 export async function POST(req: NextRequest) {
+  if (!CHECKOUT_ENABLED) {
+    return NextResponse.json(
+      { error: CHECKOUT_DISABLED_MESSAGE },
+      { status: 503 }
+    );
+  }
+
   let body: CheckoutBody;
   try {
     body = await req.json();

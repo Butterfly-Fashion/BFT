@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | World Fan Gear",
   },
   description:
-    "Canada 2026-inspired soccer fan merchandise for Canadian fans. Shop caps, bucket hats, car flags, and souvenirs with free shipping over $99 CAD.",
+    "Canada 2026-inspired soccer fan merchandise for Canadian fans. Shop caps, bucket hats, car flags, and souvenirs shipped from Toronto.",
   keywords: [
     "World Cup 2026",
     "Canada soccer merchandise",

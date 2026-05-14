@@ -20,6 +20,12 @@ type ProductFormProps = {
     availability_status: string;
     is_bulk_available: boolean;
     is_hidden: boolean;
+    weight?: number | null;
+    weight_unit?: string | null;
+    length?: number | null;
+    width?: number | null;
+    height?: number | null;
+    distance_unit?: string | null;
   };
 };
 
@@ -86,6 +92,19 @@ export function ProductForm({ mode, product }: ProductFormProps) {
               </label>
               <label className="label">Base price<input className="field" name="base_price" defaultValue={product?.base_price ?? ""} required step="0.01" type="number" /></label>
             </div>
+
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Shipping (Shippo)</p>
+              <div className="mt-3 grid gap-4 md:grid-cols-4">
+                <label className="label">Weight<input className="field" name="weight" defaultValue={product?.weight ?? ""} placeholder="16" type="number" /></label>
+                <label className="label">Weight Unit<select className="field" name="weight_unit" defaultValue={product?.weight_unit || "oz"}><option>oz</option><option>lb</option><option>g</option><option>kg</option></select></label>
+                <label className="label">Length<input className="field" name="length" defaultValue={product?.length ?? ""} placeholder="12" type="number" /></label>
+                <label className="label">Width<input className="field" name="width" defaultValue={product?.width ?? ""} placeholder="12" type="number" /></label>
+                <label className="label">Height<input className="field" name="height" defaultValue={product?.height ?? ""} placeholder="12" type="number" /></label>
+                <label className="label">Dim. Unit<select className="field" name="distance_unit" defaultValue={product?.distance_unit || "in"}><option>in</option><option>cm</option></select></label>
+              </div>
+            </div>
+
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs font-black uppercase tracking-wide text-slate-500">System IDs (optional)</p>
               <p className="mt-1 text-xs font-semibold text-slate-500">

@@ -42,7 +42,9 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <label className="label">Delivery<select className="field" name="delivery_method" defaultValue={order.delivery_method}><option>Pickup</option><option>Shipping</option></select></label>
                 <label className="label">Order status<select className="field" name="status" defaultValue={order.status}><option>Pending Review</option><option>Approved</option><option>Payment Link Sent</option><option>Paid</option><option>Processing</option><option>Label Created</option><option>Ready for Pickup</option><option>Shipped</option><option>Completed</option><option>Cancelled</option><option>Refunded</option></select></label>
                 <label className="label">Payment status<select className="field" name="payment_status" defaultValue={order.payment_status}><option>Unpaid</option><option>Payment Link Sent</option><option>Refunded</option><option>Failed</option></select></label>
-                <label className="label">Shipping<input className="field" name="shipping_fee" defaultValue={order.shipping_fee} step="0.01" type="number" /></label>
+                <label className="label">Shipping<input className="field" name="shipping_fee" defaultValue={order.shipping_fee} step="0.01" type="number" />
+                  {order.carrier_name && <p className="mt-1 text-xs font-semibold text-blue-600">Selected: {order.carrier_name}</p>}
+                </label>
                 <label className="label">Discount<input className="field" name="discount_amount" defaultValue={order.discount_amount} step="0.01" type="number" /></label>
                 <label className="label">HST<input className="field" name="tax_amount" defaultValue={order.tax_amount} step="0.01" type="number" /></label>
                 <label className="label md:col-span-2">Shipping address<input className="field" name="shipping_address" defaultValue={order.shipping_address || ""} /></label>
