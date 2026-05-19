@@ -1,0 +1,16 @@
+   ▲ Next.js 15.5.18
+   - Local:        http://127.0.0.1:3011
+   - Network:      http://127.0.0.1:3011
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.9s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.6s (774 modules)
+ GET / 200 in 3937ms
+ ○ Compiling /api/checkout ...
+ ✓ Compiled /api/checkout in 872ms (961 modules)
+ POST /api/checkout 500 in 1468ms
+ ✓ Compiled in 473ms (961 modules)
+ POST /api/checkout 200 in 823ms
+[?25h

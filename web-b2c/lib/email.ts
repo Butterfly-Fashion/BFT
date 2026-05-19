@@ -408,7 +408,7 @@ export async function sendPickupReadyEmail(params: {
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:20px;margin:20px 0;">
         <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;font-weight:600;">Pickup Location</p>
         <p style="margin:0;font-size:14px;color:#111;">178 Bentworth Ave, North York, ON M6A 1P7</p>
-        <p style="margin:4px 0 0;font-size:13px;color:#666;">Mon–Sat: 9 AM – 7 PM &nbsp;|&nbsp; Sun: 11 AM – 4 PM</p>
+        <p style="margin:4px 0 0;font-size:13px;color:#666;">Mon–Sat: 9 AM – 5:30 PM &nbsp;|&nbsp; Sun: 11 AM – 5 PM</p>
       </div>
 
       <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#888;margin:20px 0 8px;">Order #${orderNumber}</h3>

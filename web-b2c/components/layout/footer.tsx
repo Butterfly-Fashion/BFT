@@ -1,8 +1,29 @@
 import Link from "next/link";
+import { NewsletterForm } from "@/components/store/newsletter-form";
 
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 mt-24">
+      {/* Newsletter section */}
+      <div className="border-b border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+            <div>
+              <p className="text-[#FFD700] text-xs font-black uppercase tracking-widest mb-1">
+                Join the 2026 Fan List
+              </p>
+              <p className="text-white text-lg font-bold">
+                Be first for drops, deals &amp; game day tips
+              </p>
+              <p className="text-gray-400 text-sm mt-1">
+                No spam. Just the best Canada 2026 fan gear news.
+              </p>
+            </div>
+            <NewsletterForm source="footer" variant="dark" />
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-10">
         <div>
           <div className="flex items-center gap-2 mb-4">

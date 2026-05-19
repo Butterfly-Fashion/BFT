@@ -59,7 +59,6 @@ export default function ProductsDashboard() {
   const [page, setPage] = useState(1);
   const [isNew, setIsNew] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [seeding, setSeeding] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
   const [form, setForm] = useState(EMPTY);
   const [images, setImages] = useState<DbProductImage[]>([]);
@@ -211,20 +210,6 @@ export default function ProductsDashboard() {
     } finally { setSaving(false); }
   }
 
-  async function handleSeed() {
-    if (!confirm("Seed all 163 products to Supabase + Stripe? (~30 seconds)")) return;
-    setSeeding(true);
-    try {
-      const res = await fetch("/api/admin/seed-products", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Seed failed");
-      alert("Done! " + data.inserted + "/" + data.total + " products seeded.");
-      await fetchProducts();
-    } catch (e) {
-      alert(e instanceof Error ? e.message : "Seed failed");
-    } finally { setSeeding(false); }
-  }
-
   const filtered = products;
   const totalPages = Math.ceil(totalProducts / PAGE_SIZE);
 
@@ -242,10 +227,6 @@ export default function ProductsDashboard() {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={handleSeed} disabled={seeding}
-              className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-semibold text-purple-600 hover:bg-purple-100 transition-colors disabled:opacity-50">
-              {seeding ? "Seeding..." : "⚡ Seed All Products"}
-            </button>
             <button onClick={() => fetchProducts(page)} disabled={loading}
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50">
               {loading ? "Loading..." : "Refresh"}
@@ -290,12 +271,6 @@ export default function ProductsDashboard() {
           ) : filtered.length === 0 ? (
             <div className="py-24 text-center">
               <p className="text-gray-400 text-sm mb-4">{products.length === 0 ? "No products yet." : "No products match your filters."}</p>
-              {products.length === 0 && (
-                <button onClick={handleSeed} disabled={seeding}
-                  className="rounded-full bg-[#C41E3A] px-5 py-2 text-sm font-bold text-white hover:bg-[#A01830] transition-colors disabled:opacity-50">
-                  {seeding ? "Seeding..." : "⚡ Seed All Products from JSON"}
-                </button>
-              )}
             </div>
           ) : (
             <>

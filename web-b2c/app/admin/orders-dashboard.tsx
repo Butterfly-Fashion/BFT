@@ -72,7 +72,6 @@ function StatusBadge({ status }: { status: OrderStatus }) {
 
 export default function OrdersDashboard() {
   const [orders, setOrders] = useState<DbOrder[]>([]);
-  const [source, setSource] = useState<"supabase" | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,7 +83,6 @@ export default function OrdersDashboard() {
   const [detailLoading, setDetailLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
-  const [syncing, setSyncing] = useState(false);
   const [creatingLabel, setCreatingLabel] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
@@ -103,7 +101,6 @@ export default function OrdersDashboard() {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data: OrdersResponse = await res.json();
       setOrders(data.orders);
-      setSource(data.source);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to load orders");
     } finally {
@@ -175,22 +172,6 @@ export default function OrdersDashboard() {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Save failed" });
     } finally {
       setSaving(false);
-    }
-  }
-
-  async function handleSyncStripe() {
-    if (!confirm("Sync all paid Stripe orders to Supabase? This may take a moment.")) return;
-    setSyncing(true);
-    try {
-      const res = await fetch("/api/admin/sync-stripe", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Sync failed");
-      alert(`Sync complete: ${data.imported} imported, ${data.skipped} skipped.`);
-      await fetchOrders();
-    } catch (e) {
-      alert(e instanceof Error ? e.message : "Sync failed");
-    } finally {
-      setSyncing(false);
     }
   }
 
@@ -348,18 +329,6 @@ export default function OrdersDashboard() {
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-black text-gray-900">Orders</h2>
           <div className="flex items-center gap-4">
-            {source === "supabase" && (
-              <span className="rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700">
-                Supabase orders
-              </span>
-            )}
-            <button
-              onClick={handleSyncStripe}
-              disabled={syncing}
-              className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-100 transition-colors disabled:opacity-50"
-            >
-              {syncing ? "Syncing…" : "↓ Sync from Stripe"}
-            </button>
             <button
               onClick={fetchOrders}
               disabled={loading}

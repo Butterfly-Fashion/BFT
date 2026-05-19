@@ -63,10 +63,10 @@ export async function POST(req: NextRequest) {
       if (p.stripe_price_id) priceMap.set(p.slug, p.stripe_price_id);
     }
 
-    const line_items: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[] =
+    const buildProductLineItems = (useStoredPrices: boolean) =>
       items.map((item) => {
         const stripePriceId = item.slug ? priceMap.get(item.slug) : undefined;
-        if (stripePriceId) {
+        if (useStoredPrices && stripePriceId) {
           return { quantity: item.quantity, price: stripePriceId };
         }
         return {
@@ -82,32 +82,44 @@ export async function POST(req: NextRequest) {
         };
       });
 
-    if (shipping > 0) {
-      line_items.push({
-        quantity: 1,
-        price_data: {
-          currency: "cad",
-          unit_amount: Math.round(shipping * 100),
-          product_data: { name: "Shipping" },
-        },
-      });
-    }
+    const appendAdjustments = (
+      target: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[]
+    ) => {
+      if (shipping > 0) {
+        target.push({
+          quantity: 1,
+          price_data: {
+            currency: "cad",
+            unit_amount: Math.round(shipping * 100),
+            product_data: { name: "Shipping" },
+          },
+        });
+      }
 
-    if (tax > 0) {
-      line_items.push({
-        quantity: 1,
-        price_data: {
-          currency: "cad",
-          unit_amount: Math.round(tax * 100),
-          product_data: { name: "Tax (HST 13%)" },
-        },
-      });
-    }
+      if (tax > 0) {
+        target.push({
+          quantity: 1,
+          price_data: {
+            currency: "cad",
+            unit_amount: Math.round(tax * 100),
+            product_data: { name: "Tax (HST 13%)" },
+          },
+        });
+      }
+    };
 
-    const session = await stripe.checkout.sessions.create({
+    const line_items = buildProductLineItems(true);
+    appendAdjustments(line_items);
+
+    const fallbackLineItems = buildProductLineItems(false);
+    appendAdjustments(fallbackLineItems);
+
+    const createSession = (
+      sessionLineItems: import("stripe").Stripe.Checkout.SessionCreateParams.LineItem[]
+    ) => stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: customerEmail,
-      line_items,
+      line_items: sessionLineItems,
       success_url: `${base}/order-confirmation?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/checkout`,
       metadata: {
@@ -125,6 +137,18 @@ export async function POST(req: NextRequest) {
         }),
       },
     });
+
+    let session: Awaited<ReturnType<typeof createSession>>;
+    try {
+      session = await createSession(line_items);
+    } catch (err) {
+      const stripeError = err as { code?: string; param?: string };
+      if (stripeError.code !== "resource_missing" || !stripeError.param?.includes("price")) {
+        throw err;
+      }
+      console.warn("[/api/checkout] Stored Stripe price missing; retrying with inline price_data");
+      session = await createSession(fallbackLineItems);
+    }
 
     return NextResponse.json({ url: session.url });
   } catch (err) {

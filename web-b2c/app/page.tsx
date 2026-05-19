@@ -3,6 +3,7 @@ import { TrustStrip } from "@/components/store/trust-strip";
 import { CategoryStrip } from "@/components/store/category-strip";
 import { ProductCard } from "@/components/store/product-card";
 import { SocialProof } from "@/components/store/social-proof";
+import { NewsletterForm } from "@/components/store/newsletter-form";
 import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { collectionPages, teamPages } from "@/lib/seo-pages";
 import Link from "next/link";
@@ -82,6 +83,24 @@ export default async function HomePage() {
       </section>
 
       <SocialProof />
+
+      {/* Inline newsletter */}
+      <section className="bg-[#C41E3A] py-14">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-white/70 text-xs font-black uppercase tracking-widest mb-2">
+            Exclusive Fan Deals
+          </p>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">
+            Get Game Day Deals First
+          </h2>
+          <p className="text-white/80 text-sm mb-6 max-w-sm mx-auto">
+            Join Canadian fans getting exclusive 2026 gear alerts.
+          </p>
+          <div className="flex justify-center">
+            <NewsletterForm source="inline" variant="dark" />
+          </div>
+        </div>
+      </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
         <div className="grid gap-10 md:grid-cols-2">

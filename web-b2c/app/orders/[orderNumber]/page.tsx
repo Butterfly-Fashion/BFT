@@ -139,7 +139,7 @@ export default async function OrderTrackingPage({ params }: Props) {
           <p className="text-xs font-bold uppercase tracking-wider text-green-600 mb-1">Pickup Location</p>
           <p className="text-sm font-semibold text-gray-900">178 Bentworth Ave</p>
           <p className="text-sm text-gray-600">North York, ON M6A 1P7</p>
-          <p className="text-xs text-gray-500 mt-1">Mon–Sat: 9 AM – 7 PM &nbsp;|&nbsp; Sun: 11 AM – 4 PM</p>
+          <p className="text-xs text-gray-500 mt-1">Mon–Sat: 9 AM – 5:30 PM &nbsp;|&nbsp; Sun: 11 AM – 5 PM</p>
         </div>
       )}
 

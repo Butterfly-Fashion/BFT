@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/components/store/cart-provider";
 import { useToast } from "@/components/store/toast-provider";
 import type { Product } from "@/lib/types";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { Lock, RotateCcw, Truck } from "lucide-react";
 import { trackViewItem, trackAddToCart } from "@/lib/gtag";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
+import { StickyAddToCart } from "@/components/store/sticky-add-to-cart";
 
 interface Props {
   product: Product;
@@ -22,6 +23,7 @@ export function ProductActions({ product }: Props) {
   );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     trackViewItem({
@@ -123,7 +125,7 @@ export function ProductActions({ product }: Props) {
       </div>
 
       {/* CTAs */}
-      <div className="flex flex-col gap-3 pt-1">
+      <div ref={ctaRef} className="flex flex-col gap-3 pt-1">
         <button
           onClick={handleAddToCart}
           disabled={!product.inStock}
@@ -144,6 +146,15 @@ export function ProductActions({ product }: Props) {
           </p>
         )}
       </div>
+
+      <StickyAddToCart
+        price={product.price}
+        inStock={product.inStock}
+        added={added}
+        onAddToCart={handleAddToCart}
+        onBuyNow={handleBuyNow}
+        anchorRef={ctaRef}
+      />
 
       <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
         <div className="flex flex-col items-center gap-1">
