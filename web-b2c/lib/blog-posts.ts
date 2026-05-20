@@ -2049,6 +2049,456 @@ export const blogPosts: BlogPost[] = [
       { q: "What fan gear should I have for the World Cup 2026 Final watch party?", a: "Wear the fan gear connected to whichever finalist you are supporting. Canada co-host gear is a neutral option if both finalists are equally unfamiliar." },
     ],
   },
+
+  // ── May 20 ──────────────────────────────────────────────────────────────────
+
+  {
+    slug: "brazil-mexico-rivalry-fan-caps-world-cup-2026",
+    title: "Brazil vs Mexico: The Rivalry That Makes Fan Gear Worth Wearing",
+    description:
+      "Two of the most passionate soccer fan bases in the world — Brazil and Mexico — bring their energy to every street and stadium. Here is how to represent both sides in style.",
+    publishedAt: "2026-05-20",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/brazil-mexico-fans-caps-city-street.png",
+    heroAlt: "Two fans wearing Brazil and Mexico caps walking on a city street",
+    productSlugs: [
+      "brasil-with-national-football-team-flag-3d-embroidered-cap",
+      "mexico-with-national-football-team-flag-3d-embroidered-cap",
+      "brasil-flag-souvenir-mini-boxing-glove",
+    ],
+    sections: [
+      {
+        heading: "Two fan bases, one unforgettable tournament",
+        body: [
+          "Brazil and Mexico are two of the most followed national teams in the world, and their fan bases travel hard. Whether it is Toronto, Vancouver, or a suburb outside Calgary, you will find Brasileiros in yellow and Mexicanos in green every match day. That energy is part of what makes a World Cup host country feel alive.",
+          "With FIFA World Cup 2026 being held across North America — including Canadian cities — both sets of fans are expected to show up in record numbers. If you support either side or just love the spectacle, matching the moment with proper fan gear is half the fun.",
+        ],
+      },
+      {
+        heading: "The cap is where loyalty shows",
+        body: [
+          "A 3D embroidered flag cap is the easiest single item that signals which team you are behind. Brazil fans typically go for the yellow and green combination — the cap mirrors the jersey without requiring you to wear the full kit. Mexico fans lean into the dark green and red detail that makes their crest instantly recognizable.",
+          "Both styles are structured six-panel caps with raised embroidery that holds its shape wash after wash. They work just as well commuting to work as they do walking into a watch party, which is why caps consistently outsell other fan gear items.",
+        ],
+      },
+      {
+        heading: "When both teams are in your household",
+        body: [
+          "A lot of Canadian households are split between two nations. A Brazil fan married to a Mexico fan is not a rare situation in cities like Toronto, where diaspora communities overlap at every street corner. The solution is usually simple: both partners grab their caps and make it a competition.",
+          "Mini souvenir boxing gloves are a good addition to the shelf during rivalry weeks. They are small enough to hang anywhere and detailed enough to look like genuine fan merchandise rather than a cheap novelty.",
+        ],
+      },
+      {
+        heading: "Buying the right gear before matches sell out",
+        body: [
+          "Popular country styles — particularly Brazil and Mexico — tend to move quickly as tournament dates approach. If you are planning to watch Group Stage matches live or at a crowded bar, having your cap sorted weeks in advance means one less thing to worry about.",
+          "Both caps ship from Toronto, so Canadian orders typically arrive in three to seven business days depending on your province. Ordering before June keeps you well ahead of any demand spike.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Do Brazil and Mexico always meet at the World Cup?",
+        a: "Not always in the group stage, but they have met in the knockout rounds multiple times. Either way, both fan bases are visible throughout every tournament.",
+      },
+      {
+        q: "Which cap style is more popular — Brazil or Mexico?",
+        a: "Both are consistently among our top-selling styles. Brazil yellow tends to sell slightly faster early in the tournament, while Mexico green picks up as match days get closer.",
+      },
+    ],
+  },
+
+  {
+    slug: "mini-boxing-gloves-world-cup-gift-guide-2026",
+    title: "Mini Souvenir Boxing Gloves: The World Cup Gift Nobody Expects",
+    description:
+      "Small, detailed, and available in dozens of national flag designs — mini souvenir boxing gloves are the World Cup 2026 gift that works for any fan.",
+    publishedAt: "2026-05-20",
+    category: "Gift Ideas",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
+    heroAlt: "Six pairs of mini souvenir boxing gloves with national flags flat lay",
+    productSlugs: [
+      "brasil-flag-souvenir-mini-boxing-glove",
+      "portugal-flag-green-boxing-glove",
+      "canada-boxing-glove",
+    ],
+    sections: [
+      {
+        heading: "Why mini boxing gloves work as a World Cup gift",
+        body: [
+          "Most World Cup gifts fall into two categories: wearables like jerseys and caps, or disposable items like flags and face paint. Mini souvenir boxing gloves occupy a different space. They are small enough to hang from a rearview mirror or sit on a shelf, detailed enough to look intentional, and durable enough to last well past the tournament.",
+          "Each pair is printed with the full national flag design — not a simplified version. Argentina gets the Sun of May. Brazil gets the globe and stars. Portugal gets the coat of arms. The level of detail is what separates a proper souvenir from a novelty item.",
+        ],
+      },
+      {
+        heading: "Who actually buys these — and for whom",
+        body: [
+          "The most common buyer is someone shopping for a fan who already has a jersey and a cap. Once you have covered the obvious bases, finding something different gets harder. Mini boxing gloves solve that problem immediately.",
+          "They also work for office settings where wearing a jersey is not practical. A pair of boxing gloves hanging at a workstation or pinned to a cubicle wall gets the message across without the dress code conversation. Coaches, teachers, and anyone who spends tournament weeks at a desk tend to appreciate them most.",
+        ],
+      },
+      {
+        heading: "Collecting across multiple nations",
+        body: [
+          "A lot of buyers pick up two or three pairs at once — one for the team they support, one for a rival they respect, and one for Canada as a co-host. Displayed together on a shelf or hanging in a row, they make a simple and effective World Cup decoration that does not require any assembly.",
+          "The pairs are connected by a short rope, so they can hang from a hook, mirror, or door handle without any additional hardware. That makes setup about as low-effort as decoration gets.",
+        ],
+      },
+      {
+        heading: "Getting them before the rush",
+        body: [
+          "Mini boxing gloves are a category that tends to go out of stock faster than people expect. Popular national designs — Brazil, Argentina, Portugal, France — move quickly from late May onward. If you are buying for a group event or planning to hand out a few as gifts, earlier is better.",
+          "They ship from Toronto across Canada with standard delivery times. Buying in late May or early June is the reliable window before tournament demand shifts into unpredictable territory.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How big are the mini souvenir boxing gloves?",
+        a: "They are small souvenir size — each glove is roughly 4 inches long. They are decorative items, not functional boxing gloves.",
+      },
+      {
+        q: "Can I hang them in my car?",
+        a: "Yes. The rope connector is designed to hang from a rearview mirror. Many buyers use them as car decorations during the tournament.",
+      },
+    ],
+  },
+
+  // ── May 21 ──────────────────────────────────────────────────────────────────
+
+  {
+    slug: "south-korea-fan-cap-world-cup-2026",
+    title: "South Korea at World Cup 2026: Fan Gear for the Most Loyal Supporters",
+    description:
+      "South Korean soccer fans are among the most organized and passionate in the world. Here is how to show your support with the right cap and merchandise for 2026.",
+    publishedAt: "2026-05-21",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/south-korea-fan-cap-seoul-night.png",
+    heroAlt: "Man wearing South Korea embroidered cap on a Seoul city street at night",
+    productSlugs: [
+      "south-korea-3d-embroidered-cap",
+    ],
+    sections: [
+      {
+        heading: "The Korean fan base that travels",
+        body: [
+          "South Korean soccer fans — known internationally for their coordinated red waves in the stands — have one of the most recognizable fan cultures in world football. From the 2002 World Cup miracle run to consistent knockout stage appearances, Korea's supporters have built a reputation for showing up loud, organized, and fully dressed.",
+          "With World Cup 2026 hosted in North America, Korean communities across Canada are preparing for a tournament closer to home than any in recent memory. Cities like Toronto and Vancouver have large Korean-Canadian populations that will make match days feel like a Seoul street party.",
+        ],
+      },
+      {
+        heading: "The Taegukgi cap is the essential piece",
+        body: [
+          "The South Korea 3D embroidered cap carries the Taegukgi — the national flag — rendered in raised embroidery on the front panel. The red and blue Taeguk symbol with the black trigrams at each corner is immediately recognizable to anyone who follows the sport.",
+          "The cap itself is structured with a curved brim and fits securely for outdoor matches and walking long distances to stadiums or fan zones. It is the kind of piece you wear before, during, and after the match without thinking twice about it.",
+        ],
+      },
+      {
+        heading: "Wearing the cap outside the fan zone",
+        body: [
+          "One thing Korean fans tend to do well is integrating their support into everyday life during the tournament. The cap works in line at a coffee shop the morning of a match just as well as it does in the stadium. That daily presence — the quiet signal of who you are rooting for — is part of what makes fan culture spread through a city during a World Cup.",
+          "For Korean-Canadians or anyone who follows the team closely, the cap is less a costume and more a daily expression of identity during tournament weeks.",
+        ],
+      },
+      {
+        heading: "Getting your cap before matches begin",
+        body: [
+          "South Korea has historically performed well in the group stage, which means demand for Korean fan gear tends to spike once results start coming in. Buying the cap before the tournament gives you more size options and avoids the late rush.",
+          "Shipping from Toronto to most Canadian cities takes three to seven business days. Ordering in May keeps you ahead of any June demand surge.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Does South Korea have fans in Canada?",
+        a: "Yes. Canada has one of the largest Korean diaspora communities outside Asia. Cities like Toronto, Vancouver, and Calgary all have active Korean-Canadian soccer fan communities.",
+      },
+      {
+        q: "What does the South Korea cap look like?",
+        a: "It features the Taegukgi (Korean national flag) in 3D embroidery on a structured cap. The red, white, and blue color combination is bold and immediately recognizable.",
+      },
+    ],
+  },
+
+  {
+    slug: "morocco-car-flag-world-cup-2026",
+    title: "Morocco at World Cup 2026: Show Your Support with a Car Flag",
+    description:
+      "Morocco's historic 2022 run made them one of the most followed teams on the planet. Here is how Canadian fans can represent the Atlas Lions heading into 2026.",
+    publishedAt: "2026-05-21",
+    category: "Car Flags",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
+    heroAlt: "Morocco flag car window flag waving on a highway",
+    productSlugs: [
+      "morocco-flag-3d-embroidered-cap",
+    ],
+    sections: [
+      {
+        heading: "Why Morocco became the world's adopted team",
+        body: [
+          "At the 2022 FIFA World Cup in Qatar, Morocco became the first African nation to reach the semi-finals. The run — through Spain, Portugal, and Belgium — created a global fan base almost overnight. Supporters from Casablanca to Montreal watched with the same intensity, and the Atlas Lions became one of the most searched teams on the planet.",
+          "Heading into 2026, that momentum has not faded. Morocco enters the tournament as one of the most anticipated squads, with a generation of players now seasoned from the Qatar experience. Their fan base in Canada — including large Moroccan-Canadian communities in Montreal and Toronto — is already organizing for match days.",
+        ],
+      },
+      {
+        heading: "The car flag is the right scale for street-level support",
+        body: [
+          "Car flags are one of the most effective forms of public fan expression during a World Cup. They are visible at highway speed, easy to install without tools, and make a neighborhood feel like it is part of the tournament. For Morocco specifically — a team that inspires intense civic pride — a car flag on the window is a clear signal to every other Moroccan fan on the road.",
+          "The Morocco car flag features the red background with the green pentagram star, printed on polyester fabric with a clip mount designed to fit standard car windows. It waves cleanly at driving speed without requiring any additional mounting.",
+        ],
+      },
+      {
+        heading: "Combining the car flag with a cap",
+        body: [
+          "Most fans who buy a car flag also pick up a cap to complete the match-day look. The Morocco embroidered cap carries the same red and green color scheme and works whether you are driving to a watch venue or walking in. Together they make a coordinated outfit that requires minimal thought.",
+          "The combination is also practical for the Canadian climate in June and July — a cap handles sun exposure while the car flag handles visibility on the commute.",
+        ],
+      },
+      {
+        heading: "Ordering early for the group stage",
+        body: [
+          "Morocco fans tend to buy gear in waves tied to results. After strong performances, orders spike significantly. Buying before the tournament starts — particularly in May — gives you the most available inventory and the most comfortable shipping window.",
+          "All orders ship from Toronto across Canada. Standard delivery reaches most provinces within seven business days.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Is Morocco a strong team at World Cup 2026?",
+        a: "Morocco is widely considered one of the stronger African teams heading into 2026, building on their historic semi-final run at the 2022 World Cup in Qatar.",
+      },
+      {
+        q: "How do I attach the car flag to my window?",
+        a: "The flag comes with a plastic clip mount that fits most standard car window frames. No tools required — it clips on and off in seconds.",
+      },
+    ],
+  },
+
+  // ── May 22 ──────────────────────────────────────────────────────────────────
+
+  {
+    slug: "brazil-car-flag-world-cup-2026-canada",
+    title: "Brazil Car Flag: How the Seleção Travels Everywhere",
+    description:
+      "Brazilian fans are famous for bringing the party wherever they go. A Brazil car flag is the easiest way to keep that energy moving through Canadian streets during World Cup 2026.",
+    publishedAt: "2026-05-22",
+    category: "Car Flags",
+    heroImage: "/asset/blog/generated/brazil-car-flag-highway.png",
+    heroAlt: "Brazil flag car window flag waving on a highway",
+    productSlugs: [
+      "brasil-with-national-football-team-flag-3d-embroidered-cap",
+      "brasil-flag-souvenir-mini-boxing-glove",
+    ],
+    sections: [
+      {
+        heading: "Brazil fans do not stay home",
+        body: [
+          "Of all the national teams at any World Cup, Brazil consistently brings one of the largest traveling support groups. The yellow and green shows up in cities nowhere near Brazil itself — and Canada is no exception. Brazilian communities in Toronto, Vancouver, and Edmonton are well established, and World Cup season amplifies that presence significantly.",
+          "A car flag is one of the most visible and low-effort ways to participate. You do not need a ticket to the match. You do not need to be at the fan zone. Driving through your neighborhood with a Brazil flag on the window tells the whole street where your loyalties are.",
+        ],
+      },
+      {
+        heading: "What makes a good car flag",
+        body: [
+          "The Brazil car flag is printed on polyester with the full Seleção design — green background, yellow diamond, blue globe, and the stars representing Brazil's states. The clip mount fits standard car windows and holds cleanly even at highway speeds.",
+          "Polyester is the right material for car flags because it does not stretch out of shape or fade as quickly as cheaper alternatives. For a tournament that runs from June into July, durability matters more than it might for a single match-day item.",
+        ],
+      },
+      {
+        heading: "The flag and the jersey",
+        body: [
+          "Brazil fans typically layer their gear. The car flag on the window, the cap for the walk to the bar, and the jersey if the match is on. It is a natural progression that requires no coordination because the colors are consistent across all three items.",
+          "If you are buying for a Brazilian friend or family member, the car flag is one of the best standalone gifts because it works regardless of jersey size and does not require any knowledge of their favorite player.",
+        ],
+      },
+      {
+        heading: "Stock and timing",
+        body: [
+          "Brazil is one of the most popular national teams in the world, which means Brazil-themed merchandise moves faster than most other countries during tournament season. Caps, boxing gloves, and car flags all tend to sell through at similar rates as group stage matches progress.",
+          "Buying in May gives you the most reliable stock and the most comfortable delivery window before June group stage matches.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Will a car flag damage my window or car paint?",
+        a: "No. The clip mount is designed to grip the window frame without scratching. Most users attach and remove it repeatedly without any marks.",
+      },
+      {
+        q: "Can I keep the car flag on between matches?",
+        a: "Yes. Many fans leave car flags on for the duration of the tournament. The polyester material and clip mount are built for extended use.",
+      },
+    ],
+  },
+
+  {
+    slug: "portugal-fan-gear-complete-set-world-cup-2026",
+    title: "Portugal Fan Gear: Building the Complete Set for World Cup 2026",
+    description:
+      "Cap, mini boxing gloves, and scarf — Portugal fans know how to dress for a match. Here is how to put together a complete Portugal fan gear set before the tournament.",
+    publishedAt: "2026-05-22",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/portugal-fan-gear-boxing-gloves-cap-scarf.png",
+    heroAlt: "Portugal fan gear flat lay with boxing gloves, cap and scarf on wood surface",
+    productSlugs: [
+      "portugal-red-with-national-football-team-flag-3d-embroidered-cap",
+      "portugal-flag-green-boxing-glove",
+      "portugal-flag-black-souvenir-mini-boxing-glove",
+    ],
+    sections: [
+      {
+        heading: "Portugal fans go all in",
+        body: [
+          "Portugal has one of the most enthusiastic fan cultures in European football. Whether it is the noise level at a Lisbon derby or the organization of Portuguese communities abroad during international tournaments, supporters of A Seleção das Quinas take their gear seriously.",
+          "In Canada, Portuguese-Canadian communities — particularly in Toronto's west end — have long matched that intensity. When Portugal is in a World Cup, Dundas Street and College Street feel it. A properly assembled fan outfit is part of how that community marks the occasion.",
+        ],
+      },
+      {
+        heading: "Start with the cap",
+        body: [
+          "The Portugal embroidered cap is the anchor piece. Red with the national team crest and PORTUGAL lettered across the side, it is bold without being difficult to wear. The 3D embroidery holds up well over time and the structured fit works for most head sizes without adjustment.",
+          "Red is also a practical color for match days because it photographs clearly in group shots and stands out in a crowded watch party setting. If you are going to be in any kind of crowd, wearing a color that reads in photos is worth considering.",
+        ],
+      },
+      {
+        heading: "Add the boxing gloves for the shelf or the car",
+        body: [
+          "Portugal mini souvenir boxing gloves are available in two colorways — green with the national coat of arms, and black with the same design. Both versions carry the same level of detail, so the choice is mostly about where you plan to display them.",
+          "The green pair tends to work better as a car mirror decoration because it pops against most interior colors. The black pair sits better on a dark wood shelf or a desk. Either way, they complement the cap and scarf without competing with them visually.",
+        ],
+      },
+      {
+        heading: "The complete set as a gift",
+        body: [
+          "If you are buying for a Portugal fan who already has a jersey, the cap and boxing gloves combination is the natural next layer. Add a scarf and you have a gift set that covers every match format — indoor watch party, outdoor fan zone, and the drive to the venue.",
+          "All three items are available to ship from Toronto across Canada. Ordering them together before the tournament is the most practical approach for anyone planning to give them as a set.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Are there many Portugal fans in Canada?",
+        a: "Yes. Canada has one of the largest Portuguese diaspora communities in the world, concentrated primarily in Toronto and surrounding areas.",
+      },
+      {
+        q: "What colors does Portugal fan gear come in?",
+        a: "Portugal gear is primarily red and green, matching the national flag and team colors. The cap is red, and boxing gloves are available in both green and black colorways.",
+      },
+    ],
+  },
+
+  // ── May 23 ──────────────────────────────────────────────────────────────────
+
+  {
+    slug: "nigeria-senegal-africa-fan-caps-world-cup-2026",
+    title: "Nigeria and Senegal: African Football's Loudest Fans Deserve the Best Gear",
+    description:
+      "Nigeria's Super Eagles and Senegal's Lions of Teranga have fan bases that bring stadium energy unlike anything else. Here is the fan gear built for that kind of support.",
+    publishedAt: "2026-05-23",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/nigeria-senegal-fans-celebrating-stadium.png",
+    heroAlt: "Two fans celebrating at a stadium wearing Nigeria and Senegal embroidered caps",
+    productSlugs: [
+      "nigeria-flag-3d-embroidered-cap",
+      "senegal-flag-3d-embroidered-cap",
+    ],
+    sections: [
+      {
+        heading: "Africa's World Cup moment is here",
+        body: [
+          "With Morocco reaching the semi-finals in 2022 and multiple African nations consistently qualifying at the top of their confederations, the narrative around African football has shifted. Nigeria and Senegal are two programs that consistently arrive at tournaments with talent capable of going deep.",
+          "Their fan bases match that ambition. Nigerian and Senegalese supporters are known for the noise, color, and organization they bring to stadiums. In Canada — with sizable West African communities in Toronto, Calgary, and Ottawa — World Cup 2026 will feel personal for a lot of people.",
+        ],
+      },
+      {
+        heading: "The cap that carries the flag",
+        body: [
+          "The Nigeria 3D embroidered cap is forest green with the Nigerian flag — two green panels with a white stripe — rendered in raised embroidery. The Senegal cap carries the tricolor of green, yellow, and red with the centered green star, equally recognizable to anyone who follows African football.",
+          "Both caps are structured and fit well for stadium seating and outdoor watch events. The embroidery is detailed enough that the flags are immediately legible from a few feet away, which matters when you are in a crowd.",
+        ],
+      },
+      {
+        heading: "When both teams are in your section",
+        body: [
+          "Nigeria and Senegal fan bases frequently end up in the same sections at tournaments because West African communities often watch together regardless of which specific nation they are from. The result is a section that is unified by region even when the teams are technically opponents.",
+          "Having both caps available — either for two people in one group or as a gift for a Senegal fan when you are Nigeria — is a natural way to navigate that dynamic.",
+        ],
+      },
+      {
+        heading: "Buying ahead of the tournament",
+        body: [
+          "Nigeria and Senegal merchandise tends to move quickly in cities with large West African communities. If you are in Toronto or another major city, expect popular sizes to go quickly as the tournament approaches. Ordering in May gives you the most comfortable window.",
+          "All caps ship from Toronto. Standard delivery across Canada typically runs three to seven business days.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Are Nigeria and Senegal considered strong teams at World Cup 2026?",
+        a: "Both teams qualified and are considered competitive within their group stage draws. Nigeria has a long history of deep tournament runs, and Senegal are reigning Africa Cup of Nations champions.",
+      },
+      {
+        q: "Do both caps come in the same style?",
+        a: "Yes. Both the Nigeria and Senegal caps are structured 6-panel style with 3D embroidered national flags on the front panel.",
+      },
+    ],
+  },
+
+  {
+    slug: "multicultural-fans-bucket-hats-world-cup-2026-canada",
+    title: "One Stadium, Four Nations: Canada's Multicultural World Cup Moment",
+    description:
+      "When Canada, Italy, Jamaica, and Grenada fans walk into the same stadium, it looks like the world in one place. World Cup 2026 is that moment — and bucket hats are how fans are showing it.",
+    publishedAt: "2026-05-23",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
+    heroAlt: "Four fans wearing Canada Italy Jamaica and Grenada bucket hats at a stadium entrance",
+    productSlugs: [
+      "canada-reversible-bucket-hat",
+      "jamaica-reversible-bucket-hat",
+      "italy-reversible-bucket-hat",
+    ],
+    sections: [
+      {
+        heading: "Canada's World Cup is already multicultural",
+        body: [
+          "Canada as a co-host nation does not support one team — it supports dozens. Walk into a Canadian stadium during the group stage and you will find fans from every participating nation, many of them Canadian citizens who came here from those countries or whose parents did. The stands are not sorted by color or country. They blend.",
+          "That reality is part of what makes hosting a World Cup in Canada different from hosting it almost anywhere else. The crowd is already there. The fan gear just needs to catch up.",
+        ],
+      },
+      {
+        heading: "Why bucket hats work for this crowd",
+        body: [
+          "Caps are the individual statement. Bucket hats are the event piece. For outdoor stadiums, fan zones, and summer afternoon matches, a bucket hat handles sun, looks good in group photos, and signals that you are here for the whole experience — not just the scoreline.",
+          "Reversible bucket hats add another layer: one side carries the national flag design, the other is a solid color. You can switch depending on your outfit, your mood, or how warm it gets. For fans who want to wear gear to different matches without buying multiple items, the reversible design is a practical choice.",
+        ],
+      },
+      {
+        heading: "Canada, Italy, Jamaica, Grenada — and everyone else",
+        body: [
+          "Canada's multicultural makeup means that almost every team in the 48-team field has a community here. Italy, Jamaica, and Grenada are three examples — but the same story plays out for fans of Portugal, Morocco, Nigeria, South Korea, and dozens of others.",
+          "Bucket hats are available in all of those national designs. For group events where multiple nations are represented, picking up hats for the whole group makes for a better photo and a better party.",
+        ],
+      },
+      {
+        heading: "Making the most of the host city experience",
+        body: [
+          "If you are in Toronto, Vancouver, or any other Canadian city during the tournament, the host city experience extends well beyond the stadium. Fan zones, public screenings, and neighborhood events will be running throughout the summer. Comfortable, weather-appropriate gear makes all of that more enjoyable.",
+          "Bucket hats ship from Toronto across Canada. Ordering a few weeks ahead gives you the delivery window and the selection you want before event inventory becomes unpredictable.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Are the bucket hats one size fits all?",
+        a: "Reversible bucket hats are typically one size with an adjustable inner band that fits most adults comfortably.",
+      },
+      {
+        q: "Can I get bucket hats for multiple countries in one order?",
+        a: "Yes. You can add bucket hats for different nations to a single order and they will ship together from Toronto.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
