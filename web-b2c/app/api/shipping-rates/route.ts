@@ -129,7 +129,9 @@ export async function POST(req: NextRequest) {
     }
 
     const allRates: ShippingRate[] = (data.rates ?? [])
-      .filter((r: { currency: string }) => r.currency?.toUpperCase() === "CAD")
+      .filter((r: { currency: string; provider: string }) =>
+        r.currency?.toUpperCase() === "CAD" && r.provider === "Canada Post"
+      )
       .map((r: {
         object_id: string;
         provider: string;
