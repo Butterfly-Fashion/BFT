@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   verification: {
-    google: "google-site-verification-token-here", // TODO: replace with token from Google Search Console
+    google: "o9qYb5c02aV4Tg5QzIj3Dnr2kZuJjER2iCVWb2b8PqQ",
   },
 };
 
