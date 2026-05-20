@@ -310,13 +310,44 @@ export default function OrdersDashboard() {
     }
   }
 
-  function handlePrintLabel() {
+  async function handlePrintLabel() {
     if (!selected?.shippo_label_url) return;
-    const win = window.open(selected.shippo_label_url, "_blank", "width=900,height=1100");
-    if (win) {
-      win.addEventListener("load", () => {
-        try { win.print(); } catch { /* browser may block auto-print */ }
-      });
+    try {
+      // Proxy through our API to avoid CORS, then embed in 4×6 print page
+      const proxyUrl = `/api/admin/label-proxy?url=${encodeURIComponent(selected.shippo_label_url)}`;
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error("proxy failed");
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const win = window.open("", "_blank", "width=432,height=648");
+      if (!win) return;
+      win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Shipping Label</title>
+  <style>
+    @page { size: 4in 6in; margin: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 4in; height: 6in; overflow: hidden; background: #fff; }
+    embed { width: 4in; height: 6in; display: block; }
+  </style>
+</head>
+<body>
+  <embed src="${blobUrl}" type="application/pdf" width="100%" height="100%">
+  <script>
+    setTimeout(function() {
+      window.focus();
+      window.print();
+    }, 800);
+  </script>
+</body>
+</html>`);
+      win.document.close();
+    } catch {
+      // fallback: open PDF directly
+      window.open(selected.shippo_label_url, "_blank");
     }
   }
 
