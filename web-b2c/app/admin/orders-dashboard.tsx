@@ -273,6 +273,16 @@ export default function OrdersDashboard() {
     }
   }
 
+  function handlePrintLabel() {
+    if (!selected?.shippo_label_url) return;
+    const win = window.open(selected.shippo_label_url, "_blank", "width=900,height=1100");
+    if (win) {
+      win.addEventListener("load", () => {
+        try { win.print(); } catch { /* browser may block auto-print */ }
+      });
+    }
+  }
+
   async function handleRecoverLabel() {
     if (!selected || selected._source !== "supabase") return;
     setRecoveringLabel(true);
@@ -625,7 +635,7 @@ export default function OrdersDashboard() {
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-3 py-2">
                         <span className="text-green-600 text-sm">✓</span>
-                        <span className="text-xs font-semibold text-green-700">Label created</span>
+                        <span className="text-xs font-semibold text-green-700">Label ready</span>
                       </div>
                       {selected.tracking_number && (
                         <p className="text-xs font-mono text-gray-600 bg-gray-50 rounded-lg px-3 py-2">
@@ -633,13 +643,30 @@ export default function OrdersDashboard() {
                           {selected.tracking_number}
                         </p>
                       )}
+
+                      {/* Inline PDF preview */}
+                      <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100">
+                        <iframe
+                          src={selected.shippo_label_url}
+                          title="Shipping Label"
+                          className="w-full"
+                          style={{ height: "260px", border: "none" }}
+                        />
+                      </div>
+
+                      <button
+                        onClick={handlePrintLabel}
+                        className="flex items-center justify-center gap-2 w-full rounded-full bg-gray-900 py-2.5 text-sm font-bold text-white hover:bg-gray-700 transition-colors"
+                      >
+                        🖨️ Print Label
+                      </button>
                       <a
                         href={selected.shippo_label_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full rounded-full bg-gray-900 py-2.5 text-sm font-bold text-white hover:bg-gray-700 transition-colors"
+                        className="flex items-center justify-center gap-1.5 w-full rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-500 hover:border-gray-400 hover:text-gray-700 transition-colors"
                       >
-                        🖨️ Print / Download Label
+                        ↓ Open / Download PDF
                       </a>
                       {selected.tracking_url && (
                         <a
