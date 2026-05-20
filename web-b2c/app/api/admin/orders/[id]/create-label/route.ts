@@ -118,6 +118,37 @@ export async function POST(
     }, { status: 409 });
   }
 
+  // Shippo에 이미 성공한 트랜잭션이 있으면 새로 결제하지 않고 재사용
+  const existingTxRes = await fetch(
+    `https://api.goshippo.com/transactions/?rate=${order.shippo_rate_id}&results=5`,
+    { headers: { Authorization: `ShippoToken ${apiKey}` } }
+  );
+  if (existingTxRes.ok) {
+    const existingTxData = await existingTxRes.json();
+    const existingSuccess = (existingTxData.results ?? []).find(
+      (t: { object_status: string; label_url: string }) =>
+        t.object_status === "SUCCESS" && t.label_url
+    );
+    if (existingSuccess) {
+      console.log(`[create-label] Found existing Shippo transaction — reusing label for order ${order.order_number}`);
+      await supabase.from("orders").update({
+        shippo_label_url: existingSuccess.label_url,
+        tracking_number: existingSuccess.tracking_number || null,
+        tracking_url: existingSuccess.tracking_url_provider || null,
+        carrier: existingSuccess.provider || null,
+        status: "packing",
+        updated_at: new Date().toISOString(),
+      }).eq("id", id);
+      return NextResponse.json({
+        label_url: existingSuccess.label_url,
+        tracking_number: existingSuccess.tracking_number,
+        tracking_url: existingSuccess.tracking_url_provider,
+        carrier: existingSuccess.provider,
+        recovered: true,
+      });
+    }
+  }
+
   // 1차 시도: 고객이 선택한 rate_id로 라벨 발급
   let shippoRes: Response;
   try {
