@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
+import { sendTrackingEmail } from "@/lib/email";
 import type { DbOrder } from "@/lib/types";
 
 function selectBox(weightKg: number): { length: string; width: string; height: string } {
@@ -93,7 +94,7 @@ export async function POST(
 
   const { data: order, error: fetchError } = await supabase
     .from("orders")
-    .select("id, order_number, shippo_rate_id, shippo_label_url, delivery_method, customer_name, shipping_address")
+    .select("id, order_number, shippo_rate_id, shippo_label_url, delivery_method, customer_name, customer_email, shipping_address, total")
     .eq("id", id)
     .single();
 
@@ -139,6 +140,30 @@ export async function POST(
         status: "packing",
         updated_at: new Date().toISOString(),
       }).eq("id", id);
+
+      if (order.customer_email && existingSuccess.tracking_number) {
+        (async () => {
+          const { data: items } = await supabase
+            .from("order_items")
+            .select("name, quantity, unit_price")
+            .eq("order_id", id);
+          await sendTrackingEmail({
+            orderNumber: order.order_number,
+            customerEmail: order.customer_email!,
+            customerName: order.customer_name ?? null,
+            carrier: existingSuccess.provider ?? "",
+            trackingNumber: existingSuccess.tracking_number,
+            trackingUrl: existingSuccess.tracking_url_provider || null,
+            items: (items ?? []).map((i: { name: string; quantity: number; unit_price: number }) => ({
+              name: i.name,
+              quantity: i.quantity,
+              unitPrice: i.unit_price,
+            })),
+            total: order.total ?? 0,
+          });
+        })().catch((err) => console.error("[create-label] Tracking email error (reuse):", err));
+      }
+
       return NextResponse.json({
         label_url: existingSuccess.label_url,
         tracking_number: existingSuccess.tracking_number,
@@ -265,6 +290,29 @@ export async function POST(
   }
 
   console.log(`[create-label] Label created for order ${order.order_number} — tracking: ${trackingNumber}`);
+
+  if (order.customer_email && trackingNumber) {
+    (async () => {
+      const { data: items } = await supabase
+        .from("order_items")
+        .select("name, quantity, unit_price")
+        .eq("order_id", id);
+      await sendTrackingEmail({
+        orderNumber: order.order_number,
+        customerEmail: order.customer_email!,
+        customerName: order.customer_name ?? null,
+        carrier,
+        trackingNumber,
+        trackingUrl: trackingUrl || null,
+        items: (items ?? []).map((i: { name: string; quantity: number; unit_price: number }) => ({
+          name: i.name,
+          quantity: i.quantity,
+          unitPrice: i.unit_price,
+        })),
+        total: order.total ?? 0,
+      });
+    })().catch((err) => console.error("[create-label] Tracking email error:", err));
+  }
 
   return NextResponse.json({
     label_url: labelUrl,

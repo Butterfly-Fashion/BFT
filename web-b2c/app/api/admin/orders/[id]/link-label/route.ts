@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
+import { sendTrackingEmail } from "@/lib/email";
 
 export async function POST(
   req: NextRequest,
@@ -28,7 +29,7 @@ export async function POST(
 
   const { data: order, error: fetchError } = await supabase
     .from("orders")
-    .select("id, order_number, shippo_label_url")
+    .select("id, order_number, shippo_label_url, customer_email, customer_name, total")
     .eq("id", id)
     .single();
 
@@ -110,6 +111,29 @@ export async function POST(
   }
 
   console.log(`[link-label] Linked label for order ${order.order_number} — tracking: ${trackingNumber}`);
+
+  if (order.customer_email) {
+    (async () => {
+      const { data: items } = await supabase
+        .from("order_items")
+        .select("name, quantity, unit_price")
+        .eq("order_id", id);
+      await sendTrackingEmail({
+        orderNumber: order.order_number,
+        customerEmail: order.customer_email!,
+        customerName: order.customer_name ?? null,
+        carrier: matchedTx!.provider ?? "",
+        trackingNumber: matchedTx!.tracking_number,
+        trackingUrl: matchedTx!.tracking_url_provider || null,
+        items: (items ?? []).map((i: { name: string; quantity: number; unit_price: number }) => ({
+          name: i.name,
+          quantity: i.quantity,
+          unitPrice: i.unit_price,
+        })),
+        total: order.total ?? 0,
+      });
+    })().catch((err) => console.error("[link-label] Tracking email error:", err));
+  }
 
   return NextResponse.json({
     linked: true,

@@ -21,29 +21,75 @@ export function productSeoDescription(product: Product): string {
 }
 
 export function productJsonLd(product: Product) {
+  const images = [absoluteUrl(product.imageUrl)];
+  if (product.additionalImages?.length) {
+    images.push(...product.additionalImages.map(absoluteUrl));
+  }
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: productSeoDescription(product),
-    image: [absoluteUrl(product.imageUrl)],
+    image: images,
     brand: {
       "@type": "Brand",
       name: SITE_NAME,
     },
     category: product.category,
     sku: product.slug,
+    mpn: product.slug,
     url: absoluteUrl(`/products/${product.slug}`),
     offers: {
       "@type": "Offer",
       url: absoluteUrl(`/products/${product.slug}`),
       priceCurrency: "CAD",
       price: (product.price ?? 0).toFixed(2),
-      availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      priceValidUntil: "2026-12-31",
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
         name: SITE_NAME,
+        url: SITE_URL,
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          currency: "CAD",
+          minValue: "0",
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "CA",
+        },
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 2,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 3,
+            maxValue: 7,
+            unitCode: "DAY",
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "CA",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnFiniteReturnWindow",
+        merchantReturnDays: 30,
+        returnMethod: "https://schema.org/ReturnByMail",
+        returnFees: "https://schema.org/FreeReturn",
       },
     },
   };

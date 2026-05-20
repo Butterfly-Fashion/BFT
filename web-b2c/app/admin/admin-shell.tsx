@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
-type Section = "orders" | "products";
+type Section = "orders" | "products" | "revenue";
 
 const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading orders..." />,
@@ -11,6 +11,10 @@ const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
 
 const ProductsDashboard = dynamic(() => import("./products-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading products..." />,
+});
+
+const RevenueDashboard = dynamic(() => import("./revenue-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading revenue..." />,
 });
 
 function AdminSectionLoader({ label }: { label: string }) {
@@ -35,7 +39,7 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <span className="text-xs font-bold uppercase tracking-widest text-[#C41E3A] mr-4 py-4">
             World Fan Gear
           </span>
-          {(["orders", "products"] as const).map((s) => (
+          {(["orders", "products", "revenue"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setSection(s)}
@@ -45,7 +49,7 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
                   : "border-transparent text-gray-500 hover:text-gray-800"
               }`}
             >
-              {s === "orders" ? "Orders" : "Products"}
+              {s === "orders" ? "Orders" : s === "products" ? "Products" : "Revenue"}
             </button>
           ))}
         </div>
@@ -61,8 +65,10 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
       <div className="flex-1 overflow-hidden">
         {section === "orders" ? (
           <OrdersDashboard />
-        ) : (
+        ) : section === "products" ? (
           <ProductsDashboard />
+        ) : (
+          <RevenueDashboard />
         )}
       </div>
     </div>
