@@ -112,6 +112,25 @@ export async function POST(
 
   console.log(`[link-label] Linked label for order ${order.order_number} — tracking: ${trackingNumber}`);
 
+  // Register tracking with Shippo so webhooks fire for manually linked labels
+  const CARRIER_CODES: Record<string, string> = {
+    "canada post": "canada_post",
+    "ups": "ups",
+    "fedex": "fedex",
+    "dhl": "dhl_express",
+    "purolator": "purolator",
+    "usps": "usps",
+  };
+  const carrierCode = CARRIER_CODES[(matchedTx.provider ?? "").toLowerCase()] ?? "canada_post";
+  fetch("https://api.goshippo.com/tracks/", {
+    method: "POST",
+    headers: {
+      Authorization: `ShippoToken ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ carrier: carrierCode, tracking_number: trackingNumber }),
+  }).catch((err) => console.error("[link-label] Shippo tracking register error:", err));
+
   if (order.customer_email) {
     (async () => {
       const { data: items } = await supabase
