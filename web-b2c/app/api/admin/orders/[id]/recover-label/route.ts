@@ -30,7 +30,17 @@ export async function POST(
   }
 
   if (order.shippo_label_url) {
-    return NextResponse.json({ error: "Label already saved", label_url: order.shippo_label_url }, { status: 409 });
+    return NextResponse.json(
+      { error: "Label already saved", label_url: order.shippo_label_url },
+      { status: 409 }
+    );
+  }
+
+  if (!order.shippo_rate_id) {
+    return NextResponse.json(
+      { error: "No rate ID on this order. Use 'Link Label' with the tracking number instead." },
+      { status: 400 }
+    );
   }
 
   type ShippoTx = {
@@ -42,41 +52,40 @@ export async function POST(
     provider: string;
   };
 
-  let successTx: ShippoTx | undefined;
+  // rate_id로만 조회 — 범위를 벗어난 검색은 다른 주문 라벨을 잘못 연결할 수 있음
+  const res = await fetch(
+    `https://api.goshippo.com/transactions/?rate=${order.shippo_rate_id}&results=10`,
+    { headers: { Authorization: `ShippoToken ${apiKey}` } }
+  );
 
-  // 1차: 저장된 rate_id로 조회
-  if (order.shippo_rate_id) {
-    const res = await fetch(
-      `https://api.goshippo.com/transactions/?rate=${order.shippo_rate_id}&results=10`,
-      { headers: { Authorization: `ShippoToken ${apiKey}` } }
-    );
-    if (res.ok) {
-      const data = await res.json();
-      successTx = (data.results ?? []).find(
-        (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
-      );
-    }
+  if (!res.ok) {
+    return NextResponse.json({ error: "Shippo API error" }, { status: 502 });
   }
 
-  // 2차: rate_id로 못 찾으면 최근 트랜잭션 전체에서 조회
-  // (Canada Post fallback으로 다른 rate_id로 생성된 경우)
-  if (!successTx) {
-    const res = await fetch(
-      `https://api.goshippo.com/transactions/?results=50`,
-      { headers: { Authorization: `ShippoToken ${apiKey}` } }
-    );
-    if (res.ok) {
-      const data = await res.json();
-      successTx = (data.results ?? []).find(
-        (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
-      );
-    }
-  }
+  const data = await res.json();
+  const successTx = (data.results ?? []).find(
+    (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
+  );
 
   if (!successTx) {
     return NextResponse.json({
-      error: "No successful transaction found in Shippo. Check Shippo dashboard → Transactions.",
+      error: "No label found for this rate ID. If you know the tracking number, use 'Link Label' instead.",
     }, { status: 404 });
+  }
+
+  // 이 라벨이 다른 주문에 이미 연결됐는지 확인
+  const { data: duplicate } = await supabase
+    .from("orders")
+    .select("order_number")
+    .neq("id", id)
+    .eq("tracking_number", successTx.tracking_number)
+    .maybeSingle();
+
+  if (duplicate) {
+    return NextResponse.json(
+      { error: `This label is already linked to order ${duplicate.order_number}` },
+      { status: 409 }
+    );
   }
 
   const { error: updateError } = await supabase

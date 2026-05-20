@@ -36,7 +36,29 @@ export async function POST(
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  // Shippo 최근 트랜잭션에서 tracking number 매칭
+  // 이미 라벨 있으면 덮어쓰지 않음
+  if (order.shippo_label_url) {
+    return NextResponse.json(
+      { error: "This order already has a label. Remove it first if you want to replace it." },
+      { status: 409 }
+    );
+  }
+
+  // 이 라벨이 다른 주문에 이미 연결됐는지 확인
+  const { data: duplicate } = await supabase
+    .from("orders")
+    .select("order_number")
+    .neq("id", id)
+    .eq("tracking_number", trackingNumber)
+    .maybeSingle();
+
+  if (duplicate) {
+    return NextResponse.json(
+      { error: `Tracking number already linked to order ${duplicate.order_number}` },
+      { status: 409 }
+    );
+  }
+
   type ShippoTx = {
     object_id: string;
     object_status: string;
@@ -57,7 +79,6 @@ export async function POST(
     if (!res.ok) break;
     const data = await res.json();
     const results: ShippoTx[] = data.results ?? [];
-    // label_url만 있으면 연결 — status는 WAITING일 수도 있어서 체크 안 함
     matchedTx = results.find(
       (t) => t.tracking_number === trackingNumber && t.label_url
     );
@@ -67,7 +88,7 @@ export async function POST(
 
   if (!matchedTx) {
     return NextResponse.json(
-      { error: `Tracking number ${trackingNumber} not found in Shippo transactions. Check Shippo dashboard → Shipments → Download the label manually.` },
+      { error: `Tracking number ${trackingNumber} not found in Shippo. Check Shippo dashboard → Shipments → Download the label manually.` },
       { status: 404 }
     );
   }

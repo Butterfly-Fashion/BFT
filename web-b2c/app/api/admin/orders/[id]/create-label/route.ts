@@ -239,7 +239,7 @@ export async function POST(
       transaction.messages?.[0]?.text ??
       transaction.object_status ??
       "Shippo returned an error";
-    return NextResponse.json({ error: `Shippo: ${msg}`, detail: transaction }, { status: 400 });
+    return NextResponse.json({ error: `Shippo: ${msg}` }, { status: 400 });
   }
 
   const labelUrl: string = transaction.label_url;
