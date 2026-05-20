@@ -49,7 +49,7 @@ export async function POST(
   let matchedTx: ShippoTx | undefined;
   let page = 1;
 
-  while (!matchedTx && page <= 3) {
+  while (!matchedTx && page <= 10) {
     const res = await fetch(
       `https://api.goshippo.com/transactions/?results=50&page=${page}`,
       { headers: { Authorization: `ShippoToken ${apiKey}` } }
@@ -57,11 +57,9 @@ export async function POST(
     if (!res.ok) break;
     const data = await res.json();
     const results: ShippoTx[] = data.results ?? [];
+    // label_url만 있으면 연결 — status는 WAITING일 수도 있어서 체크 안 함
     matchedTx = results.find(
-      (t) =>
-        t.tracking_number === trackingNumber &&
-        t.object_status === "SUCCESS" &&
-        t.label_url
+      (t) => t.tracking_number === trackingNumber && t.label_url
     );
     if (!data.next) break;
     page++;
@@ -69,7 +67,7 @@ export async function POST(
 
   if (!matchedTx) {
     return NextResponse.json(
-      { error: `No Shippo transaction found with tracking number ${trackingNumber}` },
+      { error: `Tracking number ${trackingNumber} not found in Shippo transactions. Check Shippo dashboard → Shipments → Download the label manually.` },
       { status: 404 }
     );
   }
