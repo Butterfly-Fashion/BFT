@@ -85,6 +85,8 @@ export default function OrdersDashboard() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [creatingLabel, setCreatingLabel] = useState(false);
   const [recoveringLabel, setRecoveringLabel] = useState(false);
+  const [linkingLabel, setLinkingLabel] = useState(false);
+  const [linkTrackingInput, setLinkTrackingInput] = useState("");
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
   // Side panel edit state
@@ -270,6 +272,41 @@ export default function OrdersDashboard() {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Label creation failed" });
     } finally {
       setCreatingLabel(false);
+    }
+  }
+
+  async function handleLinkLabel() {
+    if (!selected || selected._source !== "supabase" || !linkTrackingInput.trim()) return;
+    setLinkingLabel(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}/link-label`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tracking_number: linkTrackingInput.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to link label");
+      const updated: DbOrder = {
+        ...selected,
+        shippo_label_url: data.label_url,
+        tracking_number: data.tracking_number ?? selected.tracking_number,
+        tracking_url: data.tracking_url ?? selected.tracking_url,
+        carrier: data.carrier ?? selected.carrier,
+        status: "packing",
+      };
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updated : o)));
+      setSelected(updated);
+      setEditStatus("packing");
+      setEditTracking(data.tracking_number ?? "");
+      setEditTrackingUrl(data.tracking_url ?? "");
+      setEditCarrier(data.carrier ?? "");
+      setLinkTrackingInput("");
+      setSaveMsg({ type: "ok", text: "Label linked! Print it below." });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Link failed" });
+    } finally {
+      setLinkingLabel(false);
     }
   }
 
@@ -690,23 +727,39 @@ export default function OrdersDashboard() {
                         <div className="space-y-2">
                           <button
                             onClick={handleCreateLabel}
-                            disabled={creatingLabel || recoveringLabel}
+                            disabled={creatingLabel || recoveringLabel || linkingLabel}
                             className="w-full rounded-full bg-[#003876] py-2.5 text-sm font-bold text-white hover:bg-[#002a5a] transition-colors disabled:opacity-60"
                           >
                             {creatingLabel ? "Purchasing label…" : "🏷️ Create Shipping Label"}
                           </button>
                           <button
                             onClick={handleRecoverLabel}
-                            disabled={creatingLabel || recoveringLabel}
+                            disabled={creatingLabel || recoveringLabel || linkingLabel}
                             className="w-full rounded-full border border-gray-300 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 hover:text-gray-900 transition-colors disabled:opacity-60"
                           >
                             {recoveringLabel ? "Searching Shippo…" : "🔍 Recover Existing Label"}
                           </button>
                         </div>
                       )}
-                      <p className="text-[11px] text-gray-400 text-center">
-                        If a label was already purchased but not saved, use Recover to find it.
-                      </p>
+
+                      {/* 트래킹 번호로 직접 라벨 연결 */}
+                      <div className="pt-1 space-y-1.5">
+                        <p className="text-[11px] font-semibold text-gray-500">Link label by tracking number</p>
+                        <input
+                          type="text"
+                          value={linkTrackingInput}
+                          onChange={(e) => setLinkTrackingInput(e.target.value)}
+                          placeholder="e.g. 1Z2KW3552036265629"
+                          className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs font-mono outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+                        />
+                        <button
+                          onClick={handleLinkLabel}
+                          disabled={!linkTrackingInput.trim() || linkingLabel || creatingLabel || recoveringLabel}
+                          className="w-full rounded-full border border-[#003876] py-2 text-xs font-semibold text-[#003876] hover:bg-[#003876] hover:text-white transition-colors disabled:opacity-50"
+                        >
+                          {linkingLabel ? "Linking…" : "🔗 Link Label"}
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>

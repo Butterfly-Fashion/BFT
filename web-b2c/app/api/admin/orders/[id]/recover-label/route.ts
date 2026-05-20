@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
 
-// Shippo에서 이미 결제된 라벨을 rate_id로 조회해서 DB에 저장
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -30,49 +29,56 @@ export async function POST(
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  if (!order.shippo_rate_id) {
-    return NextResponse.json({ error: "No rate ID on this order" }, { status: 400 });
-  }
-
   if (order.shippo_label_url) {
     return NextResponse.json({ error: "Label already saved", label_url: order.shippo_label_url }, { status: 409 });
   }
 
-  // Shippo에서 이 rate_id로 생성된 트랜잭션 조회
-  const res = await fetch(
-    `https://api.goshippo.com/transactions/?rate=${order.shippo_rate_id}&results=5`,
-    { headers: { Authorization: `ShippoToken ${apiKey}` } }
-  );
-
-  if (!res.ok) {
-    return NextResponse.json({ error: "Shippo API error" }, { status: 502 });
-  }
-
-  const data = await res.json();
-  const transactions: Array<{
+  type ShippoTx = {
     object_id: string;
     object_status: string;
     label_url: string;
     tracking_number: string;
     tracking_url_provider: string;
     provider: string;
-  }> = data.results ?? [];
+  };
 
-  // SUCCESS 상태인 트랜잭션 찾기
-  const successTx = transactions.find((t) => t.object_status === "SUCCESS" && t.label_url);
+  let successTx: ShippoTx | undefined;
+
+  // 1차: 저장된 rate_id로 조회
+  if (order.shippo_rate_id) {
+    const res = await fetch(
+      `https://api.goshippo.com/transactions/?rate=${order.shippo_rate_id}&results=10`,
+      { headers: { Authorization: `ShippoToken ${apiKey}` } }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      successTx = (data.results ?? []).find(
+        (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
+      );
+    }
+  }
+
+  // 2차: rate_id로 못 찾으면 최근 트랜잭션 전체에서 조회
+  // (Canada Post fallback으로 다른 rate_id로 생성된 경우)
+  if (!successTx) {
+    const res = await fetch(
+      `https://api.goshippo.com/transactions/?results=50`,
+      { headers: { Authorization: `ShippoToken ${apiKey}` } }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      successTx = (data.results ?? []).find(
+        (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
+      );
+    }
+  }
 
   if (!successTx) {
     return NextResponse.json({
-      error: "No successful transaction found for this rate ID",
-      transactions: transactions.map((t) => ({
-        id: t.object_id,
-        status: t.object_status,
-        hasLabel: !!t.label_url,
-      })),
+      error: "No successful transaction found in Shippo. Check Shippo dashboard → Transactions.",
     }, { status: 404 });
   }
 
-  // DB에 저장
   const { error: updateError } = await supabase
     .from("orders")
     .update({
