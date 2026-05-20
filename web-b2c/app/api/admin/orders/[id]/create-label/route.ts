@@ -160,7 +160,7 @@ export async function POST(
       },
       body: JSON.stringify({
         rate: order.shippo_rate_id,
-        label_file_type: "PDF",
+        label_file_type: "PDF_4X6",
         async: false,
       }),
     });
@@ -215,7 +215,7 @@ export async function POST(
             Authorization: `ShippoToken ${apiKey}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ rate: fallbackRateId, label_file_type: "PDF", async: false }),
+          body: JSON.stringify({ rate: fallbackRateId, label_file_type: "PDF_4X6", async: false }),
         });
         const retryTx = await retryRes.json();
         if (retryRes.ok && retryTx.object_status === "SUCCESS") {
