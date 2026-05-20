@@ -150,10 +150,13 @@ const SLIDES: Slide[] = [
 export function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [loaded, setLoaded] = useState<Set<number>>(new Set([0]));
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const go = useCallback((index: number) => {
-    setCurrent((index + SLIDES.length) % SLIDES.length);
+    const next = (index + SLIDES.length) % SLIDES.length;
+    setCurrent(next);
+    setLoaded((prev) => new Set(prev).add(next));
   }, []);
 
   const next = useCallback(() => go(current + 1), [current, go]);
@@ -174,14 +177,14 @@ export function HeroCarousel() {
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        {/* slides */}
+        {/* slides — non-first slides are only mounted once they've been shown */}
         {SLIDES.map((slide, i) => (
           <div
             key={slide.id}
             className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === current ? 1 : 0, pointerEvents: i === current ? "auto" : "none" }}
           >
-            {slide.render(i === current)}
+            {loaded.has(i) && slide.render(i === current)}
           </div>
         ))}
 

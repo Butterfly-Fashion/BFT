@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { HeroCarousel } from "@/components/store/hero-carousel";
 import { TrustStrip } from "@/components/store/trust-strip";
 import { CategoryStrip } from "@/components/store/category-strip";
@@ -10,12 +11,61 @@ import Link from "next/link";
 
 const SHOW_FREE_SHIPPING_BANNER = false;
 
-export default async function HomePage() {
-  const [featured, trending] = await Promise.all([
-    getFeaturedProducts(),
-    getTrendingProducts(),
-  ]);
+// ─── Skeleton ────────────────────────────────────────────────────────────────
 
+function ProductGridSkeleton({ count }: { count: number }) {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="rounded-xl overflow-hidden animate-pulse">
+          <div className="aspect-square bg-gray-200" />
+          <div className="p-3 space-y-2">
+            <div className="h-3 bg-gray-200 rounded w-3/4" />
+            <div className="h-3 bg-gray-200 rounded w-1/2" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── Async product sections ───────────────────────────────────────────────────
+
+async function TrendingSection() {
+  const trending = await getTrendingProducts();
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      {trending.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
+    </div>
+  );
+}
+
+async function FeaturedSection() {
+  const featured = await getFeaturedProducts();
+  return (
+    <>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        {featured.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+      <div className="mt-8 text-center sm:hidden">
+        <Link
+          href="/products"
+          className="text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+        >
+          View all products →
+        </Link>
+      </div>
+    </>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default function HomePage() {
   return (
     <>
       <HeroCarousel />
@@ -38,11 +88,9 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {trending.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        <Suspense fallback={<ProductGridSkeleton count={4} />}>
+          <TrendingSection />
+        </Suspense>
       </section>
 
       <TrustStrip />
@@ -66,20 +114,9 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-
-        <div className="mt-8 text-center sm:hidden">
-          <Link
-            href="/products"
-            className="text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
-          >
-            View all products →
-          </Link>
-        </div>
+        <Suspense fallback={<ProductGridSkeleton count={8} />}>
+          <FeaturedSection />
+        </Suspense>
       </section>
 
       <SocialProof />
@@ -143,7 +180,6 @@ export default async function HomePage() {
 
       <CategoryStrip />
 
-      {/* Promo Banner — toggle SHOW_FREE_SHIPPING_BANNER to enable */}
       {SHOW_FREE_SHIPPING_BANNER && (
         <section className="bg-gray-900 text-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 text-center">
