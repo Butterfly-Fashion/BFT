@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
       "A practical Canada-based guide to World Cup 2026 fan gear, from car flags and caps to bucket hats and souvenir gifts.",
     publishedAt: "2026-05-11",
     category: "Fan Gear Guide",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Canada 2026 fan gear banner with soccer merchandise",
     productSlugs: [
       "canada-boxing-glove",
@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
       "Simple ideas for hosting a Canada 2026 watch party with fan outfits, car flags, photo moments, and easy soccer decorations.",
     publishedAt: "2026-05-11",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Canada soccer fan gear for a World Cup 2026 watch party",
     productSlugs: [
       "canada-boxing-glove",
@@ -125,7 +125,7 @@ export const blogPosts: BlogPost[] = [
       "A guide to choosing soccer car flags for World Cup 2026, including country styles, match-day uses, and buying early in Canada.",
     publishedAt: "2026-05-12",
     category: "Car Flags",
-    heroImage: "/asset/blog/world-cup-car-flags.png",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "Soccer fan car flag for World Cup 2026",
     productSlugs: [
       "canada-car-flag",
@@ -172,7 +172,7 @@ export const blogPosts: BlogPost[] = [
       "Gift ideas for soccer fans in Canada, including caps, bucket hats, car flags, and souvenir mini boxing gloves.",
     publishedAt: "2026-05-12",
     category: "Gift Guide",
-    heroImage: "/asset/blog/soccer-fan-gifts.png",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Canada mini boxing gloves souvenir gift for soccer fans",
     productSlugs: [
       "canada-boxing-glove",
@@ -219,7 +219,7 @@ export const blogPosts: BlogPost[] = [
       "A Canada-focused guide to World Cup 2026 host city energy, match-day travel, and fan gear to prepare early.",
     publishedAt: "2026-05-13",
     category: "Tournament Guide",
-    heroImage: "/asset/blog/world-cup-host-cities-hero.webp",
+    heroImage: "/asset/blog/generated/nigeria-senegal-fans-celebrating-stadium.png",
     heroAlt: "Canada 2026 soccer fan gear and match-day merchandise",
     productSlugs: [
       "canada-car-flag",
@@ -266,7 +266,7 @@ export const blogPosts: BlogPost[] = [
       "Safe and simple car decoration ideas for World Cup 2026, including car flags, colour themes, and match-day driving tips.",
     publishedAt: "2026-05-13",
     category: "Car Flags",
-    heroImage: "/asset/blog/world-cup-car-flags.png",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "World Cup soccer car flag on a match-day vehicle",
     productSlugs: [
       "canada-car-flag",
@@ -313,7 +313,7 @@ export const blogPosts: BlogPost[] = [
       "A guide to Canada soccer fan merchandise for 2026, including practical gear for watch parties, travel, and gifts.",
     publishedAt: "2026-05-14",
     category: "Canada Fan Gear",
-    heroImage: "/asset/blog/canada-soccer-fan-merchandise.webp",
+    heroImage: "/asset/blog/generated/brazil-mexico-fans-caps-city-street.png",
     heroAlt: "Canada soccer fan merchandise for 2026",
     productSlugs: [
       "canada-car-flag",
@@ -456,7 +456,7 @@ export const blogPosts: BlogPost[] = [
       "Why bucket hats make sense for World Cup 2026 fans, from outdoor watch parties to summer match-day outfits.",
     publishedAt: "2026-05-15",
     category: "Bucket Hats",
-    heroImage: "/asset/blog/world-cup-bucket-hat-hero.webp",
+    heroImage: "/asset/blog/generated/south-korea-fan-cap-seoul-night.png",
     heroAlt: "Brazil World Cup 2026 bucket hat for match day",
     productSlugs: [
       "canada-reversible-bucket-hat",
@@ -502,7 +502,7 @@ export const blogPosts: BlogPost[] = [
       "World Cup 2026-inspired souvenir ideas for Canadian shoppers, including mini boxing gloves, caps, car flags, and small gifts.",
     publishedAt: "2026-05-15",
     category: "Souvenirs",
-    heroImage: "/asset/blog/world-cup-souvenirs-hero.webp",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Canada souvenir mini boxing gloves for soccer fans",
     productSlugs: [
       "canada-boxing-glove",
@@ -995,7 +995,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to World Cup 2026 mini souvenir boxing gloves — country styles, how to display them, and why they make the best soccer fan gifts.",
     publishedAt: "2026-05-27",
     category: "Souvenirs",
-    heroImage: "/asset/blog/soccer-fan-gifts.png",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "World Cup 2026 mini souvenir boxing gloves collectible gift",
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "france-flag-souvenir-mini-boxing-glove", "italia-classic-tricolore-flag-souvenir-mini-boxing-glove"],
     sections: [
@@ -1032,7 +1032,7 @@ export const blogPosts: BlogPost[] = [
     description: "The best World Cup 2026 souvenir ideas for Canadian fans — mini boxing gloves, caps, car flags, and sticker packs as tournament keepsakes.",
     publishedAt: "2026-05-27",
     category: "Souvenirs",
-    heroImage: "/asset/blog/soccer-fan-gifts.png",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Best World Cup 2026 souvenirs for Canadian fans",
     productSlugs: ["canada-boxing-glove", "canada-car-flag", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-reversible-bucket-hat"],
     sections: [
@@ -1070,7 +1070,7 @@ export const blogPosts: BlogPost[] = [
     description: "How to choose the right World Cup 2026 car flag in Canada — country styles, quality tips, and which flags to buy before the tournament rush.",
     publishedAt: "2026-05-28",
     category: "Car Flags",
-    heroImage: "/asset/blog/world-cup-car-flags.png",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "World Cup 2026 car flag buying guide for Canada",
     productSlugs: ["canada-car-flag", "brazil-car-flag", "argentina-car-flag", "mexico-car-flag"],
     sections: [
@@ -1107,7 +1107,7 @@ export const blogPosts: BlogPost[] = [
     description: "A step-by-step guide to attaching World Cup car flags safely — how to secure them, avoid scratches, and keep them flying through match day.",
     publishedAt: "2026-05-28",
     category: "Car Flags",
-    heroImage: "/asset/blog/world-cup-car-flags.png",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "How to attach a World Cup car flag to a car window",
     productSlugs: ["canada-car-flag", "brazil-car-flag", "portugal-car-flag", "argentina-car-flag"],
     sections: [
@@ -1145,7 +1145,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to watching World Cup 2026 in Toronto — where to find watch parties, fan zones, and how to prepare with the right fan gear.",
     publishedAt: "2026-05-29",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 watch party in Toronto fan guide",
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-reversible-bucket-hat", "canada-boxing-glove"],
     sections: [
@@ -1182,7 +1182,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to watching World Cup 2026 in Vancouver — where to find watch parties, fan zones, and the best fan gear for BC soccer fans.",
     publishedAt: "2026-05-29",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 watch party in Vancouver fan guide",
     productSlugs: ["canada-car-flag", "south-korea-3d-embroidered-cap", "japan-flag-3d-embroidered-cap", "canada-reversible-bucket-hat"],
     sections: [
@@ -1220,7 +1220,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to watching World Cup 2026 in Calgary — where fans gather, how to find watch party events, and the best fan gear for Alberta soccer fans.",
     publishedAt: "2026-05-30",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 watch party in Calgary fan guide",
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "argentina-car-flag", "brazil-car-flag"],
     sections: [
@@ -1257,7 +1257,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to watching World Cup 2026 in Montreal — where fans gather, French Canadian connections, and the best fan gear for Quebec soccer fans.",
     publishedAt: "2026-05-30",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 watch party in Montreal fan guide",
     productSlugs: ["canada-car-flag", "france-flag-3d-embroidered-cap", "morocco-flag-3d-embroidered-cap", "quebec-flag-souvenir-mini-boxing-glove"],
     sections: [
@@ -1295,7 +1295,7 @@ export const blogPosts: BlogPost[] = [
     description: "Everything Canadian fans need to know about Canada's 2026 World Cup campaign — the squad, match schedule, and how to gear up for Les Rouges.",
     publishedAt: "2026-05-31",
     category: "Canada Fan Gear",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Canada soccer fan gear for World Cup 2026",
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-reversible-bucket-hat", "canada-boxing-glove"],
     sections: [
@@ -1334,7 +1334,7 @@ export const blogPosts: BlogPost[] = [
     description: "Easy food ideas for a World Cup 2026 watch party — snacks by country, match-day spreads, and how to theme your food around fan gear and team colours.",
     publishedAt: "2026-06-02",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 watch party food ideas and setup",
     productSlugs: ["canada-car-flag", "canada-boxing-glove", "canada-black-flag-3d-embroidered-cap"],
     sections: [
@@ -1371,7 +1371,7 @@ export const blogPosts: BlogPost[] = [
     description: "Country-themed snack ideas for World Cup 2026 watch parties — easy food pairings for Canada, Brazil, Italy, Mexico, France, and more match days.",
     publishedAt: "2026-06-02",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 country-themed watch party snacks guide",
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "italia-classic-tricolore-flag-souvenir-mini-boxing-glove", "france-flag-souvenir-mini-boxing-glove"],
     sections: [
@@ -1409,7 +1409,7 @@ export const blogPosts: BlogPost[] = [
     description: "How to host a backyard World Cup 2026 watch party in Canada — outdoor setup tips, fan gear decor, and how to make the most of the summer tournament.",
     publishedAt: "2026-06-03",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Backyard World Cup 2026 watch party setup guide",
     productSlugs: ["canada-car-flag", "canada-reversible-bucket-hat", "brazil-car-flag", "argentina-car-flag"],
     sections: [
@@ -1446,7 +1446,7 @@ export const blogPosts: BlogPost[] = [
     description: "Tips for hosting a World Cup 2026 watch party in a small apartment — layout, fan gear decor, and how to maximize the match-day atmosphere in a compact space.",
     publishedAt: "2026-06-03",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 apartment watch party tips and setup",
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "canada-black-flag-3d-embroidered-cap", "france-flag-3d-embroidered-cap"],
     sections: [
@@ -1484,7 +1484,7 @@ export const blogPosts: BlogPost[] = [
     description: "Father's Day soccer gift ideas for World Cup 2026 — caps, car flags, mini boxing gloves, and sticker packs for soccer dads in Canada.",
     publishedAt: "2026-06-04",
     category: "Gift Guide",
-    heroImage: "/asset/blog/soccer-fan-gifts.png",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Father's Day soccer gifts for World Cup 2026 Canada",
     productSlugs: ["canada-boxing-glove", "canada-car-flag", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-black-flag-3d-embroidered-cap"],
     sections: [
@@ -1521,7 +1521,7 @@ export const blogPosts: BlogPost[] = [
     description: "The best soccer gifts for dads for World Cup 2026 — practical fan gear ideas, Panini sticker sets, and tournament collectibles for Canadian soccer fathers.",
     publishedAt: "2026-06-04",
     category: "Gift Guide",
-    heroImage: "/asset/blog/soccer-fan-gifts.png",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Best soccer gifts for dads World Cup 2026 Canada",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-boxing-glove"],
     sections: [
@@ -1559,7 +1559,7 @@ export const blogPosts: BlogPost[] = [
     description: "How to host a World Cup 2026 watch party for the whole family — kid-friendly setups, fan gear for all ages, and activities to keep everyone engaged.",
     publishedAt: "2026-06-05",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Family World Cup 2026 watch party guide Canada",
     productSlugs: ["canada-reversible-bucket-hat", "canada-black-flag-3d-embroidered-cap", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-boxing-glove"],
     sections: [
@@ -1638,7 +1638,7 @@ export const blogPosts: BlogPost[] = [
     description: "A match day routine for World Cup 2026 fans — how to prepare fan gear, plan your viewing setup, and make every match day feel like an event.",
     publishedAt: "2026-06-10",
     category: "Fan Gear Guide",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 match day routine preparation guide",
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-reversible-bucket-hat"],
     sections: [
@@ -1675,7 +1675,7 @@ export const blogPosts: BlogPost[] = [
     description: "A checklist of what to bring to a World Cup 2026 watch party — fan gear, food contributions, score prediction sheets, and how to be the ideal watch party guest.",
     publishedAt: "2026-06-10",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "What to bring to a World Cup 2026 watch party checklist",
     productSlugs: ["canada-car-flag", "canada-boxing-glove", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-black-flag-3d-embroidered-cap"],
     sections: [
@@ -1713,7 +1713,7 @@ export const blogPosts: BlogPost[] = [
     description: "The art of celebrating World Cup goals — watch party traditions, fan gear moments, and how to make goal celebrations part of your tournament experience.",
     publishedAt: "2026-06-11",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "How to celebrate World Cup 2026 goals at a watch party",
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "canada-car-flag", "canada-black-flag-3d-embroidered-cap"],
     sections: [
@@ -1751,7 +1751,7 @@ export const blogPosts: BlogPost[] = [
     description: "A guide to World Cup 2026 fan zones in Canada — what happens at fan zones, how to prepare with the right fan gear, and what the experience is like.",
     publishedAt: "2026-06-12",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 fan zones in Canada guide",
     productSlugs: ["canada-reversible-bucket-hat", "canada-black-flag-3d-embroidered-cap", "canada-car-flag", "canada-boxing-glove"],
     sections: [
@@ -1789,7 +1789,7 @@ export const blogPosts: BlogPost[] = [
     description: "How to enjoy World Cup 2026 outdoor screenings in Canada — what to wear, what to bring, and how to make the most of public viewing events.",
     publishedAt: "2026-06-13",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 outdoor screening tips and fan gear",
     productSlugs: ["canada-reversible-bucket-hat", "canada-black-flag-3d-embroidered-cap", "canada-car-flag"],
     sections: [
@@ -1828,7 +1828,7 @@ export const blogPosts: BlogPost[] = [
     description: "The best halftime activities for World Cup 2026 watch parties — Panini sticker trading, score predictions, fan gear contests, and how to fill the 15-minute break.",
     publishedAt: "2026-06-15",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 halftime activities watch party ideas",
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove"],
     sections: [
@@ -1865,7 +1865,7 @@ export const blogPosts: BlogPost[] = [
     description: "Fun games to play at a World Cup 2026 watch party — score predictions, trivia, bingo cards, and fan gear contests that keep everyone engaged.",
     publishedAt: "2026-06-15",
     category: "Watch Parties",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Best games for World Cup 2026 watch party",
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "panini-fifa-world-cup-2026-sticker-box-50-packs"],
     sections: [
@@ -1905,7 +1905,7 @@ export const blogPosts: BlogPost[] = [
     description: "Safety tips for using World Cup 2026 car flags — proper attachment, speed limits, visibility rules, and how to protect your car while showing team pride.",
     publishedAt: "2026-06-18",
     category: "Car Flags",
-    heroImage: "/asset/blog/world-cup-car-flags.png",
+    heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "World Cup car flag safety tips driving guide",
     productSlugs: ["canada-car-flag", "brazil-car-flag", "argentina-car-flag", "portugal-car-flag"],
     sections: [
@@ -2018,7 +2018,7 @@ export const blogPosts: BlogPost[] = [
     description: "How to celebrate the World Cup 2026 Final on July 19 — watch party planning, fan gear for the big game, and making the closing event of the tournament memorable.",
     publishedAt: "2026-06-20",
     category: "Tournament Guide",
-    heroImage: "/asset/blog/canada-watch-party.png",
+    heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 final fan gear guide for Canadian fans",
     productSlugs: ["canada-boxing-glove", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-car-flag", "canada-black-flag-3d-embroidered-cap"],
     sections: [
