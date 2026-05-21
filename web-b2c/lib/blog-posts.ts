@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-2026-fan-gear-canada",
     title: "Best World Cup 2026 Fan Gear to Buy in Canada",
     description:
-      "A practical Canada-based guide to World Cup 2026 fan gear, from car flags and caps to bucket hats and souvenir gifts.",
+      "Shop World Cup 2026 fan gear in Canada — car flags, caps, bucket hats, and soccer souvenirs. Canada 2026 world cup merchandise ships from Toronto across Canada.",
     publishedAt: "2026-05-11",
     category: "Fan Gear Guide",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -61,12 +61,12 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "When should I buy World Cup 2026 fan gear in Canada?",
-        a: "Buying early is usually better because popular country styles can sell out as the tournament gets closer.",
+        q: "Where can I buy World Cup 2026 fan gear in Canada?",
+        a: "You can shop World Cup 2026 fan gear online at World Fan Gear — caps, car flags, bucket hats, and mini boxing gloves ship from Toronto across Canada.",
       },
       {
-        q: "What is the easiest fan gear gift?",
-        a: "Caps, car flags, and mini souvenir items are easy gifts because sizing is simple and they work for many types of fans.",
+        q: "What Canada 2026 world cup merchandise is available?",
+        a: "Canada-themed caps, reversible bucket hats, car flags, and mini souvenir boxing gloves are all available for the 2026 tournament.",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
     slug: "canada-world-cup-2026-party-ideas",
     title: "Canada World Cup 2026 Watch Party Ideas",
     description:
-      "Simple ideas for hosting a Canada 2026 watch party with fan outfits, car flags, photo moments, and easy soccer decorations.",
+      "World cup 2026 watch party gear Canada — simple ideas for hosting with fan outfits, car flags, photo moments, and easy soccer decorations.",
     publishedAt: "2026-05-11",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -167,9 +167,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "best-soccer-gifts-canada",
-    title: "Best Soccer Gifts for Fans in Canada",
+    title: "Best Soccer Gifts for Fans in Canada — World Cup 2026",
     description:
-      "Gift ideas for soccer fans in Canada, including caps, bucket hats, car flags, and souvenir mini boxing gloves.",
+      "Best soccer gifts for fans in Canada for World Cup 2026 — caps, bucket hats, car flags, Panini sticker boxes, and souvenir mini boxing gloves. Canada 2026 world cup merchandise shipped from Toronto.",
     publishedAt: "2026-05-12",
     category: "Gift Guide",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -214,9 +214,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "world-cup-2026-host-cities-canada",
-    title: "World Cup 2026 Canada Host Cities and Fan Gear Guide",
+    title: "World Cup 2026 Canada Host Cities: Fan Gear & Merchandise Guide",
     description:
-      "A Canada-focused guide to World Cup 2026 host city energy, match-day travel, and fan gear to prepare early.",
+      "Canada host city World Cup 2026 merchandise guide — shop fan gear for Toronto, Vancouver, and every host city. World Cup 2026 fan gear Canada shipped fast.",
     publishedAt: "2026-05-13",
     category: "Tournament Guide",
     heroImage: "/asset/blog/generated/nigeria-senegal-fans-celebrating-stadium.png",
@@ -308,9 +308,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "canada-soccer-fan-merchandise",
-    title: "Canada Soccer Fan Merchandise Guide",
+    title: "Canada Soccer Fan Merchandise — Buy World Cup 2026 Gear Online",
     description:
-      "A guide to Canada soccer fan merchandise for 2026, including practical gear for watch parties, travel, and gifts.",
+      "Buy Canada soccer fan merchandise for World Cup 2026 online — caps, car flags, bucket hats, and mini boxing gloves. Canada 2026 world cup merchandise shipped from Toronto.",
     publishedAt: "2026-05-14",
     category: "Canada Fan Gear",
     heroImage: "/asset/blog/generated/brazil-mexico-fans-caps-city-street.png",
@@ -355,9 +355,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "world-cup-2026-sticker-bundle-canada",
-    title: "World Cup 2026 Sticker Bundle Guide for Canadian Collectors",
+    title: "Panini FIFA World Cup 2026 Sticker Bundle — Buy in Canada",
     description:
-      "Why the Panini FIFA World Cup 2026 bundle is the easiest way to start collecting with the official album and a 50-pack sticker box together.",
+      "Buy the Panini FIFA World Cup 2026 sticker bundle in Canada — official album and 50-pack sticker box together. The easiest way to start collecting with everything you need in one order.",
     publishedAt: "2026-05-14",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_bundle_main.png",
@@ -392,20 +392,20 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "What comes in the World Cup 2026 sticker bundle?",
-        a: "The bundle includes the official sticker album and a 50-pack sticker box, so collectors can start organizing and opening stickers right away.",
+        q: "Where can I buy the Panini FIFA World Cup 2026 sticker bundle in Canada?",
+        a: "The Panini FIFA World Cup 2026 bundle — official album plus 50-pack sticker box — is available online and ships from Toronto across Canada.",
       },
       {
-        q: "Is the sticker bundle a good gift?",
-        a: "Yes. It is a complete collector gift because it includes both the album and enough packs to make the first collecting session feel exciting.",
+        q: "Is the sticker bundle a good gift for Canadian collectors?",
+        a: "Yes. It is a complete collector gift because it includes both the Panini 2026 sticker album and enough packs to make the first collecting session feel exciting. No extra purchases needed.",
       },
     ],
   },
   {
     slug: "why-buy-world-cup-sticker-box-50-packs",
-    title: "Why Buy a 50-Pack World Cup 2026 Sticker Box?",
+    title: "Panini FIFA World Cup 2026 Sticker Box — Why Buy 50 Packs in Canada",
     description:
-      "A practical look at why the 50-pack Panini FIFA World Cup 2026 sticker box is the serious collector choice for opening, trading, and album progress.",
+      "Panini FIFA World Cup 2026 sticker box Canada — why 50 packs is the serious collector choice. More album progress, better trading value, and ships from Toronto.",
     publishedAt: "2026-05-14",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
@@ -440,12 +440,12 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "How many stickers are in the 50-pack sticker box?",
-        a: "A 50-pack box includes more than 250 stickers, based on five stickers per pack.",
+        q: "How many stickers are in the Panini FIFA World Cup 2026 sticker box?",
+        a: "A 50-pack Panini FIFA World Cup 2026 sticker box includes more than 250 stickers, based on five stickers per pack.",
       },
       {
-        q: "Should I buy the sticker box or the bundle?",
-        a: "Buy the box if you already have the album. Buy the bundle if you are starting from scratch or giving it as a gift.",
+        q: "Should I buy the Panini sticker box or the bundle in Canada?",
+        a: "Buy the Panini sticker box if you already have the official album. Buy the bundle if you are starting from scratch or giving it as a gift — it includes the album and box together.",
       },
     ],
   },
@@ -497,9 +497,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "world-cup-souvenirs-canada",
-    title: "World Cup 2026 Souvenirs You Can Ship in Canada",
+    title: "World Cup 2026 Souvenirs to Buy in Canada — FIFA 2026 Gifts",
     description:
-      "World Cup 2026-inspired souvenir ideas for Canadian shoppers, including mini boxing gloves, caps, car flags, and small gifts.",
+      "Buy FIFA 2026 Canada souvenirs online — mini boxing gloves, caps, car flags, and small soccer gifts. World Cup 2026 merchandise ships from Toronto across Canada.",
     publishedAt: "2026-05-15",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -543,9 +543,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "official-world-cup-2026-sticker-album-guide",
-    title: "Official World Cup 2026 Sticker Album: Why It Matters",
+    title: "Panini FIFA World Cup 2026 Official Sticker Album — Buy in Canada",
     description:
-      "A collector-friendly guide to the Panini FIFA World Cup 2026 Official Sticker Album and why it should be the first item in every sticker setup.",
+      "Buy the Panini FIFA World Cup 2026 Official Sticker Album in Canada. A collector guide to why this is the essential first purchase and how to pair it with sticker packs.",
     publishedAt: "2026-05-15",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -580,20 +580,20 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "Do I need the official album to collect World Cup stickers?",
-        a: "Yes. The album gives the collection structure and helps you track which stickers you still need.",
+        q: "Do I need the Panini FIFA World Cup 2026 official album to collect stickers?",
+        a: "Yes. The Panini 2026 sticker album gives the collection structure and helps you track which stickers you still need. It is the essential first buy for Canadian collectors.",
       },
       {
-        q: "Can I give the sticker album as a gift by itself?",
-        a: "Yes, but pairing it with sticker packs or the bundle creates a better first collecting experience.",
+        q: "Where can I buy the Panini 2026 sticker album in Canada?",
+        a: "The Panini FIFA World Cup 2026 Official Sticker Album is available online and ships from Toronto. Pairing it with a sticker box or buying the bundle is the best start for new collectors.",
       },
     ],
   },
   {
     slug: "world-cup-sticker-bundle-gift-idea",
-    title: "World Cup 2026 Sticker Bundle Gift Idea",
+    title: "Panini FIFA World Cup 2026 Sticker Bundle — Best Gift for Canadian Fans",
     description:
-      "Why the Panini FIFA World Cup 2026 sticker bundle is a strong gift for soccer fans, kids, families, and collectors in Canada.",
+      "Buy the Panini FIFA World Cup 2026 sticker bundle as a gift for soccer fans, kids, families, and collectors in Canada. Album plus 50-pack box in one order.",
     publishedAt: "2026-05-15",
     category: "Gift Guide",
     heroImage: "/asset/stickers/fwc26_bundle_ad.webp",
@@ -640,9 +640,9 @@ export const blogPosts: BlogPost[] = [
   // ── May 16 ──────────────────────────────────────────────────────────────
   {
     slug: "how-to-start-panini-world-cup-2026-collection",
-    title: "How to Start a Panini World Cup 2026 Sticker Collection",
+    title: "How to Start a Panini World Cup 2026 Sticker Collection in Canada",
     description:
-      "A simple starter guide for Canadian fans who want to collect Panini FIFA World Cup 2026 stickers with the album, box, and bundle.",
+      "A simple guide for Canadian fans on how to start collecting Panini FIFA World Cup 2026 stickers — buy the album, box, or bundle and get collecting from day one.",
     publishedAt: "2026-05-16",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_box.png",
@@ -677,12 +677,12 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "What should I buy first for a World Cup sticker collection?",
-        a: "Start with the official album, then add packs. The bundle is the easiest option because it includes both.",
+        q: "How do I start collecting Panini FIFA World Cup 2026 stickers in Canada?",
+        a: "Buy the Panini FIFA World Cup 2026 official sticker album first, then add packs. The bundle — album plus 50-pack box — is the easiest option because everything arrives together.",
       },
       {
         q: "Should I open all 50 packs at once?",
-        a: "You can, but opening a few packs across multiple match days makes the collecting experience last longer.",
+        a: "You can, but opening a few packs across multiple match days makes the collecting experience last longer through the tournament.",
       },
     ],
   },
@@ -839,8 +839,8 @@ export const blogPosts: BlogPost[] = [
   // ── May 23 ──────────────────────────────────────────────────────────────
   {
     slug: "panini-sticker-pack-world-cup-2026",
-    title: "Panini FIFA World Cup 2026 Sticker Packs — Complete Guide",
-    description: "Everything you need to know about Panini FIFA World Cup 2026 sticker packs — how they work, what is inside, and how to complete the album.",
+    title: "Panini FIFA World Cup 2026 Sticker Packs — Complete Canada Guide",
+    description: "Complete guide to Panini FIFA World Cup 2026 sticker packs in Canada — how they work, what is inside, and how to complete the album. Buy the sticker box online.",
     publishedAt: "2026-05-23",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
@@ -876,8 +876,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "how-to-collect-world-cup-stickers",
-    title: "How to Collect World Cup 2026 Stickers — Beginner's Guide",
-    description: "A beginner's guide to collecting Panini FIFA World Cup 2026 stickers — where to start, how to trade, and tips for filling the album faster.",
+    title: "How to Collect Panini World Cup 2026 Stickers — Beginner's Guide",
+    description: "How to collect Panini FIFA World Cup 2026 stickers in Canada — where to buy, how to trade duplicates, and tips for filling the album faster.",
     publishedAt: "2026-05-23",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_bundle_main.png",
@@ -907,15 +907,15 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     faqs: [
-      { q: "What is the best way to start a Panini World Cup sticker collection?", a: "Buy the official album first, then get a pack box. Sort stickers immediately and set aside duplicates for trading." },
-      { q: "Can I trade World Cup stickers to fill the album faster?", a: "Yes. Trading duplicates is the most efficient way to complete the album without buying hundreds of extra packs." },
+      { q: "How do I start collecting Panini World Cup 2026 stickers?", a: "Buy the Panini FIFA World Cup 2026 official album first, then get a 50-pack sticker box. Sort stickers immediately and set aside duplicates for trading." },
+      { q: "Can I trade Panini World Cup 2026 stickers to fill the album faster?", a: "Yes. Trading duplicates is the most efficient way to complete the Panini album without buying hundreds of extra packs." },
     ],
   },
   // ── May 24 ──────────────────────────────────────────────────────────────
   {
     slug: "panini-sticker-album-complete-guide",
-    title: "Panini World Cup 2026 Sticker Album — Complete Collector Guide",
-    description: "A complete guide to the Panini FIFA World Cup 2026 Official Sticker Album — what is inside, how to organize it, and tips for completion.",
+    title: "Panini World Cup 2026 Sticker Album — Complete Collector Guide for Canada",
+    description: "A complete guide to the Panini FIFA World Cup 2026 Official Sticker Album — what is inside, how to organize it, and tips for completing the album. Buy in Canada online.",
     publishedAt: "2026-05-24",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -945,8 +945,8 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     faqs: [
-      { q: "How many sticker spots are in the Panini World Cup 2026 album?", a: "The album features spots for all 48 teams including players, badges, and tournament sections — typically 600+ stickers in total." },
-      { q: "Is the official album necessary?", a: "Yes. The album gives you the complete structure of the collection and is the definitive reference for which stickers you still need." },
+      { q: "How many sticker spots are in the Panini FIFA World Cup 2026 album?", a: "The Panini FIFA World Cup 2026 album features spots for all 48 teams including players, badges, and tournament sections — typically 600+ stickers in total." },
+      { q: "Is the Panini 2026 official album necessary?", a: "Yes. The Panini FIFA World Cup 2026 official album gives you the complete structure of the collection and is the definitive reference for which stickers you still need." },
     ],
   },
   {
@@ -1028,8 +1028,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "best-world-cup-souvenirs-canada",
-    title: "Best World Cup 2026 Souvenirs to Buy in Canada",
-    description: "The best World Cup 2026 souvenir ideas for Canadian fans — mini boxing gloves, caps, car flags, and sticker packs as tournament keepsakes.",
+    title: "Best World Cup 2026 Souvenirs to Buy in Canada — FIFA 2026 Keepsakes",
+    description: "Best FIFA 2026 Canada souvenirs to buy online — mini boxing gloves, caps, car flags, and Panini sticker packs as tournament keepsakes. Ships from Toronto.",
     publishedAt: "2026-05-27",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1141,8 +1141,8 @@ export const blogPosts: BlogPost[] = [
   // ── May 29 ──────────────────────────────────────────────────────────────
   {
     slug: "world-cup-watch-parties-toronto",
-    title: "World Cup 2026 Watch Parties in Toronto — Fan Guide",
-    description: "A guide to watching World Cup 2026 in Toronto — where to find watch parties, fan zones, and how to prepare with the right fan gear.",
+    title: "World Cup 2026 Watch Parties in Toronto — Fan Gear Guide",
+    description: "Toronto World Cup 2026 fan gear guide — where to find watch parties, fan zones, and what gear to buy for Toronto match days. Shop Canada 2026 merchandise online.",
     publishedAt: "2026-05-29",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1172,14 +1172,14 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     faqs: [
-      { q: "Where do people watch World Cup matches in Toronto?", a: "Sports bars, community centres, neighbourhood watch parties in areas like Little Portugal and Little Italy, and official fan zones are the main Toronto viewing spots." },
-      { q: "What fan gear should I bring to a Toronto World Cup watch party?", a: "A cap or bucket hat for outdoor comfort, a car flag for the drive, and team colours in your outfit are the practical Toronto match-day setup." },
+      { q: "Where do people watch World Cup 2026 matches in Toronto?", a: "Sports bars, community centres, neighbourhood watch parties in areas like Little Portugal and Little Italy, and official fan zones are the main Toronto viewing spots." },
+      { q: "Where can I buy Toronto World Cup 2026 fan gear?", a: "World Cup 2026 fan gear for Toronto fans — caps, car flags, bucket hats, and mini boxing gloves — is available online and ships from Toronto across Canada." },
     ],
   },
   {
     slug: "world-cup-watch-parties-vancouver",
-    title: "World Cup 2026 Watch Parties in Vancouver — Fan Guide",
-    description: "A guide to watching World Cup 2026 in Vancouver — where to find watch parties, fan zones, and the best fan gear for BC soccer fans.",
+    title: "World Cup 2026 Watch Parties in Vancouver — Fan Gear Guide",
+    description: "Vancouver World Cup 2026 fan gear guide — where to watch, fan zones in BC, and what gear to buy for Vancouver match days. World cup 2026 watch party gear Canada.",
     publishedAt: "2026-05-29",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1216,8 +1216,8 @@ export const blogPosts: BlogPost[] = [
   // ── May 30 ──────────────────────────────────────────────────────────────
   {
     slug: "world-cup-watch-parties-calgary",
-    title: "World Cup 2026 Watch Parties in Calgary — Fan Guide",
-    description: "A guide to watching World Cup 2026 in Calgary — where fans gather, how to find watch party events, and the best fan gear for Alberta soccer fans.",
+    title: "World Cup 2026 Watch Parties in Calgary — Fan Gear Guide",
+    description: "Calgary World Cup 2026 fan gear guide — where fans gather, watch party events in Alberta, and the best world cup 2026 fan gear Canada to buy online.",
     publishedAt: "2026-05-30",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1253,8 +1253,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "world-cup-watch-parties-montreal",
-    title: "World Cup 2026 Watch Parties in Montreal — Fan Guide",
-    description: "A guide to watching World Cup 2026 in Montreal — where fans gather, French Canadian connections, and the best fan gear for Quebec soccer fans.",
+    title: "World Cup 2026 Watch Parties in Montreal — Fan Gear Guide",
+    description: "Montreal World Cup 2026 fan gear guide — where fans gather, Quebec fan culture, and the best world cup 2026 watch party gear Canada for Montreal fans.",
     publishedAt: "2026-05-30",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1480,8 +1480,8 @@ export const blogPosts: BlogPost[] = [
   // ── June 4 ──────────────────────────────────────────────────────────────
   {
     slug: "fathers-day-soccer-gifts",
-    title: "Father's Day Soccer Gifts for World Cup 2026 — Canada Guide",
-    description: "Father's Day soccer gift ideas for World Cup 2026 — caps, car flags, mini boxing gloves, and sticker packs for soccer dads in Canada.",
+    title: "Father's Day Soccer Gifts for World Cup 2026 — Canada",
+    description: "Best Father's Day soccer gifts for World Cup 2026 in Canada — caps, car flags, mini boxing gloves, and Panini FIFA World Cup 2026 sticker packs for soccer dads. World Cup 2026 watch party gear Canada.",
     publishedAt: "2026-06-04",
     category: "Gift Guide",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1976,8 +1976,8 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "complete-panini-album-tips",
-    title: "How to Complete the Panini World Cup 2026 Sticker Album",
-    description: "Tips and strategies for completing the Panini FIFA World Cup 2026 Official Sticker Album — trading, gap analysis, and the most efficient path to a full collection.",
+    title: "How to Complete the Panini FIFA World Cup 2026 Sticker Album",
+    description: "How to complete the Panini FIFA World Cup 2026 sticker album — trading strategies, gap analysis, and the most efficient path to a full collection for Canadian collectors.",
     publishedAt: "2026-06-19",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -2007,7 +2007,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     faqs: [
-      { q: "What is the fastest way to complete the Panini World Cup 2026 album?", a: "Analyze your missing stickers, build a trading network to fill specific gaps, and use the Panini direct purchase service for the final 20–50 missing stickers." },
+      { q: "How to complete the Panini FIFA World Cup 2026 sticker album?", a: "Analyze your missing stickers, build a trading network to fill specific gaps, and use the Panini direct purchase service for the final 20–50 missing stickers." },
       { q: "Can I buy specific missing stickers from Panini?", a: "Yes. Panini operates a direct sticker service during major tournaments that allows collectors to purchase specific sticker numbers by order." },
     ],
   },
@@ -2504,9 +2504,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "where-to-buy-panini-fifa-2026-stickers-canada",
-    title: "Where to Buy Panini FIFA 2026 Stickers in Canada",
+    title: "Where to Buy Panini FIFA World Cup 2026 Stickers in Canada",
     description:
-      "A Canada-focused buying guide for Panini FIFA World Cup 2026 stickers, including boxes, albums, bundles, and when collectors should order.",
+      "Where to buy Panini FIFA World Cup 2026 stickers in Canada — boxes, albums, and bundles available online. Order before tournament demand spikes and ships from Toronto.",
     publishedAt: "2026-05-21",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/generated/where-to-buy-panini-fifa-2026-stickers-canada.jpg",
@@ -2540,21 +2540,21 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "What should I buy first for Panini FIFA 2026 stickers?",
-        a: "Start with the official album and a 50-pack box, or choose the bundle if you want both pieces in one order.",
+        q: "Where to buy Panini FIFA World Cup 2026 stickers in Canada?",
+        a: "Buy Panini FIFA World Cup 2026 stickers in Canada online — album, 50-pack sticker box, and bundle are all available and ship from Toronto before tournament demand increases.",
       },
       {
-        q: "Can I buy Panini FIFA 2026 stickers in Canada online?",
-        a: "Yes. Canadian collectors can order the album, sticker box, and bundle online for delivery before tournament demand increases.",
+        q: "Can I buy the Panini FIFA 2026 sticker box online in Canada?",
+        a: "Yes. The Panini FIFA World Cup 2026 sticker box and album are available online for Canadian collectors. Order the bundle to get both in one purchase.",
       },
     ],
   },
 
   {
     slug: "panini-fifa-2026-box-opening-whats-inside",
-    title: "Panini FIFA 2026 Box Opening: What's Inside?",
+    title: "Panini FIFA World Cup 2026 Sticker Box Opening — What's Inside?",
     description:
-      "What collectors can expect from a Panini FIFA World Cup 2026 sticker box, from pack count and album progress to duplicates and trading value.",
+      "What collectors can expect from a Panini FIFA World Cup 2026 sticker box opening — pack count, album progress, duplicates, and trading value. Buy the box in Canada.",
     publishedAt: "2026-05-22",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/panini-box-sticker-stacks.jpg",
@@ -2649,9 +2649,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "are-panini-world-cup-stickers-worth-collecting-2026",
-    title: "Are Panini World Cup Stickers Worth Collecting in 2026?",
+    title: "Are Panini World Cup 2026 Stickers Worth Collecting? — Canada Guide",
     description:
-      "A practical look at the value of collecting Panini World Cup stickers in 2026, from nostalgia and family fun to trading and completed albums.",
+      "Are Panini World Cup 2026 stickers worth collecting? A practical look at the value for Canadian fans — nostalgia, family fun, trading, and completed Panini FIFA 2026 albums.",
     publishedAt: "2026-05-24",
     category: "Sticker Collecting",
     heroImage: "/asset/blog/panini/generated/are-panini-world-cup-stickers-worth-collecting-2026.jpg",
@@ -2696,9 +2696,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "fifa-2026-sticker-guide-for-beginners",
-    title: "FIFA 2026 Sticker Guide for Beginners",
+    title: "Panini FIFA 2026 Sticker Guide for Beginners — Canada",
     description:
-      "A beginner-friendly guide to collecting Panini FIFA 2026 stickers, including albums, boxes, sorting, duplicates, and trading basics.",
+      "Beginner's guide to collecting Panini FIFA World Cup 2026 stickers in Canada — albums, sticker boxes, sorting, duplicates, and trading basics explained simply.",
     publishedAt: "2026-05-25",
     category: "Sticker Guide",
     heroImage: "/asset/blog/panini/generated/fifa-2026-sticker-guide-for-beginners.jpg",
@@ -2744,9 +2744,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "panini-rare-stickers-shiny-foil-2026-explained",
-    title: "Shiny & Rare: FIFA 2026 Panini Special Stickers Explained",
+    title: "Panini FIFA 2026 Rare Stickers — Shiny & Foil Special Cards Explained",
     description:
-      "A simple guide to shiny, foil, and special Panini FIFA 2026 stickers and why collectors separate them during pack openings.",
+      "Panini 2026 rare stickers guide — shiny, foil, and special Panini FIFA World Cup 2026 stickers explained for Canadian collectors. What to look for in every pack opening.",
     publishedAt: "2026-05-26",
     category: "Sticker Collecting",
     heroImage: "/asset/blog/panini/panini-loose-stickers.jpg",
@@ -2779,21 +2779,21 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "Are shiny Panini stickers rare?",
-        a: "They are usually treated as special pulls, but rarity can vary by sticker type and checklist design.",
+        q: "Are Panini FIFA 2026 rare stickers hard to find?",
+        a: "Panini 2026 rare stickers — foil and shiny cards — are treated as special pulls in pack openings. They appear less frequently than standard stickers, but rarity can vary by sticker type.",
       },
       {
-        q: "Should I sleeve shiny stickers?",
-        a: "If you are not placing them in the album right away, a sleeve or separate clean stack helps protect the finish.",
+        q: "Should I sleeve Panini 2026 shiny stickers?",
+        a: "If you are not placing them in the Panini FIFA World Cup 2026 album right away, a sleeve or separate clean stack helps protect the finish.",
       },
     ],
   },
 
   {
     slug: "how-to-complete-panini-fifa-2026-album-fast",
-    title: "How to Complete Your Panini FIFA 2026 Album Fast",
+    title: "How to Complete Your Panini FIFA 2026 Sticker Album Fast",
     description:
-      "A practical strategy for completing a Panini FIFA World Cup 2026 album faster with boxes, duplicate sorting, checklists, and sticker swaps.",
+      "How to complete the Panini FIFA World Cup 2026 sticker album fast — practical strategy using 50-pack boxes, duplicate sorting, checklists, and sticker swaps in Canada.",
     publishedAt: "2026-05-27",
     category: "Sticker Guide",
     heroImage: "/asset/blog/panini/generated/how-to-complete-panini-fifa-2026-album-fast.jpg",
@@ -2826,8 +2826,8 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "What is the fastest way to complete a Panini album?",
-        a: "Open a box for volume, track missing numbers, sort duplicates, and trade before buying more packs.",
+        q: "How to complete the Panini FIFA 2026 sticker album fast?",
+        a: "Open a Panini FIFA World Cup 2026 50-pack box for volume, track missing sticker numbers, sort duplicates, and trade before buying more packs.",
       },
       {
         q: "Should duplicates be sorted by country or number?",
@@ -2885,9 +2885,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "top-10-players-to-pull-panini-fifa-2026",
-    title: "Top 10 Players to Pull in Panini FIFA 2026",
+    title: "Top 10 Players to Pull in Panini FIFA World Cup 2026 Sticker Box",
     description:
-      "A collector-focused look at star player stickers to watch for in Panini FIFA 2026, from Messi and Mbappe to Yamal and other headline names.",
+      "Panini World Cup 2026 stickers — the top player pulls to watch for, from Messi and Mbappe to Yamal and other headline names. A collector's guide for Canadian fans.",
     publishedAt: "2026-05-29",
     category: "Sticker Collecting",
     heroImage: "/asset/blog/panini/generated/top-10-players-to-pull-panini-fifa-2026.jpg",
@@ -2932,9 +2932,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "sell-trade-panini-fifa-2026-duplicate-stickers-canada",
-    title: "How to Sell & Trade Panini FIFA 2026 Duplicate Stickers in Canada",
+    title: "How to Trade & Sell Panini FIFA World Cup 2026 Duplicate Stickers in Canada",
     description:
-      "How Canadian collectors can organize, trade, and sell duplicate Panini FIFA 2026 stickers safely and efficiently.",
+      "How Canadian collectors can organize, trade, and sell duplicate Panini FIFA World Cup 2026 stickers safely and efficiently to complete the album faster.",
     publishedAt: "2026-05-30",
     category: "Sticker Guide",
     heroImage: "/asset/blog/panini/panini-packs-and-album.jpg",
@@ -2979,9 +2979,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "messi-panini-fifa-2026-sticker-argentina",
-    title: "Messi's FIFA 2026 Panini Sticker: What Makes It a Must-Pull for Collectors",
+    title: "Messi Panini World Cup 2026 Sticker — Must-Pull Argentina Card",
     description:
-      "Why the Messi Panini FIFA 2026 sticker is one of the most anticipated pulls in the collection, and what Canadian collectors should know about finding and keeping it.",
+      "The Messi Panini World Cup 2026 sticker is one of the most anticipated pulls in the collection. What Canadian collectors should know about finding and keeping it.",
     publishedAt: "2026-06-21",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/messi200.jpg",
@@ -3016,21 +3016,21 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "Is the Messi FIFA 2026 Panini sticker rare?",
-        a: "Standard Messi stickers appear across general pack distribution. Special foil or highlight editions are less common and typically appear in lower quantities per box.",
+        q: "Is the Messi Panini World Cup 2026 sticker rare?",
+        a: "Standard Messi Panini World Cup 2026 stickers appear across general pack distribution. Special foil or highlight editions are less common and typically appear in lower quantities per box.",
       },
       {
-        q: "Should I paste my Messi sticker in the album or keep it loose?",
-        a: "Both are valid. Paste it if you are completing the album. Keep it loose in a sleeve if you want to preserve it as a standalone collectible.",
+        q: "Should I paste my Messi Panini sticker in the album or keep it loose?",
+        a: "Both are valid. Paste it if you are completing the Panini FIFA World Cup 2026 album. Keep it loose in a sleeve if you want to preserve it as a standalone collectible.",
       },
     ],
   },
 
   {
     slug: "mbappe-panini-fifa-2026-sticker-france",
-    title: "Mbappe FIFA 2026 Panini Sticker: France's Captain in the Album",
+    title: "Mbappe Panini World Cup 2026 Sticker — France Captain Collector Guide",
     description:
-      "What collectors should know about the Mbappe Panini FIFA 2026 sticker, why France stickers are popular in Canada, and how to spot his card in a pack opening.",
+      "The Mbappe Panini World Cup 2026 sticker — why France stickers are popular in Canada, how to spot his card in a pack opening, and how to trade it effectively.",
     publishedAt: "2026-06-21",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/mbappe200.jpg",
@@ -3065,21 +3065,21 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "What album section does the Mbappe sticker go in?",
-        a: "Mbappe appears in the France national team section, and may also feature in any special edition or highlights section depending on the release format.",
+        q: "What album section does the Mbappe Panini World Cup 2026 sticker go in?",
+        a: "Mbappe's Panini World Cup 2026 sticker appears in the France national team section, and may also feature in any special edition or highlights section depending on the release format.",
       },
       {
-        q: "Are France stickers popular for trading in Canada?",
-        a: "Yes. France has a strong following in Quebec and many Canadian communities, making France stickers including Mbappe some of the more traded cards in Canadian collector networks.",
+        q: "Is the Mbappe Panini sticker popular for trading in Canada?",
+        a: "Yes. France has a strong following in Quebec and many Canadian communities, making Mbappe Panini World Cup 2026 stickers some of the more traded cards in Canadian collector networks.",
       },
     ],
   },
 
   {
     slug: "yamal-panini-fifa-2026-sticker-spain",
-    title: "Lamine Yamal FIFA 2026 Panini Sticker: Spain's Teenage Star to Collect",
+    title: "Lamine Yamal Panini World Cup 2026 Sticker — Spain's Teen Star",
     description:
-      "Why Lamine Yamal's Panini FIFA 2026 sticker stands out as a debut appearance worth keeping, and what it means for collectors building the Spain section of the album.",
+      "The Lamine Yamal Panini World Cup 2026 sticker — why this debut appearance stands out for collectors, and what it means for the Spain section of the Panini FIFA 2026 album.",
     publishedAt: "2026-06-22",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/yamal200.jpg",
@@ -3126,9 +3126,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "kane-panini-fifa-2026-sticker-england",
-    title: "Harry Kane FIFA 2026 Panini: England's Top Scorer in the Album",
+    title: "Harry Kane Panini World Cup 2026 Sticker — England's Top Scorer",
     description:
-      "Why Harry Kane's Panini FIFA 2026 sticker is one of the most sought-after England pulls, and what Canadian Premier League fans should know about collecting it.",
+      "The Harry Kane Panini World Cup 2026 sticker — why it is the most sought-after England pull and what Canadian Premier League fans should know about collecting it.",
     publishedAt: "2026-06-22",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/kane200.jpg",
@@ -3175,9 +3175,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "hwang-panini-fifa-2026-sticker-south-korea",
-    title: "Hwang Hee-chan FIFA 2026 Panini Sticker: South Korea's Star Pull",
+    title: "Hwang Hee-chan Panini World Cup 2026 Sticker — South Korea's Star",
     description:
-      "Why Hwang Hee-chan's Panini FIFA 2026 sticker matters for Canadian collectors, and how South Korea stickers fit into a complete World Cup album.",
+      "The Hwang Hee-chan Panini World Cup 2026 sticker — why it matters for Canadian collectors, and how South Korea stickers fit into a complete Panini FIFA 2026 album.",
     publishedAt: "2026-06-23",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/hwang200.jpg",
@@ -3224,9 +3224,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "van-dijk-panini-fifa-2026-sticker-netherlands",
-    title: "Van Dijk FIFA 2026 Panini Sticker: Netherlands' Captain to Collect",
+    title: "Van Dijk Panini World Cup 2026 Sticker — Netherlands Captain",
     description:
-      "Why Virgil van Dijk's Panini FIFA 2026 sticker stands out among defender cards, and what Canadian Premier League fans should know about the Netherlands section.",
+      "The Van Dijk Panini World Cup 2026 sticker — why it stands out among defender cards and what Canadian Premier League fans should know about the Netherlands section.",
     publishedAt: "2026-06-23",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/vandijk200.jpg",
@@ -3273,9 +3273,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "panini-fifa-2026-bundle-worth-it-canada",
-    title: "Panini FIFA 2026 Album + Box Bundle: Is It Worth It for Canadian Collectors?",
+    title: "Panini FIFA World Cup 2026 Bundle — Is It Worth It for Canadian Collectors?",
     description:
-      "A practical breakdown of the Panini FIFA 2026 bundle versus buying the album and sticker box separately, and when the bundle makes the most sense for Canadian shoppers.",
+      "Buy the Panini FIFA World Cup 2026 sticker album + box bundle in Canada? A practical breakdown versus buying separately, and when the bundle makes the most sense.",
     publishedAt: "2026-06-24",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/panini-bundle.png",
@@ -3310,21 +3310,21 @@ export const blogPosts: BlogPost[] = [
     ],
     faqs: [
       {
-        q: "Is the Panini FIFA 2026 bundle a better deal than buying separately?",
-        a: "The bundle is typically the better choice for new collectors because it ensures the album and stickers arrive together, avoiding the common problem of opening packs before the album is ready.",
+        q: "Is the Panini FIFA World Cup 2026 bundle worth buying in Canada?",
+        a: "Yes. The Panini FIFA World Cup 2026 bundle is typically the better choice for new Canadian collectors because the album and sticker box arrive together — no waiting, no separate orders.",
       },
       {
-        q: "Can I buy the bundle as a gift?",
-        a: "Yes. The album and sticker box bundle is one of the most complete FIFA 2026 collector gifts because the recipient can start right away without any additional purchases.",
+        q: "Can I buy the Panini FIFA 2026 bundle as a gift in Canada?",
+        a: "Yes. The Panini FIFA World Cup 2026 album and sticker box bundle is one of the most complete FIFA 2026 collector gifts — the recipient can start collecting right away without any additional purchases.",
       },
     ],
   },
 
   {
     slug: "panini-fifa-2026-album-sections-guide",
-    title: "How the FIFA 2026 Sticker Album Is Organized: Teams, Sections, and Pages",
+    title: "Panini FIFA World Cup 2026 Album Sections Guide — Teams, Pages & Foils",
     description:
-      "A practical guide to navigating the official Panini FIFA World Cup 2026 sticker album, from confederation groupings and team pages to special sections and foil inserts.",
+      "A practical guide to the Panini FIFA World Cup 2026 official sticker album — confederation groupings, team pages, special sections, and foil inserts explained for Canadian collectors.",
     publishedAt: "2026-06-24",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/fwc26-stickerbook-cover.png",
@@ -3371,9 +3371,9 @@ export const blogPosts: BlogPost[] = [
 
   {
     slug: "panini-fifa-2026-box-sorting-strategy",
-    title: "Smart Ways to Sort Your Panini FIFA 2026 Box Pulls From the Start",
+    title: "How to Sort Your Panini FIFA World Cup 2026 Sticker Box Pulls",
     description:
-      "A practical sorting strategy for opening a Panini FIFA World Cup 2026 sticker box, so every session ends with album fills placed, duplicates organized, and special stickers protected.",
+      "Smart sorting strategy for opening a Panini FIFA World Cup 2026 sticker box — album fills placed, duplicates organized, and special Panini 2026 rare stickers protected every session.",
     publishedAt: "2026-06-25",
     category: "Sticker Packs",
     heroImage: "/asset/blog/panini/fwc26-box.png",
