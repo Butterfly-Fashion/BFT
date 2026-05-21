@@ -993,7 +993,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "mini-boxing-gloves-souvenir-guide",
     title: "Mini Boxing Gloves Souvenir Guide — World Cup 2026 Collectibles",
-    description: "A guide to World Cup 2026 mini souvenir boxing gloves — country styles, how to display them, and why they make the best soccer fan gifts.",
+    description: "Mini souvenir boxing gloves are the World Cup 2026 collectible that actually stays on the shelf. Country styles from Canada to Italy — a complete guide for Canadian fans.",
     publishedAt: "2026-05-31",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1001,36 +1001,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "france-flag-souvenir-mini-boxing-glove", "italia-classic-tricolore-flag-souvenir-mini-boxing-glove"],
     sections: [
       {
-        heading: "Why mini boxing gloves work as soccer souvenirs",
+        heading: "The souvenir that doesn't end up in a drawer",
         body: [
-          "Mini souvenir boxing gloves are a format that crosses the boundary between sports memorabilia and general giftware. They are compact enough to display on a shelf or desk, affordable enough to give as casual gifts, and recognizable enough to communicate national team support immediately.",
-          "Unlike jerseys or scarves, mini boxing gloves do not require sizing and do not go out of style between tournaments. A Canada or Brazil mini glove purchased for 2026 will still look appropriate in 2030.",
+          "Mini boxing gloves sit on a shelf. They hang from a rearview mirror. They hold a spot on a desk through multiple tournaments and still look right.",
+          "No sizing. No fashion cycle. A Canada mini glove from 2026 will still make sense in 2030.",
         ],
       },
       {
-        heading: "Country styles available in Canada",
+        heading: "Canada, Brazil, Portugal, Italy — and Quebec",
         body: [
-          "Mini souvenir boxing gloves are available for Canada, Brazil, Portugal (in both red and green), France, Germany, England, Italy (in both tricolore and blue versions), USA, Algeria, Uruguay, Ukraine, and Quebec. The range covers most of the major diaspora communities in Canada.",
-          "Quebec-specific merchandise is unusual in fan gear — the Quebec flag mini boxing glove fills a niche for Québécois fans who want to represent their province alongside the national tournament.",
+          "Mini boxing gloves cover Canada, Brazil, Portugal in red and green, France, Germany, England, Italy in both tricolore and blue, USA, Algeria, Uruguay, Ukraine, and Quebec.",
+          "Quebec-specific fan merchandise is rare — the fleur-de-lis mini glove fills a specific niche for fans who want to represent province and tournament at the same time.",
         ],
       },
       {
-        heading: "How to display mini boxing gloves",
+        heading: "Hook, mirror, shelf, or table centrepiece",
         body: [
-          "Mini boxing gloves typically come with a hanging cord, making them easy to display on hooks, doorknobs, rear-view mirrors, or shelves. Grouping multiple country gloves together creates an impressive visual display for watch party hosting.",
-          "They also work as watch party prizes, scored prediction game rewards, and small additions to larger gift sets around Father's Day, birthdays, or Christmas.",
+          "The cord is attached — hang it anywhere. Doorknob, rearview mirror, wall hook, bookshelf corner. Group multiple countries together and it becomes a visual World Cup display that requires zero assembly.",
+          "They also work as watch party prizes and prediction contest rewards.",
         ],
       },
     ],
     faqs: [
-      { q: "What countries have mini souvenir boxing gloves available?", a: "Canada, Brazil, Portugal, France, Germany, England, Italy, USA, Algeria, Uruguay, Ukraine, and Quebec all have mini souvenir boxing gloves available." },
-      { q: "What is the best way to display mini boxing gloves?", a: "Hang them on a hook, rear-view mirror, or shelf using the attached cord. Grouping multiple country gloves together makes a strong display for watch parties." },
+      { q: "What countries have mini souvenir boxing gloves available?", a: "Canada, Brazil, Portugal, France, Germany, England, Italy, USA, Algeria, Uruguay, Ukraine, and Quebec." },
+      { q: "What is the best way to display mini boxing gloves?", a: "Hang them from the included cord — mirror, hook, shelf edge. Multiple countries grouped together look especially good." },
     ],
   },
   {
     slug: "best-world-cup-souvenirs-canada",
     title: "Best World Cup 2026 Souvenirs to Buy in Canada — FIFA 2026 Keepsakes",
-    description: "Best FIFA 2026 Canada souvenirs to buy online — mini boxing gloves, caps, car flags, and Panini sticker packs as tournament keepsakes. Ships from Toronto.",
+    description: "The best FIFA 2026 Canada souvenirs are the ones still on your shelf in 2027. Mini boxing gloves, Panini albums, caps, and car flags — ranked by value and staying power.",
     publishedAt: "2026-06-01",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1038,37 +1038,37 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "canada-car-flag", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-reversible-bucket-hat"],
     sections: [
       {
-        heading: "The best souvenirs are ones you keep using",
+        heading: "A souvenir you actually use is worth ten you don't",
         body: [
-          "The most satisfying World Cup souvenirs are items you actually use during the tournament and keep afterward. A cap you wear to every watch party, a car flag that marks each match day, or a sticker album that documents the whole event — these have long-term value beyond a single match.",
-          "Purely decorative items are less practical unless they are genuinely compact and displayable. Mini boxing gloves hit this mark well because they are small enough to keep without taking over a shelf.",
+          "The cap you wore to every watch party. The car flag that went up every match day. The sticker album you finished the week of the final. Those are the souvenirs that mean something a year later.",
+          "Mini boxing gloves earn their place on the permanent shelf. Compact, detailed, not taking over the room.",
         ],
       },
       {
-        heading: "Souvenirs by budget",
+        heading: "What you get at every price point",
         body: [
-          "Under $10: The Panini sticker album at $8.99 CAD is the best value souvenir on the market. It documents the entire tournament collection and becomes a keepsake at the end of the competition.",
-          "Under $25: Mini boxing gloves and car flags are both in this range and make strong individual gifts or add-ons to a larger fan gear purchase.",
+          "Under $10: The Panini sticker album at $8.99 CAD. It documents the entire tournament and becomes a record of the collection when the final whistle blows.",
+          "Under $25: Mini boxing gloves and car flags. Both make strong standalone gifts or add-ons to a larger order.",
         ],
       },
       {
-        heading: "Sticker packs as a live souvenir experience",
+        heading: "Sticker packs are a live experience, not just a product",
         body: [
-          "Panini sticker packs are unusual among souvenirs because the experience of opening them is part of the value. Each pack is a small discovery moment — pulling a player sticker for the first time is memorable in a way that buying a flag is not.",
-          "A 50-pack box can sustain the collecting experience across the full tournament, with each session of opening and placing stickers connecting to match days and results.",
+          "Opening a Panini pack is a moment. Pulling a Messi sticker at halftime, during the match he's playing in, while you're at a watch party — that's a memory attached to a physical object.",
+          "A 50-pack box sustains that experience across the whole tournament. Six weeks of small discoveries.",
         ],
       },
     ],
     faqs: [
-      { q: "What are the best World Cup 2026 souvenirs for Canadian fans?", a: "The Panini sticker album, mini boxing gloves, car flags, and reversible bucket hats are the strongest value souvenirs for the 2026 tournament." },
-      { q: "What is the cheapest World Cup souvenir worth buying?", a: "The Panini FIFA World Cup 2026 Official Sticker Album at $8.99 CAD is the best value souvenir available." },
+      { q: "What are the best World Cup 2026 souvenirs for Canadian fans?", a: "Panini sticker album, mini boxing gloves, car flags, bucket hats — in roughly that order for value and staying power." },
+      { q: "What is the cheapest World Cup souvenir worth buying?", a: "The Panini FIFA World Cup 2026 Official Sticker Album. $8.99 CAD and it documents the whole tournament." },
     ],
   },
   // ── May 28 ──────────────────────────────────────────────────────────────
   {
     slug: "world-cup-car-flag-buying-guide",
     title: "World Cup 2026 Car Flag Buying Guide — Canada",
-    description: "How to choose the right World Cup 2026 car flag in Canada — country styles, quality tips, and which flags to buy before the tournament rush.",
+    description: "World Cup 2026 car flag buying guide for Canada — which country styles move fastest, when to buy before the rush, and how to store them so they last the tournament.",
     publishedAt: "2026-06-02",
     category: "Car Flags",
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
@@ -1076,36 +1076,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "brazil-car-flag", "argentina-car-flag", "mexico-car-flag"],
     sections: [
       {
-        heading: "Car flags are the highest-visibility fan accessory",
+        heading: "Nothing is more visible than a car flag",
         body: [
-          "No other fan item creates as much public visibility as a car flag. While 50 people might see your cap during a watch party, thousands of people see your car flag during a match-day drive or street celebration.",
-          "For World Cup 2026 in North America, the car flag is expected to be one of the highest-demand fan items in Canada as tournament energy builds through the summer.",
+          "Your cap reaches everyone in the room. A car flag reaches everyone on the street. At a victory drive down Dundas after a Portugal win, or a cruise through Little Italy when Italy advances — that flag is speaking to thousands of people.",
+          "For World Cup 2026 across North America, car flags will be the one fan item that makes the city feel like it's participating.",
         ],
       },
       {
-        heading: "Which country car flags to buy first",
+        heading: "Buy your team first, then the community",
         body: [
-          "For Canadian shoppers, the highest-priority car flags are Canada, Brazil, Argentina, Mexico, Portugal, and Italy — these represent the largest fan communities in the country. USA and England are also strong choices for fans near the border or within the British Canadian community.",
-          "If you support a specific country, that team's flag is always the first purchase. Secondary country flags are useful for hosting mixed watch parties or trading with friends.",
+          "Canada, Brazil, Argentina, Mexico, Portugal, Italy — those cover the biggest fan communities in most Canadian cities. USA and England are strong for the GTA and the British-Canadian crowd.",
+          "Start with the team you actually support. Pick up one or two others if you're hosting a mixed watch party.",
         ],
       },
       {
-        heading: "Buy early to avoid tournament shortages",
+        heading: "Early is always better",
         body: [
-          "Car flag demand spikes sharply in the weeks before the tournament starts and again when popular teams advance to knockout rounds. Buying ahead of the tournament gives you the widest selection and avoids the price pressure of peak demand.",
-          "Store car flags flat or loosely rolled when not in use to preserve the fabric quality across the full multi-month tournament.",
+          "Demand spikes in the two weeks before the tournament. Spikes again every time a popular team advances. Buying in May or early June means you get selection, not scraps.",
+          "Store flags flat or loosely rolled between match days to protect the fabric through a full summer tournament.",
         ],
       },
     ],
     faqs: [
-      { q: "Which car flags should I buy for World Cup 2026 in Canada?", a: "Canada, Brazil, Argentina, Mexico, Portugal, and Italy are the highest-demand styles for the Canadian market." },
-      { q: "When should I buy World Cup car flags in Canada?", a: "Buy before the tournament starts. Demand spikes sharply in the final weeks before opening day and again during knockout rounds." },
+      { q: "Which car flags should I buy for World Cup 2026 in Canada?", a: "Canada, Brazil, Argentina, Mexico, Portugal, and Italy are the top sellers for the Canadian market." },
+      { q: "When should I buy World Cup car flags in Canada?", a: "Before the tournament opens. Demand spikes fast and popular styles go quickly." },
     ],
   },
   {
     slug: "how-to-attach-car-flags",
     title: "How to Attach World Cup Car Flags — Step-by-Step Guide",
-    description: "A step-by-step guide to attaching World Cup car flags safely — how to secure them, avoid scratches, and keep them flying through match day.",
+    description: "Attaching a World Cup car flag without scratching the window or loosening at highway speed — a short guide for Canadian match-day drivers.",
     publishedAt: "2026-06-03",
     category: "Car Flags",
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
@@ -1113,37 +1113,37 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "brazil-car-flag", "portugal-car-flag", "argentina-car-flag"],
     sections: [
       {
-        heading: "Where to attach a car flag safely",
+        heading: "Front windows, not rear",
         body: [
-          "Car flags attach to the top of a car window using a plastic clip that slides over the door frame when the window is slightly lowered. The flag pole sits between the window glass and the door frame, and the flag flies outside the vehicle when the window is raised.",
-          "Always attach on the front windows for the most stability and visibility. Rear window flags can block the driver's view in the side mirror — front placement avoids that issue entirely.",
+          "The clip slides over the door frame when the window is slightly lowered. Flag pole goes between the glass and the frame, then you raise the window to hold it.",
+          "Front windows only — rear flags block your mirror sight line when reversing or changing lanes. Not worth it.",
         ],
       },
       {
-        heading: "Secure the clip before driving",
+        heading: "Window tight before you drive",
         body: [
-          "Before driving, make sure the window is raised firmly against the clip to hold it in place. A loosely attached flag can shift at highway speeds and may scratch the window trim over extended drives.",
-          "At speeds above 80 km/h, flags will flap vigorously. This is normal and does not indicate the flag will detach — the clip design accounts for highway driving conditions.",
+          "Raise the window firmly against the clip before pulling out. A loose clip shifts at highway speed and can scratch the trim.",
+          "Flags flap hard above 80 km/h. That's normal — the clip is designed for it. If it stays seated with the window closed, it's not going anywhere.",
         ],
       },
       {
-        heading: "Remove and store after the match",
+        heading: "Take it down after the final whistle",
         body: [
-          "Remove car flags after each match day and store them indoors to prevent fabric fading from sun exposure. Flags left attached through multiple days of sun and rain will deteriorate faster and may leave adhesive marks on window trim.",
-          "Storing the flag flat or loosely rolled in a drawer or bag keeps it clean and ready for the next game day.",
+          "Remove the flag after each match day and store it flat or loosely rolled inside. Sun and rain left overnight fade the fabric faster than anything else.",
+          "Ten seconds to remove it. Flag lasts the whole tournament.",
         ],
       },
     ],
     faqs: [
-      { q: "How do I attach a car flag without scratching my car?", a: "Attach the clip to the door frame — not the paint — and make sure the flag pole sits between the window glass and the rubber seal rather than pressing directly against the car body." },
-      { q: "Should I remove my car flag after each match?", a: "Yes. Removing and storing the flag indoors after each match day keeps the fabric cleaner and prevents fading from extended sun exposure." },
+      { q: "How do I attach a car flag without scratching my car?", a: "Clip goes on the door frame, not the paint. Flag pole sits between window glass and rubber seal. Keep clear of the painted body." },
+      { q: "Should I remove my car flag after each match?", a: "Yes. Inside storage between match days keeps the fabric clean and prevents fading from extended sun exposure." },
     ],
   },
   // ── May 29 ──────────────────────────────────────────────────────────────
   {
     slug: "world-cup-watch-parties-toronto",
     title: "World Cup 2026 Watch Parties in Toronto — Fan Gear Guide",
-    description: "Toronto World Cup 2026 fan gear guide — where to find watch parties, fan zones, and what gear to buy for Toronto match days. Shop Canada 2026 merchandise online.",
+    description: "Toronto World Cup 2026 fan guide — where the city watches, which neighborhoods come alive, and the gear that actually works for a summer of match days in the GTA.",
     publishedAt: "2026-05-23",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1151,36 +1151,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-reversible-bucket-hat", "canada-boxing-glove"],
     sections: [
       {
-        heading: "Toronto will be one of Canada's most active World Cup cities",
+        heading: "Toronto doesn't need convincing",
         body: [
-          "Toronto's enormous multicultural population makes it one of the most electric cities in North America during any World Cup. With Portuguese, Italian, Brazilian, Mexican, and dozens of other fan communities concentrated in the city, almost every match day has a passionate local audience.",
-          "Fan zones, bar events, and community watch parties will be organized throughout the city from the opening match through the final.",
+          "This city has Portuguese, Italian, Brazilian, Moroccan, Nigerian, Korean, Jamaican, and Ghanaian communities all within a few transit stops of each other. When there's a World Cup, almost every match day has a passionate local audience somewhere in the city.",
+          "Toronto doesn't watch the World Cup from the outside. It's been a football city longer than the league admits.",
         ],
       },
       {
-        heading: "Little Portugal and the neighbourhood match days",
+        heading: "Little Portugal, Corso Italia, and the streets that show up",
         body: [
-          "Neighborhoods like Little Portugal on Dundas West, Little Italy on College Street, and Corso Italia on St. Clair become natural street-party hubs during major football tournaments. Car flags, outdoor seating, and big-screen setups are common sights when Portugal, Italy, or Brazil are playing.",
-          "For fans who want the neighbourhood watch party experience, arriving early and wearing your country's gear is the best way to join the crowd.",
+          "When Portugal plays, Dundas West transforms. Car flags go up on both sides of the road from Ossington to Lansdowne. Screens appear in front of restaurants. Families pull chairs onto the sidewalk.",
+          "Corso Italia on St. Clair does the same for Italy matches. College Street for its own moments. Show up early, wear your colours, and find your corner of the city.",
         ],
       },
       {
-        heading: "Fan gear for Toronto match days",
+        heading: "What to wear for a Toronto summer match day",
         body: [
-          "For Toronto outdoor events in June and July, a reversible bucket hat or cap is the most practical fan gear choice. The summer heat and outdoor viewing setups make sun protection as important as team colours.",
-          "A car flag is especially useful for Toronto fans — display it on your commute to signal match-day energy, then bring it inside during the game or the celebration afterward.",
+          "June and July in Toronto can be humid and bright. A bucket hat handles outdoor fan zones better than a cap brim. For the TTC ride in and the walk from the station, a cap is more practical.",
+          "Car flag on the way there. Bring it inside or leave it on the car for the neighborhood to see after the match.",
         ],
       },
     ],
     faqs: [
-      { q: "Where do people watch World Cup 2026 matches in Toronto?", a: "Sports bars, community centres, neighbourhood watch parties in areas like Little Portugal and Little Italy, and official fan zones are the main Toronto viewing spots." },
-      { q: "Where can I buy Toronto World Cup 2026 fan gear?", a: "World Cup 2026 fan gear for Toronto fans — caps, car flags, bucket hats, and mini boxing gloves — is available online and ships from Toronto across Canada." },
+      { q: "Where do people watch World Cup 2026 matches in Toronto?", a: "Sports bars, Little Portugal on Dundas West, Little Italy on College Street, Corso Italia on St. Clair, community centers, and official fan zones." },
+      { q: "Where can I buy Toronto World Cup 2026 fan gear?", a: "Ships from Toronto — caps, car flags, bucket hats, and mini boxing gloves available online." },
     ],
   },
   {
     slug: "world-cup-watch-parties-vancouver",
     title: "World Cup 2026 Watch Parties in Vancouver — Fan Gear Guide",
-    description: "Vancouver World Cup 2026 fan gear guide — where to watch, fan zones in BC, and what gear to buy for Vancouver match days. World cup 2026 watch party gear Canada.",
+    description: "Vancouver World Cup 2026 fan guide — Korean-Canadian watch parties in Richmond, outdoor summer screenings in BC, and gear that works for the Pacific time zone.",
     publishedAt: "2026-06-06",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
