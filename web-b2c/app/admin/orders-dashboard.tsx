@@ -88,6 +88,9 @@ export default function OrdersDashboard() {
   const [linkingLabel, setLinkingLabel] = useState(false);
   const [linkTrackingInput, setLinkTrackingInput] = useState("");
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
+  const [refundOpen, setRefundOpen] = useState(false);
+  const [refundAmount, setRefundAmount] = useState("");
+  const [processingRefund, setProcessingRefund] = useState(false);
 
   // Side panel edit state
   const [editStatus, setEditStatus] = useState<OrderStatus>("paid");
@@ -117,6 +120,8 @@ export default function OrdersDashboard() {
     setSelected(order);
     setDetailLoading(true);
     setEditStatus(order.status);
+    setRefundOpen(false);
+    setRefundAmount("");
     setEditCarrier(order.carrier ?? "");
     setEditTracking(order.tracking_number ?? "");
     setEditTrackingUrl(order.tracking_url ?? "");
@@ -178,9 +183,9 @@ export default function OrdersDashboard() {
     }
   }
 
-  async function handleCancelOrder() {
+  async function handleCancelNoRefund() {
     if (!selected || selected._source !== "supabase") return;
-    if (!confirm(`Cancel order ${selected.order_number}? This cannot be undone.`)) return;
+    if (!confirm(`Cancel order ${selected.order_number} without a Stripe refund? This cannot be undone.`)) return;
     setSaving(true);
     setSaveMsg(null);
     try {
@@ -194,7 +199,7 @@ export default function OrdersDashboard() {
       setOrders((prev) => prev.map((o) => (o.id === selected.id ? { ...data.order, _source: "supabase" as const } : o)));
       setSelected({ ...data.order, _source: "supabase" as const });
       setEditStatus("cancelled");
-      setSaveMsg({ type: "ok", text: "Order cancelled." });
+      setSaveMsg({ type: "ok", text: "Order cancelled (no Stripe refund)." });
     } catch (e) {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed" });
     } finally {
@@ -202,27 +207,40 @@ export default function OrdersDashboard() {
     }
   }
 
-  async function handleMarkRefunded() {
+  async function handleRefund() {
     if (!selected || selected._source !== "supabase") return;
-    if (!confirm(`Mark order ${selected.order_number} as refunded?`)) return;
-    setSaving(true);
+    const amountStr = refundAmount.trim();
+    const isPartial = amountStr !== "";
+    const label = isPartial
+      ? `Issue a $${amountStr} CAD partial refund for order ${selected.order_number}?`
+      : `Issue a FULL refund for order ${selected.order_number}? This cannot be undone.`;
+    if (!confirm(label)) return;
+    setProcessingRefund(true);
     setSaveMsg(null);
     try {
-      const res = await fetch(`/api/admin/orders/${selected.id}`, {
-        method: "PATCH",
+      const body: Record<string, unknown> = {};
+      if (isPartial) body.amount = parseFloat(amountStr);
+      const res = await fetch(`/api/admin/orders/${selected.id}/refund`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "refunded" }),
+        body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed");
-      setOrders((prev) => prev.map((o) => (o.id === selected.id ? { ...data.order, _source: "supabase" as const } : o)));
-      setSelected({ ...data.order, _source: "supabase" as const });
-      setEditStatus("refunded");
-      setSaveMsg({ type: "ok", text: "Order marked as refunded." });
+      if (!res.ok) throw new Error(data.error ?? "Refund failed");
+      const updatedOrder = { ...data.order, _source: "supabase" as const };
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updatedOrder : o)));
+      setSelected(updatedOrder);
+      setEditStatus(data.new_status);
+      setRefundOpen(false);
+      setRefundAmount("");
+      setSaveMsg({
+        type: "ok",
+        text: `Refunded $${data.amount_refunded_cad.toFixed(2)} CAD via Stripe (${data.is_full_refund ? "full" : "partial"}).`,
+      });
     } catch (e) {
-      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed" });
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Refund failed" });
     } finally {
-      setSaving(false);
+      setProcessingRefund(false);
     }
   }
 
@@ -910,21 +928,65 @@ export default function OrdersDashboard() {
                 )}
 
                 {isEditable && selected.status !== "cancelled" && selected.status !== "refunded" && (
-                  <div className="flex gap-2 pt-1">
-                    <button
-                      onClick={handleCancelOrder}
-                      disabled={saving}
-                      className="flex-1 rounded-full border border-red-200 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 hover:border-red-300 transition-colors disabled:opacity-50"
-                    >
-                      Cancel Order
-                    </button>
-                    <button
-                      onClick={handleMarkRefunded}
-                      disabled={saving}
-                      className="flex-1 rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
-                    >
-                      Mark Refunded
-                    </button>
+                  <div className="flex flex-col gap-2 pt-1">
+                    {!refundOpen ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setRefundAmount(selected.total != null ? selected.total.toFixed(2) : "");
+                            setRefundOpen(true);
+                            setSaveMsg(null);
+                          }}
+                          disabled={saving || processingRefund}
+                          className="flex-1 rounded-full border border-red-200 py-2 text-xs font-semibold text-red-500 hover:bg-red-50 hover:border-red-300 transition-colors disabled:opacity-50"
+                        >
+                          Refund & Cancel
+                        </button>
+                        <button
+                          onClick={handleCancelNoRefund}
+                          disabled={saving || processingRefund}
+                          className="flex-1 rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        >
+                          Cancel (No Refund)
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="rounded-xl border border-red-100 bg-red-50 p-3 space-y-2">
+                        <p className="text-xs font-semibold text-red-700">Stripe Refund Amount (CAD)</p>
+                        <div className="flex gap-2 items-center">
+                          <span className="text-xs text-red-600 font-medium">$</span>
+                          <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            value={refundAmount}
+                            onChange={(e) => setRefundAmount(e.target.value)}
+                            placeholder={selected.total != null ? selected.total.toFixed(2) : "0.00"}
+                            className="flex-1 rounded-lg border border-red-200 px-2 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-1 focus:ring-red-400 bg-white"
+                          />
+                          <span className="text-xs text-red-600">CAD</span>
+                        </div>
+                        <p className="text-[10px] text-red-500 leading-snug">
+                          Leave blank or enter full amount for a full refund. Partial refund sets status to "cancelled".
+                        </p>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={handleRefund}
+                            disabled={processingRefund}
+                            className="flex-1 rounded-full bg-red-500 py-1.5 text-xs font-bold text-white hover:bg-red-600 transition-colors disabled:opacity-50"
+                          >
+                            {processingRefund ? "Processing…" : "Confirm Refund"}
+                          </button>
+                          <button
+                            onClick={() => { setRefundOpen(false); setRefundAmount(""); }}
+                            disabled={processingRefund}
+                            className="flex-1 rounded-full border border-gray-200 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
