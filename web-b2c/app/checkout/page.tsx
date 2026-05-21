@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { formatCAD, calculateTax, getTaxLabel } from "@/lib/money";
-import { CANADIAN_PROVINCES } from "@/lib/types";
+import { CANADIAN_PROVINCES, US_STATES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import type { ShippingRate } from "@/app/api/shipping-rates/route";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
@@ -50,6 +50,11 @@ const EMPTY_ADDRESS: CheckoutAddress = {
   country: "Canada",
 };
 
+const COUNTRY_OPTIONS = [
+  { code: "CA", label: "🇨🇦 Canada",         country: "Canada",        defaultProvince: "ON" },
+  { code: "US", label: "🇺🇸 United States",   country: "United States", defaultProvince: "NY" },
+] as const;
+
 function generateOrderId(): string {
   return `WFG-${Date.now()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 }
@@ -66,6 +71,20 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const countryCode: "CA" | "US" = form.country === "United States" ? "US" : "CA";
+
+  function handleCountryChange(opt: typeof COUNTRY_OPTIONS[number]) {
+    setForm((prev) => ({
+      ...prev,
+      country: opt.country,
+      province: opt.defaultProvince,
+      postalCode: "",
+    }));
+    setShippingRates([]);
+    setSelectedRate(null);
+    setHasFetchedRates(false);
+  }
+
   // Auto-fetch Shippo rates when postal code is complete
   useEffect(() => {
     if (deliveryMethod !== "shipping") {
@@ -73,7 +92,8 @@ export default function CheckoutPage() {
         return;
     }
     const postal = form.postalCode.replace(/\s/g, "");
-    if (postal.length < 6) {
+    const minLen = countryCode === "US" ? 5 : 6;
+    if (postal.length < minLen) {
       setShippingRates([]);
       setSelectedRate(null);
       setHasFetchedRates(false);
@@ -89,6 +109,7 @@ export default function CheckoutPage() {
           postal: form.postalCode,
           province: form.province,
           city: form.city,
+          country: countryCode,
           weightKg: items.reduce((sum, item) => sum + item.weightKg * item.quantity, 0),
         }),
     })
@@ -116,14 +137,14 @@ export default function CheckoutPage() {
       })
       .finally(() => { if (!cancelled) setFetchingRates(false); });
     return () => { cancelled = true; };
-  }, [form.postalCode, form.province, form.city, deliveryMethod, items]);
+  }, [form.postalCode, form.province, form.city, form.country, deliveryMethod, items, countryCode]);
 
   const taxProvince = deliveryMethod === "pickup" ? "ON" : form.province;
   const shipping =
     deliveryMethod === "pickup"
       ? 0
-      : selectedRate?.amount ?? 0; // Force 0 if no rate selected
-  const tax = calculateTax(subtotal, taxProvince);
+      : selectedRate?.amount ?? 0;
+  const tax = countryCode === "US" ? 0 : calculateTax(subtotal, taxProvince);
   const total = subtotal + shipping + tax;
 
   const isShippingUnavailable = deliveryMethod === "shipping" && hasFetchedRates && shippingRates.length === 0;
@@ -356,6 +377,24 @@ export default function CheckoutPage() {
                 Shipping Address
               </legend>
               <div className="space-y-3">
+                {/* Country selector */}
+                <div className="grid grid-cols-2 gap-3">
+                  {COUNTRY_OPTIONS.map((opt) => (
+                    <button
+                      key={opt.code}
+                      type="button"
+                      onClick={() => handleCountryChange(opt)}
+                      className={`h-12 rounded-xl border-2 text-sm font-semibold transition-colors ${
+                        countryCode === opt.code
+                          ? "border-[#C41E3A] bg-red-50 text-gray-900"
+                          : "border-gray-200 bg-white text-gray-500 hover:border-gray-400"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+
                 <input
                   type="text"
                   name="address"
@@ -390,32 +429,38 @@ export default function CheckoutPage() {
                     onChange={handleChange}
                     className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
                   >
-                    {CANADIAN_PROVINCES.map((p) => (
-                      <option key={p.code} value={p.code}>
-                        {p.name}
-                      </option>
-                    ))}
+                    {countryCode === "CA"
+                      ? CANADIAN_PROVINCES.map((p) => (
+                          <option key={p.code} value={p.code}>{p.name}</option>
+                        ))
+                      : US_STATES.map((s) => (
+                          <option key={s.code} value={s.code}>{s.name}</option>
+                        ))
+                    }
                   </select>
                   <input
                     type="text"
                     name="postalCode"
                     required
-                    placeholder="Postal code"
+                    placeholder={countryCode === "CA" ? "Postal code" : "ZIP code"}
                     value={form.postalCode}
                     onChange={handleChange}
-                    pattern="[A-Za-z][0-9][A-Za-z]\s?[0-9][A-Za-z][0-9]"
-                    title="Enter a valid Canadian postal code (e.g. M5V 3L9)"
-                    maxLength={7}
+                    pattern={countryCode === "CA"
+                      ? "[A-Za-z][0-9][A-Za-z]\\s?[0-9][A-Za-z][0-9]"
+                      : "[0-9]{5}(-[0-9]{4})?"}
+                    title={countryCode === "CA"
+                      ? "Enter a valid Canadian postal code (e.g. M5V 3L9)"
+                      : "Enter a valid US ZIP code (e.g. 10001)"}
+                    maxLength={countryCode === "CA" ? 7 : 10}
                     className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors uppercase"
                   />
                 </div>
-                <input
-                  type="text"
-                  name="country"
-                  value="Canada"
-                  readOnly
-                  className="w-full h-12 px-4 rounded-xl border border-gray-100 text-sm text-gray-500 bg-gray-50 cursor-not-allowed"
-                />
+
+                {countryCode === "US" && (
+                  <p className="text-xs text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+                    🌎 International order — no Canadian taxes charged. Shipping rates are in CAD.
+                  </p>
+                )}
               </div>
             </fieldset>
           )}
@@ -577,8 +622,10 @@ export default function CheckoutPage() {
                 </span>
               </div>
               <div className="flex justify-between text-gray-600">
-                <span>{getTaxLabel(taxProvince)}</span>
-                <span className="font-medium">{formatCAD(tax)}</span>
+                <span>{countryCode === "US" ? "Tax" : getTaxLabel(taxProvince)}</span>
+                <span className="font-medium">
+                  {countryCode === "US" ? <span className="text-blue-600 text-xs font-semibold">Not charged</span> : formatCAD(tax)}
+                </span>
               </div>
             </div>
 

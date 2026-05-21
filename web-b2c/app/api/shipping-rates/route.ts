@@ -55,14 +55,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ rates: [], fallback: true, debug: "SHIPPO_API_KEY not set in env" }, { status: 200 });
   }
 
-  let body: { postal: string; province: string; city?: string; weightKg?: number };
+  let body: { postal: string; province: string; city?: string; weightKg?: number; country?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { postal, province, city, weightKg } = body;
+  const { postal, province, city, weightKg, country = "CA" } = body;
   if (!postal || !province) {
     return NextResponse.json({ error: "postal and province required" }, { status: 400 });
   }
@@ -88,10 +88,10 @@ export async function POST(req: NextRequest) {
     address_to: {
       name: "Customer",
       street1: "1 Main St",
-      city: city || "Toronto",
+      city: city || (country === "US" ? "New York" : "Toronto"),
       state: province,
       zip: postal.replace(/\s/g, "").toUpperCase(),
-      country: "CA",
+      country: country === "US" ? "US" : "CA",
       validate: false,
     },
     parcels: [
@@ -128,9 +128,11 @@ export async function POST(req: NextRequest) {
       }, { status: 200 });
     }
 
+    const isInternational = country !== "CA";
     const allRates: ShippingRate[] = (data.rates ?? [])
       .filter((r: { currency: string; provider: string }) =>
-        r.currency?.toUpperCase() === "CAD" && r.provider === "Canada Post"
+        r.currency?.toUpperCase() === "CAD" &&
+        (isInternational || r.provider === "Canada Post")
       )
       .map((r: {
         object_id: string;
