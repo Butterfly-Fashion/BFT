@@ -1299,30 +1299,30 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-reversible-bucket-hat", "canada-boxing-glove"],
     sections: [
       {
-        heading: "Canada's biggest tournament in a generation",
+        heading: "The home World Cup is a different feeling",
         body: [
-          "World Cup 2026 is Canada's first home World Cup, and for Les Rouges, it is the most significant tournament in the nation's football history. The combination of home-nation energy, a developing squad, and tournament co-hosting rights creates a once-in-a-generation fan moment.",
-          "Canadian fans who have been building their support through qualifying and friendlies now have a home World Cup to rally around — the fan gear demand reflects that.",
+          "Canada has never hosted a World Cup and never had a squad this close to being genuinely competitive at one. Both things are true at the same time in 2026.",
+          "The combination of home-nation energy and Les Rouges actually on the pitch creates a fan moment that won't come again for a long time. The gear demand is already reflecting that.",
         ],
       },
       {
-        heading: "What the Canada squad looks like for 2026",
+        heading: "A squad worth following match by match",
         body: [
-          "Canada's squad for 2026 features players from top European leagues alongside homegrown talent developed through the Canadian Premier League. The team has built experience through multiple competitive cycles since their 2022 qualification.",
-          "For fans, the Canada squad represents both established names and exciting emerging players — a team worth following closely through every group stage match.",
+          "Canadian players in top European leagues, homegrown talent coming through the CPL — the squad has depth and experience that didn't exist five years ago.",
+          "Follow every group stage match. This team is not making up the numbers.",
         ],
       },
       {
-        heading: "The complete Canada fan gear kit",
+        heading: "The Canada fan gear kit for 2026",
         body: [
-          "For the home World Cup, the Canada fan gear range covers all the essentials: red and black caps in both flag variants, the reversible bucket hat, a car flag for match-day drives, and the mini boxing glove souvenir.",
-          "The reversible bucket hat is the standout Canada piece for 2026 — it reflects the summer outdoor tournament setting and has strong visual presence at any watch party or fan zone.",
+          "Red and black caps in both flag styles. The reversible bucket hat. A car flag for the commute on match day. The mini boxing glove for the shelf or the rearview mirror.",
+          "The bucket hat is the standout Canada piece for this tournament — outdoor summer event, fan zone, group photo — it works everywhere.",
         ],
       },
     ],
     faqs: [
-      { q: "What Canada fan gear is available for World Cup 2026?", a: "Canada caps in two colour variants, a reversible bucket hat, a car flag, and a mini souvenir boxing glove are all available for the 2026 tournament." },
-      { q: "Why is World Cup 2026 especially significant for Canadian fans?", a: "Canada is co-hosting the 2026 tournament, making it a home World Cup for Canadian fans — the first in the country's football history." },
+      { q: "What Canada fan gear is available for World Cup 2026?", a: "Caps in red and black variants, reversible bucket hat, car flag, and mini souvenir boxing glove — all available now." },
+      { q: "Why is World Cup 2026 especially significant for Canadian fans?", a: "Canada is co-hosting the tournament and competing in it. Both at the same time, at home, for the first time in the country's football history." },
     ],
   },
   // ── June 1 ──────────────────────────────────────────────────────────────
@@ -1330,7 +1330,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "best-watch-party-food-ideas",
     title: "Best Food Ideas for a World Cup 2026 Watch Party",
-    description: "Easy food ideas for a World Cup 2026 watch party — snacks by country, match-day spreads, and how to theme your food around fan gear and team colours.",
+    description: "Watch party food ideas for World Cup 2026 — poutine for Canada matches, what works for 90-minute-plus viewing sessions, and how fan gear becomes table decor without effort.",
     publishedAt: "2026-05-25",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1338,36 +1338,35 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-boxing-glove", "canada-black-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "Theme food around the teams playing",
+        heading: "Serve something that belongs to the match",
         body: [
-          "The easiest watch party food concept is to serve one or two dishes connected to the nationalities playing in the match. For a Canada vs Brazil match, poutine and brigadeiros (Brazilian chocolate truffles) make a memorable combination that doubles as a conversation starter.",
-          "The food theme does not need to be elaborate — even simple colour-coded snacks in the teams' colours create a festive atmosphere with minimal effort.",
+          "Canada vs Brazil? Poutine and brigadeiros (Brazilian chocolate truffles). You don't need much — even one dish that connects to one of the teams makes the watch party feel intentional.",
+          "Colour-coded snacks in team colours take five minutes to set up and photograph every time.",
         ],
       },
       {
-        heading: "Practical snack setups for long matches",
+        heading: "Finger food. No plates. 100 minutes.",
         body: [
-          "World Cup matches including halftime run about 100 minutes. Plan finger food and snacks that do not require plates or cutlery so guests can eat without missing action. Chips, sliders, wings, and dips are the classic match-day spread.",
-          "For longer evenings with multiple matches back-to-back, a proper meal between games is worth planning — guests stay longer and the event becomes more memorable.",
+          "A World Cup match with halftime runs 100 minutes. Anything that requires a plate, fork, or careful balance is going to be a problem when the goal goes in.",
+          "Wings, chips, dips, sliders. Classic for a reason. For double-header evenings, plan one real meal between matches so people stick around.",
         ],
       },
       {
-        heading: "Fan gear doubles as table decor",
+        heading: "Fan gear IS the decoration",
         body: [
-          "Car flags, mini boxing gloves, and caps arranged on a snack table add visual energy to a watch party without requiring dedicated decorating time. These items are functional and displayable simultaneously.",
-          "For photo opportunities, creating a small fan gear display near the food table gives guests an easy backdrop for group shots during halftime.",
+          "A car flag hung near the snack table. Mini boxing gloves on the coffee table. Caps on a hook by the door. That's the decoration. It took three minutes and it looks right in every photo.",
         ],
       },
     ],
     faqs: [
-      { q: "What food works best for a World Cup watch party?", a: "Finger food and shareable snacks that do not require plates or cutlery work best — they keep guests focused on the match rather than on managing meals." },
-      { q: "Should I theme watch party food around the teams playing?", a: "It makes the event more memorable and is easy to execute at a basic level — even colour-matching snacks to team colours creates a festive atmosphere." },
+      { q: "What food works best for a World Cup watch party?", a: "Finger food only — anything that doesn't need plates or cutlery so nobody misses the match managing a meal." },
+      { q: "Should I theme watch party food around the teams playing?", a: "Yes, even loosely — one dish per team is enough to make the watch party feel like an event rather than just TV with snacks." },
     ],
   },
   {
     slug: "world-cup-snacks-themed-by-country",
     title: "World Cup 2026 Snacks Themed by Country — Watch Party Guide",
-    description: "Country-themed snack ideas for World Cup 2026 watch parties — easy food pairings for Canada, Brazil, Italy, Mexico, France, and more match days.",
+    description: "World Cup 2026 watch party snacks by country — poutine for Canada, brigadeiros for Brazil, tacos for Mexico. Easy themed food for every match day without specialist cooking.",
     publishedAt: "2026-05-26",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1375,37 +1374,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "italia-classic-tricolore-flag-souvenir-mini-boxing-glove", "france-flag-souvenir-mini-boxing-glove"],
     sections: [
       {
-        heading: "Canada match day — poutine and maple-glazed snacks",
+        heading: "Canada match day — poutine first, everything else second",
         body: [
-          "For Canada matches, poutine in individual cups, maple-glazed nuts, and butter tart squares are quintessential choices that connect food to Canadian identity. Red and white colour-themed fruit skewers (strawberries and marshmallows) are simple and photogenic.",
-          "Set out a Canada mini boxing glove or car flag near the snack table to reinforce the theme without elaborate decorating.",
+          "Individual poutine cups, maple-glazed nuts, butter tart squares. Red and white fruit skewers if you want the photo. Canada mini boxing glove near the snack table to complete the look.",
+          "The food doesn't need to be complex — it needs to connect. One dish per team does that.",
         ],
       },
       {
-        heading: "Brazil, Italy, Mexico, and France match days",
+        heading: "Brazil, Italy, Mexico, France — sourced from your local grocery",
         body: [
-          "For Brazil matches, brigadeiros, cheese bread (pão de queijo), and açaí bowls work well. For Italy, charcuterie boards, bruschetta, and arancini are crowd-pleasers. For Mexico, tacos, guacamole, and elotes are natural picks. For France, baguette slices with cheese and madeleines are simple yet appropriate.",
-          "These food themes require no specialist cooking — most can be assembled from grocery store items or ordered from local restaurants.",
+          "Brazil: brigadeiros and pão de queijo. Italy: charcuterie, bruschetta, arancini. Mexico: tacos and guacamole — easiest category. France: baguette, cheese, madeleines.",
+          "None of these require specialist cooking. Most can be assembled in twenty minutes or ordered from a restaurant on the street.",
         ],
       },
       {
-        heading: "Multi-nation watch parties",
+        heading: "Hosting a match you don't have strong feelings about",
         body: [
-          "When hosting a watch party for a match between two countries you are less familiar with, a global snack spread works well. Chips and dips from multiple cuisines, plus mini snacks from a bakery or grocery store, create a festive table without requiring country-specific knowledge.",
-          "The fan gear and car flags on the table carry the theme — the food just needs to be plentiful and shareable.",
+          "Global snack spread. Chips and dips from multiple cuisines, a few bakery items. Let the fan gear carry the theme — the food just needs to be plentiful and easy to eat without interrupting the match.",
         ],
       },
     ],
     faqs: [
-      { q: "What snacks work for a Canada World Cup watch party?", a: "Poutine, maple-glazed nuts, butter tarts, and red-and-white colour-themed snacks are easy Canada-themed watch party food choices." },
-      { q: "How do I theme food for a mixed-nation watch party?", a: "A global snack spread with items from multiple cuisines works well. Let the fan gear carry the national theme and keep the food varied and easy to eat." },
+      { q: "What snacks work for a Canada World Cup watch party?", a: "Poutine cups, maple-glazed nuts, butter tarts, red and white fruit skewers. Easy, photogenic, Canadian." },
+      { q: "How do I theme food for a mixed-nation watch party?", a: "One dish per team or a global spread. Fan gear carries the national theme — food just needs to be shareable." },
     ],
   },
   // ── June 3 ──────────────────────────────────────────────────────────────
   {
     slug: "backyard-world-cup-party-guide",
     title: "Backyard World Cup 2026 Watch Party Guide",
-    description: "How to host a backyard World Cup 2026 watch party in Canada — outdoor setup tips, fan gear decor, and how to make the most of the summer tournament.",
+    description: "Hosting a backyard World Cup 2026 watch party in Canada — outdoor screen setup, fan gear as decor, and how to keep guests comfortable through 90 minutes plus weather.",
     publishedAt: "2026-05-27",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1413,36 +1411,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-reversible-bucket-hat", "brazil-car-flag", "argentina-car-flag"],
     sections: [
       {
-        heading: "The backyard setup for summer World Cup viewing",
+        heading: "Screen angle is the first decision",
         body: [
-          "World Cup 2026 runs through the Canadian summer, making backyard watch parties a natural match for the tournament timing. A TV or projector, outdoor seating, and a fan gear display are all you need to create a proper outdoor viewing environment.",
-          "Set up the screen so it is visible from most seating positions. Sunlight angle matters for afternoon matches — point the screen away from direct sun to keep picture quality high throughout the match.",
+          "The World Cup runs through peak Canadian summer. A backyard setup works — projector or TV, outdoor seating, fan gear along the fence.",
+          "Point the screen away from direct afternoon sun before you set up anything else. Bad picture quality for 90 minutes ruins the whole thing.",
         ],
       },
       {
-        heading: "Fan gear as backyard decor",
+        heading: "Car flags along the fence do the work",
         body: [
-          "Car flags hung along a fence or string lighting, caps and bucket hats on a display hook near the entrance, and mini boxing gloves as table centrepieces all transform a standard backyard into a match-day environment without significant effort or cost.",
-          "The bucket hat is especially appropriate for outdoor backyard events — set out a few at the entrance so guests who forgot their fan gear have something to wear for group photos.",
+          "Hang car flags along the fence line. A hook near the entrance for caps and bucket hats. Mini boxing gloves as table centrepieces. The backyard looks like a match-day venue in twenty minutes.",
+          "Set out a few extra bucket hats for guests who forgot theirs — outdoor events, June sun, group photos.",
         ],
       },
       {
-        heading: "Managing the elements",
+        heading: "Plan for the elements in both directions",
         body: [
-          "For evening matches in June and July, plan for cooling temperatures after sunset. Having a supply of outdoor cushions and light throws available keeps guests comfortable through the full 90 minutes and overtime if needed.",
-          "If it rains, the match does not stop — having a covered outdoor area or easy indoor overflow keeps the party going regardless of weather.",
+          "Evening matches in July get cool. Have cushions and light throws available. A covered area for rain keeps the party going regardless of weather.",
+          "The match doesn't pause for rain. Neither should the watch party.",
         ],
       },
     ],
     faqs: [
-      { q: "What do I need for a backyard World Cup watch party?", a: "A screen or projector, outdoor seating, food and drinks, and fan gear decor are the essentials. A covered area is useful for rainy evening matches." },
-      { q: "What fan gear works best for backyard World Cup parties?", a: "Car flags strung as decor, bucket hats for outdoor sun protection, and mini boxing gloves as table centrepieces are practical backyard fan gear choices." },
+      { q: "What do I need for a backyard World Cup watch party?", a: "Screen or projector, outdoor seating, food, fan gear along the fence, covered area for rain. That covers it." },
+      { q: "What fan gear works best for backyard World Cup parties?", a: "Car flags strung as decor, bucket hats for outdoor sun, mini boxing gloves on the table." },
     ],
   },
   {
     slug: "apartment-world-cup-watch-party",
     title: "How to Host a World Cup 2026 Watch Party in an Apartment",
-    description: "Tips for hosting a World Cup 2026 watch party in a small apartment — layout, fan gear decor, and how to maximize the match-day atmosphere in a compact space.",
+    description: "How to host a World Cup 2026 watch party in a Toronto apartment — small space setup, fan gear that works without taking over the room, and sound rules for a building.",
     publishedAt: "2026-05-28",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1450,37 +1448,37 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "canada-black-flag-3d-embroidered-cap", "france-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "Small space, big match-day energy",
+        heading: "Small apartment, full energy",
         body: [
-          "A well-organized apartment watch party can create as much energy as a sports bar. The key is seating everyone with a clear view of the screen and keeping the food and drink setup simple enough that the space does not feel crowded.",
-          "For 4–8 guests, a living room rearranged so the couch and chairs all face the TV directly is usually sufficient. Remove any furniture that does not contribute to viewing comfort.",
+          "A well-set-up apartment watch party hits harder than a bar on most match days. The key is clearing the room so everyone has a direct line to the screen.",
+          "Move anything that doesn't help with viewing. Four to eight guests in a Toronto living room that's been cleared is the right format — couch and chairs facing the TV, food within reach, nothing blocking the sightline.",
         ],
       },
       {
-        heading: "Fan gear decor for small spaces",
+        heading: "Fan gear that fits the space",
         body: [
-          "In a small apartment, subtler fan gear works better than car flags (which are designed for outdoor visibility). Mini boxing gloves on the coffee table, caps on a hook near the entrance, and a small flag pinned above the TV frame create a match-day atmosphere without overwhelming the space.",
-          "The goal is to signal the occasion without making the apartment feel like a sports bar. Two or three fan gear items placed intentionally are more effective than many items scattered randomly.",
+          "Car flags are for outdoors. In a small apartment, mini boxing gloves on the coffee table, a cap on the hook by the door, and a small flag pinned above the TV handle it without overwhelming the room.",
+          "Two or three intentional pieces beat ten items scattered around. Signal the occasion without turning the apartment into a sports merchandise display.",
         ],
       },
       {
-        heading: "Sound, light, and timing",
+        heading: "Volume and your neighbors",
         body: [
-          "Match-day sound is part of the experience — ensure your TV or speakers are loud enough for everyone to hear commentary clearly without disturbing neighbours. If your building has noise rules, a slightly lower volume with a clear picture and live captions is a reasonable compromise.",
-          "For early-morning matches (common for Canadian fans watching games from European time zones), prepare coffee and breakfast items ahead of time so the group can settle in quickly before kickoff.",
+          "Match-day commentary at proper volume, speaker pointed toward the crowd, captions on if there's a building noise rule in effect. The goal is hearing the match clearly without a knock on the door.",
+          "For early European time zone kickoffs — coffee and breakfast items set up before the group arrives. Nobody handles a 6am match well without caffeine.",
         ],
       },
     ],
     faqs: [
-      { q: "How many people can I host for a World Cup apartment watch party?", a: "4–8 guests is comfortable for most living rooms. Make sure everyone has a clear view of the screen before the match begins." },
-      { q: "What fan gear works in a small apartment for World Cup?", a: "Mini boxing gloves on the coffee table, caps on a hook, and a small flag near the TV create apartment-appropriate match-day decor without overwhelming the space." },
+      { q: "How many people can I host for a World Cup apartment watch party?", a: "4–8 people in most Toronto living rooms, once cleared for viewing. Everyone needs a clear sightline to the screen." },
+      { q: "What fan gear works in a small apartment for World Cup?", a: "Mini boxing gloves on the coffee table, a cap on the door hook, small flag near the TV. Subtle but effective." },
     ],
   },
   // ── June 4 ──────────────────────────────────────────────────────────────
   {
     slug: "fathers-day-soccer-gifts",
     title: "Father's Day Soccer Gifts for World Cup 2026 — Canada",
-    description: "Best Father's Day soccer gifts for World Cup 2026 in Canada — caps, car flags, mini boxing gloves, and Panini FIFA World Cup 2026 sticker packs for soccer dads. World Cup 2026 watch party gear Canada.",
+    description: "Father's Day 2026 falls June 21 — right in the World Cup group stage. The best soccer gifts for dads who are watching every match: caps, car flags, and Panini sticker boxes.",
     publishedAt: "2026-06-06",
     category: "Gift Guide",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1488,36 +1486,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "canada-car-flag", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-black-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "Father's Day falls during the World Cup group stage",
+        heading: "June 21 — Father's Day in the group stage",
         body: [
-          "Father's Day 2026 falls on June 21, landing directly in the middle of the World Cup group stage. This is the most convenient possible timing for combining a Father's Day gift with tournament excitement — a soccer-themed gift is doubly relevant and feels perfectly timed.",
-          "For soccer dads, a World Cup fan gear gift acknowledges both the occasion and the shared family experience of watching the tournament together.",
+          "It's rare that a gift occasion and a sporting event align this cleanly. Father's Day 2026 is June 21, right in the middle of the World Cup group stage.",
+          "A soccer-themed gift on a soccer-dominated weekend makes sense to every dad watching.",
         ],
       },
       {
-        heading: "Gifts that work across the whole tournament",
+        heading: "Buy something that lasts the tournament, not just the day",
         body: [
-          "The best Father's Day soccer gifts are ones that will be used across the full tournament, not just on a single match day. A cap worn at every watch party, a car flag displayed during every match week, or a sticker album worked on throughout June and July all have extended value beyond the gift day itself.",
-          "The Panini sticker box is a particularly strong Father's Day gift for dads who enjoy the collecting ritual — it gives weeks of enjoyment rather than a single-use item.",
+          "The cap he wears to every watch party. The car flag that goes up every match morning. The sticker album he works on for six weeks through the group stage, knockouts, and final.",
+          "The Panini sticker box is the premium option for dads who enjoy the collecting ritual — weeks of enjoyment instead of one afternoon.",
         ],
       },
       {
-        heading: "Under $25 and under $50 options",
+        heading: "Under $25 and under $50",
         body: [
-          "Under $25: Canada mini boxing glove souvenir, Canada car flag, or embroidered cap — each is a clean, practical gift that requires no sizing decisions.",
-          "Under $50: The Panini FIFA World Cup 2026 Sticker Box (50 packs at $125 is the full box, but individual pack sets are available), or combine a cap and a car flag for a complete Father's Day fan kit.",
+          "Under $25: Mini boxing glove souvenir, car flag, or embroidered cap. No sizing decisions, ships from Toronto.",
+          "Under $50: Combine a cap and a car flag for a complete match-day kit, or add the Panini sticker box for the collector version.",
         ],
       },
     ],
     faqs: [
-      { q: "When is Father's Day 2026?", a: "Father's Day 2026 falls on June 21, which lands in the middle of the World Cup 2026 group stage." },
-      { q: "What is the best World Cup Father's Day gift under $25?", a: "A Canada embroidered cap, car flag, or mini boxing glove souvenir are all excellent Father's Day gifts under $25 CAD." },
+      { q: "When is Father's Day 2026?", a: "June 21, 2026 — right in the middle of the World Cup group stage." },
+      { q: "What is the best World Cup Father's Day gift under $25?", a: "Canada embroidered cap, car flag, or mini boxing glove souvenir — all under $25, no sizing required." },
     ],
   },
   {
     slug: "best-soccer-gifts-for-dads",
     title: "Best Soccer Gifts for Dads — World Cup 2026 Edition",
-    description: "The best soccer gifts for dads for World Cup 2026 — practical fan gear ideas, Panini sticker sets, and tournament collectibles for Canadian soccer fathers.",
+    description: "The best soccer gifts for dads at World Cup 2026 — what soccer fathers actually want, how to match the gift to the team they support, and why a Panini sticker box beats a jersey.",
     publishedAt: "2026-06-07",
     category: "Gift Guide",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -1525,37 +1523,37 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-boxing-glove"],
     sections: [
       {
-        heading: "What soccer dads actually want",
+        heading: "Ask the team first, then buy",
         body: [
-          "Soccer dads want fan gear that connects to the teams they support and the way they watch football. Practical items they can use during the tournament — a cap, a car flag, a sticker collection — are more meaningful than decorative items that sit on a shelf unused.",
-          "Ask which team they are following for 2026 and match the gift to that team. Even if the answer is obvious (Canada), it confirms the right country before buying.",
+          "Soccer dads want gear that connects to the team they actually support. A cap, a car flag, a sticker collection — practical items they'll use through the whole tournament.",
+          "Which team? Even if you think you know (Canada), confirm it before buying. It takes thirty seconds and saves you from buying a Brazil flag for someone who watches Italy.",
         ],
       },
       {
-        heading: "The Panini sticker box as a premium gift",
+        heading: "The Panini sticker box is the premium version",
         body: [
-          "A 50-pack Panini sticker box is the premium soccer dad gift for World Cup 2026. It is a high-value item that sustains enjoyment across the entire tournament — opening packs throughout June and July keeps the collecting experience running parallel to the actual matches.",
-          "Pair the sticker box with the official album ($8.99 CAD) so the recipient can immediately start placing stickers when they open the gift.",
+          "A 50-pack sticker box sustained across six weeks of tournament football is a better gift than anything used once on June 21.",
+          "Pair it with the official album ($8.99 CAD). Without the album, the sticker box is just packs with nowhere to go.",
         ],
       },
       {
-        heading: "Complete fan kit as a combined gift",
+        heading: "The complete kit covers every match day",
         body: [
-          "Combining a cap, a car flag, and a mini boxing glove in their supported team's colours creates a complete fan kit that covers every match-day scenario. The car flag goes on the vehicle, the cap goes on the head, and the mini glove sits on the desk or mantle.",
-          "This kind of combined gift communicates thoughtfulness — it shows you considered how they will actually use the gear across the full tournament.",
+          "Cap, car flag, mini boxing glove in their team's colours. The flag goes on the car, the cap goes on the head, the glove goes on the desk or above the TV.",
+          "That's a gift that shows you thought about how they actually watch football — not just what looks nice in a bag.",
         ],
       },
     ],
     faqs: [
-      { q: "What is the best soccer gift for a dad who follows the World Cup?", a: "A Panini sticker box paired with the official album is the best premium gift. For a practical everyday gift, combine a cap, car flag, and mini boxing glove in their team's colours." },
-      { q: "Can I buy World Cup gifts without knowing the dad's team?", a: "Canada fan gear is the safest default for Canadian dads who follow the national team. Otherwise, the most common teams in Canada are Brazil, Italy, Portugal, and Mexico." },
+      { q: "What is the best soccer gift for a dad who follows the World Cup?", a: "Panini sticker box plus the official album for a collector. Cap, car flag, and mini boxing glove combined for a practical everyday kit." },
+      { q: "Can I buy World Cup gifts without knowing the dad's team?", a: "Canada is the safe default for Canadian dads. After that: Brazil, Italy, Portugal, and Mexico cover most of the likely answers." },
     ],
   },
   // ── June 5 ──────────────────────────────────────────────────────────────
   {
     slug: "family-world-cup-watch-party-guide",
     title: "Family World Cup 2026 Watch Party Guide",
-    description: "How to host a World Cup 2026 watch party for the whole family — kid-friendly setups, fan gear for all ages, and activities to keep everyone engaged.",
+    description: "Family World Cup 2026 watch party guide — how to keep kids engaged at halftime, fan gear for all ages, and why Panini sticker packs are the best family activity of the tournament.",
     publishedAt: "2026-05-29",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1563,30 +1561,30 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-reversible-bucket-hat", "canada-black-flag-3d-embroidered-cap", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-boxing-glove"],
     sections: [
       {
-        heading: "Design the party for multiple generations",
+        heading: "Something for every generation at the table",
         body: [
-          "A family watch party works best when there is something for everyone — adults who follow the tactical game, teenagers interested in specific players, and younger children who are drawn to the atmosphere and fan gear rather than the match itself.",
-          "Plan the seating and food setup around the youngest guests, then layer in deeper football activities (score predictions, sticker trading) for older participants.",
+          "Adults following the tactics. Teenagers tracking specific players. Younger kids drawn to the atmosphere, the snacks, and anything that isn't sitting still for 90 minutes.",
+          "Plan the seating and food around the youngest. Layer sticker trading and score predictions in for the older participants. Everyone has something to do.",
         ],
       },
       {
-        heading: "Sticker packs as the family halftime activity",
+        heading: "Panini packs at halftime — works every time",
         body: [
-          "Opening Panini sticker packs at halftime is a universal family activity that works for ages 5 through 75. Pass the pack box around the table, let everyone open their share, compare results, and trade duplicates.",
-          "It keeps younger children engaged during the halftime gap and gives adults a light social activity that does not require leaving the watch party setup.",
+          "Pass the pack box around the table at halftime. Let everyone open their share. Compare results. Trade duplicates before the second half starts.",
+          "Works for ages 5 through 75. No age cutoff on the ritual of opening a pack and finding out what's inside.",
         ],
       },
       {
-        heading: "Fan gear for family group photos",
+        heading: "The group photo that actually looks like something",
         body: [
-          "A family group photo in matching or coordinated fan gear is one of the most shareable memories from a tournament. Set out caps and bucket hats for everyone before the match begins so the photos happen naturally rather than requiring a planned photoshoot.",
-          "Even mixing team colours in the photo works well — a family that supports different teams and shows it visually is a more interesting photo than everyone in identical gear.",
+          "Set out caps and bucket hats before the match starts. The photos happen naturally at halftime and after the final whistle — no planned photoshoot required.",
+          "Mixed team colours in a family photo are better than everyone in identical gear. A family where Grandma's wearing Portugal and the kids are in Canada and Brazil is a better photo.",
         ],
       },
     ],
     faqs: [
-      { q: "How do I keep young kids engaged at a World Cup watch party?", a: "Panini sticker packs as a halftime activity, fan gear to wear, and a snack station with their favourite foods keep young children engaged through the full event." },
-      { q: "What fan gear should I buy for a family World Cup watch party?", a: "Adjustable caps and reversible bucket hats in Canada or your supported team's colours work for all family members without sizing complications." },
+      { q: "How do I keep young kids engaged at a World Cup watch party?", a: "Panini sticker packs at halftime, fan gear to wear, snacks they actually like. The ritual keeps them at the table." },
+      { q: "What fan gear should I buy for a family World Cup watch party?", a: "Adjustable caps and reversible bucket hats — no sizing complications, works for every age." },
     ],
   },
   // ── June 6 ──────────────────────────────────────────────────────────────
@@ -1595,7 +1593,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "world-cup-2026-top-players-to-watch",
     title: "World Cup 2026 Top Players to Watch — Fan Gear Guide",
-    description: "The top players to watch at World Cup 2026 and what fan gear to buy to support them — Messi, Mbappé, Kane, Yamal, and more.",
+    description: "The players that make World Cup 2026 worth watching — Messi, Mbappé, Kane, Yamal — and the fan gear to buy when you want to be on the right side of history.",
     publishedAt: "2026-06-08",
     category: "Tournament Guide",
     heroImage: "/asset/stickers/mbappe200.jpg",
@@ -1603,30 +1601,30 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "argentina-flag-3d-embroidered-cap", "france-flag-3d-embroidered-cap", "england-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "The generational players who define World Cup 2026",
+        heading: "The players who make this tournament feel different",
         body: [
-          "World Cup 2026 features several players at potential turning points in their careers. Lionel Messi, defending champion and widely considered the greatest of all time, enters what may be his final World Cup. Harry Kane leads England's challenge with a squad built for this moment.",
-          "On the emerging side, Lamine Yamal for Spain, Kylian Mbappé for France, and Raphinha for Brazil represent the new wave of world-class attacking talent competing for the golden boot.",
+          "Messi defending the title in what may be his last World Cup. Kane captaining England with real expectation behind him. Lamine Yamal playing at an age when most players are still on development loan.",
+          "This field has real turning points happening in real time. Mbappé leading France, Raphinha carrying Brazil, Van Dijk anchoring the Netherlands — there are fifteen players who could define this tournament and a dozen who haven't been named yet.",
         ],
       },
       {
-        heading: "Panini stickers bring the players home",
+        heading: "Panini stickers put the players in your hands",
         body: [
-          "The Panini FIFA World Cup 2026 Sticker Box includes stickers for players across all 48 nations — including Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, Hwang Hee-chan, and Luis Díaz. Pulling a sticker for your favourite player is one of the defining collector moments of the tournament.",
-          "Each player sticker in the Panini set connects the collecting experience directly to the on-field story of World Cup 2026.",
+          "The sticker box covers all 48 nations — Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, Hwang Hee-chan, Luis Díaz. Pulling a sticker for the player you watched score two hours ago is a specific kind of feeling.",
+          "The collecting experience runs parallel to the tournament results. The two things connect every time you open a pack.",
         ],
       },
       {
-        heading: "Support with country fan gear",
+        heading: "Support through the national team, not the player jersey",
         body: [
-          "The clearest way to support a specific player at a watch party is through their national team's fan gear. An Argentina cap for Messi, a France cap for Mbappé, a Spain cap for Yamal, or an England cap for Kane — the team connection is immediate and well understood by other fans.",
-          "Country fan gear is also more versatile than player-specific jerseys because it remains relevant if a star is injured or the team eliminates them early through rotation.",
+          "An Argentina cap covers Messi. A France cap covers Mbappé. A Spain cap covers Yamal. Country fan gear stays relevant regardless of injury, rotation, or early exit.",
+          "Player-specific jerseys date fast. A country cap lasts the whole tournament and beyond.",
         ],
       },
     ],
     faqs: [
-      { q: "Which players have Panini stickers in the World Cup 2026 set?", a: "The set includes Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, Hwang Hee-chan, Luis Díaz, and players from all 48 competing nations." },
-      { q: "What fan gear should I buy to support my favourite World Cup player?", a: "Buy their national team's cap or car flag — it is the most versatile and durable expression of support for a specific player." },
+      { q: "Which players have Panini stickers in the World Cup 2026 set?", a: "Messi, Mbappé, Kane, Yamal, Raphinha, Van Dijk, Hwang Hee-chan, Luis Díaz, and players across all 48 nations." },
+      { q: "What fan gear should I buy to support my favourite World Cup player?", a: "Their national team's cap or car flag — stays relevant the whole tournament regardless of rotation or injury." },
     ],
   },
   // ── June 9 ──────────────────────────────────────────────────────────────
@@ -1634,7 +1632,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "world-cup-match-day-routine",
     title: "World Cup 2026 Match Day Routine — Fan Preparation Guide",
-    description: "A match day routine for World Cup 2026 fans — how to prepare fan gear, plan your viewing setup, and make every match day feel like an event.",
+    description: "A match day routine for World Cup 2026 fans — the car flag goes up in the morning, the album opens at halftime, and the flag comes down after the final whistle. Here's how to do it right.",
     publishedAt: "2026-05-30",
     category: "Fan Gear Guide",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1642,36 +1640,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-reversible-bucket-hat"],
     sections: [
       {
-        heading: "Morning of a match day",
+        heading: "Morning: flag up, cap ready",
         body: [
-          "On match day morning, attach the car flag before leaving the house — it signals to the neighbourhood that something significant is happening and creates a sense of occasion from the commute. Wear your team's cap or set it out with your watch party outfit.",
-          "If you are collecting Panini stickers, opening one pack before the match as a pre-game ritual adds a small moment of anticipation to the day.",
+          "Car flag on before you leave. Tells the neighborhood something is happening today. Wear the cap or leave it out with your watch party setup.",
+          "Open one Panini pack before the match. One. That's the pre-game ritual and it takes two minutes.",
         ],
       },
       {
-        heading: "Pre-match setup",
+        heading: "One hour before kickoff",
         body: [
-          "One hour before kickoff is the right time to finalize the watch party setup. Arrange seating with clear TV sight lines, set out food and drinks within reach, and put on pre-match coverage. If hosting guests, brief arrivals can organize fan gear display and score prediction sheets.",
-          "Setting out multiple country caps or having bucket hats available for guests who did not bring their own gear is a thoughtful hosting touch.",
+          "Seating arranged for clear TV sightlines. Food and drinks within reach. Pre-match coverage on. Score prediction sheets out if you're hosting.",
+          "Extra caps and bucket hats available near the door for guests who didn't bring theirs. Small hosting detail, always appreciated.",
         ],
       },
       {
-        heading: "Post-match celebration or commiseration",
+        heading: "After the final whistle",
         body: [
-          "After the final whistle, the car flag gets its second moment — either as a celebration during a victory drive or as a quiet mark of having watched through a difficult result. Either way, remove and store the flag before overnight rain or sun.",
-          "Logging the match result in your Panini album notes section and placing any new stickers from that session closes the match day ritual on a satisfying note.",
+          "Victory drive or quiet commiseration — the flag is on the car either way. Then take it off and bring it inside before overnight rain or sun.",
+          "Place any stickers from the session before you put the album away. The album closes the ritual.",
         ],
       },
     ],
     faqs: [
-      { q: "What is a good World Cup match day routine?", a: "Attach your car flag in the morning, set up your viewing space an hour before kickoff, open a Panini pack as a pre-game ritual, and store your flag after the match." },
-      { q: "How do I make each World Cup match day feel special?", a: "Small rituals — the same fan gear, the same snacks, the same pre-match activities — build a consistent match-day identity that makes the full tournament feel memorable." },
+      { q: "What is a good World Cup match day routine?", a: "Flag up in the morning, one Panini pack before kickoff, view setup one hour out, flag stored after the match." },
+      { q: "How do I make each World Cup match day feel special?", a: "The same rituals, repeated consistently, are what make the tournament feel like a season instead of just a series of matches." },
     ],
   },
   {
     slug: "what-to-bring-world-cup-watch-party",
     title: "What to Bring to a World Cup 2026 Watch Party",
-    description: "A checklist of what to bring to a World Cup 2026 watch party — fan gear, food contributions, score prediction sheets, and how to be the ideal watch party guest.",
+    description: "What to bring to a World Cup 2026 watch party — fan colours, a food contribution, Panini duplicates for halftime trading. The complete guest checklist.",
     publishedAt: "2026-05-31",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1679,30 +1677,30 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-boxing-glove", "panini-fifa-world-cup-2026-sticker-box-50-packs", "canada-black-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "Fan gear is the minimum entry item",
+        heading: "Fan colours are the minimum",
         body: [
-          "Showing up to a watch party in your team's colours is the basic social contribution — it adds to the collective energy of the room. A cap, a bucket hat, or a scarf in your team colours communicates that you are there to participate in the experience, not just watch a screen.",
-          "Bringing a second fan item — a mini boxing glove as a table piece, a spare cap to loan to a fellow fan — is the next level of watch party guest preparation.",
+          "Showing up in your team's colours adds to the room's energy in a way that nothing else does. Cap, bucket hat, scarf — something that says you're here to participate, not just observe.",
+          "A spare cap or mini boxing glove to leave on the table is the next level of guest preparation. Small but noticed.",
         ],
       },
       {
-        heading: "Food and drink contributions",
+        heading: "Bring food that requires no plates",
         body: [
-          "The best watch party guests bring food that requires no preparation and works with the existing spread. Chips, dips, packaged snacks, or a box of cookies are easy contributions that hosts always appreciate.",
-          "For themed watch parties, bringing a dish connected to one of the playing nations elevates the event without requiring much effort — guacamole for Mexico matches, brigadeiros for Brazil games, or mini poutine cups for Canada.",
+          "Chips, dips, packaged snacks, a box of cookies — easy to put down and pick up without missing the match.",
+          "For a themed party: guacamole for Mexico, brigadeiros for Brazil, mini poutine cups for Canada. One dish that belongs to the match is enough.",
         ],
       },
       {
-        heading: "Panini stickers for halftime trading",
+        heading: "Panini duplicates are the halftime contribution",
         body: [
-          "Bringing your Panini duplicate sticker pile to a watch party is the ideal halftime activity contribution. It gives the group something to do during the 15-minute break, creates natural conversation, and helps everyone progress their collections.",
-          "Announce at the start of the event that you have stickers available for trading — other collectors will be glad to know and will save their own duplicates for the halftime swap.",
+          "Bring your sorted duplicate pile to every watch party. Tell people at the start that you're trading at halftime. Other collectors will hold their duplicates back specifically for that.",
+          "It's the one guest contribution that creates a 15-minute group activity without any planning from the host.",
         ],
       },
     ],
     faqs: [
-      { q: "What should I bring to a World Cup watch party?", a: "Fan gear in your team's colours, a food or drink contribution, and your Panini duplicate sticker pile for halftime trading are the ideal watch party guest items." },
-      { q: "Is it rude to arrive at a watch party without fan gear?", a: "It is not rude, but wearing your team's colours contributes to the collective energy of the event. Most hosts appreciate guests who make the effort." },
+      { q: "What should I bring to a World Cup watch party?", a: "Team colours, one food item that's easy to share, and your Panini duplicate pile for halftime trading." },
+      { q: "Is it rude to arrive at a watch party without fan gear?", a: "Not rude, but wearing colours adds to the room's collective energy. Most hosts appreciate the effort." },
     ],
   },
   // ── June 11 ──────────────────────────────────────────────────────────────
@@ -1717,30 +1715,30 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-boxing-glove", "brasil-flag-souvenir-mini-boxing-glove", "canada-car-flag", "canada-black-flag-3d-embroidered-cap"],
     sections: [
       {
-        heading: "The goal celebration is a watch party tradition",
+        heading: "The three seconds after a goal say everything",
         body: [
-          "The moment a goal is scored at a watch party is one of the most spontaneous and memorable experiences in sport. Unlike attending a live match, watch party celebrations happen in intimate spaces where every person's reaction is visible — the joy is shared at close range.",
-          "Having fan gear on during goal moments adds a visual element to the celebration that makes photos and videos more vibrant.",
+          "You know it before the commentator confirms it. The net moves, the room erupts, and for a few seconds everyone in the space is doing something slightly different — someone's off the couch, someone's already reaching for their phone, someone's just standing with both arms in the air.",
+          "That chaos is the whole point. No halftime show, no pre-game ceremony touches it. A World Cup goal in a room full of people who care is its own category of moment.",
         ],
       },
       {
-        heading: "Mini boxing gloves as the goal celebration prop",
+        heading: "Mini boxing gloves are already in your hands",
         body: [
-          "Mini souvenir boxing gloves are a natural goal celebration prop — hold them up, wave them, or set them out as a visual flourish during post-goal photos. They add energy to celebration moments and double as photography props for social media.",
-          "Keeping mini boxing gloves for your supported team on the coffee table during the match means they are immediately at hand the moment the net ripples.",
+          "Keep a pair on the coffee table before kickoff. Not stored away, not on a shelf — right there. The moment a goal goes in, they are already in reach. Hold them up, wave them around, get them in the photo.",
+          "It sounds minor but it makes a difference. The celebration photos from that night are what you actually keep. A Brazil or Canada boxing glove in the frame turns a blurry living room shot into something worth posting.",
         ],
       },
       {
-        heading: "The post-goal car flag moment",
+        heading: "The car flag lap is underrated",
         body: [
-          "For fans who step outside to celebrate after a big goal, the car flag is the visible signal to the neighbourhood. A quick victory lap around the block with your flag attached is one of the most joyful expressions of tournament energy.",
-          "Even keeping the car flag visible in the driveway as neighbours walk by after a result is a small but tangible way to share the celebration with the broader community.",
+          "If you are the type who steps outside after a big goal — and in Toronto, enough people do that the whole street knows when Portugal scored — having the flag already on the car turns that moment into a proper declaration.",
+          "A lap around the block at 40 km/h with a flag out the window is not embarrassing. During a World Cup, it is the neighbourhood dialect. Everyone on the street understands exactly what just happened.",
         ],
       },
     ],
     faqs: [
-      { q: "What is the best fan gear prop for a goal celebration?", a: "Mini boxing gloves in your team's colours are the most photogenic and energetic goal celebration prop at a watch party." },
-      { q: "How do people celebrate goals at home watch parties?", a: "Standing up, shouting, hugging other fans, waving mini flags or boxing gloves, and taking immediate photos are all common home watch party goal celebration moments." },
+      { q: "What is the best fan gear prop for a goal celebration?", a: "Mini boxing gloves in your team's colours — kept on the coffee table during the match so they are already in reach when the net moves." },
+      { q: "How do people celebrate goals at home watch parties?", a: "Every room does it differently. Some people jump, some hug, some immediately film it. Having visible fan gear in the room makes those first few seconds more shareable and more fun to look back on." },
     ],
   },
   // ── June 12 ──────────────────────────────────────────────────────────────
