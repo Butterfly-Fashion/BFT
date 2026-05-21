@@ -1188,37 +1188,35 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "south-korea-3d-embroidered-cap", "japan-flag-3d-embroidered-cap", "canada-reversible-bucket-hat"],
     sections: [
       {
-        heading: "Vancouver's diverse community drives strong match-day energy",
+        heading: "Richmond to downtown — the Korean and Japanese fan base that organizes",
         body: [
-          "Vancouver has one of the largest Korean Canadian and Japanese Canadian communities in North America, making Asian national team match days particularly well attended in the city. South Korea and Japan games draw large, organized watch party crowds from Richmond to downtown Vancouver.",
-          "The Iranian, Portuguese, and Latin American communities in Vancouver also create strong match-day atmospheres for their respective national teams.",
+          "Vancouver has one of the largest Korean-Canadian and Japanese-Canadian communities in North America. South Korea and Japan match days bring organized watch party crowds from Richmond to Gastown. These aren't casual fans — they came prepared.",
+          "Iranian, Portuguese, and Latin American communities each bring their own energy on their respective match days. Almost no match goes by without a community somewhere in the city watching loudly.",
         ],
       },
       {
-        heading: "Outdoor viewing spots and summer timing",
+        heading: "Outdoor summer viewing is Vancouver's default",
         body: [
-          "Vancouver's mild summer weather makes outdoor screening events very practical for World Cup 2026. Parks, sports bars with patios, and community centre screens are all common viewing spots for major matches.",
-          "For outdoor Vancouver watch parties, a bucket hat is especially useful — the combination of sun protection and team colours is a practical match-day choice in BC's summer climate.",
+          "Mild summers, parks everywhere, patios open late — Vancouver is built for outdoor World Cup screenings. A bucket hat with team colours is the practical choice for three hours of summer sun at an outdoor event.",
         ],
       },
       {
-        heading: "Gear up for the full tournament",
+        heading: "Buy gear before the time zone math hits",
         body: [
-          "Vancouver fans supporting South Korea, Japan, Canada, or any other team will find full gear ranges available for their national team. Getting a cap and car flag sorted before the tournament means you are ready from the opening match.",
-          "With games broadcasting in morning and afternoon slots due to the time zone difference from some venues, Vancouver fans may also enjoy early watch party formats that make fan gear appropriate from the first hour of the day.",
+          "Pacific time means some matches kick off at 9am. Early watch parties are a Vancouver reality. Gear sorted before the tournament means you're ready at 8:45 with coffee and your cap.",
         ],
       },
     ],
     faqs: [
-      { q: "Where do people watch World Cup matches in Vancouver?", a: "Sports bars, community centres, outdoor screenings in parks, and neighbourhood watch parties are the main Vancouver viewing options." },
-      { q: "What fan gear works best for Vancouver outdoor World Cup events?", a: "A bucket hat for sun protection and team colours, plus a car flag for the commute, are the practical Vancouver match-day choices." },
+      { q: "Where do people watch World Cup matches in Vancouver?", a: "Sports bars, community centres, parks with outdoor screenings, and neighbourhood watch parties in Richmond and downtown." },
+      { q: "What fan gear works best for Vancouver outdoor World Cup events?", a: "Bucket hat for sun and team colours, car flag for the commute. Both work across the full tournament." },
     ],
   },
   // ── May 30 ──────────────────────────────────────────────────────────────
   {
     slug: "world-cup-watch-parties-calgary",
     title: "World Cup 2026 Watch Parties in Calgary — Fan Gear Guide",
-    description: "Calgary World Cup 2026 fan gear guide — where fans gather, watch party events in Alberta, and the best world cup 2026 fan gear Canada to buy online.",
+    description: "Calgary World Cup 2026 fan guide — Latin American communities, backyard watch parties in Alberta, and the car flag culture of a city built on long commutes.",
     publishedAt: "2026-06-07",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1226,36 +1224,36 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "argentina-car-flag", "brazil-car-flag"],
     sections: [
       {
-        heading: "Calgary's growing soccer community",
+        heading: "Immigration changed Calgary's football culture",
         body: [
-          "Calgary's soccer fan community has grown significantly in recent years, driven by immigration from Latin America, Eastern Europe, and Southeast Asia. World Cup match days bring together fans from across these communities in sports bars and organized watch party events.",
-          "The city's strong Latin American community makes Argentina and Brazil match days particularly well attended, while Eastern European communities gather for Poland, Croatia, and Ukraine games.",
+          "Calgary's Latin American, Eastern European, and Southeast Asian communities have built a real football culture in the city over the past decade. World Cup match days pull those communities together at sports bars, community halls, and backyard setups across the city.",
+          "Argentina and Brazil matches are particularly well attended. Poland, Croatia, and Ukraine games draw strong turnouts from Eastern European communities in the suburbs.",
         ],
       },
       {
-        heading: "Best venues and setups for Calgary fans",
+        heading: "Backyard over bar — the Calgary format",
         body: [
-          "Calgary's sports bar scene is well set up for World Cup viewing, with many venues installing multiple screens and extended hours for international matches. Community hall watch parties and backyard events are also common for fans who prefer a more intimate setting.",
-          "For outdoor summer watch parties in Calgary's warm June and July weather, a cap or bucket hat is practical fan gear alongside team colours.",
+          "Calgary spreads out. Backyard watch parties are common because the geography makes them practical — bigger space, no cover charge, parking solves itself.",
+          "For outdoor June and July events, a cap or bucket hat in team colours is practical summer gear.",
         ],
       },
       {
-        heading: "Car flags for Calgary match-day drives",
+        heading: "Car flag visibility on long Calgary commutes",
         body: [
-          "Car flags are a visible way to show support during the Calgary commute on match days. The broad suburban geography of the city means car-based fan expression has natural visibility across long distances.",
-          "Canada, Argentina, and Brazil car flags are among the most popular styles for Calgary fans, reflecting the city's fan demographics.",
+          "The suburban geography that spreads Calgary out makes car flags more visible than in a dense city. A match-day commute on Deerfoot Trail with a Brazil flag on the window reaches a lot of people.",
+          "Canada, Argentina, and Brazil are the top-selling styles for Calgary fans.",
         ],
       },
     ],
     faqs: [
-      { q: "Where do people watch World Cup matches in Calgary?", a: "Sports bars, community halls, and backyard watch parties are the main Calgary viewing options for World Cup 2026." },
-      { q: "What fan gear should Calgary fans buy for World Cup 2026?", a: "Canada, Argentina, and Brazil car flags are popular in Calgary alongside caps and bucket hats for outdoor summer events." },
+      { q: "Where do people watch World Cup matches in Calgary?", a: "Sports bars, community halls, and backyard watch parties across the suburban neighborhoods." },
+      { q: "What fan gear should Calgary fans buy for World Cup 2026?", a: "Canada, Argentina, and Brazil car flags alongside caps and bucket hats for outdoor summer watch events." },
     ],
   },
   {
     slug: "world-cup-watch-parties-montreal",
     title: "World Cup 2026 Watch Parties in Montreal — Fan Gear Guide",
-    description: "Montreal World Cup 2026 fan gear guide — where fans gather, Quebec fan culture, and the best world cup 2026 watch party gear Canada for Montreal fans.",
+    description: "Montreal World Cup 2026 fan guide — where Haitian, Moroccan, and French fan cultures meet, what Quebec-specific gear exists, and how the city watches football its own way.",
     publishedAt: "2026-06-08",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -1263,37 +1261,37 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["canada-car-flag", "france-flag-3d-embroidered-cap", "morocco-flag-3d-embroidered-cap", "quebec-flag-souvenir-mini-boxing-glove"],
     sections: [
       {
-        heading: "Montreal's unique football culture",
+        heading: "Where four fan cultures share one sports bar",
         body: [
-          "Montreal's bilingual, multicultural character creates a distinctive World Cup atmosphere. French-speaking fans have a natural connection to France, but the city's large Haitian, Moroccan, and Latin American communities each bring their own national team loyalties to match-day events.",
-          "The collision of these communities in Montreal's bars and public spaces makes the city one of the most vibrant World Cup viewing environments in Canada.",
+          "Montreal is bilingual, and its football culture is even more layered than that. French-heritage fans have a natural pull toward France. The city's large Haitian community watches with intense loyalty. Moroccan-Canadians pack bars for Atlas Lions matches. Latin American communities bring their own noise.",
+          "When those communities end up in the same bar, it's one of the best World Cup atmospheres in Canada — nobody's waiting for the same result.",
         ],
       },
       {
-        heading: "The Quebec angle — local pride alongside national team support",
+        heading: "The Quebec angle nobody else has",
         body: [
-          "Quebec's strong regional identity means some fans choose to display both the Quebec fleur-de-lis and their national team colours. The Quebec flag souvenir mini boxing glove is one of the few products that speaks specifically to this audience.",
-          "For Montreal watch parties, combining Quebec provincial gear with French or Moroccan national team items reflects the city's layered fan identities.",
+          "Quebec's regional identity runs deep, and some fans want to represent it alongside their national team. The Quebec flag mini boxing glove is one of the few fan gear items that speaks to that specifically.",
+          "For Montreal watch parties, a Quebec piece alongside a France or Morocco cap reflects the city accurately.",
         ],
       },
       {
-        heading: "Fan gear for Montreal's match days",
+        heading: "France and Morocco cap up early in Montreal",
         body: [
-          "France and Morocco are consistently the two highest-demand fan gear countries in Montreal due to the city's large Moroccan and French-heritage fan communities. Buying France and Morocco caps early is especially practical for Montreal-based fans.",
-          "For outdoor summer watch parties along the Saint-Laurent corridor or at park events, bucket hats and caps are practical and visible fan accessories.",
+          "France and Morocco are the two highest-demand fan gear countries in Montreal by a margin. If you're in the city and waiting — don't. Buy both before the group stage opens.",
+          "Outdoor events along Saint-Laurent and in the parks mean bucket hats are the practical summer choice over caps.",
         ],
       },
     ],
     faqs: [
-      { q: "What is the World Cup fan culture like in Montreal?", a: "Montreal has a multilingual fan culture with strong communities supporting France, Morocco, Haiti, and Latin American national teams alongside Canada." },
-      { q: "Is there Quebec-specific fan gear for World Cup 2026?", a: "Yes. The Quebec flag souvenir mini boxing glove is available for fans who want to represent their province during the tournament." },
+      { q: "What is the World Cup fan culture like in Montreal?", a: "Multilingual and layered — France, Morocco, Haiti, and Latin American fan communities alongside Canada. One of the most interesting viewing cities in the country." },
+      { q: "Is there Quebec-specific fan gear for World Cup 2026?", a: "Yes — the Quebec flag souvenir mini boxing glove is available for fans who want to represent province alongside tournament." },
     ],
   },
   // ── May 31 ──────────────────────────────────────────────────────────────
   {
     slug: "canada-at-world-cup-2026",
     title: "Canada at World Cup 2026 — What Fans Need to Know",
-    description: "Everything Canadian fans need to know about Canada's 2026 World Cup campaign — the squad, match schedule, and how to gear up for Les Rouges.",
+    description: "Canada is hosting and Canada is playing. For Les Rouges fans, 2026 is the tournament that changes everything — here's how to gear up for the home World Cup.",
     publishedAt: "2026-05-27",
     category: "Canada Fan Gear",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
