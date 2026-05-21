@@ -1,11 +1,15 @@
 import { ProductCard } from "@/components/store/product-card";
 import {
   collectionPages,
+  faqPageJsonLd,
   getProductsForTeam,
+  getTeamFaqs,
   getTeamPage,
+  getTeamSeoSections,
   teamPages,
 } from "@/lib/seo-pages";
 import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
+import { getBlogPostsBySlugs } from "@/lib/blog-posts";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -45,6 +49,13 @@ export default async function TeamLandingPage({ params }: Props) {
   if (!page) notFound();
 
   const teamProducts = getProductsForTeam(page);
+  const sections = getTeamSeoSections(page);
+  const faqs = getTeamFaqs(page);
+  const guides = getBlogPostsBySlugs([
+    "world-cup-watch-parties-toronto",
+    "world-cup-2026-fan-zones-canada-outdoor-screenings",
+    "backyard-world-cup-2026-watch-party-ideas",
+  ]);
   const breadcrumbs = breadcrumbJsonLd([
     { name: "Home", url: "/" },
     { name: "Teams", url: "/products" },
@@ -56,6 +67,10 @@ export default async function TeamLandingPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbs) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqPageJsonLd(faqs)) }}
       />
 
       <nav className="mb-5 text-xs text-gray-400">
@@ -85,6 +100,44 @@ export default async function TeamLandingPage({ params }: Props) {
           More {page.team} products are coming soon. Browse all fan gear while we update this collection.
         </section>
       )}
+
+      <section className="mt-14 grid gap-6 border-t border-gray-100 pt-10 md:grid-cols-3">
+        {sections.map((section) => (
+          <div key={section.heading} className="rounded-xl border border-gray-100 bg-white p-5">
+            <h2 className="text-base font-black text-gray-900">{section.heading}</h2>
+            <p className="mt-3 text-sm leading-7 text-gray-600">{section.body}</p>
+          </div>
+        ))}
+      </section>
+
+      <section className="mt-10 grid gap-8 md:grid-cols-[1fr_320px]">
+        <div className="rounded-xl border border-gray-100 bg-white p-6">
+          <h2 className="text-xl font-black text-gray-900">Quick answers</h2>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            {faqs.map((faq) => (
+              <div key={faq.q}>
+                <h3 className="text-sm font-bold text-gray-900">{faq.q}</h3>
+                <p className="mt-2 text-sm leading-7 text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <aside className="rounded-xl border border-gray-100 bg-white p-5">
+          <h2 className="text-sm font-black uppercase tracking-widest text-gray-900">
+            Related guides
+          </h2>
+          <div className="mt-4 space-y-4">
+            {guides.map((guide) => (
+              <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
+                <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-[#C41E3A]">
+                  {guide.title}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-gray-500">{guide.description}</p>
+              </Link>
+            ))}
+          </div>
+        </aside>
+      </section>
 
       <section className="mt-14 grid gap-8 border-t border-gray-100 pt-10 md:grid-cols-2">
         <div>

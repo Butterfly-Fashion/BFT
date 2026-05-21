@@ -13,9 +13,11 @@ import {
   productSeoDescription,
   productSeoTitle,
 } from "@/lib/seo";
+import { productFaqJsonLd, productSeoFaqs, productSeoSections } from "@/lib/product-seo";
+import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
 import Link from "next/link";
 import Image from "next/image";
-import type { PlayerCard } from "@/lib/types";
+import type { PlayerCard, Product } from "@/lib/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -73,6 +75,10 @@ export default async function ProductDetailPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbs) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(productFaqJsonLd(product)) }}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
         {/* Image */}
@@ -134,9 +140,66 @@ export default async function ProductDetailPage({ params }: Props) {
         <PlayerCardsSection cards={product.playerCards} />
       )}
 
+      <ProductSeoContent product={product} />
+
       {/* Related products from same category */}
       <RelatedProducts currentSlug={product.slug} category={product.category} />
     </div>
+  );
+}
+
+function ProductSeoContent({ product }: { product: Product }) {
+  const sections = productSeoSections(product);
+  const faqs = productSeoFaqs(product);
+  const guides = getRelatedGuidesForProduct(product);
+
+  return (
+    <section className="mt-16 grid gap-8 border-t border-gray-100 pt-10 lg:grid-cols-[1fr_320px]">
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+          Buying Guide
+        </p>
+        <h2 className="mt-2 text-2xl font-black text-gray-900">
+          More about {product.name}
+        </h2>
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
+          {sections.map((section) => (
+            <section key={section.heading} className="rounded-xl border border-gray-100 bg-white p-5">
+              <h3 className="text-sm font-bold text-gray-900">{section.heading}</h3>
+              <p className="mt-3 text-sm leading-7 text-gray-600">{section.body}</p>
+            </section>
+          ))}
+        </div>
+
+        <div className="mt-8 rounded-xl border border-gray-100 bg-white p-6">
+          <h3 className="text-lg font-black text-gray-900">Product questions</h3>
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+            {faqs.map((faq) => (
+              <div key={faq.q}>
+                <h4 className="text-sm font-bold text-gray-900">{faq.q}</h4>
+                <p className="mt-2 text-sm leading-7 text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <aside className="rounded-xl border border-gray-100 bg-white p-5">
+        <h3 className="text-sm font-black uppercase tracking-widest text-gray-900">
+          Related guides
+        </h3>
+        <div className="mt-4 space-y-4">
+          {guides.map((guide) => (
+            <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
+              <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-[#C41E3A]">
+                {guide.title}
+              </p>
+              <p className="mt-1 text-xs leading-5 text-gray-500">{guide.description}</p>
+            </Link>
+          ))}
+        </div>
+      </aside>
+    </section>
   );
 }
 

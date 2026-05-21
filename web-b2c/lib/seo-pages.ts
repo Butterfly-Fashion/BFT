@@ -20,6 +20,16 @@ export interface TeamPage {
   terms: string[];
 }
 
+export interface SeoLandingSection {
+  heading: string;
+  body: string;
+}
+
+export interface SeoLandingFaq {
+  q: string;
+  a: string;
+}
+
 export const collectionPages: CollectionPage[] = [
   {
     slug: "world-cup-caps",
@@ -184,4 +194,79 @@ export function getProductsForTeam(page: TeamPage): Product[] {
     const name = product.name.toLowerCase();
     return page.terms.some((term) => name.includes(term));
   });
+}
+
+export function getCollectionSeoSections(page: CollectionPage): SeoLandingSection[] {
+  return [
+    {
+      heading: `Best ${page.h1.toLowerCase()} for Canada 2026`,
+      body: `${page.h1} are useful for watch parties, outdoor screenings, car parades, and everyday tournament outfits. For Canadian shoppers, the best pieces are easy to wear, easy to gift, and simple to reuse across multiple match days.`,
+    },
+    {
+      heading: "When to buy before the tournament",
+      body: "Popular country colours tend to move faster once match schedules, watch parties, and knockout-stage storylines become part of the conversation. Buying early gives you more selection and a better shipping window before demand increases.",
+    },
+    {
+      heading: "Shipping across Canada",
+      body: "World Fan Gear ships from the Toronto area to customers across Canada. That makes these products practical for fans preparing in Toronto, Vancouver, Montreal, Calgary, Ottawa, Edmonton, and smaller soccer communities.",
+    },
+  ];
+}
+
+export function getCollectionFaqs(page: CollectionPage): SeoLandingFaq[] {
+  return [
+    {
+      q: `Are ${page.h1.toLowerCase()} good for World Cup 2026 watch parties?`,
+      a: `Yes. ${page.h1} work well for match days because they are visible, reusable, and easy to pair with other fan gear.`,
+    },
+    {
+      q: `Do ${page.h1.toLowerCase()} ship within Canada?`,
+      a: "Yes. World Fan Gear ships orders from the Toronto area to Canadian addresses.",
+    },
+  ];
+}
+
+export function getTeamSeoSections(page: TeamPage): SeoLandingSection[] {
+  return [
+    {
+      heading: `Best gear for ${page.team} fans`,
+      body: `${page.team} supporters can build a simple World Cup 2026 setup with one wearable piece and one visibility piece. A cap or bucket hat handles the outfit, while a car flag or small souvenir brings the colour to the drive, patio, or watch party table.`,
+    },
+    {
+      heading: "Match-day use",
+      body: "Choose pieces that work beyond one game. Reusable fan gear is better for the group stage, knockout rounds, backyard screenings, and city watch parties because it can move with you from home to patio to fan zone.",
+    },
+    {
+      heading: "Buying early in Canada",
+      body: `${page.team} gear can sell through quickly when the team gets momentum. Ordering before the busiest match weeks gives Canadian fans more choice and a more comfortable delivery window.`,
+    },
+  ];
+}
+
+export function getTeamFaqs(page: TeamPage): SeoLandingFaq[] {
+  return [
+    {
+      q: `What should ${page.team} fans buy for World Cup 2026?`,
+      a: "Caps, bucket hats, car flags, and small souvenirs are the easiest fan gear choices because they are reusable and simple to gift.",
+    },
+    {
+      q: `Can I order ${page.team} fan gear in Canada?`,
+      a: "Yes. World Fan Gear ships soccer fan gear across Canada from the Toronto area.",
+    },
+  ];
+}
+
+export function faqPageJsonLd(faqs: SeoLandingFaq[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
 }

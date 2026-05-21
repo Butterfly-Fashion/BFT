@@ -87,6 +87,11 @@ export function Footer() {
                 Fan Gear Guides
               </Link>
             </li>
+            <li>
+              <Link href="/about" className="hover:text-white transition-colors">
+                About World Fan Gear
+              </Link>
+            </li>
           </ul>
         </div>
 

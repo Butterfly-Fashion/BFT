@@ -111,10 +111,21 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "OnlineStore"],
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl("/asset/logo.jpg"),
+    legalName: "Butterfly Fashion Trading",
+    areaServed: {
+      "@type": "Country",
+      name: "Canada",
+    },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "North York",
+      addressRegion: "ON",
+      addressCountry: "CA",
+    },
     contactPoint: {
       "@type": "ContactPoint",
       email: "jameskimkim1@gmail.com",
@@ -122,6 +133,7 @@ export function organizationJsonLd() {
       areaServed: "CA",
       availableLanguage: ["en"],
     },
+    sameAs: [SITE_URL],
   };
 }
 

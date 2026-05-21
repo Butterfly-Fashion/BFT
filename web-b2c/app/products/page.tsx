@@ -5,7 +5,7 @@ import { CATEGORIES } from "@/lib/types";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: "Shop All Products",
   description:
     "Browse the full World Fan Gear collection — boxing gloves, caps, bucket hats, and car flags for Canadian fans.",
@@ -16,6 +16,19 @@ export const metadata: Metadata = {
 
 interface Props {
   searchParams: Promise<{ category?: string; search?: string; sort?: string }>;
+}
+
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { category, search, sort } = await searchParams;
+  const hasFilters = Boolean(category || search || (sort && sort !== "default"));
+
+  return {
+    ...baseMetadata,
+    title: category ? `${category} Fan Gear` : baseMetadata.title,
+    description:
+      "Browse the full World Fan Gear collection: boxing gloves, caps, bucket hats, car flags, and sticker packs for Canadian fans.",
+    robots: hasFilters ? { index: false, follow: true } : undefined,
+  };
 }
 
 export default async function ProductsPage({ searchParams }: Props) {

@@ -25,7 +25,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-2026-fan-gear-canada",
     title: "Best World Cup 2026 Fan Gear to Buy in Canada",
     description:
-      "Shop World Cup 2026 fan gear in Canada — car flags, caps, bucket hats, and soccer souvenirs. Canada 2026 world cup merchandise ships from Toronto across Canada.",
+      "The tournament is coming to our backyard — and Toronto is already feeling it. Car flags, caps, bucket hats, and mini boxing gloves ship from Toronto. Get your World Cup 2026 fan gear sorted before the rush.",
     publishedAt: "2026-05-11",
     category: "Fan Gear Guide",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -38,35 +38,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Start with the gear people actually use",
+        heading: "What actually survives match day",
         body: [
-          "The best World Cup 2026 fan gear is easy to wear, easy to gift, and easy to bring to a watch party. For Canadian shoppers, that usually means caps, bucket hats, car flags, and small souvenirs that can ship quickly before tournament demand spikes.",
-          "A good match-day setup does not need to be complicated. Pick one wearable item, one car or window item, and one small gift piece if you are shopping for family or friends.",
+          "Forget the jersey for a second. The gear that travels — on the TTC, into the bar, through the fan zone, back home at midnight — is a cap, a car flag on the way over, and something to wave when the goal goes in.",
+          "Keep it simple: one wearable, one thing for the car, one small souvenir. That covers 90% of match days without overthinking it.",
         ],
       },
       {
-        heading: "Car flags are the high-visibility choice",
+        heading: "Car flags are how the city talks",
         body: [
-          "Car flags are one of the most visible ways to show support during tournament season. They work for neighborhood drives, parade days, pickup games, and the trip to a watch party.",
-          "If you are buying early, car flags are a smart first pick because they are easy to store and useful throughout the whole tournament.",
+          "When Portugal plays, Dundas Street answers. When Brazil wins, you can hear it three blocks away and see the flags from five. A car flag is the fastest way to join that conversation.",
+          "Buy early. They move.",
         ],
       },
       {
-        heading: "Caps and bucket hats cover the outfit",
+        heading: "Caps for every day, bucket hats for the event",
         body: [
-          "Caps are the everyday option. Bucket hats feel more like an event piece, especially for outdoor screenings and summer fan zones.",
-          "For gifting, a cap is usually the safest choice. For a louder match-day look, a bucket hat stands out more in photos and group events.",
+          "A cap is something you wear to work on match morning and again at the bar that night. A bucket hat means you're committed to the moment — outdoor fan zone, summer patio, the thing that shows up in every group photo.",
+          "Gifting? Cap is safe. Standing out in a crowd? Bucket hat, no contest.",
         ],
       },
     ],
     faqs: [
       {
         q: "Where can I buy World Cup 2026 fan gear in Canada?",
-        a: "You can shop World Cup 2026 fan gear online at World Fan Gear — caps, car flags, bucket hats, and mini boxing gloves ship from Toronto across Canada.",
+        a: "World Fan Gear ships from Toronto — caps, car flags, bucket hats, and mini boxing gloves available now for World Cup 2026.",
       },
       {
         q: "What Canada 2026 world cup merchandise is available?",
-        a: "Canada-themed caps, reversible bucket hats, car flags, and mini souvenir boxing gloves are all available for the 2026 tournament.",
+        a: "Canada caps in red and black, reversible bucket hats, car flags, and mini souvenir boxing gloves — all made for a home World Cup.",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const blogPosts: BlogPost[] = [
     slug: "canada-world-cup-2026-party-ideas",
     title: "Canada World Cup 2026 Watch Party Ideas",
     description:
-      "World cup 2026 watch party gear Canada — simple ideas for hosting with fan outfits, car flags, photo moments, and easy soccer decorations.",
+      "Hosting a World Cup 2026 watch party in Canada? Here's how to make it feel like the real thing — fan gear, a pre-game ritual, and a setup that works for every match, not just the first one.",
     publishedAt: "2026-05-11",
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
@@ -87,34 +87,34 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Build the party around colours",
+        heading: "Colour is the theme — keep everything else simple",
         body: [
-          "The easiest watch party theme is colour. Ask guests to wear their country colours, then add a few flags, caps, and souvenirs around the room for a match-day feel.",
-          "If the party is casual, keep the decor simple. A car flag near the snack table, a few caps on display, and a group photo spot can do more than a full room makeover.",
+          "Ask guests to wear their country's colours. Add a car flag near the snack table, a few caps on the wall, and a clear spot for group photos. That's it. You don't need more than that.",
+          "Toronto apartments are small. The energy comes from the people, not the decorations.",
         ],
       },
       {
-        heading: "Make a pre-game ritual",
+        heading: "The pre-game ritual is what people remember",
         body: [
-          "Start the event before kickoff with predictions, a score sheet, and a quick group photo. Small rituals make the game feel more memorable and give people a reason to arrive on time.",
-          "For family parties, mini souvenirs can be used as table markers or small prizes for correct score predictions.",
+          "Score predictions before kickoff. A quick group photo. Maybe a small prize for whoever gets it right. These little routines are what make a watch party feel like an event instead of just watching TV together.",
+          "Mini boxing gloves make surprisingly good prediction prizes. They're unexpected, they photograph well, and they stay on someone's shelf long after the tournament ends.",
         ],
       },
       {
-        heading: "Plan for repeat matches",
+        heading: "Build gear that lasts the whole tournament",
         body: [
-          "The tournament lasts weeks, so choose fan gear that can be reused. Caps, bucket hats, and car flags work across multiple matches and are easy to bring to another host's house.",
+          "The World Cup runs for a month. Buy gear you'll actually keep using — a cap that works for every match, a car flag you put up every match day, a souvenir that travels to whoever's hosting next week.",
         ],
       },
     ],
     faqs: [
       {
         q: "What should I buy for a World Cup watch party?",
-        a: "Start with wearable fan gear, one or two flags, and a small souvenir item for photos or prizes.",
+        a: "Wearable fan gear first, then one flag item, then a small souvenir for the group photo or as a prize. In that order.",
       },
       {
         q: "Do I need team-specific decorations?",
-        a: "Team-specific gear helps, but a simple colour theme is enough for most watch parties.",
+        a: "Not really. Colour goes further than logos at a watch party — guests from five different countries all feel included.",
       },
     ],
   },
@@ -122,7 +122,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-car-flags-canada",
     title: "Where to Buy World Cup Car Flags in Canada",
     description:
-      "A guide to choosing soccer car flags for World Cup 2026, including country styles, match-day uses, and buying early in Canada.",
+      "Car flags are how Toronto neighborhoods show up during a World Cup. A guide to choosing the right country style, buying before the rush, and keeping your flag flying all tournament long.",
     publishedAt: "2026-05-12",
     category: "Car Flags",
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
@@ -135,33 +135,34 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Why car flags spike before major tournaments",
+        heading: "The city changes when the flags go up",
         body: [
-          "Car flags are one of the first things fans buy when a major soccer tournament gets close. They are public, affordable, and easy to use for parades, street celebrations, and the drive to a watch party.",
-          "For World Cup 2026 in North America, Canadian demand could rise early because many fans will be planning local events, road trips, and watch parties well before kickoff.",
+          "It happens fast. One week before a major tournament, cars in Little Portugal start flying green and red. Drives down Corso Italia get slower because people are stopping to look. The neighborhood announces itself.",
+          "Car flags are cheap and visible and they've been doing this job for decades. For World Cup 2026, demand will build early — this time the host country is us.",
         ],
       },
       {
-        heading: "Pick the right country style",
+        heading: "Buy the team you bleed for first",
         body: [
-          "If you support one team, buy that country first. If you are hosting mixed groups, Canada, Brazil, Argentina, Mexico, USA, and Portugal are useful styles to keep around because they cover many common fan communities.",
+          "Start with your country. Then consider what communities are in your building, on your street, at your watch party. Canada, Brazil, Argentina, Mexico, Portugal — those five cover most of Toronto's west end and east end combined.",
+          "Hosting a group? Keep one or two extra countries around. You'll use them.",
         ],
       },
       {
-        heading: "Store them before game day",
+        heading: "Store flat, use often",
         body: [
-          "Buy early and store car flags flat or upright so the fabric keeps its shape. Keep them near your match-day bag so they are ready for the drive.",
+          "Buy early and store the flag flat or loosely rolled so the fabric keeps its shape. Keep it near the door so you're not hunting for it on match morning.",
         ],
       },
     ],
     faqs: [
       {
         q: "Are car flags good for World Cup watch parties?",
-        a: "Yes. They are useful for the drive, parking lot photos, and decorating a party entrance.",
+        a: "Yes — on the drive over, in the parking lot for photos, and hung at the entrance. They travel well.",
       },
       {
         q: "Which country car flags should retailers stock first?",
-        a: "Canada, Mexico, USA, Brazil, Argentina, Portugal, Germany, France, and Italy are strong early options.",
+        a: "Canada, Brazil, Argentina, Mexico, Portugal, Italy, France, and USA. Those cover the strongest Canadian fan communities.",
       },
     ],
   },
@@ -169,7 +170,7 @@ export const blogPosts: BlogPost[] = [
     slug: "best-soccer-gifts-canada",
     title: "Best Soccer Gifts for Fans in Canada — World Cup 2026",
     description:
-      "Best soccer gifts for fans in Canada for World Cup 2026 — caps, bucket hats, car flags, Panini sticker boxes, and souvenir mini boxing gloves. Canada 2026 world cup merchandise shipped from Toronto.",
+      "Shopping for a soccer fan in Canada? Skip the jersey guessing game. Caps, car flags, mini boxing gloves, and Panini sticker packs all ship from Toronto — no sizing required.",
     publishedAt: "2026-05-12",
     category: "Gift Guide",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -182,33 +183,33 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Choose gifts that do not need exact sizing",
+        heading: "Avoid the size problem entirely",
         body: [
-          "The safest soccer gifts are items with flexible sizing. Caps, bucket hats, car flags, and souvenir mini gloves are easier to buy than fitted apparel.",
-          "If you are not sure which team someone supports, choose Canada 2026-inspired gear or a neutral match-day accessory.",
+          "Jerseys are risky. Caps, car flags, and mini boxing gloves are not. Nobody has ever complained that a souvenir glove didn't fit.",
+          "If you don't know which team they support, go Canada — host nation gear works for everyone right now.",
         ],
       },
       {
-        heading: "Small souvenirs work for groups",
+        heading: "Mini souvenirs punch above their price",
         body: [
-          "Mini souvenirs are useful when you need several gifts at once. They can be used for party prizes, stocking stuffers, retail displays, or keepsakes for kids.",
+          "Mini boxing gloves work for party prizes, desk decorations, back-of-the-car mirror hangs, and shelf pieces. They're the gift that costs under $20 and gets asked about for the next month.",
         ],
       },
       {
-        heading: "Match the gift to the fan",
+        heading: "Match the gift to how they watch",
         body: [
-          "A car flag is great for a driver. A bucket hat is great for outdoor events. A cap is the everyday choice. A small souvenir is best for collectors and casual fans.",
+          "Driver? Car flag. Outdoor fan zone regular? Bucket hat. Commutes by TTC and wears gear to work? Cap. Can't stop talking about players and stats? Panini sticker box. You know this person — pick accordingly.",
         ],
       },
     ],
     faqs: [
       {
         q: "What is a good soccer gift under $25 CAD?",
-        a: "Car flags, caps, and mini souvenir items are usually strong gift options under $25 CAD.",
+        a: "A car flag, adjustable cap, or mini souvenir boxing glove — all under $25 and no sizing needed.",
       },
       {
         q: "What should I buy for a soccer fan if I do not know their size?",
-        a: "Choose a car flag, bucket hat, adjustable cap, or small souvenir instead of fitted clothing.",
+        a: "Car flag, bucket hat, adjustable cap, or mini souvenir. Any of those work without knowing measurements.",
       },
     ],
   },
@@ -216,7 +217,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-2026-host-cities-canada",
     title: "World Cup 2026 Canada Host Cities: Fan Gear & Merchandise Guide",
     description:
-      "Canada host city World Cup 2026 merchandise guide — shop fan gear for Toronto, Vancouver, and every host city. World Cup 2026 fan gear Canada shipped fast.",
+      "Toronto, Vancouver, and every Canadian city will feel World Cup 2026 before the opening whistle. Fan gear guide for host city match days — what to buy, what to wear, what actually lasts.",
     publishedAt: "2026-05-13",
     category: "Tournament Guide",
     heroImage: "/asset/blog/generated/nigeria-senegal-fans-celebrating-stadium.png",
@@ -229,33 +230,33 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Canada will feel the tournament before kickoff",
+        heading: "The buildup starts in the streets, not the stadiums",
         body: [
-          "World Cup 2026 will bring more than match days. In Canada, the buildup will show up in local watch parties, travel plans, retail displays, and community celebrations.",
-          "That makes early fan gear planning useful. The closer the tournament gets, the more likely popular country items are to move quickly.",
+          "Six weeks before opening day, you'll see it. Flags going up on Dundas Street. Cap displays at the Yorkdale food court. Someone at work showing up in kit on a Tuesday.",
+          "The tournament arrives in layers — and the first layer is always fan gear. Buy early, before the shelves in your neighborhood show the gaps.",
         ],
       },
       {
-        heading: "Think beyond the stadium",
+        heading: "Most fans won't be inside a stadium",
         body: [
-          "Most fans will experience the tournament at home, in restaurants, at outdoor screenings, or on the road. Caps, car flags, and small souvenirs fit those everyday match-day moments.",
+          "Most of us are watching at a bar, at someone's apartment, in a park, or on a patio. Caps, car flags, and mini souvenirs are built for those places — not the field.",
         ],
       },
       {
-        heading: "Prepare a reusable fan kit",
+        heading: "Pack a kit you'll reuse",
         body: [
-          "A reusable fan kit can include a cap, a car flag, a portable souvenir, and a light layer in team colours. Keep it ready for each match day.",
+          "A cap, a car flag, and one souvenir piece. That's a kit that travels to every match day, every host's apartment, every fan zone through the entire tournament.",
         ],
       },
     ],
     faqs: [
       {
         q: "What fan gear is useful for World Cup 2026 in Canada?",
-        a: "Wearable gear, car flags, and small souvenirs are practical because they work for watch parties, travel, and local celebrations.",
+        a: "Caps, car flags, and small souvenirs — practical for watch parties, outdoor screenings, and the drive between all of them.",
       },
       {
         q: "Should I buy fan gear before the tournament starts?",
-        a: "Yes. Buying early gives you more selection before demand rises closer to match dates.",
+        a: "Yes. Popular country styles sell out fast as matches approach. Earlier is always better selection.",
       },
     ],
   },
@@ -263,7 +264,7 @@ export const blogPosts: BlogPost[] = [
     slug: "how-to-decorate-car-world-cup",
     title: "How to Decorate Your Car for World Cup 2026",
     description:
-      "Safe and simple car decoration ideas for World Cup 2026, including car flags, colour themes, and match-day driving tips.",
+      "Driving to the match or just through the neighborhood — here's how to decorate your car for World Cup 2026 without blocking your mirrors or ruining the paint.",
     publishedAt: "2026-05-13",
     category: "Car Flags",
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
@@ -276,33 +277,33 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Start with one clear focal point",
+        heading: "One or two flags. That's all you need.",
         body: [
-          "The cleanest car decoration is usually one or two car flags in strong country colours. It reads clearly from a distance and does not require complicated setup.",
-          "Avoid blocking windows, mirrors, lights, or plates. Fan gear should add colour without affecting visibility or safety.",
+          "The best match-day car looks like one clear statement — not a carnival float. Two flags on the front windows, strong country colours, visible from the intersection. Done.",
+          "Don't block mirrors, lights, plates, or rear visibility. A flag that creates a blind spot is a flag that's coming down at the next red light.",
         ],
       },
       {
-        heading: "Match the route to the moment",
+        heading: "Match the setup to the occasion",
         body: [
-          "For a neighborhood drive, keep it simple. For a watch party, park where the flag is visible for photos. For a parade, make sure everything is secure before moving.",
+          "Neighborhood drive before kickoff? Keep it simple. Watch party arrival? Park facing the crowd so people can see the flag. Parade route after a win? Double-check every clip is tight before you move.",
         ],
       },
       {
-        heading: "Remove and store after the match",
+        heading: "Take it down after the final whistle",
         body: [
-          "After the game, remove your flags and store them indoors. This keeps colours cleaner and helps the gear last through the tournament.",
+          "Remove flags after each match day and bring them inside. Overnight rain and extended sun fade the fabric faster than anything else. Takes ten seconds and the flag lasts the whole tournament.",
         ],
       },
     ],
     faqs: [
       {
         q: "Can I use car flags for multiple World Cup matches?",
-        a: "Yes. Store them indoors between matches so they stay cleaner and last longer.",
+        a: "Yes — store them indoors between matches, and the fabric and clip stay clean all tournament.",
       },
       {
         q: "What is the simplest World Cup car decoration?",
-        a: "A country car flag is the simplest option because it is visible, reusable, and quick to set up.",
+        a: "One or two country car flags. Visible, reusable, and takes about thirty seconds to set up.",
       },
     ],
   },
@@ -310,7 +311,7 @@ export const blogPosts: BlogPost[] = [
     slug: "canada-soccer-fan-merchandise",
     title: "Canada Soccer Fan Merchandise — Buy World Cup 2026 Gear Online",
     description:
-      "Buy Canada soccer fan merchandise for World Cup 2026 online — caps, car flags, bucket hats, and mini boxing gloves. Canada 2026 world cup merchandise shipped from Toronto.",
+      "Canada is hosting. Les Rouges are playing. This is the moment Canada soccer fans have been waiting for — caps, car flags, bucket hats, and mini boxing gloves ship from Toronto.",
     publishedAt: "2026-05-14",
     category: "Canada Fan Gear",
     heroImage: "/asset/blog/generated/brazil-mexico-fans-caps-city-street.png",
@@ -323,33 +324,33 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Canada gear will be a long season purchase",
+        heading: "This isn't just one match — it's the whole summer",
         body: [
-          "Canada fan merchandise is not just for one match. It can be used through qualifying stories, friendlies, watch parties, and the full 2026 tournament season.",
-          "The most useful pieces are easy to reuse: caps, bucket hats, car flags, and small souvenirs.",
+          "Canada fan gear in 2026 isn't a one-game purchase. You'll use it through June and July — every watch party, every fan zone, every drive to wherever you're watching.",
+          "Buy pieces that travel well. Caps, car flags, bucket hats, and small souvenirs check every box without adding bulk.",
         ],
       },
       {
-        heading: "Buy for the way you celebrate",
+        heading: "Buy for how you actually celebrate",
         body: [
-          "If you host, choose decor and small gifts. If you travel, choose compact gear. If you attend outdoor events, choose hats and easy layers.",
+          "Hosting? Pick up decor pieces and small gifts for guests. Traveling to a watch venue? Compact gear only. Spending six hours at an outdoor fan zone? Hat and layers. You know yourself.",
         ],
       },
       {
-        heading: "Make it easy for families",
+        heading: "One size does not fit all — and that's fine",
         body: [
-          "Families often need simple items that work for different ages. Adjustable caps, small souvenirs, and car flags are easier than size-specific apparel.",
+          "Adjustable caps, car flags, and mini boxing gloves work across the whole family without a single sizing conversation. For groups and families, that matters more than it sounds.",
         ],
       },
     ],
     faqs: [
       {
         q: "What Canada fan merchandise is easiest to buy online?",
-        a: "Caps, car flags, bucket hats, and small souvenirs are easy online purchases because sizing is simple.",
+        a: "Caps, car flags, bucket hats, and mini souvenirs — no sizing guesswork, ships from Toronto.",
       },
       {
         q: "Is Canada 2026 fan gear good for gifts?",
-        a: "Yes. Canada-themed gear is a practical gift for soccer fans preparing for World Cup 2026.",
+        a: "Yes — especially now. Canada is co-hosting, which means the gear feels timely and personal rather than generic.",
       },
     ],
   },
@@ -357,7 +358,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-2026-sticker-bundle-canada",
     title: "Panini FIFA World Cup 2026 Sticker Bundle — Buy in Canada",
     description:
-      "Buy the Panini FIFA World Cup 2026 sticker bundle in Canada — official album and 50-pack sticker box together. The easiest way to start collecting with everything you need in one order.",
+      "The Panini FIFA World Cup 2026 sticker bundle lands in Canada with the official album and 50 packs together. One order, one box, everything you need to start collecting immediately.",
     publishedAt: "2026-05-14",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_bundle_main.png",
@@ -369,35 +370,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Start with the bundle, not separate guesses",
+        heading: "One purchase, no second-guessing",
         body: [
-          "The easiest way to begin a World Cup sticker collection is to buy the album and sticker box together. The album gives the collection structure, while the 50-pack box gives enough stickers to make real progress on day one.",
-          "For Canadian collectors shopping before the rush, the bundle keeps the first purchase simple. There is no need to remember the album separately or open packs before you have a place to organize them.",
+          "The album gives the collection a home. The 50-pack box fills it. Together they make a complete first purchase — no waiting for the album to arrive after you've already opened packs, no empty stickers sitting in a pile.",
+          "For Canadian collectors buying ahead of the tournament rush, it's the cleanest version of this hobby.",
         ],
       },
       {
-        heading: "A better first gift for new collectors",
+        heading: "The best gift for anyone who collects",
         body: [
-          "Sticker collecting is most enjoyable when the recipient can start immediately. A bundle feels complete because it includes both the display piece and the opening experience.",
-          "It works well for kids, families, soccer dads, and longtime collectors who want the full World Cup 2026 ritual from the first pack.",
+          "Sticker collecting only clicks when you can start right away. A bundle does that — the recipient opens the box, pulls out the album, cracks the first pack, and they're in.",
+          "Kids, families, dads who grew up with Panini, people buying their first World Cup collection — the bundle works for all of them.",
         ],
       },
       {
-        heading: "Built for a full-tournament habit",
+        heading: "A ritual built for the whole tournament",
         body: [
-          "Instead of opening every pack at once, collectors can open a few before big matches and place the stickers after the final whistle. That turns the bundle into a repeat match-day activity through the tournament.",
-          "Duplicates become useful too. Keep them sorted for trades with friends, classmates, coworkers, or other fans at watch parties.",
+          "Open a few packs before each match. Place the stickers after the final whistle. Sort duplicates for trades with coworkers, neighbors, or whoever's hosting the next watch party.",
+          "Fifty packs spread across six weeks of tournament football is a habit, not a one-afternoon activity.",
         ],
       },
     ],
     faqs: [
       {
         q: "Where can I buy the Panini FIFA World Cup 2026 sticker bundle in Canada?",
-        a: "The Panini FIFA World Cup 2026 bundle — official album plus 50-pack sticker box — is available online and ships from Toronto across Canada.",
+        a: "Available online — the official album plus 50-pack sticker box, ships from Toronto across Canada.",
       },
       {
         q: "Is the sticker bundle a good gift for Canadian collectors?",
-        a: "Yes. It is a complete collector gift because it includes both the Panini 2026 sticker album and enough packs to make the first collecting session feel exciting. No extra purchases needed.",
+        a: "Yes. Album and packs together means the recipient starts collecting immediately — no extra purchases, no waiting.",
       },
     ],
   },
@@ -405,7 +406,7 @@ export const blogPosts: BlogPost[] = [
     slug: "why-buy-world-cup-sticker-box-50-packs",
     title: "Panini FIFA World Cup 2026 Sticker Box — Why Buy 50 Packs in Canada",
     description:
-      "Panini FIFA World Cup 2026 sticker box Canada — why 50 packs is the serious collector choice. More album progress, better trading value, and ships from Toronto.",
+      "One pack at a time is slow. The Panini FIFA World Cup 2026 sticker box — 50 packs, 250+ stickers — is how Canadian collectors actually make progress. Ships from Toronto.",
     publishedAt: "2026-05-14",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
@@ -417,35 +418,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "A box gives the collection momentum",
+        heading: "Where the collection starts to feel real",
         body: [
-          "Opening one or two packs is fun, but a 50-pack box is where the collection starts to feel real. With more than 250 stickers, collectors can fill pages, build duplicate piles, and see which teams are coming together quickly.",
-          "That momentum matters because World Cup collecting is part hobby and part ritual. A box gives fans enough packs to return to the album across several match days.",
+          "Two packs is fun for a minute. A 50-pack box is where pages start filling in, duplicates pile up fast enough to trade, and you can actually see the album taking shape.",
+          "It also gives you enough packs to spread across match days instead of burning through everything in one sitting.",
         ],
       },
       {
-        heading: "Better for trading than small pack runs",
+        heading: "Duplicates are the whole point",
         body: [
-          "Trading only works when you have duplicates. A larger box naturally creates a stronger swap pile, which makes it easier to fill gaps without buying pack after pack.",
-          "For families or friend groups, one box can become a shared opening session. Everyone compares pulls, trades duplicates, and follows different teams in the album.",
+          "You can't trade without duplicates. A full box gives you the swap pile that makes trading with coworkers, neighbors, and watch party guests actually work.",
+          "For groups opening together — families, friend groups, anyone at a halftime session — one box covers everyone and the trades start immediately.",
         ],
       },
       {
-        heading: "Pair it with the official album",
+        heading: "Pair it with the album",
         body: [
-          "The 50-pack box is strongest when paired with the official album. Without the album, stickers are loose collectibles; with the album, every pull has a clear destination.",
-          "If you are buying for someone else, the bundle is the safest version because it includes both pieces in one purchase.",
+          "A box without the album is just a pile. With the album, every pull has a spot, every opened pack creates visible progress.",
+          "Already have the album? Box only. Starting fresh or buying a gift? The bundle includes both and ships together.",
         ],
       },
     ],
     faqs: [
       {
         q: "How many stickers are in the Panini FIFA World Cup 2026 sticker box?",
-        a: "A 50-pack Panini FIFA World Cup 2026 sticker box includes more than 250 stickers, based on five stickers per pack.",
+        a: "50 packs at five stickers each — 250+ stickers per box.",
       },
       {
         q: "Should I buy the Panini sticker box or the bundle in Canada?",
-        a: "Buy the Panini sticker box if you already have the official album. Buy the bundle if you are starting from scratch or giving it as a gift — it includes the album and box together.",
+        a: "Box if you already have the album. Bundle if you're starting from scratch or gifting — it comes with the album included.",
       },
     ],
   },
@@ -453,7 +454,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-bucket-hats",
     title: "Why Bucket Hats Are Perfect for World Cup Match Days",
     description:
-      "Why bucket hats make sense for World Cup 2026 fans, from outdoor watch parties to summer match-day outfits.",
+      "World Cup 2026 runs through a Canadian summer. Bucket hats are the outdoor fan zone essential — sun protection, team colours, and something that actually shows up in photos.",
     publishedAt: "2026-05-15",
     category: "Bucket Hats",
     heroImage: "/asset/blog/generated/south-korea-fan-cap-seoul-night.png",
@@ -466,32 +467,33 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Bucket hats are built for summer viewing",
+        heading: "June and July need a different kind of hat",
         body: [
-          "World Cup 2026 will bring plenty of outdoor viewing, patios, fan zones, and daytime events. Bucket hats are useful because they add shade while still making the outfit feel festive.",
+          "The World Cup runs through peak Canadian summer. Fan zones at Nathan Phillips Square, patio screenings, outdoor parks — all of it is hot and bright and hours-long.",
+          "A bucket hat handles the sun in a way a cap brim doesn't. And it still reads as fan gear from across the crowd.",
         ],
       },
       {
-        heading: "They stand out in photos",
+        heading: "The group photo hat",
         body: [
-          "A bucket hat is easy to spot in group photos. It is more playful than a standard cap and works well when fans want a louder tournament look.",
+          "A bucket hat shows up in photos in a way a plain cap doesn't. More presence, more personality. If someone's going to Reel the celebration, you want to be wearing the hat.",
         ],
       },
       {
-        heading: "Choose by country colour",
+        heading: "Country colour first, everything else second",
         body: [
-          "The simplest way to choose a bucket hat is by country colour. Match it with a plain shirt or hoodie so the hat remains the visual anchor.",
+          "Pick the hat by country. Wear it with whatever shirt you own. The hat does the work — it doesn't need help.",
         ],
       },
     ],
     faqs: [
       {
         q: "Are bucket hats practical for World Cup 2026?",
-        a: "Yes. They are useful for outdoor events, sunny patios, and fan zones.",
+        a: "Very. Fan zones, outdoor screenings, summer patios — it's the right hat for all of it.",
       },
       {
         q: "What should I wear with a World Cup bucket hat?",
-        a: "Pair it with simple clothing in neutral or team colours so the hat stands out.",
+        a: "Simple colours, neutral base. Let the hat carry the team identity.",
       },
     ],
   },
@@ -499,7 +501,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-souvenirs-canada",
     title: "World Cup 2026 Souvenirs to Buy in Canada — FIFA 2026 Gifts",
     description:
-      "Buy FIFA 2026 Canada souvenirs online — mini boxing gloves, caps, car flags, and small soccer gifts. World Cup 2026 merchandise ships from Toronto across Canada.",
+      "FIFA 2026 Canada souvenirs that actually mean something — mini boxing gloves, caps, and car flags that stay on a shelf or a mirror long after the tournament ends. Ships from Toronto.",
     publishedAt: "2026-05-15",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
@@ -512,32 +514,32 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Small souvenirs are easy to collect",
+        heading: "Small enough to keep, detailed enough to matter",
         body: [
-          "The best souvenirs are small enough to keep, display, and gift. Mini boxing gloves, caps, and flags work well because they do not require much space and can be tied to a specific team or match.",
+          "The best souvenir from any tournament is the one that doesn't end up in a drawer by August. Mini boxing gloves sit on a shelf, hang from a mirror, or hold a small hook on a desk — small enough to be permanent, detailed enough to mean something.",
         ],
       },
       {
-        heading: "Buy before the rush",
+        heading: "Buy before the shelves get thin",
         body: [
-          "As World Cup 2026 gets closer, souvenir demand may rise quickly. Buying early gives you more choice, especially for popular country colours.",
+          "Popular country designs — Canada, Brazil, Portugal — move fast as the tournament approaches. Early buyers get more colour options and cleaner inventory.",
         ],
       },
       {
-        heading: "Use souvenirs for party moments",
+        heading: "Souvenirs that work as prizes and props",
         body: [
-          "Souvenirs can double as party prizes, table decor, or photo props. That makes them useful even if the buyer is not a collector.",
+          "Mini boxing gloves double as watch party prizes, prediction contest rewards, and photo props at halftime. Useful before, during, and after the match.",
         ],
       },
     ],
     faqs: [
       {
         q: "What are good World Cup souvenirs for Canadian shoppers?",
-        a: "Mini souvenir gloves, caps, car flags, and bucket hats are practical because they are easy to ship and gift.",
+        a: "Mini boxing gloves, caps, and car flags — compact, giftable, and don't require sizing.",
       },
       {
         q: "Can souvenirs be used for watch parties?",
-        a: "Yes. Small souvenirs work well as prizes, table decor, and photo props.",
+        a: "Yes — prizes, table decor, photo props, and gifts for whoever predicted the right score.",
       },
     ],
   },
@@ -545,7 +547,7 @@ export const blogPosts: BlogPost[] = [
     slug: "official-world-cup-2026-sticker-album-guide",
     title: "Panini FIFA World Cup 2026 Official Sticker Album — Buy in Canada",
     description:
-      "Buy the Panini FIFA World Cup 2026 Official Sticker Album in Canada. A collector guide to why this is the essential first purchase and how to pair it with sticker packs.",
+      "The Panini FIFA World Cup 2026 Official Sticker Album is the $8.99 purchase that makes every other sticker pack worth buying. A collector guide for Canadian fans — why this comes first.",
     publishedAt: "2026-05-15",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -557,35 +559,34 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "The album turns stickers into a collection",
+        heading: "Without the album, you just have a pile",
         body: [
-          "A sticker pack is exciting for a few minutes. The album is what turns that excitement into a full World Cup project. It shows the teams, the empty spots, and the progress that keeps collectors coming back.",
-          "For new collectors, buying the album first prevents loose stickers from piling up before there is a clear system for organizing them.",
+          "A sticker pack is exciting for thirty seconds. The album is what turns that moment into a project that runs six weeks through a World Cup.",
+          "It shows the teams. It shows the empty spots. It makes every new pack feel like progress instead of just another stack of paper.",
         ],
       },
       {
-        heading: "A low-cost entry into World Cup collecting",
+        heading: "The cheapest entry point in the hobby",
         body: [
-          "The official album is the most affordable way to join the collecting experience. It gives fans a permanent place to record the tournament even before they commit to a full sticker box.",
-          "Families can start with the album, then add packs or a 50-pack box once the collecting habit has started.",
+          "At $8.99, the album costs less than a coffee order at most spots downtown. It's the lowest-cost way into the World Cup collecting experience — and the one purchase you can't skip.",
+          "Start with the album. Add packs when you're ready.",
         ],
       },
       {
-        heading: "Best paired with the bundle",
+        heading: "The bundle is cleaner for gifts",
         body: [
-          "The album is essential, but the bundle is the cleanest first purchase because it includes both the album and the 50-pack box. That means collectors can start filling pages immediately.",
-          "If you are shopping for a gift, the bundle feels more complete than the album alone.",
+          "The album alone is the right purchase if you're already collecting. For gifts, or for starting fresh, the bundle — album plus 50-pack box — is cleaner because everything arrives together and nothing waits.",
         ],
       },
     ],
     faqs: [
       {
         q: "Do I need the Panini FIFA World Cup 2026 official album to collect stickers?",
-        a: "Yes. The Panini 2026 sticker album gives the collection structure and helps you track which stickers you still need. It is the essential first buy for Canadian collectors.",
+        a: "Yes. The album is how you organize what you collect — without it, stickers have nowhere to go.",
       },
       {
         q: "Where can I buy the Panini 2026 sticker album in Canada?",
-        a: "The Panini FIFA World Cup 2026 Official Sticker Album is available online and ships from Toronto. Pairing it with a sticker box or buying the bundle is the best start for new collectors.",
+        a: "Available online, ships from Toronto. Pair it with a 50-pack box or order the bundle to get both at once.",
       },
     ],
   },
@@ -593,7 +594,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-sticker-bundle-gift-idea",
     title: "Panini FIFA World Cup 2026 Sticker Bundle — Best Gift for Canadian Fans",
     description:
-      "Buy the Panini FIFA World Cup 2026 sticker bundle as a gift for soccer fans, kids, families, and collectors in Canada. Album plus 50-pack box in one order.",
+      "The Panini FIFA World Cup 2026 sticker bundle is the gift that keeps working through the whole tournament. Album and 50-pack box together — one order, nothing missing.",
     publishedAt: "2026-05-15",
     category: "Gift Guide",
     heroImage: "/asset/stickers/fwc26_bundle_ad.webp",
@@ -605,35 +606,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "A gift that lasts longer than one match",
+        heading: "The gift that doesn't end after the first reaction",
         body: [
-          "The best soccer gifts keep being used after the first reaction. A sticker bundle does that because every pack opened and every page filled gives the recipient another small World Cup moment.",
-          "It is especially useful for families because collecting works before kickoff, during halftime, and after matches when everyone is still talking about the game.",
+          "Most gifts are done in a minute. This one runs for six weeks. Every pack opened, every sticker placed, every duplicate traded at halftime — it keeps going as long as the tournament does.",
+          "For families especially: collecting works before kickoff, at halftime, and after the match when nobody wants to move yet.",
         ],
       },
       {
-        heading: "Simple for gift buyers",
+        heading: "No sizing. No guessing.",
         body: [
-          "Sizing is always the hard part with apparel gifts. The sticker bundle avoids that completely. You do not need to know a hat size, clothing size, or preferred fit.",
-          "If the recipient likes soccer, collecting, or World Cup traditions, the bundle is easy to understand and easy to enjoy.",
+          "Apparel gifts are hard. You need the right size, the right team, the right jersey style. The sticker bundle skips all of that.",
+          "Soccer fan? Loves the World Cup? That's all you need to know. The bundle handles the rest.",
         ],
       },
       {
-        heading: "Make it a watch party centerpiece",
+        heading: "Put the box on the table at your next watch party",
         body: [
-          "Put the box on the table before a match and let guests open a pack each. It creates a natural shared activity without needing complicated games or rules.",
-          "After the match, the album becomes the place where the day is remembered through the stickers pulled during that session.",
+          "Leave the box out before kickoff. Let people grab a pack. Suddenly there's something to do before the match and at halftime.",
+          "The album becomes the record of that day — the stickers opened that session, the players who showed up in the pack right before the goal.",
         ],
       },
     ],
     faqs: [
       {
         q: "Who is the sticker bundle best for?",
-        a: "It works well for kids, families, collectors, soccer dads, and fans who enjoy opening packs during tournament season.",
+        a: "Kids, families, collectors, soccer dads, anyone who grew up with Panini albums and wants the World Cup 2026 experience.",
       },
       {
         q: "Is the sticker bundle better than buying only packs?",
-        a: "For gifts, yes. The album makes the packs more useful because the recipient can organize stickers immediately.",
+        a: "For gifts, yes. The album makes the packs meaningful — without it, stickers are just cards with nowhere to go.",
       },
     ],
   },
@@ -642,7 +643,7 @@ export const blogPosts: BlogPost[] = [
     slug: "how-to-start-panini-world-cup-2026-collection",
     title: "How to Start a Panini World Cup 2026 Sticker Collection in Canada",
     description:
-      "A simple guide for Canadian fans on how to start collecting Panini FIFA World Cup 2026 stickers — buy the album, box, or bundle and get collecting from day one.",
+      "Starting a Panini FIFA World Cup 2026 sticker collection in Canada? Album first, then packs. Here's the order of operations — and why it matters.",
     publishedAt: "2026-05-16",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_box.png",
@@ -654,35 +655,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Buy the album before opening packs",
+        heading: "Album first. Always.",
         body: [
-          "The cleanest start is album first. Once the album is ready, every sticker has a place and every empty spot becomes part of the collecting goal.",
-          "If you want the simplest first purchase, choose the bundle. It gives you the album and the 50-pack box together so the collection can begin immediately.",
+          "The moment you have the album in hand, every sticker has somewhere to go. Every empty page becomes a goal. Without it, you're just opening packs and stacking cards.",
+          "If you want to skip the decision, buy the bundle — album and 50 packs arrive together, and you're collecting on day one.",
         ],
       },
       {
-        heading: "Open in small sessions",
+        heading: "Slow it down across match days",
         body: [
-          "Opening a full box in one sitting is fun, but spreading packs across match days makes the experience last. Open a few before big games, place them in the album, and set duplicates aside.",
-          "This rhythm keeps the collection connected to the tournament instead of turning it into a one-day activity.",
+          "Opening all 50 packs in one afternoon is satisfying but quick. A few packs before each match — that's a ritual that runs for six weeks.",
+          "Place new stickers after the final whistle. Set duplicates aside. The album becomes a record of the tournament, not just a collection.",
         ],
       },
       {
-        heading: "Create a duplicate system early",
+        heading: "Start a duplicate system before you need it",
         body: [
-          "Duplicates are not wasted stickers. They are trading currency. Keep a small envelope or box for extras and sort them by team or sticker number.",
-          "When friends or family start collecting too, a sorted duplicate pile makes trades fast and keeps everyone moving toward a fuller album.",
+          "Duplicates are trading currency. Sort them by team or number from day one, before the pile gets out of hand.",
+          "When your coworker's kid is also collecting, or the watch party turns into a trading session, a sorted pile moves much faster than a heap.",
         ],
       },
     ],
     faqs: [
       {
         q: "How do I start collecting Panini FIFA World Cup 2026 stickers in Canada?",
-        a: "Buy the Panini FIFA World Cup 2026 official sticker album first, then add packs. The bundle — album plus 50-pack box — is the easiest option because everything arrives together.",
+        a: "Album first — either alone or as part of the bundle with a 50-pack box. Everything else follows from having the album ready.",
       },
       {
         q: "Should I open all 50 packs at once?",
-        a: "You can, but opening a few packs across multiple match days makes the collecting experience last longer through the tournament.",
+        a: "You can, but a few packs per match day makes the collection last the whole tournament instead of one session.",
       },
     ],
   },
@@ -690,7 +691,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-2026-sticker-box-vs-bundle",
     title: "World Cup 2026 Sticker Box vs Bundle: Which Should You Buy?",
     description:
-      "Compare the Panini FIFA World Cup 2026 sticker box and bundle so you can choose the right option for collectors, gifts, and family openings.",
+      "Box or bundle — which Panini FIFA World Cup 2026 purchase is right for you? The answer comes down to one question: do you already have the album?",
     publishedAt: "2026-05-16",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_bundle_main.png",
@@ -702,35 +703,35 @@ export const blogPosts: BlogPost[] = [
     ],
     sections: [
       {
-        heading: "Choose the box if you already own the album",
+        heading: "Already have the album? Buy the box.",
         body: [
-          "The 50-pack box is the right purchase when you already have the official album. It gives you a large opening session and enough stickers to make visible progress across many pages.",
-          "It is also useful for collectors who need more duplicates for trading or want a second wave of packs after the first album sections are filled.",
+          "The 50-pack box gives you a big opening session, fast page fills, and enough duplicates to trade for a while. That's all you need if the album is already sitting on the shelf.",
+          "Also useful mid-tournament when the first box is running low and you're still missing 40 stickers.",
         ],
       },
       {
-        heading: "Choose the bundle if you are starting fresh",
+        heading: "Starting fresh? Buy the bundle.",
         body: [
-          "The bundle is the better first purchase because it includes the album and the box together. That matters for new collectors who want to open packs immediately and place stickers in the right spots.",
-          "For gifts, the bundle is the safer choice because it feels complete as soon as it is opened.",
+          "The bundle brings the album and the box together. No waiting for a separate order. No opening packs before you have somewhere to put them.",
+          "For gifts especially, the bundle is the complete version — the recipient can start collecting the same day.",
         ],
       },
       {
-        heading: "For families, the bundle is easier",
+        heading: "For families, bundle wins every time",
         body: [
-          "Families often want one purchase that covers everyone. The album becomes the shared progress board, and the box supplies enough packs for several people to participate.",
-          "That makes the bundle a natural fit for World Cup watch parties, kids' activities, and weekend collecting sessions.",
+          "The album becomes the shared scoreboard. The box becomes the activity. One purchase covers every family member for multiple sessions.",
+          "Weekend collecting, halftime watch party opening, kids at the table with duplicates — the bundle handles all of it.",
         ],
       },
     ],
     faqs: [
       {
         q: "Is the World Cup sticker bundle worth it?",
-        a: "Yes, especially for first-time collectors because it includes both the album and the 50-pack box.",
+        a: "Yes — for first-time collectors and gifts especially. Album plus box in one order means you start immediately.",
       },
       {
         q: "When should I buy only the 50-pack box?",
-        a: "Buy only the box when you already own the official album or need more packs for trading and completion.",
+        a: "When you already own the official album, or when you need a second wave of packs mid-tournament.",
       },
     ],
   },
@@ -3417,6 +3418,295 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+
+  {
+    slug: "world-cup-watch-parties-toronto",
+    title: "World Cup 2026 Watch Parties in Toronto",
+    description:
+      "A Toronto-focused guide to World Cup 2026 watch parties, patio screenings, car flags, caps, bucket hats, and fan gear to prepare early.",
+    publishedAt: "2026-05-31",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/toronto-world-cup-2026-fan-gear.webp",
+    heroAlt: "Toronto World Cup 2026 watch party crowd with fan caps, bucket hats, and car flags",
+    productSlugs: [
+      "canada-car-flag",
+      "canada-black-flag-3d-embroidered-cap",
+      "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
+      "portugal-red-with-national-football-team-flag-3d-embroidered-cap",
+    ],
+    sections: [
+      {
+        heading: "Toronto will be one of Canada's loudest watch party cities",
+        body: [
+          "Toronto has the right mix for World Cup 2026: patios, downtown screens, suburban soccer communities, and fans representing nearly every qualified nation. That makes the city a natural place for Canada, Brazil, Portugal, Italy, Argentina, and Morocco colours to show up on the same block.",
+          "For shoppers, the smart move is to prepare before the group stage rush. Caps, bucket hats, and car flags are the pieces people reach for first because they are easy to wear, easy to gift, and visible in a crowd.",
+        ],
+      },
+      {
+        heading: "What to bring to a Toronto watch party",
+        body: [
+          "Start with one wearable item and one visibility item. A cap or bucket hat handles the outfit, while a car flag works for the drive, parking lot photos, or decorating the patio table.",
+          "If you are hosting friends, small souvenirs and Panini stickers can turn halftime into a quick collector moment without needing a full party setup.",
+        ],
+      },
+      {
+        heading: "Order before the patio calendar fills",
+        body: [
+          "Toronto events tend to move fast once match schedules and venues become the conversation. Ordering fan gear early gives you more country options and avoids last-minute delivery stress.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What should I wear to a Toronto World Cup 2026 watch party?",
+        a: "A country cap, bucket hat, or simple flag-colour outfit is the easiest choice. Add a car flag if you are driving to the event.",
+      },
+      {
+        q: "Does World Fan Gear ship to Toronto?",
+        a: "Yes. Orders ship from the Toronto area across Canada, so Toronto and GTA customers are close to the fulfillment base.",
+      },
+    ],
+  },
+
+  {
+    slug: "vancouver-world-cup-2026-watch-party-guide",
+    title: "Vancouver World Cup 2026 Watch Party Guide",
+    description:
+      "How Vancouver fans can prepare for World Cup 2026 waterfront screenings, outdoor watch parties, and summer fan gear.",
+    publishedAt: "2026-06-01",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/vancouver-world-cup-2026-fan-gear.webp",
+    heroAlt: "Vancouver waterfront World Cup 2026 watch party with mountains and fan gear",
+    productSlugs: [
+      "canada-reversible-bucket-hat",
+      "south-korea-3d-embroidered-cap",
+      "japan-flag-3d-embroidered-cap",
+      "brazil-world-cup-2026-bucket-hat",
+    ],
+    sections: [
+      {
+        heading: "Vancouver watch parties are built for outdoor gear",
+        body: [
+          "Vancouver's summer World Cup experience will lean into parks, patios, waterfront screens, and daytime gatherings. That makes lightweight caps, bucket hats, and small flags especially useful.",
+          "Fans supporting Canada, South Korea, Japan, Brazil, and many other teams can build a simple outfit around one clear colour piece and reuse it across multiple matches.",
+        ],
+      },
+      {
+        heading: "Pick gear that works in sun and shade",
+        body: [
+          "Bucket hats are a strong Vancouver choice because outdoor screenings can run through bright afternoon conditions. Caps are easier for everyday use and transit, while car flags help groups find each other before the match.",
+        ],
+      },
+      {
+        heading: "Make the match day portable",
+        body: [
+          "If you are moving between a park, a brewery, and a friend's place, choose gear that packs easily. Foldable hats, small souvenirs, and sticker packs fit better than bulky decorations.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What fan gear is best for Vancouver outdoor screenings?",
+        a: "Bucket hats, caps, and small flags are the most practical because they work for sunny park settings and transit-heavy match days.",
+      },
+      {
+        q: "Should Vancouver fans buy World Cup gear early?",
+        a: "Yes. Buying before tournament demand rises gives you more team choices and a more comfortable shipping window.",
+      },
+    ],
+  },
+
+  {
+    slug: "backyard-world-cup-2026-watch-party-ideas",
+    title: "Backyard World Cup 2026 Watch Party Ideas",
+    description:
+      "A practical backyard World Cup 2026 party guide with projector setup ideas, snacks, car flag decor, Panini stickers, and fan gear.",
+    publishedAt: "2026-06-02",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/backyard-watch-party-world-cup-2026.webp",
+    heroAlt: "Backyard World Cup 2026 watch party setup with projector, snacks, stickers, flags, and souvenirs",
+    productSlugs: [
+      "canada-car-flag",
+      "brazil-car-flag",
+      "canada-boxing-glove",
+      "panini-fifa-world-cup-2026-bundle-album-sticker-box",
+    ],
+    sections: [
+      {
+        heading: "Build the party around one screen and one table",
+        body: [
+          "A good backyard watch party does not need complicated decor. Set up the projector or TV first, then build one central table with snacks, drinks, sticker packs, and small fan souvenirs.",
+          "Car flags are useful backyard decorations because they can hang from fences, railings, or table edges without needing a full party kit.",
+        ],
+      },
+      {
+        heading: "Use stickers for halftime",
+        body: [
+          "Panini stickers are perfect for halftime because they give guests something to open, compare, and trade. Keep the album on the table and let people place pulls between matches.",
+        ],
+      },
+      {
+        heading: "Make it reusable for the whole tournament",
+        body: [
+          "Choose decorations that can come down easily and return for the next match. Flags, caps, bucket hats, and mini souvenirs can all be reused across the group stage and knockout rounds.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What is the easiest World Cup backyard decoration?",
+        a: "Car flags are one of the easiest options because they are reusable, colourful, and simple to hang around a patio or fence.",
+      },
+      {
+        q: "Are Panini stickers good for a watch party?",
+        a: "Yes. Sticker packs are a simple halftime activity for kids, families, and collectors.",
+      },
+    ],
+  },
+
+  {
+    slug: "world-cup-2026-fan-zones-canada-outdoor-screenings",
+    title: "World Cup 2026 Fan Zones in Canada: What to Wear and Bring",
+    description:
+      "A Canada fan-zone guide for World Cup 2026 outdoor screenings, including bucket hats, caps, car flags, and practical match-day gear.",
+    publishedAt: "2026-06-03",
+    category: "Fan Zones",
+    heroImage: "/asset/blog/generated/world-cup-2026-fan-zone-canada-outdoor.webp",
+    heroAlt: "Large Canada outdoor fan zone with colorful World Cup 2026 caps and bucket hats",
+    productSlugs: [
+      "canada-reversible-bucket-hat",
+      "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
+      "mexico-world-cup-2026-bucket-hat",
+      "argentina-flag-3d-embroidered-cap",
+    ],
+    sections: [
+      {
+        heading: "Fan zones reward visible gear",
+        body: [
+          "Outdoor fan zones are crowded, colourful, and built for photos. Hats, caps, and flags show up better than small accessories, especially when everyone is watching the same screen.",
+          "If you are going with a group, choose one shared colour or country theme so it is easier to find each other and better for photos.",
+        ],
+      },
+      {
+        heading: "Dress for a long outdoor day",
+        body: [
+          "A bucket hat is practical for sun exposure, while a cap is easier for everyday wear. Small souvenirs and stickers are better kept in a bag until you sit down.",
+        ],
+      },
+      {
+        heading: "Buy reusable pieces",
+        body: [
+          "The best fan-zone gear should work for more than one match. Pick pieces you can also use for patios, backyard parties, and neighborhood celebrations.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What should I bring to a World Cup 2026 fan zone?",
+        a: "Bring comfortable fan gear, a cap or bucket hat, and small reusable accessories. Avoid bulky items that are hard to carry through crowds.",
+      },
+      {
+        q: "Are bucket hats good for outdoor screenings?",
+        a: "Yes. Bucket hats are useful for sunny fan zones and stand out well in group photos.",
+      },
+    ],
+  },
+
+  {
+    slug: "montreal-world-cup-2026-watch-party-guide",
+    title: "Montreal World Cup 2026 Watch Party Guide",
+    description:
+      "A Montreal-focused guide to World Cup 2026 terrace watch parties, France and Morocco fan gear, Canada colours, and summer match days.",
+    publishedAt: "2026-06-04",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/montreal-world-cup-2026-fan-gear.webp",
+    heroAlt: "Montreal World Cup 2026 terrace watch party with France, Morocco, Canada, and Quebec fan gear",
+    productSlugs: [
+      "france-flag-3d-embroidered-cap",
+      "morocco-flag-3d-embroidered-cap",
+      "canada-blue-flag-3d-embroidered-cap",
+      "quebec-flag-souvenir-mini-boxing-glove",
+    ],
+    sections: [
+      {
+        heading: "Montreal will mix club energy with national pride",
+        body: [
+          "Montreal watch parties are likely to feel especially multicultural, with France, Morocco, Canada, Portugal, Italy, and many other communities bringing colour to terraces and neighborhood bars.",
+          "For fans, the easiest outfit starts with a cap or bucket hat in national colours, then adds a small flag or souvenir for the table.",
+        ],
+      },
+      {
+        heading: "Choose gear for terrace nights",
+        body: [
+          "Evening matches and patio screenings call for gear that is visible but comfortable. Caps work well for walking between venues, while small souvenirs make good table pieces.",
+        ],
+      },
+      {
+        heading: "Plan before knockout-stage demand",
+        body: [
+          "Montreal fans often buy in waves when a team advances. Ordering before the tournament gives you a better chance at the country gear you actually want.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What fan gear is popular for Montreal World Cup watch parties?",
+        a: "France, Morocco, Canada, Portugal, Italy, and Quebec-themed pieces are natural fits for Montreal's fan communities.",
+      },
+      {
+        q: "Can I order Montreal watch party gear online?",
+        a: "Yes. World Fan Gear ships across Canada from the Toronto area, including Montreal and the rest of Quebec.",
+      },
+    ],
+  },
+
+  {
+    slug: "calgary-world-cup-2026-watch-party-essentials",
+    title: "Calgary World Cup 2026 Watch Party Essentials",
+    description:
+      "A Calgary guide to World Cup 2026 sports bar patios, outdoor fan gear, Argentina colours, Canada caps, Brazil hats, and match-day accessories.",
+    publishedAt: "2026-06-05",
+    category: "Watch Parties",
+    heroImage: "/asset/blog/generated/calgary-world-cup-2026-fan-gear.webp",
+    heroAlt: "Calgary World Cup 2026 sports bar patio watch party with Canada, Argentina, and Brazil fan gear",
+    productSlugs: [
+      "argentina-flag-3d-embroidered-cap",
+      "canada-black-flag-3d-embroidered-cap",
+      "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
+      "canada-car-flag",
+    ],
+    sections: [
+      {
+        heading: "Calgary watch parties need practical summer gear",
+        body: [
+          "Calgary's World Cup 2026 energy will likely show up in sports bars, patios, backyard screens, and community gatherings. Wide-open summer afternoons make caps, bucket hats, and car flags especially useful.",
+          "Argentina, Canada, Brazil, England, Germany, and Portugal gear all work well for mixed watch parties where fans support different teams.",
+        ],
+      },
+      {
+        heading: "Keep it easy for patios and drives",
+        body: [
+          "A cap is the most practical first piece. Add a car flag if you are driving to a watch party or planning a neighborhood celebration after the final whistle.",
+        ],
+      },
+      {
+        heading: "Order before the biggest match days",
+        body: [
+          "Calgary shoppers should plan ahead for group-stage weekends and knockout matches. Buying early keeps the gear decision simple before local events fill up.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What should Calgary fans buy for World Cup 2026 watch parties?",
+        a: "Caps, bucket hats, and car flags are practical because they work for patios, backyard screens, and drives across the city.",
+      },
+      {
+        q: "Does World Fan Gear ship to Alberta?",
+        a: "Yes. Orders ship across Canada, including Calgary and other Alberta addresses.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
@@ -3433,9 +3723,49 @@ export function getBlogPost(slug: string): BlogPost | undefined {
   return blogPosts.find((post) => post.slug === slug);
 }
 
+export function getBlogPostsBySlugs(slugs: string[]): BlogPost[] {
+  return slugs
+    .map((slug) => getBlogPost(slug))
+    .filter((post): post is BlogPost => Boolean(post))
+    .filter((post) => isPostPublished(post));
+}
+
 export function getPostProducts(post: BlogPost) {
   return post.productSlugs
     .map((slug) => products.find((product) => product.slug === slug))
     .filter((product): product is Product => Boolean(product))
     .slice(0, 4);
+}
+
+export function getRelatedGuidesForProduct(product: Product, limit = 3): BlogPost[] {
+  const name = product.name.toLowerCase();
+  const category = product.category.toLowerCase();
+  const terms = [
+    product.slug,
+    product.category,
+    ...product.name
+      .split(/[\s()[\]–—-]+/)
+      .filter((part) => part.length > 3),
+  ].map((term) => term.toLowerCase());
+
+  return getPublishedPosts()
+    .map((post) => {
+      let score = 0;
+      const haystack = `${post.slug} ${post.title} ${post.description} ${post.category}`.toLowerCase();
+      if (post.productSlugs.includes(product.slug)) score += 10;
+      if (haystack.includes(category)) score += 2;
+      if (category.includes("sticker") && haystack.includes("panini")) score += 4;
+      if (category.includes("car flags") && haystack.includes("car flag")) score += 4;
+      if (category.includes("bucket") && haystack.includes("bucket")) score += 4;
+      if (category.includes("caps") && haystack.includes("cap")) score += 4;
+      for (const term of terms) {
+        if (term.length > 3 && haystack.includes(term)) score += 1;
+      }
+      if (name.includes("canada") && haystack.includes("canada")) score += 3;
+      return { post, score };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score || b.post.publishedAt.localeCompare(a.post.publishedAt))
+    .slice(0, limit)
+    .map((item) => item.post);
 }
