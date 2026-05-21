@@ -39,8 +39,8 @@ export default function ShippingPage() {
           <h2 className="text-base font-semibold text-gray-900 mb-3">Questions?</h2>
           <p>
             Contact us at{" "}
-            <a href="mailto:support@fifa2026.ca" className="text-[#C41E3A] hover:underline">
-              support@fifa2026.ca
+            <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">
+              jameskimkim1@gmail.com
             </a>
           </p>
         </section>

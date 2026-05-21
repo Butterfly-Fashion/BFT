@@ -29,7 +29,7 @@ const faqs = [
   },
   {
     q: "Can I change or cancel my order?",
-    a: "Orders can be changed or cancelled within 1 hour of placement. Please contact us immediately at support@fifa2026.ca.",
+    a: "Orders can be changed or cancelled within 1 hour of placement. Please contact us immediately at jameskimkim1@gmail.com.",
   },
   {
     q: "Are your products officially licensed?",

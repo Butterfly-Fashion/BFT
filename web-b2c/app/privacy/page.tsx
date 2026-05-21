@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
         <div>
           <h2 className="text-lg font-bold text-gray-900">Contact</h2>
           <p className="mt-2">
-            For privacy questions or data requests, contact support@fifa2026.ca.
+            For privacy questions or data requests, contact jameskimkim1@gmail.com.
           </p>
         </div>
       </section>
