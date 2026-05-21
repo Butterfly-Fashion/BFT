@@ -25,7 +25,7 @@ export async function GET() {
 
     const orders: DbOrder[] = (data ?? []).map((row) => ({
       ...row,
-      items: (row.items ?? []) as DbOrder["items"],
+      items: (row.items ?? []) as unknown as DbOrder["items"],
       _source: "supabase" as const,
     }));
     return NextResponse.json({ orders, source: "supabase", limit: 50 });
