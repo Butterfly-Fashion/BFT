@@ -573,7 +573,23 @@ export default function OrdersDashboard() {
                       <p className="text-xs text-gray-500">{order.customer_email ?? "—"}</p>
                     </td>
                     <td className="px-4 py-3 hidden md:table-cell">
-                      <span className="text-xs text-gray-400">Open for items</span>
+                      {order.items && order.items.length > 0 ? (
+                        <div className="space-y-0.5">
+                          {order.items.slice(0, 2).map((item) => (
+                            <p key={item.id} className="text-xs text-gray-700 truncate max-w-35">
+                              {item.name}
+                              {item.quantity > 1 && (
+                                <span className="text-gray-400 ml-1">×{item.quantity}</span>
+                              )}
+                            </p>
+                          ))}
+                          {order.items.length > 2 && (
+                            <p className="text-xs text-gray-400">+{order.items.length - 2} more</p>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-300">—</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       {order.delivery_method === "pickup" ? (
