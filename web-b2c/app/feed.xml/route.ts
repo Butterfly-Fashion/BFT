@@ -35,6 +35,11 @@ export async function GET() {
       const googleCat = GOOGLE_CATEGORY[p.category] ?? "Sporting Goods";
       const imageUrl = p.imageUrl.startsWith("http") ? p.imageUrl : `${site}${p.imageUrl}`;
 
+      const displayPrice = comparePrice ?? price;
+      const saleBlock = comparePrice
+        ? `\n      <g:sale_price>${price} CAD</g:sale_price>`
+        : "";
+
       return `
     <item>
       <g:id>${escapeXml(p.id)}</g:id>
@@ -43,20 +48,12 @@ export async function GET() {
       <g:link>${site}/products/${escapeXml(p.slug)}</g:link>
       <g:image_link>${escapeXml(imageUrl)}</g:image_link>
       <g:availability>in_stock</g:availability>
-      <g:price>${price} CAD</g:price>${
-        comparePrice
-          ? `\n      <g:sale_price>${price} CAD</g:sale_price>\n      <g:original_price>${comparePrice} CAD</g:original_price>`
-          : ""
-      }
+      <g:price>${displayPrice} CAD</g:price>${saleBlock}
       <g:brand>World Fan Gear</g:brand>
       <g:condition>new</g:condition>
       <g:google_product_category>${escapeXml(googleCat)}</g:google_product_category>
       <g:product_type>${escapeXml(p.category)}</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:shipping>
-        <g:country>CA</g:country>
-        <g:service>Standard</g:service>
-      </g:shipping>
     </item>`;
     })
     .join("");

@@ -17,7 +17,7 @@ export default function ShippingPage() {
       <div className="space-y-8 text-sm text-gray-600 leading-relaxed">
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-3">Shipping Rates</h2>
-          <p>Shipping is calculated at checkout based on the destination province or territory.</p>
+          <p>Shipping is calculated at checkout based on the destination province or territory. Rates typically range from <strong>$8.99 to $14.99 CAD</strong> depending on your location within Canada.</p>
         </section>
 
         <section>
