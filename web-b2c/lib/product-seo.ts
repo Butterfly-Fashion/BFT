@@ -78,16 +78,16 @@ export function productSeoSections(product: Product): ProductSeoSection[] {
 
   return [
     {
-      heading: `Who this ${product.category.toLowerCase()} is for`,
-      body: `${product.name} is built for ${team} supporters who want ${categoryUse(product)}. It fits naturally into Canada 2026 watch parties, family match nights, retail displays, and tournament travel plans.`,
+      heading: `Who it's for`,
+      body: `${team} supporters who want ${categoryUse(product)}. A natural fit for Canada 2026 watch parties, match nights, and tournament travel.`,
     },
     {
-      heading: "How to use it on match day",
-      body: `Pair it with other fan essentials like a car flag, cap, bucket hat, or souvenir piece to make a complete match-day setup. For Canadian fans, the most useful gear is easy to wear, easy to pack, and ready for repeated games throughout the tournament.`,
+      heading: "Match day use",
+      body: `Pair with a car flag, cap, or souvenir piece for a complete match-day setup. Easy to wear, easy to pack, built for repeated use across the full tournament.`,
     },
     {
-      heading: "Gift and shipping notes",
-      body: `${categoryGift(product)} Orders ship from the Toronto area across Canada, so buying early gives you more time before group-stage demand increases.`,
+      heading: "Gifting & shipping",
+      body: `${categoryGift(product)} Ships from Toronto across Canada — order early for the best selection before group-stage demand peaks.`,
     },
   ];
 }

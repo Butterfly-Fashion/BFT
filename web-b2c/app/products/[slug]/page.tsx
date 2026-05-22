@@ -163,57 +163,73 @@ export default async function ProductDetailPage({ params }: Props) {
   );
 }
 
+const SECTION_ICONS = [
+  // Who it's for
+  <svg key="who" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+  // Match day
+  <svg key="match" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+  // Gift
+  <svg key="gift" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>,
+];
+
 function ProductSeoContent({ product }: { product: Product }) {
   const sections = productSeoSections(product);
   const faqs = productSeoFaqs(product);
   const guides = getRelatedGuidesForProduct(product);
 
   return (
-    <section className="mt-16 grid gap-8 border-t border-gray-100 pt-10 lg:grid-cols-[1fr_320px]">
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
-          Buying Guide
-        </p>
-        <h2 className="mt-2 text-2xl font-black text-gray-900">
-          More about {product.name}
-        </h2>
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {sections.map((section) => (
-            <section key={section.heading} className="rounded-xl border border-gray-100 bg-white p-5">
-              <h3 className="text-sm font-bold text-gray-900">{section.heading}</h3>
-              <p className="mt-3 text-sm leading-7 text-gray-600">{section.body}</p>
-            </section>
-          ))}
-        </div>
-
-        <div className="mt-8 rounded-xl border border-gray-100 bg-white p-6">
-          <h3 className="text-lg font-black text-gray-900">Product questions</h3>
-          <div className="mt-5 grid gap-5 md:grid-cols-2">
-            {faqs.map((faq) => (
-              <div key={faq.q}>
-                <h4 className="text-sm font-bold text-gray-900">{faq.q}</h4>
-                <p className="mt-2 text-sm leading-7 text-gray-600">{faq.a}</p>
+    <section className="mt-16 border-t border-gray-100 pt-10">
+      <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+            Buying Guide
+          </p>
+          <h2 className="mt-2 text-xl font-black text-gray-900">
+            About this product
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-3 md:items-stretch">
+            {sections.map((section, i) => (
+              <div key={section.heading} className="rounded-xl border border-gray-100 bg-gray-50 p-5 flex flex-col gap-3">
+                <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0">
+                  {SECTION_ICONS[i]}
+                </div>
+                <h3 className="text-sm font-bold text-gray-900 leading-snug">{section.heading}</h3>
+                <p className="text-xs leading-6 text-gray-500 flex-1">{section.body}</p>
               </div>
             ))}
           </div>
-        </div>
-      </div>
 
-      <aside className="rounded-xl border border-gray-100 bg-white p-5">
-        <h3 className="text-sm font-black uppercase tracking-widest text-gray-900">
-          Related guides
-        </h3>
-        <div className="mt-4 space-y-4">
-          {guides.map((guide) => (
-            <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
-              <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-[#C41E3A]">
-                {guide.title}
-              </p>
-              <p className="mt-1 text-xs leading-5 text-gray-500">{guide.description}</p>
-            </Link>
-          ))}
+          <div className="mt-6 rounded-xl border border-gray-100 bg-white p-6">
+            <h3 className="text-base font-black text-gray-900">Common questions</h3>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {faqs.map((faq) => (
+                <div key={faq.q} className="border-l-2 border-gray-100 pl-4">
+                  <h4 className="text-sm font-semibold text-gray-900">{faq.q}</h4>
+                  <p className="mt-1.5 text-xs leading-6 text-gray-500">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </aside>
+
+        {guides.length > 0 && (
+          <aside className="rounded-xl border border-gray-100 bg-white p-5 h-fit">
+            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">
+              Related Guides
+            </h3>
+            <div className="space-y-5">
+              {guides.map((guide) => (
+                <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
+                  <p className="text-sm font-semibold leading-snug text-gray-900 group-hover:text-[#C41E3A] transition-colors">
+                    {guide.title}
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
+                </Link>
+              ))}
+            </div>
+          </aside>
+        )}
+      </div>
     </section>
   );
 }
