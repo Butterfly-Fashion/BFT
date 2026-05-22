@@ -24,7 +24,12 @@ export default async function AdminPage({
           World Fan Gear
         </p>
         <h1 className="mt-3 text-3xl font-black text-gray-900">Admin — Orders</h1>
-        {error && (
+        {error === "noenv" && (
+          <p className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            Server config error: ADMIN_PASSWORD not set
+          </p>
+        )}
+        {error === "1" && (
           <p className="mt-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
             Incorrect password
           </p>

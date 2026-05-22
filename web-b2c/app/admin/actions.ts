@@ -8,7 +8,11 @@ export async function adminLogin(formData: FormData) {
   const password = (formData.get("password") as string) ?? "";
   const adminPassword = process.env.ADMIN_PASSWORD;
 
-  if (!adminPassword || password !== adminPassword) {
+  if (!adminPassword) {
+    redirect("/admin?error=noenv");
+  }
+
+  if (password !== adminPassword) {
     redirect("/admin?error=1");
   }
 
