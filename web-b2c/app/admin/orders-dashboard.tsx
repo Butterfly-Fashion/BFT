@@ -86,6 +86,7 @@ export default function OrdersDashboard() {
   const [creatingLabel, setCreatingLabel] = useState(false);
   const [recoveringLabel, setRecoveringLabel] = useState(false);
   const [linkingLabel, setLinkingLabel] = useState(false);
+  const [reshiping, setReshiping] = useState(false);
   const [linkTrackingInput, setLinkTrackingInput] = useState("");
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
   const [refundOpen, setRefundOpen] = useState(false);
@@ -396,6 +397,37 @@ export default function OrdersDashboard() {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Recovery failed" });
     } finally {
       setRecoveringLabel(false);
+    }
+  }
+
+  async function handleReship() {
+    if (!selected || selected._source !== "supabase") return;
+    if (!confirm("Re-ship this order? A new label will be created and a new tracking email sent to the customer.")) return;
+    setReshiping(true);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}/reship`, { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Reship failed");
+      const updated: DbOrder = {
+        ...selected,
+        shippo_label_url: data.label_url,
+        tracking_number: data.tracking_number ?? null,
+        tracking_url: data.tracking_url ?? null,
+        carrier: data.carrier ?? null,
+        status: "packing",
+      };
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updated : o)));
+      setSelected(updated);
+      setEditStatus("packing");
+      setEditTracking(data.tracking_number ?? "");
+      setEditTrackingUrl(data.tracking_url ?? "");
+      setEditCarrier(data.carrier ?? "");
+      setSaveMsg({ type: "ok", text: "New label created! Tracking email sent to customer." });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Reship failed" });
+    } finally {
+      setReshiping(false);
     }
   }
 
@@ -780,6 +812,13 @@ export default function OrdersDashboard() {
                           Track Package →
                         </a>
                       )}
+                      <button
+                        onClick={handleReship}
+                        disabled={reshiping}
+                        className="w-full rounded-full border border-orange-300 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition-colors disabled:opacity-50"
+                      >
+                        {reshiping ? "Creating new label…" : "↩ Reship (New Label)"}
+                      </button>
                     </div>
                   ) : (
                     <div className="space-y-2">

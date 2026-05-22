@@ -174,6 +174,56 @@ export const teamPages: TeamPage[] = [
       "Support the USA with fan gear for Canada 2026 road trips, watch parties, and match-day celebrations.",
     terms: ["usa", "u-s-a", "united states"],
   },
+  {
+    slug: "england",
+    team: "England",
+    title: "England World Cup 2026 Fan Gear",
+    description:
+      "Shop England soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Back England through every match day with fan gear made for watch parties, car parades, and tournament celebrations in Canada.",
+    terms: ["england"],
+  },
+  {
+    slug: "italy",
+    team: "Italy",
+    title: "Italy World Cup 2026 Fan Gear",
+    description:
+      "Shop Italy soccer fan gear for World Cup 2026, including caps, bucket hats, car flags, and souvenirs for Canadian fans.",
+    intro:
+      "Bring the azzurri energy to every match day. Italy fan gear ships from Toronto to Little Italy communities and soccer fans across Canada.",
+    terms: ["italy", "italia"],
+  },
+  {
+    slug: "morocco",
+    team: "Morocco",
+    title: "Morocco World Cup 2026 Fan Gear",
+    description:
+      "Shop Morocco soccer fan gear for World Cup 2026, including car flags, caps, and souvenirs shipping across Canada.",
+    intro:
+      "Morocco has one of the most passionate fan bases in Canada. Browse fan gear for match days, watch parties, and car parades.",
+    terms: ["morocco"],
+  },
+  {
+    slug: "japan",
+    team: "Japan",
+    title: "Japan World Cup 2026 Fan Gear",
+    description:
+      "Shop Japan soccer fan gear for World Cup 2026, including embroidered caps, car flags, and souvenirs for Canadian fans.",
+    intro:
+      "Support Japan's World Cup campaign with fan gear for watch parties, outdoor screenings, and match-day outfits across Canada.",
+    terms: ["japan"],
+  },
+  {
+    slug: "south-korea",
+    team: "South Korea",
+    title: "South Korea World Cup 2026 Fan Gear",
+    description:
+      "Shop South Korea soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "South Korea fans bring serious tournament energy. Find fan gear for Vancouver, Toronto, and Canadian cities with strong Korean-Canadian communities.",
+    terms: ["south korea", "korea"],
+  },
 ];
 
 export function getCollectionPage(slug: string): CollectionPage | undefined {

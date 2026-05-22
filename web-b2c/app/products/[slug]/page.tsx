@@ -15,6 +15,7 @@ import {
 } from "@/lib/seo";
 import { productFaqJsonLd, productSeoFaqs, productSeoSections } from "@/lib/product-seo";
 import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
+import { ProductReviews } from "@/components/store/product-reviews";
 import Link from "next/link";
 import Image from "next/image";
 import type { PlayerCard, Product } from "@/lib/types";
@@ -55,10 +56,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+async function getReviews(slug: string) {
+  try {
+    const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
+    const res = await fetch(`${base}/api/reviews?slug=${slug}`, { cache: "no-store" });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch {
+    return [];
+  }
+}
+
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
   const product = await getProductBySlugFromDb(slug);
   if (!product) notFound();
+  const initialReviews = await getReviews(slug);
   const breadcrumbs = breadcrumbJsonLd([
     { name: "Home", url: "/" },
     { name: "Products", url: "/products" },
@@ -141,6 +154,8 @@ export default async function ProductDetailPage({ params }: Props) {
       )}
 
       <ProductSeoContent product={product} />
+
+      <ProductReviews productSlug={product.slug} initialReviews={initialReviews} />
 
       {/* Related products from same category */}
       <RelatedProducts currentSlug={product.slug} category={product.category} />

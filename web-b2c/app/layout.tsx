@@ -26,13 +26,16 @@ export const metadata: Metadata = {
     template: "%s | World Fan Gear",
   },
   description:
-    "Canada 2026-inspired soccer fan merchandise for Canadian fans. Shop caps, bucket hats, car flags, and souvenirs shipped from Toronto.",
+    "Shop World Cup 2026 fan gear for Canadian fans — caps, bucket hats, car flags, and souvenirs shipped from Toronto across Canada. FIFA 2026 merchandise for every team.",
   keywords: [
     "World Cup 2026",
-    "Canada soccer merchandise",
-    "fan gear",
-    "jerseys",
+    "FIFA 2026 merchandise",
+    "World Cup 2026 fan gear Canada",
+    "soccer fan gear Canada",
     "FIFA 2026 Canada",
+    "World Cup 2026 caps",
+    "World Cup 2026 car flags",
+    "Canada 2026 fan merchandise",
   ],
   openGraph: {
     title: "World Fan Gear | Canada 2026",
