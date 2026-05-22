@@ -11,6 +11,7 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { jsonLd, organizationJsonLd, SITE_URL, websiteJsonLd } from "@/lib/seo";
+import ChatWidget from "@/components/support/chat-widget";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <ChatWidget />
           </ToastProvider>
         </CartProvider>
         <script

@@ -361,6 +361,129 @@ export async function sendTrackingEmail(params: {
   console.log(`[email] Tracking email sent to ${customerEmail} for order ${orderNumber}`);
 }
 
+// Contact message notification — sent to admin when a customer submits a message
+export async function sendContactNotificationEmail(params: {
+  messageId: string;
+  name: string;
+  email: string;
+  message: string;
+}): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping contact notification email");
+    return;
+  }
+
+  const { messageId, name, email, message } = params;
+  const adminUrl = `${SITE}/admin`;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+    <div style="background:#C41E3A;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">New Customer Message</h1>
+    </div>
+    <div style="padding:28px;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;width:80px;">From</td>
+          <td style="padding:6px 0;font-size:13px;font-weight:bold;">${name}</td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;">Email</td>
+          <td style="padding:6px 0;font-size:13px;"><a href="mailto:${email}" style="color:#C41E3A;">${email}</a></td>
+        </tr>
+        <tr>
+          <td style="padding:6px 0;color:#888;font-size:13px;">ID</td>
+          <td style="padding:6px 0;font-size:11px;color:#aaa;font-family:monospace;">${messageId}</td>
+        </tr>
+      </table>
+      <div style="background:#f9f9f9;border-radius:8px;padding:16px;border-left:3px solid #C41E3A;">
+        <p style="margin:0;font-size:14px;color:#333;line-height:1.7;white-space:pre-wrap;">${message.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+      </div>
+      <div style="margin-top:24px;text-align:center;">
+        <a href="${adminUrl}" style="display:inline-block;padding:12px 28px;background:#C41E3A;color:#fff;text-decoration:none;border-radius:24px;font-size:13px;font-weight:bold;">Reply in Admin →</a>
+      </div>
+    </div>
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: ADMIN_EMAIL,
+    subject: `New message from ${name} | World Fan Gear`,
+    html,
+  });
+
+  console.log(`[email] Contact notification sent to ${ADMIN_EMAIL} for message ${messageId}`);
+}
+
+// Admin reply email — sent to customer when admin replies to their message
+export async function sendAdminReplyEmail(params: {
+  customerName: string;
+  customerEmail: string;
+  originalMessage: string;
+  adminReply: string;
+}): Promise<void> {
+  if (!isSmtpConfigured()) {
+    console.warn("[email] SMTP not configured — skipping admin reply email");
+    return;
+  }
+
+  const { customerName, customerEmail, originalMessage, adminReply } = params;
+  const firstName = customerName.split(" ")[0] || "there";
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
+<body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
+  <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
+    <div style="background:#C41E3A;padding:20px 28px;">
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">We've Replied to Your Message</h1>
+    </div>
+    <div style="padding:28px;">
+      <p style="font-size:15px;color:#333;line-height:1.6;">Hi <strong>${firstName}</strong>,</p>
+      <p style="font-size:14px;color:#333;line-height:1.7;">Thank you for reaching out. Here's our reply:</p>
+      <div style="background:#f0f7ff;border:1px solid #cce0ff;border-radius:8px;padding:16px;margin:16px 0;border-left:3px solid #1a6fcc;">
+        <p style="margin:0;font-size:14px;color:#333;line-height:1.7;white-space:pre-wrap;">${adminReply.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+      </div>
+      <p style="font-size:12px;color:#aaa;margin-top:20px;">Your original message:</p>
+      <div style="background:#f9f9f9;border-radius:8px;padding:12px;border-left:3px solid #ddd;">
+        <p style="margin:0;font-size:13px;color:#888;line-height:1.6;white-space:pre-wrap;">${originalMessage.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+      </div>
+      <div style="margin-top:24px;padding:16px;background:#fff8f8;border:1px solid #fde8e8;border-radius:8px;">
+        <p style="font-size:13px;color:#666;margin:0;">Have more questions? Reply to this email or contact us at <a href="mailto:${ADMIN_EMAIL}" style="color:#C41E3A;">${ADMIN_EMAIL}</a></p>
+      </div>
+    </div>
+    <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
+      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const transport = createTransport();
+  await transport.sendMail({
+    from: FROM,
+    to: customerEmail,
+    replyTo: ADMIN_EMAIL,
+    subject: `Re: Your message to World Fan Gear`,
+    html,
+  });
+
+  console.log(`[email] Admin reply sent to ${customerEmail}`);
+}
+
 // Pickup ready email — sent when admin marks pickup order as ready
 export async function sendPickupReadyEmail(params: {
   orderNumber: string;

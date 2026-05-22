@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
-type Section = "orders" | "products" | "revenue";
+type Section = "orders" | "products" | "revenue" | "messages";
 
 const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading orders..." />,
@@ -15,6 +15,10 @@ const ProductsDashboard = dynamic(() => import("./products-dashboard"), {
 
 const RevenueDashboard = dynamic(() => import("./revenue-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading revenue..." />,
+});
+
+const MessagesDashboard = dynamic(() => import("./messages-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading messages..." />,
 });
 
 function AdminSectionLoader({ label }: { label: string }) {
@@ -39,7 +43,7 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <span className="text-xs font-bold uppercase tracking-widest text-[#C41E3A] mr-4 py-4">
             World Fan Gear
           </span>
-          {(["orders", "products", "revenue"] as const).map((s) => (
+          {(["orders", "products", "revenue", "messages"] as const).map((s) => (
             <button
               key={s}
               onClick={() => setSection(s)}
@@ -49,7 +53,13 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
                   : "border-transparent text-gray-500 hover:text-gray-800"
               }`}
             >
-              {s === "orders" ? "Orders" : s === "products" ? "Products" : "Revenue"}
+              {s === "orders"
+                ? "Orders"
+                : s === "products"
+                ? "Products"
+                : s === "revenue"
+                ? "Revenue"
+                : "Messages"}
             </button>
           ))}
         </div>
@@ -67,8 +77,10 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <OrdersDashboard />
         ) : section === "products" ? (
           <ProductsDashboard />
-        ) : (
+        ) : section === "revenue" ? (
           <RevenueDashboard />
+        ) : (
+          <MessagesDashboard />
         )}
       </div>
     </div>
