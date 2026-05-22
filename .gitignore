@@ -1,5 +1,4 @@
 .vercel
-web-b2c/public/asset/images/
-
-.vercel
 .env*.local
+web-b2c/public/asset/images/
+web/.next/
