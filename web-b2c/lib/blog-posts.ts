@@ -846,7 +846,7 @@ export const blogPosts: BlogPost[] = [
     category: "Sticker Packs",
     heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
     heroAlt: "Panini FIFA World Cup 2026 sticker packs collector guide",
-    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
+    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-bundle-album-sticker-box"],
     sections: [
       {
         heading: "Five stickers per pack. All 48 nations.",
@@ -883,7 +883,7 @@ export const blogPosts: BlogPost[] = [
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_bundle_main.png",
     heroAlt: "World Cup 2026 sticker collecting guide for beginners",
-    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
+    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-bundle-album-sticker-box"],
     sections: [
       {
         heading: "Album, then packs. In that order.",
@@ -921,7 +921,7 @@ export const blogPosts: BlogPost[] = [
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
     heroAlt: "Panini FIFA World Cup 2026 Official Sticker Album guide",
-    productSlugs: ["panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-sticker-box-50-packs"],
+    productSlugs: ["panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-bundle-album-sticker-box"],
     sections: [
       {
         heading: "What's actually inside",
@@ -958,7 +958,7 @@ export const blogPosts: BlogPost[] = [
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_box.png",
     heroAlt: "World Cup 2026 sticker swap trading tips guide",
-    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album"],
+    productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-bundle-album-sticker-box"],
     sections: [
       {
         heading: "Know your list before you sit down to trade",
@@ -2060,7 +2060,9 @@ export const blogPosts: BlogPost[] = [
     heroAlt: "Two fans wearing Brazil and Mexico caps walking on a city street",
     productSlugs: [
       "brasil-with-national-football-team-flag-3d-embroidered-cap",
+      "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
       "mexico-with-national-football-team-flag-3d-embroidered-cap",
+      "mexico-car-flag",
       "brasil-flag-souvenir-mini-boxing-glove",
     ],
     sections: [
@@ -2174,6 +2176,7 @@ export const blogPosts: BlogPost[] = [
     heroAlt: "Man wearing South Korea embroidered cap on a Seoul city street at night",
     productSlugs: [
       "south-korea-3d-embroidered-cap",
+      "south-korea-car-flag",
     ],
     sections: [
       {
@@ -2227,6 +2230,7 @@ export const blogPosts: BlogPost[] = [
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
     heroAlt: "Morocco flag car window flag waving on a highway",
     productSlugs: [
+      "morocco-car-flag",
       "morocco-flag-3d-embroidered-cap",
     ],
     sections: [
@@ -2283,7 +2287,9 @@ export const blogPosts: BlogPost[] = [
     heroImage: "/asset/blog/generated/brazil-car-flag-highway.png",
     heroAlt: "Brazil flag car window flag waving on a highway",
     productSlugs: [
+      "brazil-car-flag",
       "brasil-with-national-football-team-flag-3d-embroidered-cap",
+      "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
       "brasil-flag-souvenir-mini-boxing-glove",
     ],
     sections: [
@@ -2338,6 +2344,7 @@ export const blogPosts: BlogPost[] = [
     heroImage: "/asset/blog/generated/portugal-fan-gear-boxing-gloves-cap-scarf.png",
     heroAlt: "Portugal fan gear flat lay with boxing gloves, cap and scarf on wood surface",
     productSlugs: [
+      "portugal-car-flag",
       "portugal-red-with-national-football-team-flag-3d-embroidered-cap",
       "portugal-flag-green-boxing-glove",
       "portugal-flag-black-souvenir-mini-boxing-glove",
@@ -2397,7 +2404,9 @@ export const blogPosts: BlogPost[] = [
     heroAlt: "Two fans celebrating at a stadium wearing Nigeria and Senegal embroidered caps",
     productSlugs: [
       "nigeria-flag-3d-embroidered-cap",
+      "nigeria-car-flag",
       "senegal-flag-3d-embroidered-cap",
+      "senegal-car-flag",
     ],
     sections: [
       {
@@ -2987,6 +2996,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "argentina-flag-3d-embroidered-cap",
+      "argentina-car-flag",
     ],
     sections: [
       {
@@ -3036,6 +3047,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "france-flag-3d-embroidered-cap",
+      "france-car-flag",
     ],
     sections: [
       {
@@ -3085,6 +3098,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "spain-national-football-team-flag-3d-embroidered-cap",
+      "spain-car-flag",
     ],
     sections: [
       {
@@ -3134,6 +3149,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "england-flag-3d-embroidered-cap",
+      "england-car-flag",
     ],
     sections: [
       {
@@ -3183,6 +3200,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "south-korea-3d-embroidered-cap",
+      "south-korea-car-flag",
     ],
     sections: [
       {
@@ -3232,6 +3251,8 @@ export const blogPosts: BlogPost[] = [
       "panini-fifa-world-cup-2026-bundle-album-sticker-box",
       "panini-fifa-world-cup-2026-sticker-box-50-packs",
       "panini-fifa-world-cup-2026-official-sticker-album",
+      "netherlands-flag-3d-embroidered-cap",
+      "netherlands-car-flag",
     ],
     sections: [
       {
@@ -3477,7 +3498,7 @@ export const blogPosts: BlogPost[] = [
       "canada-reversible-bucket-hat",
       "south-korea-3d-embroidered-cap",
       "japan-flag-3d-embroidered-cap",
-      "brazil-world-cup-2026-bucket-hat",
+      "brasil-with-national-football-team-flag-3d-embroidered-cap",
     ],
     sections: [
       {
@@ -3572,7 +3593,7 @@ export const blogPosts: BlogPost[] = [
     productSlugs: [
       "canada-reversible-bucket-hat",
       "brasil-yellow-with-national-football-team-flag-3d-embroidered-cap",
-      "mexico-world-cup-2026-bucket-hat",
+      "mexico-with-national-football-team-flag-3d-embroidered-cap",
       "argentina-flag-3d-embroidered-cap",
     ],
     sections: [
