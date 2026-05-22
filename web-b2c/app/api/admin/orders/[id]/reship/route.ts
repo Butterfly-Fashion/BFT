@@ -82,28 +82,29 @@ async function quoteAndCreateLabel(
     return parseFloat(a.amount) - parseFloat(b.amount);
   });
 
-  const lastTxErrors: string[] = [];
-  for (const rate of sorted) {
-    const txRes = await fetch("https://api.goshippo.com/transactions/", {
-      method: "POST",
-      headers: { Authorization: `ShippoToken ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ rate: rate.object_id, label_file_type: "PDF_4X6", async: false }),
-    });
-    const tx = await txRes.json();
-    if (txRes.ok && tx.object_status === "SUCCESS" && tx.label_url) {
-      return {
-        label_url: tx.label_url,
-        tracking_number: tx.tracking_number ?? "",
-        tracking_url: tx.tracking_url_provider ?? "",
-        carrier: tx.provider ?? rate.provider,
-      };
-    }
-    const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
-    console.error(`[reship] Transaction failed for ${rate.provider}:`, msg);
-    lastTxErrors.push(`${rate.provider}: ${msg}`);
+  // Only attempt ONE label — pick the cheapest rate to avoid duplicate charges
+  const best = sorted[0];
+  console.log(`[reship] Attempting label with ${best.provider} at ${best.amount} CAD`);
+
+  const txRes = await fetch("https://api.goshippo.com/transactions/", {
+    method: "POST",
+    headers: { Authorization: `ShippoToken ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ rate: best.object_id, label_file_type: "PDF_4X6", async: false }),
+  });
+  const tx = await txRes.json();
+
+  if (txRes.ok && tx.object_status === "SUCCESS" && tx.label_url) {
+    return {
+      label_url: tx.label_url,
+      tracking_number: tx.tracking_number ?? "",
+      tracking_url: tx.tracking_url_provider ?? "",
+      carrier: tx.provider ?? best.provider,
+    };
   }
 
-  return { error: `All carriers failed. ${lastTxErrors.join(" | ")}` };
+  const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
+  console.error(`[reship] Transaction failed for ${best.provider}:`, JSON.stringify(tx));
+  return { error: `${best.provider}: ${msg}` };
 }
 
 export async function POST(
