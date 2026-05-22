@@ -16,7 +16,7 @@ async function quoteAndCreateLabel(
   order: Pick<DbOrder, "customer_name" | "shipping_address">,
   weightKg: number,
   preferredProvider: "UPS" | "Canada Post" | null
-): Promise<{ label_url: string; tracking_number: string; tracking_url: string; carrier: string } | null> {
+): Promise<{ label_url: string; tracking_number: string; tracking_url: string; carrier: string } | { error: string }> {
   const box = selectBox(Math.max(0.1, weightKg));
   const dimWeight =
     (parseFloat(box.length) * parseFloat(box.width) * parseFloat(box.height)) / 5000;
@@ -52,23 +52,37 @@ async function quoteAndCreateLabel(
     }),
   });
 
-  if (!shipmentRes.ok) return null;
+  if (!shipmentRes.ok) {
+    const errBody = await shipmentRes.text();
+    console.error("[reship] Shipment creation failed:", shipmentRes.status, errBody);
+    return { error: `Shippo shipment creation failed (${shipmentRes.status}): ${errBody.slice(0, 200)}` };
+  }
   const shipment = await shipmentRes.json();
+
+  if (shipment.messages?.length) {
+    console.warn("[reship] Shipment messages:", JSON.stringify(shipment.messages));
+  }
 
   const rates: Array<{ object_id: string; provider: string; amount: string; currency: string }> =
     shipment.rates ?? [];
 
-  // prefer Canada Post CAD rates since UPS often has modifier errors on returns
-  const sorted = rates
-    .filter((r) => r.currency?.toUpperCase() === "CAD")
-    .sort((a, b) => {
-      const aIsPreferred = preferredProvider ? a.provider === preferredProvider : a.provider === "Canada Post";
-      const bIsPreferred = preferredProvider ? b.provider === preferredProvider : b.provider === "Canada Post";
-      if (aIsPreferred && !bIsPreferred) return -1;
-      if (!aIsPreferred && bIsPreferred) return 1;
-      return parseFloat(a.amount) - parseFloat(b.amount);
-    });
+  const cadRates = rates.filter((r) => r.currency?.toUpperCase() === "CAD");
 
+  if (cadRates.length === 0) {
+    console.error("[reship] No CAD rates returned. All rates:", JSON.stringify(rates));
+    return { error: `No CAD shipping rates available for this address. Shippo returned ${rates.length} rate(s) in other currencies.` };
+  }
+
+  // prefer Canada Post CAD rates since UPS often has modifier errors on returns
+  const sorted = cadRates.sort((a, b) => {
+    const aIsPreferred = preferredProvider ? a.provider === preferredProvider : a.provider === "Canada Post";
+    const bIsPreferred = preferredProvider ? b.provider === preferredProvider : b.provider === "Canada Post";
+    if (aIsPreferred && !bIsPreferred) return -1;
+    if (!aIsPreferred && bIsPreferred) return 1;
+    return parseFloat(a.amount) - parseFloat(b.amount);
+  });
+
+  const lastTxErrors: string[] = [];
   for (const rate of sorted) {
     const txRes = await fetch("https://api.goshippo.com/transactions/", {
       method: "POST",
@@ -84,9 +98,12 @@ async function quoteAndCreateLabel(
         carrier: tx.provider ?? rate.provider,
       };
     }
+    const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
+    console.error(`[reship] Transaction failed for ${rate.provider}:`, msg);
+    lastTxErrors.push(`${rate.provider}: ${msg}`);
   }
 
-  return null;
+  return { error: `All carriers failed. ${lastTxErrors.join(" | ")}` };
 }
 
 export async function POST(
@@ -147,8 +164,9 @@ export async function POST(
 
   const result = await quoteAndCreateLabel(apiKey, order, totalWeight, "Canada Post");
 
-  if (!result) {
-    return NextResponse.json({ error: "Failed to create new label via Shippo" }, { status: 502 });
+  if ("error" in result) {
+    console.error("[reship] quoteAndCreateLabel error:", result.error);
+    return NextResponse.json({ error: result.error }, { status: 502 });
   }
 
   // clear old label and save new one
