@@ -1,9 +1,11 @@
 import { ProductCard } from "@/components/store/product-card";
 import { ProductSortSelect } from "@/components/store/product-sort-select";
+import { ProductSearchInput } from "@/components/store/product-search-input";
 import { getAllProducts } from "@/lib/products";
 import { CATEGORIES } from "@/lib/types";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 const baseMetadata: Metadata = {
   title: "Shop All Products",
@@ -96,7 +98,11 @@ export default async function ProductsPage({ searchParams }: Props) {
         })}
       </div>
 
-      <div className="mb-6 flex items-center justify-end">
+      {/* Search + Sort row */}
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Suspense>
+          <ProductSearchInput defaultValue={search} />
+        </Suspense>
         <ProductSortSelect value={sort} />
       </div>
 
