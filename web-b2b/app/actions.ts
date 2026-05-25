@@ -417,7 +417,30 @@ export async function approveB2BCustomerAction(customerId: string, approved: boo
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   await admin.from("profiles").update({ is_b2b_approved: approved }).eq("id", customerId);
+
+  const { data: profile } = await admin.from("profiles").select("email, business_name, contact_name").eq("id", customerId).single();
+  if (profile?.email) {
+    if (approved) {
+      await sendEmail({
+        to: profile.email,
+        subject: "Your B2B account has been approved",
+        html: `<p>Hi ${profile.contact_name || profile.business_name},</p>
+<p>Your B2B account has been approved. You can now log in and place wholesale orders at your B2B pricing.</p>
+<p><a href="${siteUrl()}/login">Log in to your account →</a></p>
+<p>If you have any questions, reply to this email or contact us directly.</p>`,
+      });
+    } else {
+      await sendEmail({
+        to: profile.email,
+        subject: "Your B2B account status has changed",
+        html: `<p>Hi ${profile.contact_name || profile.business_name},</p>
+<p>Your B2B account access has been updated. Please contact us if you have any questions.</p>`,
+      });
+    }
+  }
+
   revalidatePath("/admin/customers");
+  revalidatePath(`/admin/customers/${customerId}`);
 }
 
 export async function createQuoteAction(formData: FormData) {

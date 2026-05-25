@@ -70,7 +70,7 @@ export default async function AccountOrderDetailPage({
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-100 bg-slate-50 px-6 py-4">
             <div>
               <p className="text-xs font-black uppercase tracking-widest text-slate-500">
-                {isPaid ? "Invoice" : "Order request"}
+                {isPaid ? "Invoice" : "Order Request Summary"}
               </p>
               <h1 className="mt-0.5 text-2xl font-black text-slate-900">
                 #{order.id.slice(0, 8).toUpperCase()}
@@ -90,17 +90,38 @@ export default async function AccountOrderDetailPage({
             </div>
           </div>
 
-          {!isPaid && !isPaymentReady && (
+          {!isPaid && (
             <div className="border-b border-amber-100 bg-amber-50 px-6 py-3 text-xs font-semibold text-amber-800">
-              Your order has been received. We will confirm availability and send payment instructions shortly.
+              {isPaymentReady
+                ? "Your order is ready — complete your purchase below."
+                : "This is not a paid invoice yet. We will confirm availability, final pricing, and send payment instructions shortly."}
             </div>
           )}
 
-          {isPaymentReady && (
-            <div className="border-b border-blue-100 bg-blue-50 px-6 py-3 text-xs font-semibold text-blue-800">
-              Your order is ready. Complete your purchase below.
+          {/* Customer & delivery info */}
+          <div className="grid gap-0 border-b border-slate-100 sm:grid-cols-2">
+            <div className="border-b border-slate-100 px-6 py-4 sm:border-b-0 sm:border-r">
+              <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-slate-400">Bill to</p>
+              <p className="font-bold text-slate-900">{profile.business_name}</p>
+              {profile.contact_name && <p className="text-xs text-slate-500">{profile.contact_name}</p>}
+              <p className="text-xs text-slate-500">{profile.email}</p>
+              {profile.phone && <p className="text-xs text-slate-500">{profile.phone}</p>}
+              {profile.business_address && <p className="mt-1 text-xs text-slate-500">{profile.business_address}</p>}
             </div>
-          )}
+            {order.delivery_method === "Shipping" && order.shipping_address && (
+              <div className="px-6 py-4">
+                <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-slate-400">Ship to</p>
+                <p className="text-xs text-slate-700 whitespace-pre-line">{order.shipping_address}</p>
+              </div>
+            )}
+            {order.delivery_method === "Pickup" && (
+              <div className="px-6 py-4">
+                <p className="mb-1 text-[10px] font-black uppercase tracking-widest text-slate-400">Pickup location</p>
+                <p className="text-xs font-semibold text-slate-700">178 Bentworth Ave, North York, ON M6A 1P7</p>
+                <p className="text-xs text-slate-500 mt-0.5">Mon–Fri · 9 AM – 5 PM ET</p>
+              </div>
+            )}
+          </div>
 
           {/* Items table with product images */}
           <div className="overflow-auto">
