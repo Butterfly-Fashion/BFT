@@ -10,6 +10,7 @@ import {
 } from "@/lib/seo-pages";
 import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
 import { getBlogPostsBySlugs } from "@/lib/blog-posts";
+import { HomeSearchBar } from "@/components/store/home-search-bar";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -88,6 +89,8 @@ export default async function CollectionLandingPage({ params }: Props) {
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900">{page.h1}</h1>
         <p className="mt-4 text-sm leading-7 text-gray-600">{page.intro}</p>
       </section>
+
+      <HomeSearchBar />
 
       <section className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {collectionProducts.map((product) => (

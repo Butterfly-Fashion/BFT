@@ -11,11 +11,58 @@ function selectBox(weightKg: number): { length: string; width: string; height: s
   return { length: "50", width: "40", height: "22" };
 }
 
+async function createLabelForRate(
+  apiKey: string,
+  rateId: string,
+  providerName: string,
+): Promise<{ label_url: string; tracking_number: string; tracking_url: string; carrier: string } | { error: string }> {
+  // Check if a SUCCESS transaction already exists for this rate to avoid double-charging
+  const existingRes = await fetch(
+    `https://api.goshippo.com/transactions/?rate=${rateId}&results=5`,
+    { headers: { Authorization: `ShippoToken ${apiKey}` } }
+  );
+  if (existingRes.ok) {
+    const existingData = await existingRes.json();
+    const existing = (existingData.results ?? []).find(
+      (t: { object_status: string; label_url: string }) => t.object_status === "SUCCESS" && t.label_url
+    );
+    if (existing) {
+      console.log(`[reship] Reusing existing SUCCESS transaction for rate ${rateId}`);
+      return {
+        label_url: existing.label_url,
+        tracking_number: existing.tracking_number ?? "",
+        tracking_url: existing.tracking_url_provider ?? "",
+        carrier: existing.provider ?? providerName,
+      };
+    }
+  }
+
+  console.log(`[reship] Purchasing label for rate ${rateId} (${providerName})`);
+  const txRes = await fetch("https://api.goshippo.com/transactions/", {
+    method: "POST",
+    headers: { Authorization: `ShippoToken ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ rate: rateId, label_file_type: "PDF_4X6", async: false }),
+  });
+  const tx = await txRes.json();
+
+  if (txRes.ok && tx.object_status === "SUCCESS" && tx.label_url) {
+    return {
+      label_url: tx.label_url,
+      tracking_number: tx.tracking_number ?? "",
+      tracking_url: tx.tracking_url_provider ?? "",
+      carrier: tx.provider ?? providerName,
+    };
+  }
+
+  const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
+  console.error(`[reship] Transaction failed for ${providerName}:`, JSON.stringify(tx));
+  return { error: `${providerName}: ${msg}` };
+}
+
 async function quoteAndCreateLabel(
   apiKey: string,
   order: Pick<DbOrder, "customer_name" | "shipping_address">,
   weightKg: number,
-  preferredProvider: "UPS" | "Canada Post" | null
 ): Promise<{ label_url: string; tracking_number: string; tracking_url: string; carrier: string } | { error: string }> {
   const box = selectBox(Math.max(0.1, weightKg));
   const dimWeight =
@@ -73,42 +120,22 @@ async function quoteAndCreateLabel(
     return { error: `No CAD shipping rates available for this address. Shippo returned ${rates.length} rate(s) in other currencies.` };
   }
 
-  // prefer Canada Post CAD rates since UPS often has modifier errors on returns
+  // prefer Canada Post, then cheapest
   const sorted = cadRates.sort((a, b) => {
-    const aIsPreferred = preferredProvider ? a.provider === preferredProvider : a.provider === "Canada Post";
-    const bIsPreferred = preferredProvider ? b.provider === preferredProvider : b.provider === "Canada Post";
-    if (aIsPreferred && !bIsPreferred) return -1;
-    if (!aIsPreferred && bIsPreferred) return 1;
+    const aCP = a.provider === "Canada Post";
+    const bCP = b.provider === "Canada Post";
+    if (aCP && !bCP) return -1;
+    if (!aCP && bCP) return 1;
     return parseFloat(a.amount) - parseFloat(b.amount);
   });
 
-  // Only attempt ONE label — pick the cheapest rate to avoid duplicate charges
+  // Only attempt ONE label — pick the cheapest preferred rate to avoid duplicate charges
   const best = sorted[0];
-  console.log(`[reship] Attempting label with ${best.provider} at ${best.amount} CAD`);
-
-  const txRes = await fetch("https://api.goshippo.com/transactions/", {
-    method: "POST",
-    headers: { Authorization: `ShippoToken ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ rate: best.object_id, label_file_type: "PDF_4X6", async: false }),
-  });
-  const tx = await txRes.json();
-
-  if (txRes.ok && tx.object_status === "SUCCESS" && tx.label_url) {
-    return {
-      label_url: tx.label_url,
-      tracking_number: tx.tracking_number ?? "",
-      tracking_url: tx.tracking_url_provider ?? "",
-      carrier: tx.provider ?? best.provider,
-    };
-  }
-
-  const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
-  console.error(`[reship] Transaction failed for ${best.provider}:`, JSON.stringify(tx));
-  return { error: `${best.provider}: ${msg}` };
+  return createLabelForRate(apiKey, best.object_id, best.provider);
 }
 
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const isAuthenticated = await verifyAdminCookie();
@@ -120,6 +147,9 @@ export async function POST(
   if (!apiKey) {
     return NextResponse.json({ error: "SHIPPO_API_KEY not configured" }, { status: 500 });
   }
+
+  let body: { rate_id?: string; provider?: string } = {};
+  try { body = await req.json(); } catch { /* no body */ }
 
   const { id } = await params;
   const supabase = supabaseAdmin();
@@ -163,7 +193,9 @@ export async function POST(
     }
   }
 
-  const result = await quoteAndCreateLabel(apiKey, order, totalWeight, "Canada Post");
+  const result = body.rate_id
+    ? await createLabelForRate(apiKey, body.rate_id, body.provider ?? "Carrier")
+    : await quoteAndCreateLabel(apiKey, order, totalWeight);
 
   if ("error" in result) {
     console.error("[reship] quoteAndCreateLabel error:", result.error);
@@ -185,7 +217,12 @@ export async function POST(
     .eq("id", id);
 
   if (updateError) {
-    return NextResponse.json({ error: "Label created but failed to save to DB" }, { status: 500 });
+    console.error(`[reship] ORPHANED LABEL — tracking: ${result.tracking_number}, url: ${result.label_url}`);
+    return NextResponse.json({
+      error: "Label was purchased but failed to save to DB. Use 'Sync from Shippo' to recover.",
+      tracking_number: result.tracking_number,
+      label_url: result.label_url,
+    }, { status: 500 });
   }
 
   console.log(`[reship] New label for order ${order.order_number} — tracking: ${result.tracking_number}`);

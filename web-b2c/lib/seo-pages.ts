@@ -81,6 +81,46 @@ export const collectionPages: CollectionPage[] = [
       "Get ready for the tournament with fan gear that ships from Canada. Browse caps, bucket hats, car flags, and souvenirs for watch parties, road trips, and match days.",
     match: (product) => product.name.toLowerCase().includes("canada"),
   },
+  {
+    slug: "world-cup-gifts",
+    title: "Best World Cup 2026 Gifts Canada — Fan Gear Gift Ideas",
+    description:
+      "Shop the best World Cup 2026 gifts for Canadian soccer fans. Caps, bucket hats, car flags, Panini sticker packs, and mini boxing gloves — all under $35 CAD, shipped from Toronto.",
+    h1: "World Cup 2026 Gifts",
+    intro:
+      "The best World Cup 2026 gifts for soccer fans don't need to be expensive. Caps, car flags, Panini sticker packs, and mini boxing gloves are all under $35 CAD, easy to gift, and ready to ship from Toronto across Canada.",
+    match: () => true,
+  },
+  {
+    slug: "panini-stickers",
+    title: "Panini FIFA World Cup 2026 Stickers Canada — In Stock",
+    description:
+      "Buy Panini FIFA World Cup 2026 sticker packs, 50-pack boxes, and bundles in Canada. In stock and shipped from Toronto. Official Panini stickers for all 48 nations.",
+    h1: "Panini FIFA World Cup 2026 Stickers",
+    intro:
+      "Official Panini FIFA World Cup 2026 sticker packs and boxes — in stock and shipping from Toronto. Build your album, open packs with friends, and collect all 48 nations before the tournament ends.",
+    category: "Sticker Packs",
+  },
+  {
+    slug: "canada-fan-gear",
+    title: "Canada Fan Gear for World Cup 2026 — Caps, Flags & Bucket Hats",
+    description:
+      "Shop Canada fan gear for World Cup 2026. Embroidered caps, reversible bucket hats, car flags, and souvenirs for Canada supporters — ships from Toronto, in stock now.",
+    h1: "Canada Fan Gear",
+    intro:
+      "Canada is a host nation for World Cup 2026. Show your support with fan gear made for Toronto match days, car parades, watch parties, and outdoor fan zones. Ships same day from our North York warehouse.",
+    match: (product) => product.name.toLowerCase().includes("canada"),
+  },
+  {
+    slug: "world-cup-merchandise-canada",
+    title: "World Cup 2026 Merchandise Canada — In Stock, Ships from Toronto",
+    description:
+      "Shop World Cup 2026 merchandise in Canada. Caps, bucket hats, car flags, Panini sticker packs, and mini boxing gloves — all in stock and shipped from Toronto.",
+    h1: "World Cup 2026 Merchandise",
+    intro:
+      "Browse the full range of World Cup 2026 merchandise available in Canada. All items are in stock and ship from our Toronto warehouse — perfect for fans, collectors, and gift-givers across Canada.",
+    match: () => true,
+  },
 ];
 
 export const teamPages: TeamPage[] = [
@@ -223,6 +263,36 @@ export const teamPages: TeamPage[] = [
     intro:
       "South Korea fans bring serious tournament energy. Find fan gear for Vancouver, Toronto, and Canadian cities with strong Korean-Canadian communities.",
     terms: ["south korea", "korea"],
+  },
+  {
+    slug: "nigeria",
+    team: "Nigeria",
+    title: "Nigeria World Cup 2026 Fan Gear",
+    description:
+      "Shop Nigeria soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Nigeria brings one of the most electric atmospheres to any World Cup. Find fan gear for Toronto, Calgary, and Canadian cities with strong Nigerian-Canadian communities.",
+    terms: ["nigeria"],
+  },
+  {
+    slug: "senegal",
+    team: "Senegal",
+    title: "Senegal World Cup 2026 Fan Gear",
+    description:
+      "Shop Senegal soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Senegal fans are passionate and vocal. Browse fan gear for match days, watch parties, and car parades across Canada.",
+    terms: ["senegal"],
+  },
+  {
+    slug: "netherlands",
+    team: "Netherlands",
+    title: "Netherlands World Cup 2026 Fan Gear",
+    description:
+      "Shop Netherlands soccer fan gear for World Cup 2026, including orange caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "The Netherlands brings iconic orange colours to every World Cup. Find Dutch fan gear for match days, watch parties, and tournament celebrations across Canada.",
+    terms: ["netherlands", "holland", "dutch"],
   },
 ];
 

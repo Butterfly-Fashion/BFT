@@ -3724,6 +3724,245 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+
+  {
+    slug: "where-to-buy-world-cup-2026-merchandise-toronto",
+    title: "Where to Buy World Cup 2026 Merchandise in Toronto",
+    description:
+      "A practical guide to buying World Cup 2026 fan gear in Toronto — what's in stock, where it ships from, and how to avoid sold-out listings and USD pricing surprises.",
+    publishedAt: "2026-05-22",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/toronto-world-cup-2026-fan-gear.webp",
+    heroAlt: "World Cup 2026 merchandise available in Toronto — caps, car flags, Panini stickers",
+    productSlugs: [
+      "canada-car-flag",
+      "canada-black-flag-3d-embroidered-cap",
+      "canada-reversible-bucket-hat",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+    ],
+    sections: [
+      {
+        heading: "The short answer: buy from a Toronto-based store",
+        body: [
+          "Toronto is a World Cup 2026 host city. Matches kick off at BMO Field starting June 12. That means demand for fan gear — caps, car flags, bucket hats, and souvenirs — is going to spike in the weeks before the tournament.",
+          "The smartest move is to buy from a store that ships from Toronto. You avoid international shipping, USD conversion costs, and the wait times that come with ordering from the US or overseas.",
+        ],
+      },
+      {
+        heading: "What's actually in stock right now",
+        body: [
+          "The FIFA official store's Toronto host-city collection sold out fast. If you've checked store.fifa.com recently, most of the Toronto-specific items show as out of stock or \"coming soon.\" Fanatics carries World Cup gear but focuses on jerseys — the accessories category (car flags, bucket hats, mini gloves) is thin.",
+          "World Fan Gear ships from North York, Ontario. The full catalog — caps, bucket hats, car flags, Panini sticker packs, and mini boxing gloves for all major nations — is in stock and ready to ship.",
+        ],
+      },
+      {
+        heading: "What to buy for Toronto watch parties",
+        body: [
+          "A car flag is the highest-visibility item you can own for match day. Put it on your car window driving to Little Portugal or Corso Italia and you're part of the scene before you park. They cost around $15 and take two seconds to attach.",
+          "A bucket hat or cap handles Toronto's June and July weather well. Humid, warm, occasionally rainy — a hat you can fold and pocket is more practical than a scarf. Pick your nation's colours and wear it to work on match mornings.",
+          "Panini sticker packs are the social item. A box to open with friends is a match-day activity, not just a product. Toronto has one of the most diverse fan bases in the world — there's a good chance your coworker follows a different team and wants to swap stickers.",
+        ],
+      },
+      {
+        heading: "Price comparison: what Toronto fans actually pay",
+        body: [
+          "FIFA official store prices are in USD, which adds 35–40% after conversion and potential duties. A $35 USD cap lands at roughly $50 CAD by the time it arrives. Fanatics charges $35–$45 CAD for comparable caps with a $99 free shipping threshold.",
+          "Our pricing is $10–$35 CAD with transparent checkout. No USD conversion, no surprise duties, free shipping above a lower threshold. Caps start at $14.99, car flags at $12.99, bucket hats at $16.99.",
+        ],
+      },
+      {
+        heading: "Order before the group stage rush",
+        body: [
+          "Every World Cup follows the same pattern: demand starts slow, then doubles in the week before the first match. By the time Canada plays its opener, the good inventory is gone.",
+          "Order in May or early June, keep the gear ready, and you're covered for the whole tournament. Most categories only get harder to find after June 12.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Where can I buy World Cup 2026 merchandise in Toronto?",
+        a: "World Fan Gear ships from North York, Toronto. The full catalog — caps, bucket hats, car flags, Panini stickers, and mini boxing gloves — is in stock. Orders placed before 2 PM ET ship same day.",
+      },
+      {
+        q: "Is the FIFA official store sold out in Toronto?",
+        a: "The FIFA official store's Toronto host-city collection sold out quickly. World Fan Gear carries in-stock alternatives, all priced in CAD and shipped from Toronto with no duty surprises.",
+      },
+      {
+        q: "How long does shipping take to the GTA?",
+        a: "Orders from our North York warehouse typically arrive in 1–2 business days across the GTA. Ontario-wide delivery is 2–3 business days.",
+      },
+      {
+        q: "What World Cup 2026 gear is available for Canada fans in Toronto?",
+        a: "Canada caps, bucket hats, car flags, and mini boxing gloves are in stock. These are the most popular items for GTA-based Canada fans heading to BMO Field or hosting watch parties.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-2026-fan-gear-vancouver",
+    title: "World Cup 2026 Fan Gear in Vancouver — In Stock, Ships to BC",
+    description:
+      "Shop World Cup 2026 fan gear for Vancouver fans. Caps, car flags, bucket hats, and Panini sticker packs shipped from Toronto to BC in 3–5 business days. BC Place host city gear.",
+    publishedAt: "2026-05-25",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/vancouver-world-cup-2026-fan-gear.png",
+    heroAlt: "World Cup 2026 fan gear in Vancouver BC Place host city",
+    productSlugs: [
+      "canada-car-flag",
+      "canada-black-flag-3d-embroidered-cap",
+      "canada-reversible-bucket-hat",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+    ],
+    sections: [
+      {
+        heading: "Vancouver is a World Cup host city",
+        body: [
+          "BC Place in Vancouver is hosting World Cup 2026 matches, making the city one of the loudest fan zones in North America. Korean-Canadian, Mexican, South American, Chinese-Canadian, and Japanese communities are all gearing up.",
+          "The fan energy in Vancouver is different from anywhere else in Canada. This is the city where the Pacific meets the World Cup.",
+        ],
+      },
+      {
+        heading: "What Vancouver fans are buying",
+        body: [
+          "Car flags are the fastest way to join the conversation. Before a big match, the drive down Robson Street shows exactly which communities are showing up that day.",
+          "Caps and bucket hats work for BC's outdoor fan zones, Stanley Park screenings, and restaurant watch parties throughout the summer.",
+        ],
+      },
+      {
+        heading: "Shipping from Toronto to Vancouver",
+        body: [
+          "We ship from our Toronto warehouse. Vancouver orders typically arrive in 3–5 business days via Canada Post Expedited. Order before June 7 to guarantee delivery before opening day.",
+          "All pricing is in Canadian dollars. No duties, no USD conversion.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Where can I buy World Cup 2026 merchandise in Vancouver?",
+        a: "World Fan Gear ships World Cup 2026 merchandise from Toronto to Vancouver in 3–5 business days. Caps, car flags, bucket hats, and Panini sticker packs are all in stock.",
+      },
+      {
+        q: "Does World Cup 2026 fan gear ship to BC?",
+        a: "Yes. We ship to all provinces including British Columbia. Vancouver orders typically arrive in 3–5 business days from our Toronto warehouse.",
+      },
+      {
+        q: "Is BC Place hosting World Cup 2026 matches?",
+        a: "Yes. BC Place in Vancouver is an official host venue for FIFA World Cup 2026. Matches run from the group stage through the knockout rounds.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-2026-fan-gear-montreal",
+    title: "World Cup 2026 Fan Gear in Montreal — Ships Across Quebec",
+    description:
+      "Shop World Cup 2026 fan gear for Montreal fans. Caps, car flags, bucket hats shipped from Toronto to Montreal in 2–3 business days. Gear for Morocco, Argentina, Italy, and more.",
+    publishedAt: "2026-05-25",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/montreal-world-cup-2026-fan-gear.png",
+    heroAlt: "World Cup 2026 fan gear for Montreal Quebec fans",
+    productSlugs: [
+      "canada-car-flag",
+      "argentina-car-flag",
+      "brazil-car-flag",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+    ],
+    sections: [
+      {
+        heading: "Montreal's World Cup fan communities",
+        body: [
+          "Montreal has one of the most passionate soccer cultures in Canada. Moroccan, Algerian, Haitian, Italian, and Argentinian communities all turn the city into a festival when their country plays.",
+          "The atmosphere on Saint-Laurent during a major match is something you only see in cities like this — fans spilling onto terraces, car flags down the boulevard, the whole neighbourhood watching together.",
+        ],
+      },
+      {
+        heading: "Gear that works for a Montreal summer",
+        body: [
+          "A bucket hat for the June outdoor screenings on the mountain. A car flag for the Plateau drive. A cap for the café watch party on Saint-Denis. Montreal fan gear needs to work across all of those.",
+          "Panini sticker boxes are also a strong seller here — great for the collector at your office or as a gift for the fan in your family.",
+        ],
+      },
+      {
+        heading: "Fast shipping from Toronto to Montreal",
+        body: [
+          "Our Toronto warehouse ships to Montreal in 2–3 business days. Order before June 9 to arrive before the group stage rush.",
+          "All prices in CAD, no duties, no surprises at checkout.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Where can I buy World Cup 2026 merchandise in Montreal?",
+        a: "World Fan Gear ships World Cup 2026 fan gear from Toronto to Montreal in 2–3 business days. Caps, car flags, bucket hats, and Panini sticker packs are in stock now.",
+      },
+      {
+        q: "Is Montreal a World Cup 2026 host city?",
+        a: "Montreal is not an official host venue for FIFA World Cup 2026. The Canadian host cities are Toronto (BMO Field) and Vancouver (BC Place). However, Montreal has huge fan communities and outdoor screenings planned.",
+      },
+      {
+        q: "What teams are popular in Montreal for World Cup 2026?",
+        a: "Morocco, Algeria, Argentina, Italy, Brazil, and Canada are among the most followed teams in Montreal's diverse soccer communities.",
+      },
+    ],
+  },
+  {
+    slug: "best-last-minute-world-cup-2026-gifts-canada",
+    title: "Best Last-Minute World Cup 2026 Gifts in Canada (Under $30)",
+    description:
+      "18 days to kickoff and still need a World Cup 2026 gift? The best last-minute options under $30 that still ship in time — all in stock and shipped from Toronto.",
+    publishedAt: "2026-05-25",
+    category: "Gift Ideas",
+    heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
+    heroAlt: "Best last-minute World Cup 2026 gift ideas Canada under $30",
+    productSlugs: [
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "canada-boxing-glove",
+      "canada-car-flag",
+      "canada-reversible-bucket-hat",
+    ],
+    sections: [
+      {
+        heading: "You still have time — but order this week",
+        body: [
+          "With 18 days to opening day, standard shipping from Toronto still gets your order to most Canadian addresses before June 12. Order by June 7 for reliable delivery before the first whistle.",
+          "These are the items that arrive quickly, look like a real gift, and actually get used on match day.",
+        ],
+      },
+      {
+        heading: "Panini sticker box — $24.99",
+        body: [
+          "The Panini FIFA World Cup 2026 sticker box is 50 packs in a gift-ready box. Open it at the watch party, trade with friends, and try to complete the album. It works for kids, collectors, and casual fans.",
+          "This is the easiest yes at any price point under $25. Unique, shareable, and something they won't already have.",
+        ],
+      },
+      {
+        heading: "Mini boxing glove — $14.99",
+        body: [
+          "A mini souvenir boxing glove in your country's colours is the kind of thing that ends up on a shelf, on a rear-view mirror, or on someone's desk for years. Small, lightweight, and genuinely useful as a desk decoration or car accessory.",
+          "Available for Canada, Brazil, Argentina, Mexico, Portugal, Morocco, and more. Order two and gift one.",
+        ],
+      },
+      {
+        heading: "Car flag — $12.99",
+        body: [
+          "The most visible fan gear option under $15. A car flag turns the drive to the watch party into part of the event. It's the gift that shows up in every neighbourhood photo on match day.",
+          "Popular country flags are still in stock — Canada, Brazil, Mexico, Argentina, Portugal, and more.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What World Cup 2026 gifts can still arrive before opening day?",
+        a: "Orders placed this week from our Toronto warehouse reach most Canadian addresses by June 10–12. Panini sticker packs, mini boxing gloves, car flags, and caps are all in stock and ready to ship.",
+      },
+      {
+        q: "What are the best World Cup 2026 gifts under $25 in Canada?",
+        a: "The Panini FIFA World Cup 2026 sticker box (50 packs) is the top pick at $24.99. Mini boxing gloves and car flags are popular under $15. All ship from Toronto with no duty surprises.",
+      },
+      {
+        q: "Is there still time to order World Cup 2026 merchandise in Canada?",
+        a: "Yes — orders placed by June 7 should arrive before opening day for most Canadian addresses. We ship from Toronto via Canada Post Expedited.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {

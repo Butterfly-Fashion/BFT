@@ -111,21 +111,33 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
 export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": ["Organization", "OnlineStore"],
+    "@type": ["Organization", "OnlineStore", "LocalBusiness"],
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl("/asset/logo.jpg"),
     legalName: "Butterfly Fashion Trading",
-    areaServed: {
-      "@type": "Country",
-      name: "Canada",
-    },
+    description:
+      "Toronto-based World Cup 2026 fan gear store. Caps, bucket hats, car flags, Panini sticker packs shipped from North York, ON across Canada.",
+    areaServed: [
+      { "@type": "City", name: "Toronto" },
+      { "@type": "State", name: "Ontario" },
+      { "@type": "Country", name: "Canada" },
+    ],
     address: {
       "@type": "PostalAddress",
+      streetAddress: "178 Bentworth Ave",
       addressLocality: "North York",
       addressRegion: "ON",
+      postalCode: "M6A 1P7",
       addressCountry: "CA",
     },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: 43.706,
+      longitude: -79.453,
+    },
+    priceRange: "$10 – $35 CAD",
     contactPoint: {
       "@type": "ContactPoint",
       email: "jameskimkim1@gmail.com",

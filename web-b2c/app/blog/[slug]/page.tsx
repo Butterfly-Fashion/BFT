@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/store/product-card";
 import { getBlogPost, getPostProducts, isPostPublished } from "@/lib/blog-posts";
 import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
+import { BlogUrgencyBanner } from "@/components/store/blog-urgency-banner";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -135,6 +136,11 @@ export default async function BlogPostPage({ params }: Props) {
             year: "numeric",
           }).format(new Date(`${post.publishedAt}T00:00:00-04:00`))}
         </p>
+
+        <BlogUrgencyBanner
+          category={post.category}
+          productSlug={post.productSlugs?.[0]}
+        />
 
         <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
           <Image

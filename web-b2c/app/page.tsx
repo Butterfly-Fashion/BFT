@@ -5,6 +5,8 @@ import { CategoryStrip } from "@/components/store/category-strip";
 import { ProductCard } from "@/components/store/product-card";
 import { SocialProof } from "@/components/store/social-proof";
 import { NewsletterForm } from "@/components/store/newsletter-form";
+import { MobileUrgencyBanner } from "@/components/store/mobile-urgency-banner";
+import { HomeSearchBar } from "@/components/store/home-search-bar";
 import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { collectionPages, teamPages } from "@/lib/seo-pages";
 import Link from "next/link";
@@ -68,10 +70,19 @@ async function FeaturedSection() {
 export default function HomePage() {
   return (
     <>
-      <HeroCarousel />
+      {/* Hero: desktop only */}
+      <div className="hidden sm:block">
+        <HeroCarousel />
+      </div>
 
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-        <div className="flex items-end justify-between mb-8">
+      {/* Mobile: urgency banner replaces hero */}
+      <MobileUrgencyBanner />
+
+      {/* Search bar — visible on all screen sizes */}
+      <HomeSearchBar />
+
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
+        <div className="flex items-end justify-between mb-6 sm:mb-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
               Trending Now

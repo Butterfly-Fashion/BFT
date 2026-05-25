@@ -112,11 +112,26 @@ export async function POST(
     }, { status: 400 });
   }
 
-  if (order.shippo_label_url) {
+  if (order.shippo_label_url && order.shippo_label_url !== "__pending__") {
     return NextResponse.json({
       error: "Label already created for this order.",
       label_url: order.shippo_label_url,
     }, { status: 409 });
+  }
+
+  // Atomic DB lock: only one request can proceed at a time.
+  // Update sets shippo_label_url = '__pending__' only if it's currently NULL.
+  // If 0 rows updated, another request already claimed this order.
+  if (!order.shippo_label_url) {
+    const { data: claimed } = await supabase
+      .from("orders")
+      .update({ shippo_label_url: "__pending__" })
+      .eq("id", id)
+      .is("shippo_label_url", null)
+      .select("id");
+    if (!claimed?.length) {
+      return NextResponse.json({ error: "Label creation already in progress for this order." }, { status: 409 });
+    }
   }
 
   // Shippo에 이미 성공한 트랜잭션이 있으면 새로 결제하지 않고 재사용
@@ -174,6 +189,14 @@ export async function POST(
     }
   }
 
+  async function releaseLock() {
+    await supabase
+      .from("orders")
+      .update({ shippo_label_url: null })
+      .eq("id", id)
+      .eq("shippo_label_url", "__pending__");
+  }
+
   // 1차 시도: 고객이 선택한 rate_id로 라벨 발급
   let shippoRes: Response;
   try {
@@ -191,6 +214,7 @@ export async function POST(
     });
   } catch (err) {
     console.error("[create-label] Shippo network error:", err);
+    await releaseLock();
     return NextResponse.json({ error: "Failed to reach Shippo API" }, { status: 502 });
   }
 
@@ -260,6 +284,7 @@ export async function POST(
 
   if (!shippoRes.ok || transaction.object_status !== "SUCCESS") {
     console.error("[create-label] Shippo error:", JSON.stringify(transaction));
+    await releaseLock();
     const msg =
       transaction.messages?.[0]?.text ??
       transaction.object_status ??
@@ -286,7 +311,13 @@ export async function POST(
 
   if (updateError) {
     console.error("[create-label] Supabase update error:", updateError);
-    return NextResponse.json({ error: "Label created but failed to save to DB" }, { status: 500 });
+    // Label was purchased — log the transaction ID so admin can recover via sync
+    console.error(`[create-label] ORPHANED LABEL — transaction: ${transaction.object_id}, tracking: ${trackingNumber}, url: ${labelUrl}`);
+    return NextResponse.json({
+      error: "Label was purchased from Shippo but failed to save to DB. Use 'Sync from Shippo' to recover.",
+      transaction_id: transaction.object_id,
+      tracking_number: trackingNumber,
+    }, { status: 500 });
   }
 
   console.log(`[create-label] Label created for order ${order.order_number} — tracking: ${trackingNumber}`);

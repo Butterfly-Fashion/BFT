@@ -87,7 +87,13 @@ export default function OrdersDashboard() {
   const [recoveringLabel, setRecoveringLabel] = useState(false);
   const [linkingLabel, setLinkingLabel] = useState(false);
   const [reshiping, setReshiping] = useState(false);
+  const [reshipeRates, setReshipeRates] = useState<Array<{ rate_id: string; provider: string; service: string; amount: number; estimated_days: number | null }> | null>(null);
+  const [reshipeRatesLoading, setReshipeRatesLoading] = useState(false);
+  const [selectedRateId, setSelectedRateId] = useState<string | null>(null);
   const [linkTrackingInput, setLinkTrackingInput] = useState("");
+  const [syncOpen, setSyncOpen] = useState(false);
+  const [syncInput, setSyncInput] = useState("");
+  const [syncing, setSyncing] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ type: "ok" | "err"; text: string } | null>(null);
   const [refundOpen, setRefundOpen] = useState(false);
   const [refundAmount, setRefundAmount] = useState("");
@@ -400,15 +406,41 @@ export default function OrdersDashboard() {
     }
   }
 
+  async function openReshipeRates() {
+    if (!selected || selected._source !== "supabase") return;
+    setReshipeRatesLoading(true);
+    setReshipeRates(null);
+    setSelectedRateId(null);
+    setSaveMsg(null);
+    try {
+      const res = await fetch(`/api/admin/orders/${selected.id}/reship-rates`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to get rates");
+      setReshipeRates(data.rates ?? []);
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Failed to fetch rates" });
+    } finally {
+      setReshipeRatesLoading(false);
+    }
+  }
+
   async function handleReship() {
     if (!selected || selected._source !== "supabase") return;
-    if (!confirm("Re-ship this order? A new label will be created and a new tracking email sent to the customer.")) return;
+    const rate = reshipeRates?.find((r) => r.rate_id === selectedRateId);
+    if (!rate) return;
+    if (!confirm(`Re-ship with ${rate.provider} — ${rate.service} ($${rate.amount.toFixed(2)} CAD)?\nA new label will be created and a tracking email sent to the customer.`)) return;
     setReshiping(true);
     setSaveMsg(null);
     try {
-      const res = await fetch(`/api/admin/orders/${selected.id}/reship`, { method: "POST" });
+      const res = await fetch(`/api/admin/orders/${selected.id}/reship`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rate_id: rate.rate_id, provider: rate.provider }),
+      });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Reship failed");
+      setReshipeRates(null);
+      setSelectedRateId(null);
       const updated: DbOrder = {
         ...selected,
         shippo_label_url: data.label_url,
@@ -428,6 +460,52 @@ export default function OrdersDashboard() {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Reship failed" });
     } finally {
       setReshiping(false);
+    }
+  }
+
+  async function handleSync() {
+    if (!selected || selected._source !== "supabase") return;
+    setSyncing(true);
+    setSaveMsg(null);
+    try {
+      const input = syncInput.trim();
+      const body: Record<string, string> = {};
+      if (input.length > 30 && !input.includes(" ")) {
+        // heuristic: long alphanumeric = transaction ID, shorter = tracking number
+        if (input.startsWith("shippo_") || input.length >= 32) {
+          body.transaction_id = input;
+        } else {
+          body.tracking_number = input;
+        }
+      }
+      const res = await fetch(`/api/admin/orders/${selected.id}/sync-label`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Sync failed");
+      const updated: DbOrder = {
+        ...selected,
+        shippo_label_url: data.label_url,
+        tracking_number: data.tracking_number ?? null,
+        tracking_url: data.tracking_url ?? null,
+        carrier: data.carrier ?? null,
+        status: "packing",
+      };
+      setSelected(updated);
+      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updated : o)));
+      setEditStatus("packing");
+      setEditTracking(data.tracking_number ?? "");
+      setEditTrackingUrl(data.tracking_url ?? "");
+      setEditCarrier(data.carrier ?? "");
+      setSyncOpen(false);
+      setSyncInput("");
+      setSaveMsg({ type: "ok", text: "Label synced from Shippo!" });
+    } catch (e) {
+      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Sync failed" });
+    } finally {
+      setSyncing(false);
     }
   }
 
@@ -812,13 +890,77 @@ export default function OrdersDashboard() {
                           Track Package →
                         </a>
                       )}
-                      <button
-                        onClick={handleReship}
-                        disabled={reshiping}
-                        className="w-full rounded-full border border-orange-300 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition-colors disabled:opacity-50"
-                      >
-                        {reshiping ? "Creating new label…" : "↩ Reship (New Label)"}
-                      </button>
+                      {reshipeRates ? (
+                        <div className="rounded-xl border border-orange-200 bg-orange-50 p-3 space-y-2">
+                          <p className="text-xs font-bold text-orange-800 mb-1">Select a shipping rate:</p>
+                          {reshipeRates.map((r) => (
+                            <label key={r.rate_id} className={`flex items-center gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${selectedRateId === r.rate_id ? "border-orange-400 bg-white" : "border-gray-200 bg-white hover:border-orange-300"}`}>
+                              <input
+                                type="radio"
+                                name="reship-rate"
+                                value={r.rate_id}
+                                checked={selectedRateId === r.rate_id}
+                                onChange={() => setSelectedRateId(r.rate_id)}
+                                className="accent-orange-500"
+                              />
+                              <span className="flex-1 min-w-0">
+                                <span className="block text-xs font-semibold text-gray-900">{r.provider} — {r.service}</span>
+                                <span className="block text-[11px] text-gray-500">{r.estimated_days != null ? `Est. ${r.estimated_days} day${r.estimated_days !== 1 ? "s" : ""}` : "Est. days N/A"}</span>
+                              </span>
+                              <span className="text-sm font-bold text-gray-800 shrink-0">${r.amount.toFixed(2)}</span>
+                            </label>
+                          ))}
+                          <div className="flex gap-2 pt-1">
+                            <button
+                              onClick={handleReship}
+                              disabled={!selectedRateId || reshiping}
+                              className="flex-1 rounded-full bg-orange-500 py-2 text-xs font-bold text-white hover:bg-orange-600 transition-colors disabled:opacity-50"
+                            >
+                              {reshiping ? "Creating label…" : "↩ Confirm & Create Label"}
+                            </button>
+                            <button
+                              onClick={() => { setReshipeRates(null); setSelectedRateId(null); }}
+                              disabled={reshiping}
+                              className="rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 transition-colors disabled:opacity-50"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={openReshipeRates}
+                          disabled={reshipeRatesLoading || reshiping}
+                          className="w-full rounded-full border border-orange-300 py-2 text-xs font-semibold text-orange-600 hover:bg-orange-50 transition-colors disabled:opacity-50"
+                        >
+                          {reshipeRatesLoading ? "Loading rates…" : "↩ Reship (New Label)"}
+                        </button>
+                      )}
+                      {syncOpen ? (
+                        <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 space-y-2">
+                          <p className="text-xs font-bold text-blue-800">Sync from Shippo</p>
+                          <p className="text-[11px] text-blue-600">Leave blank to auto-search, or paste a tracking number / Shippo transaction ID.</p>
+                          <input
+                            type="text"
+                            value={syncInput}
+                            onChange={(e) => setSyncInput(e.target.value)}
+                            placeholder="Tracking no. or transaction ID (optional)"
+                            className="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-mono outline-none focus:border-blue-400"
+                          />
+                          <div className="flex gap-2">
+                            <button onClick={handleSync} disabled={syncing} className="flex-1 rounded-full bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors disabled:opacity-50">
+                              {syncing ? "Syncing…" : "⟳ Sync"}
+                            </button>
+                            <button onClick={() => { setSyncOpen(false); setSyncInput(""); }} disabled={syncing} className="rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 transition-colors disabled:opacity-50">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button onClick={() => setSyncOpen(true)} className="w-full rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-colors">
+                          ⟳ Re-sync label from Shippo
+                        </button>
+                      )}
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -831,19 +973,46 @@ export default function OrdersDashboard() {
                         <div className="space-y-2">
                           <button
                             onClick={handleCreateLabel}
-                            disabled={creatingLabel || recoveringLabel || linkingLabel}
+                            disabled={creatingLabel || recoveringLabel || linkingLabel || syncing}
                             className="w-full rounded-full bg-[#003876] py-2.5 text-sm font-bold text-white hover:bg-[#002a5a] transition-colors disabled:opacity-60"
                           >
                             {creatingLabel ? "Purchasing label…" : "🏷️ Create Shipping Label"}
                           </button>
                           <button
                             onClick={handleRecoverLabel}
-                            disabled={creatingLabel || recoveringLabel || linkingLabel}
+                            disabled={creatingLabel || recoveringLabel || linkingLabel || syncing}
                             className="w-full rounded-full border border-gray-300 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 hover:text-gray-900 transition-colors disabled:opacity-60"
                           >
                             {recoveringLabel ? "Searching Shippo…" : "🔍 Recover Existing Label"}
                           </button>
                         </div>
+                      )}
+
+                      {/* Sync from Shippo — fallback when label was purchased but not saved */}
+                      {syncOpen ? (
+                        <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 space-y-2">
+                          <p className="text-xs font-bold text-blue-800">Sync from Shippo</p>
+                          <p className="text-[11px] text-blue-600">Leave blank to auto-search, or paste a tracking number / Shippo transaction ID.</p>
+                          <input
+                            type="text"
+                            value={syncInput}
+                            onChange={(e) => setSyncInput(e.target.value)}
+                            placeholder="Tracking no. or transaction ID (optional)"
+                            className="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-mono outline-none focus:border-blue-400"
+                          />
+                          <div className="flex gap-2">
+                            <button onClick={handleSync} disabled={syncing} className="flex-1 rounded-full bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors disabled:opacity-50">
+                              {syncing ? "Syncing…" : "⟳ Sync"}
+                            </button>
+                            <button onClick={() => { setSyncOpen(false); setSyncInput(""); }} disabled={syncing} className="rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 transition-colors disabled:opacity-50">
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button onClick={() => setSyncOpen(true)} disabled={creatingLabel || recoveringLabel || linkingLabel} className="w-full rounded-full border border-blue-200 py-2 text-xs font-semibold text-blue-500 hover:bg-blue-50 transition-colors disabled:opacity-50">
+                          ⟳ Sync from Shippo
+                        </button>
                       )}
 
                       {/* 트래킹 번호로 직접 라벨 연결 */}
