@@ -60,7 +60,7 @@ export default async function HomePage() {
 
               {/* Left: copy */}
               <div>
-                <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1.5 text-xs font-bold text-blue-700 ring-1 ring-blue-100">
+                <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold text-blue-700 ring-1 ring-blue-200">
                   B2B Wholesale Platform
                 </div>
 
@@ -92,7 +92,7 @@ export default async function HomePage() {
 
                 <div className="mt-6 flex flex-wrap gap-5">
                   {["No upfront payment", "Bulk orders welcome", "Custom B2B pricing"].map((t) => (
-                    <span key={t} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                    <span key={t} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600">
                       <CheckCircle size={12} className="shrink-0 text-emerald-500" />
                       {t}
                     </span>
@@ -137,7 +137,7 @@ export default async function HomePage() {
         <section className="container-shell py-8 sm:py-10">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">Shop by category</p>
+              <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--primary)">Shop by category</p>
               <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Browse our catalog</h2>
             </div>
             <Link className="btn-secondary shrink-0 text-xs" href="/products">
@@ -168,7 +168,7 @@ export default async function HomePage() {
           <div className="container-shell py-8 sm:py-10">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">🔥 Featured products</p>
+                <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--primary)">🔥 Featured products</p>
                 <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Popular this season</h2>
                 <p className="mt-1 text-xs font-medium text-slate-500 sm:text-sm">
                   Starting prices shown — final totals confirmed before payment.

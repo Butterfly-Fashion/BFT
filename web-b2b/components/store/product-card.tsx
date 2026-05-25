@@ -63,7 +63,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
       {/* ── Info ── */}
       <div className="flex flex-1 flex-col gap-2.5 p-4">
         {/* Category only — SKU removed */}
-        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">{product.category}</span>
+        <span className="text-[10px] font-black uppercase tracking-wider text-slate-500">{product.category}</span>
 
         {/* Name */}
         <Link
@@ -75,7 +75,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
 
         {/* Price */}
         <div className="mt-auto pt-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
             {product.has_customer_price ? "Your B2B price" : "Starting from"}
           </p>
           <strong className="text-xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
@@ -93,7 +93,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
               onChange={(e) => setQty(Math.max(1, parseInt(e.target.value) || 1))}
             />
           </label>
-          <p className="mt-1 text-[10px] text-slate-400">Enter number of units (e.g. 50, 100, 500)</p>
+          <p className="mt-1 text-[10px] text-slate-500">Enter number of units (e.g. 50, 100, 500)</p>
         </div>
 
         {/* Button */}

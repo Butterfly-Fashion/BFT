@@ -54,7 +54,7 @@ export default async function LoginPage({
                   <input className="field" name="password" required type="password" autoComplete="current-password" />
                 </label>
                 <div className="flex justify-end">
-                  <Link className="text-xs font-bold text-(--accent) hover:underline" href="/forgot-password">
+                  <Link className="text-xs font-bold text-(--primary) hover:underline" href="/forgot-password">
                     Forgot password?
                   </Link>
                 </div>
@@ -72,7 +72,7 @@ export default async function LoginPage({
 
           <p className="mt-5 text-center text-sm font-semibold text-slate-600">
             Need a B2B account?{" "}
-            <Link className="font-black text-(--accent) hover:underline" href="/register">
+            <Link className="font-black text-(--primary) hover:underline" href="/register">
               Register here
             </Link>
           </p>

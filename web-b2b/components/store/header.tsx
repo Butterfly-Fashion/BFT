@@ -92,7 +92,7 @@ function UserMenu({ profile }: { profile: Profile }) {
           <div className="absolute right-0 top-full z-20 mt-2 w-56 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
             <div className="border-b border-slate-100 px-4 py-3">
               <p className="truncate text-xs font-black text-slate-900">{profile.business_name}</p>
-              <p className="truncate text-[10px] text-slate-400">{profile.email}</p>
+              <p className="truncate text-[11px] text-slate-500">{profile.email}</p>
             </div>
             <div className="py-1">
               <Link
@@ -114,7 +114,7 @@ function UserMenu({ profile }: { profile: Profile }) {
               {profile.role === "admin" && (
                 <Link
                   href="/admin"
-                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-(--accent) hover:bg-red-50"
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                   onClick={() => setOpen(false)}
                 >
                   <ShieldCheck size={14} />

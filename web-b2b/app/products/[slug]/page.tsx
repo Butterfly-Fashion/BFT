@@ -44,7 +44,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           <div className="flex flex-col gap-5">
             {/* Category / SKU */}
             <div className="flex items-center gap-3 flex-wrap">
-              <span className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-(--accent)">
+              <span className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-(--primary)">
                 <Tag size={11} />
                 {product.category}
               </span>

@@ -38,7 +38,7 @@ export default async function ProductsPage({
       <main className="container-shell py-6">
         {/* Page header */}
         <div className="mb-6 border-b border-slate-200 pb-5">
-          <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">
+          <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--primary)">
             {params.category || "All categories"}
           </p>
           <h1 className="text-3xl font-black text-slate-900">
