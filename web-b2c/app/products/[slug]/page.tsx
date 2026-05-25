@@ -142,6 +142,17 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.description}
           </p>
 
+          {/* World Cup delivery deadline */}
+          {product.inStock && (
+            <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-start gap-3">
+              <span className="text-lg leading-none mt-0.5">⚽</span>
+              <div>
+                <p className="text-xs font-bold text-amber-900">Order by June 8 — arrive before kickoff</p>
+                <p className="text-xs text-amber-700 mt-0.5">World Cup opens June 12 · Ships from Toronto within 1–2 business days</p>
+              </div>
+            </div>
+          )}
+
           {/* Interactive: size + qty + cart — client component */}
           <ProductActions product={product} />
 

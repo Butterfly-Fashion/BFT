@@ -104,6 +104,58 @@ export default function HomePage() {
 
       <TrustStrip />
 
+      {/* Panini Sticker Spotlight */}
+      <section className="bg-linear-to-br from-[#0d3b6e] to-[#1565c0] py-12 sm:py-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 gap-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-1">
+                Official Panini · In Stock
+              </p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                Start Your Collection
+              </h2>
+              <p className="text-blue-200 text-sm mt-1">Begin with the album for $8.99 — add packs as you go.</p>
+            </div>
+            <Link
+              href="/collections/panini-stickers"
+              className="text-sm font-semibold text-blue-200 hover:text-white transition-colors shrink-0"
+            >
+              View all stickers →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Album — entry product */}
+            <Link href="/products/panini-fifa-world-cup-2026-official-sticker-album" className="group bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
+              <div className="text-xs font-bold uppercase tracking-widest text-blue-300">Step 1 · Start here</div>
+              <div className="font-bold text-white text-lg leading-snug">Official Sticker Album</div>
+              <div className="text-3xl font-black text-white">$8.99</div>
+              <div className="text-xs text-blue-200">All 48 nations · 670 sticker slots</div>
+              <div className="mt-auto pt-3 text-sm font-semibold text-white group-hover:underline">Get the album →</div>
+            </Link>
+            {/* Box */}
+            <Link href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs" className="group bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
+              <div className="text-xs font-bold uppercase tracking-widest text-blue-300">Step 2 · Fill it up</div>
+              <div className="font-bold text-white text-lg leading-snug">50-Pack Sticker Box</div>
+              <div className="text-3xl font-black text-white">$125</div>
+              <div className="text-xs text-blue-200">250+ stickers · All 48 teams</div>
+              <div className="mt-auto pt-3 text-sm font-semibold text-white group-hover:underline">Shop the box →</div>
+            </Link>
+            {/* Bundle */}
+            <Link href="/products/panini-fifa-world-cup-2026-bundle-album-sticker-box" className="group bg-yellow-400/20 hover:bg-yellow-400/30 transition-colors rounded-2xl p-5 flex flex-col gap-3 border-2 border-yellow-400/60">
+              <div className="text-xs font-bold uppercase tracking-widest text-yellow-300">Best value · Bundle</div>
+              <div className="font-bold text-white text-lg leading-snug">Album + 50-Pack Box</div>
+              <div className="flex items-baseline gap-2">
+                <div className="text-3xl font-black text-white">$129.99</div>
+                <div className="text-sm text-blue-300 line-through">$155</div>
+              </div>
+              <div className="text-xs text-blue-200">Save $25 · Everything in one order</div>
+              <div className="mt-auto pt-3 text-sm font-semibold text-yellow-300 group-hover:underline">Get the bundle →</div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div className="flex items-end justify-between mb-8">
