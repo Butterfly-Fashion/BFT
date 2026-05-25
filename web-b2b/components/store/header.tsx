@@ -145,8 +145,8 @@ export function Header({ profile }: { profile: Profile | null }) {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white shadow-sm">
       {/* Announcement bar */}
       <div
-        className="px-4 py-2 text-center text-xs font-bold tracking-wider text-white"
-        style={{ background: "linear-gradient(90deg, #0f2575 0%, #f97316 45%, #0f2575 100%)" }}
+        className="px-4 py-1.5 text-center text-xs font-semibold tracking-wide text-white"
+        style={{ background: "var(--primary)" }}
       >
         🛍️ Variety &amp; Novelty Wholesale &nbsp;·&nbsp; Butterfly Fashion Trading &nbsp;·&nbsp; Toronto, ON
       </div>

@@ -51,90 +51,67 @@ export default async function HomePage() {
       <main>
 
         {/* ── Hero ── */}
-        <section
-          className="relative overflow-hidden border-b border-slate-800"
-          style={{ background: "radial-gradient(ellipse at 20% 55%, #1a3090 0%, #080d20 45%, #0f0318 100%)" }}
-        >
-          {/* Background video — hidden on mobile, fades in when loaded */}
-          {/* Download a free soccer/stadium video from pexels.com and save to public/videos/hero-bg.mp4 */}
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <video
-            className="absolute inset-0 hidden h-full w-full scale-110 object-cover opacity-40 blur-[2px] sm:block"
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-          >
-            <source src="/videos/hero-bg.mp4" type="video/mp4" />
-          </video>
-          {/* Overlay — preserves readability over video */}
-          <div
-            className="absolute inset-0 hidden sm:block"
-            style={{ background: "linear-gradient(135deg, rgba(8,13,32,0.78) 0%, rgba(15,13,24,0.60) 55%, rgba(8,4,20,0.72) 100%)" }}
-          />
-
-          {/* Glow orbs */}
-          <div className="pointer-events-none absolute -top-24 right-1/3 h-64 w-64 rounded-full bg-[#f97316] opacity-[0.07] blur-[90px]" />
-          <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-96 rounded-full bg-[#1a3fad] opacity-[0.15] blur-[80px]" />
+        <section className="border-b border-slate-100 bg-linear-to-br from-white to-blue-50">
           {/* Top accent stripe */}
-          <div className="relative z-10 h-1.5 bg-linear-to-r from-(--primary) via-(--accent) to-amber-400" />
+          <div className="h-1 bg-linear-to-r from-(--primary) via-(--accent) to-amber-400" />
 
-          <div className="relative z-10 container-shell py-10 sm:py-14 lg:py-18">
-            <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
+          <div className="container-shell py-12 sm:py-16 lg:py-20">
+            <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:items-center">
 
               {/* Left: copy */}
-              <div className="relative z-10">
-                <h1 className="max-w-2xl text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <div>
+                <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1.5 text-xs font-bold text-blue-700 ring-1 ring-blue-100">
+                  B2B Wholesale Platform
+                </div>
+
+                <h1 className="max-w-xl text-4xl font-black leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
                   Your source for<br />
                   <span style={{ color: "#f97316" }}>variety</span> &amp; novelty<br />
-                  <span className="text-white">wholesale.</span>
+                  wholesale.
                 </h1>
 
-                <p className="mt-5 max-w-lg text-sm font-medium leading-7 text-slate-300 sm:text-base">
-                  B2B wholesale by <span className="font-black text-white">Butterfly Fashion Trading</span> — Toronto&apos;s variety &amp; novelty merchandise supplier for retailers, gift shops &amp; resellers.
+                <p className="mt-5 max-w-lg text-sm leading-7 text-slate-600 sm:text-base">
+                  B2B wholesale by <span className="font-bold text-slate-900">Butterfly Fashion Trading</span> — Toronto&apos;s variety &amp; novelty merchandise supplier for retailers, gift shops &amp; resellers.
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                   <Link
                     className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg px-7 py-3 text-sm font-black text-white transition-opacity hover:opacity-90"
                     href="/products"
-                    style={{ background: "linear-gradient(135deg, #2554cc 0%, #0f2575 100%)", color: "#fff" }}
+                    style={{ background: "linear-gradient(135deg, #2554cc 0%, #0f2575 100%)" }}
                   >
-                    <span>Shop the Collection</span> <ArrowRight size={15} className="shrink-0" />
+                    Shop the Collection <ArrowRight size={15} className="shrink-0" />
                   </Link>
                   <Link
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-white/25 bg-white/10 px-7 py-3 text-sm font-bold text-white transition-colors hover:bg-white/20"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-slate-200 bg-white px-7 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
                     href="/account/quotes"
-                    style={{ color: "#fff" }}
                   >
                     Get Bulk Quote
                   </Link>
                 </div>
 
-                <div className="mt-6 flex flex-wrap gap-4">
+                <div className="mt-6 flex flex-wrap gap-5">
                   {["No upfront payment", "Bulk orders welcome", "Custom B2B pricing"].map((t) => (
-                    <span key={t} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400">
-                      <CheckCircle size={12} className="shrink-0 text-emerald-400" />
+                    <span key={t} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+                      <CheckCircle size={12} className="shrink-0 text-emerald-500" />
                       {t}
                     </span>
                   ))}
                 </div>
-
               </div>
 
               {/* Right: order flow cards */}
-              <div className="relative z-10 grid gap-3">
+              <div className="grid gap-3">
                 {PROCESS_STEPS.map((step, i) => (
-                  <div key={step.n} className="flex min-h-20 gap-3 rounded-xl border border-white/15 bg-slate-950/45 p-4 backdrop-blur-sm">
+                  <div key={step.n} className="flex gap-3 rounded-xl border border-slate-100 bg-white p-4 shadow-sm">
                     <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg text-xs font-black text-white ${
                       i === 0 ? "bg-(--primary)" : i === 1 ? "bg-(--accent)" : i === 2 ? "bg-amber-500" : "bg-emerald-600"
                     }`}>
                       {step.n}
                     </span>
                     <div>
-                      <p className="text-sm font-black text-white">{step.label}</p>
-                      <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-300">{step.desc}</p>
+                      <p className="text-sm font-black text-slate-900">{step.label}</p>
+                      <p className="mt-0.5 text-xs text-slate-500">{step.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -144,14 +121,13 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── How it works ── */}
         {/* ── Trust signals ── */}
-        <section className="border-b border-slate-700 bg-slate-900">
-          <div className="container-shell grid grid-cols-2 gap-px bg-slate-700 lg:grid-cols-4">
+        <section className="border-y border-slate-100 bg-slate-50">
+          <div className="container-shell grid grid-cols-2 gap-px bg-slate-100 lg:grid-cols-4">
             {TRUST_SIGNALS.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2.5 bg-slate-900 px-4 py-3 sm:gap-3 sm:px-5 sm:py-4">
-                <Icon size={16} className="shrink-0 text-[#f59e0b]" />
-                <span className="text-xs font-bold text-slate-300 sm:text-sm">{label}</span>
+              <div key={label} className="flex items-center gap-2.5 bg-slate-50 px-5 py-4 sm:gap-3">
+                <Icon size={16} className="shrink-0 text-(--primary)" />
+                <span className="text-xs font-bold text-slate-700 sm:text-sm">{label}</span>
               </div>
             ))}
           </div>
