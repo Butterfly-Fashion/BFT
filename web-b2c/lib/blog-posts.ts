@@ -3804,7 +3804,7 @@ export const blogPosts: BlogPost[] = [
       "Shop World Cup 2026 fan gear for Vancouver fans. Caps, car flags, bucket hats, and Panini sticker packs shipped from Toronto to BC in 3–5 business days. BC Place host city gear.",
     publishedAt: "2026-05-25",
     category: "Fan Gear Guide",
-    heroImage: "/asset/blog/generated/vancouver-world-cup-2026-fan-gear.png",
+    heroImage: "/asset/blog/generated/vancouver-world-cup-2026-fan-gear.webp",
     heroAlt: "World Cup 2026 fan gear in Vancouver BC Place host city",
     productSlugs: [
       "canada-car-flag",
@@ -3857,7 +3857,7 @@ export const blogPosts: BlogPost[] = [
       "Shop World Cup 2026 fan gear for Montreal fans. Caps, car flags, bucket hats shipped from Toronto to Montreal in 2–3 business days. Gear for Morocco, Argentina, Italy, and more.",
     publishedAt: "2026-05-25",
     category: "Fan Gear Guide",
-    heroImage: "/asset/blog/generated/montreal-world-cup-2026-fan-gear.png",
+    heroImage: "/asset/blog/generated/montreal-world-cup-2026-fan-gear.webp",
     heroAlt: "World Cup 2026 fan gear for Montreal Quebec fans",
     productSlugs: [
       "canada-car-flag",

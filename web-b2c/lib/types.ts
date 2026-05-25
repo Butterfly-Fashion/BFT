@@ -139,8 +139,6 @@ export const CATEGORIES = [
   "Sticker Packs",
 ] as const;
 
-export type Category = (typeof CATEGORIES)[number];
-
 // ─── Supabase order management ──────────────────────────────────────────────
 
 export type OrderStatus =

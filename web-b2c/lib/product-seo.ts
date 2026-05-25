@@ -1,11 +1,11 @@
 import type { Product } from "./types";
 
-export interface ProductSeoSection {
+interface ProductSeoSection {
   heading: string;
   body: string;
 }
 
-export interface ProductSeoFaq {
+interface ProductSeoFaq {
   q: string;
   a: string;
 }
@@ -34,7 +34,7 @@ const TEAM_TERMS: Array<{ term: string; label: string }> = [
   { term: "united states", label: "USA" },
 ];
 
-export function getProductTeam(product: Product): string {
+function getProductTeam(product: Product): string {
   const haystack = `${product.name} ${product.slug}`.toLowerCase().replaceAll("-", " ");
   return TEAM_TERMS.find((item) => haystack.includes(item.term))?.label ?? "your team";
 }
@@ -121,4 +121,3 @@ export function productFaqJsonLd(product: Product) {
     })),
   };
 }
-

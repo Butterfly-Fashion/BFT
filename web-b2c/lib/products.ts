@@ -150,11 +150,6 @@ export async function getAllSlugs(): Promise<string[]> {
   }
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
-  const all = await getAllProducts();
-  return all.filter((p) => p.category === category);
-}
-
 export async function getFeaturedProducts(): Promise<Product[]> {
   const all = await getAllProducts();
   const canadaFirst = all.filter((p) => p.name.toLowerCase().includes("canada"));
@@ -179,12 +174,8 @@ export async function getTrendingProducts(): Promise<Product[]> {
   return [...priority, ...canadaFirst, ...rest].slice(0, 4);
 }
 
-// ─── Sync exports for backward compatibility ──────────────────────────────────
+// Sync export for build-time static generation.
 // These are kept only for SSG generateStaticParams which needs sync slugs at build time.
 // Pages should prefer the async functions above.
 
 export const products: Product[] = staticProducts;
-
-export function getProductBySlug(slug: string): Product | undefined {
-  return staticProducts.find((p) => p.slug === slug);
-}
