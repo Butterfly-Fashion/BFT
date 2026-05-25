@@ -332,6 +332,25 @@ export default function CheckoutPage() {
             </div>
           </fieldset>
 
+          {/* Pickup address info */}
+          {deliveryMethod === "pickup" && (
+            <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-4 space-y-2">
+              <p className="text-sm font-bold text-green-900">📍 Pickup Location</p>
+              <p className="text-sm text-green-800 font-semibold">178 Bentworth Ave, North York, ON M6A 1P7</p>
+              <p className="text-xs text-green-700 leading-5">
+                Mon–Fri · 9 AM – 5 PM ET · Please wait for a confirmation email before coming to pick up.
+              </p>
+              <a
+                href="https://maps.google.com/?q=178+Bentworth+Ave+North+York+ON"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-xs font-semibold text-green-700 underline hover:text-green-900"
+              >
+                View on Google Maps →
+              </a>
+            </div>
+          )}
+
           {/* Contact */}
           <fieldset>
             <legend className="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wide">
