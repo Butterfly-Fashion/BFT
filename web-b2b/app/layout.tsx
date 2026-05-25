@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   title: "Butterfly Fashion Trading — B2B Wholesale",
-  description: "FIFA World Cup 2026™ merchandise wholesale. B2B order platform by Butterfly Fashion Trading, Toronto.",
+  description: "Variety & novelty wholesale. B2B order platform by Butterfly Fashion Trading, Toronto.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

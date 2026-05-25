@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight, CheckCircle, Package, Flag, HardHat,
-  Truck, Clock, ShieldCheck, ReceiptText, Trophy,
+  Truck, Clock, ShieldCheck, ReceiptText,
 } from "lucide-react";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Header } from "@/components/store/header";
@@ -16,9 +16,9 @@ import type { Product } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 const CATEGORIES = [
-  { label: "Car Flags", icon: Flag, href: "/products?category=Car+Flags", desc: "49 country & team flags", color: "from-red-500 to-red-600" },
+  { label: "Car Flags", icon: Flag, href: "/products?category=Car+Flags", desc: "49+ country styles", color: "from-red-500 to-red-600" },
   { label: "Caps", icon: HardHat, href: "/products?category=Caps", desc: "3D embroidered caps", color: "from-blue-600 to-(--primary)" },
-  { label: "Bucket Hats", icon: Package, href: "/products?category=Bucket+Hats", desc: "Fan bucket hats", color: "from-cyan-500 to-blue-600" },
+  { label: "Bucket Hats", icon: Package, href: "/products?category=Bucket+Hats", desc: "Licensed bucket hats", color: "from-cyan-500 to-blue-600" },
   { label: "Boxing Gloves", icon: Package, href: "/products?category=Boxing+Gloves", desc: "Licensed souvenir gloves", color: "from-amber-400 to-amber-600" },
 ];
 
@@ -36,38 +36,6 @@ const TRUST_SIGNALS = [
   { icon: Clock, label: "Price confirmed before charge" },
 ];
 
-const NATIONS = [
-  { code: "ar", name: "Argentina" },
-  { code: "br", name: "Brazil" },
-  { code: "fr", name: "France" },
-  { code: "es", name: "Spain" },
-  { code: "de", name: "Germany" },
-  { code: "pt", name: "Portugal" },
-  { code: "gb-eng", name: "England" },
-  { code: "nl", name: "Netherlands" },
-  { code: "us", name: "USA" },
-  { code: "ca", name: "Canada" },
-  { code: "mx", name: "Mexico" },
-  { code: "jp", name: "Japan" },
-  { code: "kr", name: "Korea" },
-  { code: "ma", name: "Morocco" },
-  { code: "sn", name: "Senegal" },
-  { code: "uy", name: "Uruguay" },
-  { code: "co", name: "Colombia" },
-  { code: "ch", name: "Switzerland" },
-  { code: "hr", name: "Croatia" },
-  { code: "be", name: "Belgium" },
-  { code: "ng", name: "Nigeria" },
-  { code: "au", name: "Australia" },
-  { code: "jm", name: "Jamaica" },
-  { code: "pa", name: "Panama" },
-  { code: "ec", name: "Ecuador" },
-  { code: "cl", name: "Chile" },
-  { code: "pl", name: "Poland" },
-  { code: "rs", name: "Serbia" },
-  { code: "sa", name: "Saudi Arabia" },
-  { code: "ir", name: "Iran" },
-];
 
 export default async function HomePage() {
   if (!isSupabaseConfigured()) return <SetupRequired />;
@@ -107,10 +75,8 @@ export default async function HomePage() {
           />
 
           {/* Glow orbs */}
-          <div className="pointer-events-none absolute -top-24 right-1/3 h-64 w-64 rounded-full bg-[#e01030] opacity-[0.07] blur-[90px]" />
+          <div className="pointer-events-none absolute -top-24 right-1/3 h-64 w-64 rounded-full bg-[#f97316] opacity-[0.07] blur-[90px]" />
           <div className="pointer-events-none absolute bottom-0 left-0 h-48 w-96 rounded-full bg-[#1a3fad] opacity-[0.15] blur-[80px]" />
-          {/* Decorative ball */}
-          <div className="pointer-events-none absolute -bottom-10 -right-10 select-none text-[260px] leading-none opacity-[0.035]">⚽</div>
           {/* Top accent stripe */}
           <div className="relative z-10 h-1.5 bg-linear-to-r from-(--primary) via-(--accent) to-amber-400" />
 
@@ -119,23 +85,14 @@ export default async function HomePage() {
 
               {/* Left: copy */}
               <div className="relative z-10">
-                <div
-                  className="mb-4 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-black uppercase tracking-widest text-slate-900"
-                  style={{ background: "linear-gradient(90deg, #f59e0b, #fbbf24)", boxShadow: "0 2px 12px rgba(245,158,11,0.4)" }}
-                >
-                  <Trophy size={12} />
-                  FIFA World Cup 2026™ Official Merchandise
-                </div>
-
                 <h1 className="max-w-2xl text-4xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  The biggest<br />
-                  <span style={{ color: "#f59e0b" }}>World Cup</span>{" "}
-                  <span className="text-white">ever</span><br />
-                  <span className="text-[#e01030]">starts here.</span>
+                  Your source for<br />
+                  <span style={{ color: "#f97316" }}>variety</span> &amp; novelty<br />
+                  <span className="text-white">wholesale.</span>
                 </h1>
 
                 <p className="mt-5 max-w-lg text-sm font-medium leading-7 text-slate-300 sm:text-base">
-                  B2B wholesale by <span className="font-black text-white">Butterfly Fashion Trading</span> — Toronto&apos;s official FIFA 2026 merchandise supplier for retailers, event organizers &amp; resellers.
+                  B2B wholesale by <span className="font-black text-white">Butterfly Fashion Trading</span> — Toronto&apos;s variety &amp; novelty merchandise supplier for retailers, gift shops &amp; resellers.
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -166,72 +123,6 @@ export default async function HomePage() {
 
               </div>
 
-              {/* Center: Trophy illustration */}
-              <div className="pointer-events-none absolute left-[54%] top-1/2 z-0 hidden -translate-x-1/2 -translate-y-1/2 items-center justify-center opacity-45 lg:flex">
-                {/* Outer glow */}
-                <div className="absolute inset-0 blur-3xl opacity-25" style={{ background: "radial-gradient(circle, #f59e0b 0%, transparent 65%)" }} />
-                <svg viewBox="0 0 200 290" className="relative w-64 drop-shadow-2xl xl:w-72" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <radialGradient id="globe-rg" cx="38%" cy="32%" r="65%">
-                      <stop offset="0%" stopColor="#fef3c7" />
-                      <stop offset="45%" stopColor="#fbbf24" />
-                      <stop offset="100%" stopColor="#b45309" />
-                    </radialGradient>
-                    <linearGradient id="body-lg" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#fde68a" />
-                      <stop offset="50%" stopColor="#f59e0b" />
-                      <stop offset="100%" stopColor="#92400e" />
-                    </linearGradient>
-                    <linearGradient id="base-lg2" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#fbbf24" />
-                      <stop offset="100%" stopColor="#78350f" />
-                    </linearGradient>
-                    <linearGradient id="neck-lg" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#92400e" />
-                      <stop offset="40%" stopColor="#fbbf24" />
-                      <stop offset="100%" stopColor="#92400e" />
-                    </linearGradient>
-                  </defs>
-                  {/* Globe */}
-                  <ellipse cx="100" cy="52" rx="50" ry="50" fill="url(#globe-rg)" />
-                  <ellipse cx="100" cy="52" rx="50" ry="17" fill="none" stroke="#92400e" strokeWidth="1.2" opacity="0.35" />
-                  <ellipse cx="100" cy="38" rx="42" ry="11" fill="none" stroke="#92400e" strokeWidth="1" opacity="0.25" />
-                  <ellipse cx="100" cy="66" rx="42" ry="11" fill="none" stroke="#92400e" strokeWidth="1" opacity="0.25" />
-                  <ellipse cx="100" cy="52" rx="18" ry="50" fill="none" stroke="#92400e" strokeWidth="1.2" opacity="0.3" />
-                  <ellipse cx="76" cy="33" rx="19" ry="15" fill="rgba(255,255,255,0.28)" />
-                  {/* Handles */}
-                  <path d="M46 70 Q8 76 8 48 Q8 20 46 30" stroke="url(#body-lg)" strokeWidth="10" fill="none" strokeLinecap="round" />
-                  <path d="M154 70 Q192 76 192 48 Q192 20 154 30" stroke="url(#body-lg)" strokeWidth="10" fill="none" strokeLinecap="round" />
-                  {/* Cup body */}
-                  <path d="M46 102 Q44 142 76 165 L88 170 L112 170 L124 165 Q156 142 154 102 Z" fill="url(#body-lg)" />
-                  <path d="M58 108 Q57 140 76 160" stroke="rgba(255,255,255,0.22)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                  {/* Neck */}
-                  <path d="M85 170 L88 208 L112 208 L115 170 Z" fill="url(#neck-lg)" />
-                  {/* Base tier 1 */}
-                  <rect x="68" y="208" width="64" height="14" rx="4" fill="url(#body-lg)" />
-                  {/* Green malachite */}
-                  <rect x="52" y="222" width="96" height="16" rx="4" fill="#166534" />
-                  <rect x="56" y="225" width="88" height="4" rx="2" fill="#15803d" />
-                  <rect x="56" y="231" width="88" height="4" rx="2" fill="#14532d" />
-                  {/* Base tier 3 */}
-                  <rect x="40" y="238" width="120" height="20" rx="5" fill="url(#base-lg2)" />
-                  {/* Shadow */}
-                  <ellipse cx="100" cy="261" rx="55" ry="5" fill="rgba(0,0,0,0.35)" />
-                  {/* Stars */}
-                  <text x="14" y="48" fontSize="16" fill="#fbbf24" opacity="0.8">★</text>
-                  <text x="172" y="48" fontSize="16" fill="#fbbf24" opacity="0.8">★</text>
-                  <text x="4" y="80" fontSize="10" fill="#fbbf24" opacity="0.5">★</text>
-                  <text x="183" y="80" fontSize="10" fill="#fbbf24" opacity="0.5">★</text>
-                </svg>
-                {/* Floating badge */}
-                <div
-                  className="hidden"
-                  style={{ background: "linear-gradient(90deg, #f59e0b, #fbbf24)" }}
-                >
-                  🏆 FIFA World Cup 2026™
-                </div>
-              </div>
-
               {/* Right: order flow cards */}
               <div className="relative z-10 grid gap-3">
                 {PROCESS_STEPS.map((step, i) => (
@@ -253,29 +144,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── Nations marquee ── */}
-        <section className="overflow-hidden border-b border-slate-200 bg-slate-950 py-3">
-          <div className="nations-marquee flex">
-            <div className="nations-track flex shrink-0 gap-2 pr-2">
-              {[...NATIONS, ...NATIONS].map(({ code, name }, i) => (
-                <span
-                  key={i}
-                  className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold text-slate-300"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={`https://flagcdn.com/w20/${code}.png`}
-                    alt={name}
-                    width={20}
-                    className="h-3.5 w-5 rounded-sm object-cover"
-                  />
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── How it works ── */}
         {/* ── Trust signals ── */}
         <section className="border-b border-slate-700 bg-slate-900">
@@ -293,7 +161,7 @@ export default async function HomePage() {
         <section className="container-shell py-8 sm:py-10">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">⚽ Shop by category</p>
+              <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">Shop by category</p>
               <h2 className="text-xl font-black text-slate-900 sm:text-2xl">Browse our catalog</h2>
             </div>
             <Link className="btn-secondary shrink-0 text-xs" href="/products">

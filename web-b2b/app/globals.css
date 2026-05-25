@@ -7,8 +7,8 @@
   --line: #dde3ef;
   --primary: #1a3fad;
   --primary-dark: #0f2575;
-  --accent: #e01030;
-  --accent-dark: #a80c24;
+  --accent: #f97316;
+  --accent-dark: #ea6a0a;
   --gold: #f59e0b;
   --gold-dark: #d97706;
   --pitch: #15803d;
@@ -242,22 +242,3 @@ a:hover .product-card-img {
   animation: pulse-bg 1.5s ease-in-out infinite;
 }
 
-/* ── Nations marquee ── */
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-.nations-marquee {
-  overflow: hidden;
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-}
-
-.nations-track {
-  animation: marquee-scroll 35s linear infinite;
-  will-change: transform;
-}
-
-.nations-marquee:hover .nations-track {
-  animation-play-state: paused;
-}

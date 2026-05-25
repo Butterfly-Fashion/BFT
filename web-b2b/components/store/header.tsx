@@ -146,9 +146,9 @@ export function Header({ profile }: { profile: Profile | null }) {
       {/* Announcement bar */}
       <div
         className="px-4 py-2 text-center text-xs font-bold tracking-wider text-white"
-        style={{ background: "linear-gradient(90deg, #0f2575 0%, #e01030 45%, #0f2575 100%)" }}
+        style={{ background: "linear-gradient(90deg, #0f2575 0%, #f97316 45%, #0f2575 100%)" }}
       >
-        🏆 FIFA World Cup 2026™ Official Merchandise &nbsp;·&nbsp; Butterfly Fashion Trading &nbsp;·&nbsp; Toronto, ON
+        🛍️ Variety &amp; Novelty Wholesale &nbsp;·&nbsp; Butterfly Fashion Trading &nbsp;·&nbsp; Toronto, ON
       </div>
 
       {/* Main header row */}
@@ -170,7 +170,7 @@ export function Header({ profile }: { profile: Profile | null }) {
           <input
             className="field pl-9 pr-24 text-sm"
             name="q"
-            placeholder="Search flags, caps, countries, or fan gear…"
+            placeholder="Search products, categories, or SKUs…"
             type="search"
           />
           <button
