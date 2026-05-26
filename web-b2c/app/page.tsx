@@ -11,6 +11,14 @@ import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { collectionPages, teamPages } from "@/lib/seo-pages";
 import Link from "next/link";
 
+const popularSearches = [
+  { href: "/collections/best-fifa-2026-merch-canada", label: "Best FIFA 2026 merch in Canada" },
+  { href: "/collections/world-cup-bucket-hats-toronto", label: "World Cup bucket hats Toronto" },
+  { href: "/collections/canada-soccer-fan-gear", label: "Canada soccer fan gear" },
+  { href: "/collections/world-cup-party-supplies-canada", label: "World Cup party supplies Canada" },
+  { href: "/collections/world-cup-fan-gear-toronto", label: "World Cup fan gear Toronto" },
+];
+
 // ─── Skeleton ────────────────────────────────────────────────────────────────
 
 function ProductGridSkeleton({ count }: { count: number }) {
@@ -181,6 +189,31 @@ export default function HomePage() {
       </section>
 
       <SocialProof />
+
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
+        <div className="grid gap-8 md:grid-cols-[280px_1fr] md:items-start">
+          <div>
+            <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+              Popular Searches
+            </p>
+            <h2 className="text-2xl font-bold text-gray-900">Find match-day gear faster</h2>
+            <p className="mt-3 text-sm leading-7 text-gray-500">
+              Direct links for the Canada 2026 searches fans use most around Toronto, watch parties, and summer fan zones.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {popularSearches.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-xl border border-gray-100 bg-white px-5 py-4 text-sm font-bold text-gray-800 shadow-sm hover:border-gray-300 hover:text-[#C41E3A]"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Inline newsletter */}
       <section className="bg-[#C41E3A] py-14">

@@ -1,12 +1,21 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/store/newsletter-form";
 import {
+  BUSINESS_EMAIL,
   BUSINESS_LOCALITY,
   BUSINESS_NAME,
   BUSINESS_POSTAL_CODE,
   BUSINESS_REGION,
   BUSINESS_STREET_ADDRESS,
 } from "@/lib/seo";
+
+const popularSearches = [
+  { href: "/collections/best-fifa-2026-merch-canada", label: "Best FIFA 2026 merch" },
+  { href: "/collections/world-cup-bucket-hats-toronto", label: "Bucket hats Toronto" },
+  { href: "/collections/canada-soccer-fan-gear", label: "Canada soccer fan gear" },
+  { href: "/collections/world-cup-party-supplies-canada", label: "Party supplies Canada" },
+  { href: "/collections/world-cup-fan-gear-toronto", label: "Fan gear Toronto" },
+];
 
 export function Footer() {
   return (
@@ -31,7 +40,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 sm:grid-cols-3 gap-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         <div>
           <div className="flex items-center gap-2 mb-4">
             <img src="/asset/logo.jpg" alt="Butterfly Fashion Trading" width={32} height={32} className="rounded-sm" />
@@ -127,12 +136,25 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="mailto:jameskimkim1@gmail.com"
+                href={`mailto:${BUSINESS_EMAIL}`}
                 className="hover:text-white transition-colors"
               >
-                jameskimkim1@gmail.com
+                {BUSINESS_EMAIL}
               </a>
             </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 className="text-white font-semibold mb-4">Popular Searches</h3>
+          <ul className="space-y-2 text-sm">
+            {popularSearches.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="hover:text-white transition-colors">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

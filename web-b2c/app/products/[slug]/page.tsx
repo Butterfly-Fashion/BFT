@@ -13,7 +13,7 @@ import {
   productSeoDescription,
   productSeoTitle,
 } from "@/lib/seo";
-import { productFaqJsonLd, productSeoFaqs, productSeoSections } from "@/lib/product-seo";
+import { productFaqJsonLd, productSeoFaqs, productSeoLinks, productSeoSections } from "@/lib/product-seo";
 import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
 import { ProductReviews } from "@/components/store/product-reviews";
 import Link from "next/link";
@@ -186,6 +186,7 @@ const SECTION_ICONS = [
 function ProductSeoContent({ product }: { product: Product }) {
   const sections = productSeoSections(product);
   const faqs = productSeoFaqs(product);
+  const searchLinks = productSeoLinks(product);
   const guides = getRelatedGuidesForProduct(product);
 
   return (
@@ -198,11 +199,11 @@ function ProductSeoContent({ product }: { product: Product }) {
           <h2 className="mt-2 text-xl font-black text-gray-900">
             About this product
           </h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-3 md:items-stretch">
+          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3 md:items-stretch">
             {sections.map((section, i) => (
               <div key={section.heading} className="rounded-xl border border-gray-100 bg-gray-50 p-5 flex flex-col gap-3">
                 <div className="w-8 h-8 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-500 shrink-0">
-                  {SECTION_ICONS[i]}
+                  {SECTION_ICONS[i % SECTION_ICONS.length]}
                 </div>
                 <h3 className="text-sm font-bold text-gray-900 leading-snug">{section.heading}</h3>
                 <p className="text-xs leading-6 text-gray-500 flex-1">{section.body}</p>
@@ -223,20 +224,40 @@ function ProductSeoContent({ product }: { product: Product }) {
           </div>
         </div>
 
-        {guides.length > 0 && (
+        {(guides.length > 0 || searchLinks.length > 0) && (
           <aside className="rounded-xl border border-gray-100 bg-white p-5 h-fit">
-            <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">
-              Related Guides
-            </h3>
-            <div className="space-y-5">
-              {guides.map((guide) => (
-                <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
-                  <p className="text-sm font-semibold leading-snug text-gray-900 group-hover:text-[#C41E3A] transition-colors">
-                    {guide.title}
-                  </p>
-                  <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
-                </Link>
-              ))}
+            {guides.length > 0 && (
+              <>
+                <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">
+                  Related Guides
+                </h3>
+                <div className="space-y-5">
+                  {guides.map((guide) => (
+                    <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
+                      <p className="text-sm font-semibold leading-snug text-gray-900 group-hover:text-[#C41E3A] transition-colors">
+                        {guide.title}
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+            <div className={guides.length > 0 ? "mt-6 border-t border-gray-100 pt-5" : ""}>
+              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">
+                Popular Searches
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {searchLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-gray-400 hover:text-gray-900"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
           </aside>
         )}
