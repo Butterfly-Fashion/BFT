@@ -4209,6 +4209,129 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "minix-messi-ronaldo-collectible-figures-canada",
+    title: "Minix Messi vs Ronaldo Figures: Which One Does a Soccer Fan Actually Want?",
+    description:
+      "Minix makes officially licensed collectible figures of Lionel Messi and Cristiano Ronaldo. Here's the honest breakdown — who they're for, what makes each one worth owning, and whether you should buy both.",
+    publishedAt: "2026-06-26",
+    category: "Collectibles",
+    heroImage: "/asset/blog/generated/minix-messi-ronaldo-collectible-figures.png",
+    heroAlt: "Minix collectible figures of Lionel Messi Argentina #10 and Cristiano Ronaldo Portugal #7",
+    productSlugs: [
+      "minix-lionel-messi-argentina-10-collectible-figure",
+      "minix-cristiano-ronaldo-portugal-7-collectible-figure",
+      "fifa-2026-maple-funko-pop",
+    ],
+    sections: [
+      {
+        heading: "What Minix figures actually are",
+        body: [
+          "Minix is a collectible figure brand focused on officially licensed sports and entertainment characters. The football range covers current players and legends at the 7-inch scale — larger than a standard Funko Pop, more detailed, and built around portrait accuracy rather than stylised caricature.",
+          "Both the Messi and Ronaldo figures are officially licensed. Messi comes in Argentina's iconic blue-and-white #10 kit. Ronaldo is in Portugal red, wearing #7. The figures are designed to be displayed, not played with — they're shelf pieces.",
+        ],
+      },
+      {
+        heading: "The case for Messi (#10, Argentina)",
+        body: [
+          "Messi is the current world champion — Argentina won the 2022 Qatar World Cup, and his figure captures that era. The #10 shirt, the beard, the pose with a pointing finger — it's recognisably him from across the room.",
+          "For Argentina fans, this is the obvious pick. For neutral collectors who follow the GOAT debate, Messi's World Cup medal gives his figure a weight Ronaldo's doesn't yet have.",
+        ],
+      },
+      {
+        heading: "The case for Ronaldo (#7, Portugal)",
+        body: [
+          "Ronaldo's Minix figure in the Portugal red kit is one of the more striking pieces in the range. The gold boots detail, the #7, the pose with the ball — it photographs well and holds up at close range.",
+          "Portugal is a serious World Cup 2026 contender, which adds stakes to the figure. A Ronaldo collector buying this now has a good reason to display it through the tournament.",
+        ],
+      },
+      {
+        heading: "Why collectors buy both",
+        body: [
+          "The Messi vs. Ronaldo debate is one of the defining conversations in football. Owning both figures is a statement — it's not picking a side, it's acknowledging the era. On a shelf together they're a matched set that will still make sense in ten years.",
+          "Practically: they're the same scale, similar price, and designed to coexist. If you're buying one as a gift and aren't sure which team the recipient supports, buying both eliminates the guess.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What are Minix collectible figures?",
+        a: "Minix makes officially licensed collectible figures of football players and pop culture characters. The football range includes Messi (Argentina #10) and Ronaldo (Portugal #7) at 7-inch scale, designed for display.",
+      },
+      {
+        q: "Is the Minix Messi figure officially licensed?",
+        a: "Yes — the Minix Lionel Messi Argentina #10 collectible figure is officially licensed. It comes in the Argentina blue-and-white kit and is part of Minix's official football collectibles range.",
+      },
+      {
+        q: "Where can I buy Minix Messi and Ronaldo figures in Canada?",
+        a: "Both the Minix Messi (Argentina #10) and Ronaldo (Portugal #7) collectible figures are available at World Fan Gear. They ship from Toronto in CAD — no USD conversion, no duty surprises.",
+      },
+      {
+        q: "Should I buy the Messi or Ronaldo Minix figure?",
+        a: "Messi for Argentina fans or GOAT collectors (he's the current World Cup champion). Ronaldo for Portugal fans or anyone who follows his career. Both together for collectors who follow the debate — they're the same scale and designed to display as a set.",
+      },
+    ],
+  },
+  {
+    slug: "best-soccer-player-figures-canada-2026",
+    title: "Best Soccer Player Collectible Figures to Buy in Canada for World Cup 2026",
+    description:
+      "From Minix Messi and Ronaldo to FIFA 2026 mascot Funko Pops — the complete guide to soccer player collectible figures available in Canada right now, all shipping from Toronto.",
+    publishedAt: "2026-06-27",
+    category: "Collectibles",
+    heroImage: "/asset/blog/generated/minix-messi-ronaldo-collectible-figures.png",
+    heroAlt: "Soccer player collectible figures for World Cup 2026 — Minix Messi and Ronaldo",
+    productSlugs: [
+      "minix-lionel-messi-argentina-10-collectible-figure",
+      "minix-cristiano-ronaldo-portugal-7-collectible-figure",
+      "fifa-2026-maple-funko-pop",
+      "fifa-2026-zayu-funko-pop",
+    ],
+    sections: [
+      {
+        heading: "The two types of soccer collectible figures",
+        body: [
+          "There are two distinct categories worth knowing. Player figures — like Minix Messi and Ronaldo — are portrait pieces built around a specific athlete. Mascot figures — like the FIFA 2026 Funko Pops — are tournament pieces tied to a specific event.",
+          "A player figure stays relevant as long as the player does. A mascot figure is a time capsule: it captures a specific World Cup, in this case the first one hosted across North America. The best collections have both.",
+        ],
+      },
+      {
+        heading: "Player figures: Minix Messi and Ronaldo",
+        body: [
+          "Minix officially licensed figures of Lionel Messi (Argentina #10) and Cristiano Ronaldo (Portugal #7) are the strongest player pieces available right now. Both are at 7-inch scale with kit-accurate detail — Messi in blue-and-white, Ronaldo in Portugal red with gold boots.",
+          "These are display figures. They're not action figures or toys — they're shelf pieces built around two players who have defined the last fifteen years of football. Buy one if you follow a side. Buy both if you follow the debate.",
+        ],
+      },
+      {
+        heading: "Mascot figures: FIFA 2026 Funko Pops",
+        body: [
+          "Maple (#82), Zayu (#83), and Clutch (#84) are the three official FIFA 2026 mascots as Funko Pop vinyls. Canada's moose, Mexico's jaguar, the USA's eagle — each at 3.75 inches in their host-nation kit.",
+          "These are tournament collectibles. When FIFA 2026 ends, they won't be restocked. A Maple figure purchased now will be a 2026 World Cup keepsake in 2030 — the kind of thing that ends up on the office desk or the shelf behind the TV.",
+        ],
+      },
+      {
+        heading: "How to build the display",
+        body: [
+          "The most natural setup: Minix Messi and Ronaldo as the centrepiece (player era), the three Funko Pop mascots as the backdrop (tournament era). Six figures total, two different scales, one coherent theme — the 2026 World Cup, represented by the biggest players and the home tournament.",
+          "All six ship from Toronto. Same order, same box, same delivery window.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What soccer player collectible figures are available in Canada?",
+        a: "Minix officially licensed figures of Lionel Messi (Argentina #10) and Cristiano Ronaldo (Portugal #7), plus the three FIFA 2026 mascot Funko Pops (Maple, Zayu, Clutch). All available at World Fan Gear, shipped from Toronto in CAD.",
+      },
+      {
+        q: "Are Minix figures the same scale as Funko Pops?",
+        a: "No — Minix figures are 7-inch scale (larger, more detailed portrait pieces), while FIFA 2026 Funko Pops are 3.75 inches (the standard vinyl size). They display well together as a mixed collection.",
+      },
+      {
+        q: "What's the best soccer collectible gift for a World Cup 2026 fan in Canada?",
+        a: "The Minix figure of their favourite player's nation is the strongest single gift. For a mixed-fan household, the three FIFA 2026 mascot Funko Pops together ($24.99 each) cover all three host nations and make a matched set.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
