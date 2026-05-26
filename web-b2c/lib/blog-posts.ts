@@ -457,8 +457,8 @@ export const blogPosts: BlogPost[] = [
       "World Cup 2026 runs through a Canadian summer. Bucket hats are the outdoor fan zone essential — sun protection, team colours, and something that actually shows up in photos.",
     publishedAt: "2026-05-15",
     category: "Bucket Hats",
-    heroImage: "/asset/blog/generated/south-korea-fan-cap-seoul-night.png",
-    heroAlt: "Brazil World Cup 2026 bucket hat for match day",
+    heroImage: "/asset/blog/generated/world-cup-bucket-hats.png",
+    heroAlt: "World Cup 2026 bucket hats for match day",
     productSlugs: [
       "canada-reversible-bucket-hat",
       "barbados-reversible-bucket-hat",
