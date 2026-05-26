@@ -137,6 +137,7 @@ export const CATEGORIES = [
   "Bucket Hats",
   "Car Flags",
   "Sticker Packs",
+  "Figures",
 ] as const;
 
 // ─── Supabase order management ──────────────────────────────────────────────

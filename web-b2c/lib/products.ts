@@ -9,6 +9,7 @@ const CATEGORY_GRADIENTS: Record<string, string> = {
   "Bucket Hats": "linear-gradient(145deg, #2d4a22 0%, #4a7a34 100%)",
   "Car Flags": "linear-gradient(145deg, #4a3a2d 0%, #8b6914 100%)",
   "Sticker Packs": "linear-gradient(145deg, #0d3b6e 0%, #1565c0 100%)",
+  "Figures": "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
 };
 
 // Per-category shipping weights (kg) — product + typical packaging materials
