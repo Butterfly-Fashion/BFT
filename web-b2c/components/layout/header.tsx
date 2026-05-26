@@ -77,7 +77,7 @@ export function Header() {
           {/* Shop All */}
           <Link
             href="/products"
-            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150"
+            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
           >
             Shop All
           </Link>
@@ -89,7 +89,7 @@ export function Header() {
               <div key={cat.id} className="relative group">
                 <Link
                   href={`/products?category=${encodeURIComponent(cat.name)}`}
-                  className="flex items-center gap-1 px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150"
+                  className="flex items-center gap-1 px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
                 >
                   {cat.name}
                   {children.length > 0 && (
@@ -126,7 +126,7 @@ export function Header() {
           {/* Guides */}
           <Link
             href="/blog"
-            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150"
+            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
           >
             Guides
           </Link>
