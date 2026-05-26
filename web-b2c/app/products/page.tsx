@@ -118,6 +118,36 @@ export default async function ProductsPage({ searchParams }: Props) {
         })}
       </div>
 
+      {/* Sub-category pills */}
+      {(() => {
+        const subCats: string[] = [];
+        for (const [, children] of childMap) {
+          if (children.length > 1) subCats.push(...children);
+        }
+        const visible = subCats.filter((n) => allProducts.some((p) => p.category === n));
+        if (visible.length === 0) return null;
+        return (
+          <div className="flex flex-wrap gap-2 mb-8 -mt-6">
+            {visible.map((name) => {
+              const count = allProducts.filter((p) => p.category === name).length;
+              return (
+                <Link
+                  key={name}
+                  href={`/products?category=${encodeURIComponent(name)}`}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors duration-150 ${
+                    category === name
+                      ? "bg-gray-700 text-white border-gray-700"
+                      : "bg-gray-50 text-gray-500 border-gray-200 hover:border-gray-400 hover:text-gray-700"
+                  }`}
+                >
+                  {name} ({count})
+                </Link>
+              );
+            })}
+          </div>
+        );
+      })()}
+
       {/* Search + Sort row */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Suspense>
