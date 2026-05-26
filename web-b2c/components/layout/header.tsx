@@ -74,14 +74,6 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-500">
-          {/* Shop All */}
-          <Link
-            href="/products"
-            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
-          >
-            Shop All
-          </Link>
-
           {/* Category dropdowns */}
           {topLevel.map((cat) => {
             const children = childrenOf(cat.id);
@@ -129,6 +121,14 @@ export function Header() {
             className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
           >
             Guides
+          </Link>
+
+          {/* Shop All — rightmost */}
+          <Link
+            href="/products"
+            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
+          >
+            Shop All
           </Link>
         </nav>
 
@@ -198,13 +198,6 @@ export function Header() {
         )}
       >
         <nav className="flex flex-col px-4 py-4 gap-1">
-          <Link
-            href="/products"
-            onClick={() => setMenuOpen(false)}
-            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors"
-          >
-            Shop All
-          </Link>
           {topLevel.map((cat) => {
             const children = childrenOf(cat.id);
             return (
@@ -232,9 +225,16 @@ export function Header() {
           <Link
             href="/blog"
             onClick={() => setMenuOpen(false)}
-            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors"
           >
             Guides
+          </Link>
+          <Link
+            href="/products"
+            onClick={() => setMenuOpen(false)}
+            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Shop All
           </Link>
         </nav>
       </div>

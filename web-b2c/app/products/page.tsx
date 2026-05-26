@@ -3,6 +3,7 @@ import { ProductSortSelect } from "@/components/store/product-sort-select";
 import { ProductSearchInput } from "@/components/store/product-search-input";
 import { getAllProducts } from "@/lib/products";
 import { CATEGORIES } from "@/lib/types";
+import { supabaseAdmin } from "@/lib/supabase";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -33,28 +34,46 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
+// Build a map from parent category name → list of child category names
+async function buildChildMap(): Promise<Map<string, string[]>> {
+  try {
+    const supabase = supabaseAdmin();
+    const { data } = await supabase.from("categories").select("id, name, parent_id");
+    const cats = data ?? [];
+    const map = new Map<string, string[]>();
+    for (const cat of cats) {
+      if (!cat.parent_id) {
+        const children = cats.filter((c) => c.parent_id === cat.id).map((c) => c.name);
+        map.set(cat.name, children.length > 0 ? children : [cat.name]);
+      }
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+}
+
 export default async function ProductsPage({ searchParams }: Props) {
   const { category, search = "", sort = "default" } = await searchParams;
   const normalizedSearch = search.trim().toLowerCase();
 
-  const allProducts = await getAllProducts();
-  const categoryFiltered = category
-    ? allProducts.filter((p) => p.category === category)
+  const [allProducts, childMap] = await Promise.all([getAllProducts(), buildChildMap()]);
+
+  // If the selected category is a parent, expand to all its children
+  const effectiveCategories = category ? (childMap.get(category) ?? [category]) : undefined;
+
+  const categoryFiltered = effectiveCategories
+    ? allProducts.filter((p) => effectiveCategories.includes(p.category))
     : allProducts;
+
   const searched = normalizedSearch
     ? categoryFiltered.filter((p) => p.name.toLowerCase().includes(normalizedSearch))
     : categoryFiltered;
   const filtered = [...searched];
 
-  if (sort === "price-asc") {
-    filtered.sort((a, b) => a.price - b.price);
-  }
-  if (sort === "price-desc") {
-    filtered.sort((a, b) => b.price - a.price);
-  }
-  if (sort === "name") {
-    filtered.sort((a, b) => a.name.localeCompare(b.name));
-  }
+  if (sort === "price-asc") filtered.sort((a, b) => a.price - b.price);
+  if (sort === "price-desc") filtered.sort((a, b) => b.price - a.price);
+  if (sort === "name") filtered.sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -81,7 +100,8 @@ export default async function ProductsPage({ searchParams }: Props) {
           All ({allProducts.length})
         </Link>
         {CATEGORIES.map((cat) => {
-          const count = allProducts.filter((p) => p.category === cat).length;
+          const effective = childMap.get(cat) ?? [cat];
+          const count = allProducts.filter((p) => effective.includes(p.category)).length;
           return (
             <Link
               key={cat}
