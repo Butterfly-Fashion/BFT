@@ -18,22 +18,20 @@ export function CartDrawer({ open, onClose }: Props) {
   const shipping = calculateShipping(subtotal);
   const tax = calculateTax(subtotal);
 
+  if (!open) return null;
+
   return (
     <>
       {/* Overlay */}
       <div
-        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className="fixed inset-0 bg-black/50 z-40"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Panel */}
       <div
-        className={`fixed right-0 top-0 h-screen w-full max-w-120 bg-white z-50 shadow-2xl flex flex-col overflow-hidden transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className="fixed right-0 top-0 h-screen w-full max-w-120 bg-white z-50 shadow-2xl flex flex-col overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
