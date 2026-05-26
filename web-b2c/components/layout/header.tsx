@@ -102,7 +102,7 @@ export function Header() {
                     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-45">
                       <Link
                         href={`/products?category=${encodeURIComponent(cat.name)}`}
-                        className="block px-4 py-2 text-xs font-semibold text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors"
+                        className="block px-4 py-2 text-xs font-semibold text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                       >
                         View all {cat.name} →
                       </Link>
@@ -111,7 +111,7 @@ export function Header() {
                         <Link
                           key={child.id}
                           href={`/products?category=${encodeURIComponent(child.name)}`}
-                          className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#C41E3A] hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#C41E3A] hover:bg-gray-100 transition-colors"
                         >
                           {child.name}
                         </Link>
