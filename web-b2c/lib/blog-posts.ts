@@ -3963,6 +3963,129 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "fifa-2026-funko-pop-mascots-maple-zayu-clutch",
+    title: "FIFA 2026 Funko Pop Mascots: Maple, Zayu & Clutch Collector's Guide",
+    description:
+      "The three official FIFA 2026 mascots — Maple the moose, Zayu the jaguar, and Clutch the eagle — are now Funko Pops. Here's everything you need to know about collecting all three for the first World Cup hosted across North America.",
+    publishedAt: "2026-06-22",
+    category: "Collectibles",
+    heroImage: "/asset/blog/generated/fifa-2026-funko-pop-mascots-maple-zayu-clutch.png",
+    heroAlt: "FIFA 2026 Funko Pop figures of Maple, Zayu, and Clutch on a soccer field",
+    productSlugs: [
+      "fifa-2026-maple-funko-pop",
+      "fifa-2026-zayu-funko-pop",
+      "fifa-2026-clutch-funko-pop",
+    ],
+    sections: [
+      {
+        heading: "The first World Cup Funko Pops from North America",
+        body: [
+          "FIFA 2026 is the first World Cup hosted across three countries — Canada, the United States, and Mexico. Each host nation got its own mascot: Maple the moose for Canada, Zayu the jaguar for Mexico, and Clutch the bald eagle for the USA. And for the first time, all three mascots have been turned into officially licensed Funko Pop vinyl figures.",
+          "Funko's FIFA Football series has covered World Cups before, but a mascot set representing three nations in one tournament is something new. If you're a collector, this is the one to complete.",
+        ],
+      },
+      {
+        heading: "Meet the three mascots",
+        body: [
+          "Maple (#82) is Canada's moose — wearing a red goalkeeper kit with antlers and that unmistakable Canadian energy. He's the home mascot for a country playing its first World Cup on home soil since 1986. The symbolism matters.",
+          "Zayu (#83) is Mexico's jaguar — green kit, gold accents, and the kind of confident pose that matches El Tri's tournament history. Mexico co-hosts for the first time, and Zayu carries that weight.",
+          "Clutch (#84) is the USA's bald eagle — white and purple kit, wings back, already looking like he's about to celebrate a goal. With the final at MetLife Stadium in New Jersey, Clutch is the host mascot for the biggest match of the tournament.",
+        ],
+      },
+      {
+        heading: "Why collectors are buying all three",
+        body: [
+          "Each figure is 3.75 inches tall — the standard Funko Pop size that fits any existing display shelf. They're officially licensed by FIFA, numbered sequentially in the Football series, and tied to a tournament that only happens once. When the World Cup ends, these don't get restocked.",
+          "Buying all three together also makes sense practically: they're designed as a set. On a shelf together, you get all three host nations, all three mascots, and the story of the 2026 World Cup in three figures.",
+        ],
+      },
+      {
+        heading: "Display ideas for the full set",
+        body: [
+          "The obvious move is a dedicated shelf with the three figures lined up — Zayu on the left, Maple in the middle, Clutch on the right, matching the west-to-east geography of the host cities from Mexico City to Toronto to New York.",
+          "Some collectors are keeping them in-box as long-term collectibles. Others are opening them and displaying alongside a match programme or ticket. Either way, they're small enough to fit on a work desk without taking over the space.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Who are the FIFA 2026 mascots?",
+        a: "The three FIFA 2026 mascots are Maple (Canada's moose, #82), Zayu (Mexico's jaguar, #83), and Clutch (USA's bald eagle, #84). Each represents one of the three host nations for the 2026 World Cup.",
+      },
+      {
+        q: "Are the FIFA 2026 Funko Pops officially licensed?",
+        a: "Yes — Maple, Zayu, and Clutch are all officially licensed FIFA 2026 Funko Pop vinyl figures, part of the FIFA Football series. Each is 3.75 inches tall and numbered (#82, #83, #84).",
+      },
+      {
+        q: "Where can I buy FIFA 2026 Funko Pop figures in Canada?",
+        a: "All three FIFA 2026 mascot Funko Pops — Maple, Zayu, and Clutch — are available at World Fan Gear and ship from Toronto. $24.99 CAD each.",
+      },
+      {
+        q: "Should I buy all three FIFA 2026 Funko Pops?",
+        a: "They're designed as a set representing all three host nations. Buying all three completes the official mascot collection for the first North American World Cup, and they're numbered sequentially (#82–#84) in the FIFA Football series.",
+      },
+    ],
+  },
+  {
+    slug: "fifa-2026-mascot-gift-canada",
+    title: "Best FIFA 2026 Mascot Gift for Canadian Soccer Fans",
+    description:
+      "Looking for a World Cup 2026 gift that's actually memorable? The FIFA 2026 mascot Funko Pops — Maple, Zayu, and Clutch — are officially licensed collectibles that outlast the tournament. Ships from Toronto.",
+    publishedAt: "2026-06-23",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/fifa-2026-funko-pop-mascots-maple-zayu-clutch.png",
+    heroAlt: "FIFA 2026 Funko Pop mascot figures as a gift for Canadian soccer fans",
+    productSlugs: [
+      "fifa-2026-maple-funko-pop",
+      "fifa-2026-zayu-funko-pop",
+      "fifa-2026-clutch-funko-pop",
+      "canada-car-flag",
+    ],
+    sections: [
+      {
+        heading: "The gift problem with World Cup merchandise",
+        body: [
+          "Most World Cup fan gear is built for the moment. Car flags come off after the final. Sticker books get finished. Jerseys get worn a few times and end up in a drawer. The gear that gets kept is the gear that means something after the tournament.",
+          "A Funko Pop figure is different. It sits on a shelf. It gets noticed. It travels with someone to their next apartment. When someone pulls out a FIFA 2026 Maple or Clutch in 2030, it'll still make sense as a keepsake from the World Cup that came to North America.",
+        ],
+      },
+      {
+        heading: "Maple is the one to lead with for Canada fans",
+        body: [
+          "Canada is playing its first home World Cup in 40 years. Maple the moose — Canada's official mascot, #82 in the FIFA Football Funko series — is the figure that captures that moment. Red goalkeeper kit, antlers, unmistakably Canadian.",
+          "It's a $24.99 gift that a Canada fan will actually keep. That's a hard bar to clear in fan merchandise, and Maple clears it.",
+        ],
+      },
+      {
+        heading: "For fans of all three host nations",
+        body: [
+          "If the person you're buying for follows Mexico or the USA, Zayu and Clutch are the same quality and the same price. Zayu is Mexico's jaguar in a green kit with gold details. Clutch is the USA's bald eagle in white and purple — the host mascot for the MetLife final.",
+          "For a mixed group of fans — the kind of household where some people are watching Mexico's opener and others are tracking the USA's group stage — buying all three and letting people pick their own is a clean move.",
+        ],
+      },
+      {
+        heading: "Pair it with something practical",
+        body: [
+          "A Funko Pop alone is a strong standalone gift. If you want to add something, a car flag from the same nation keeps the theme consistent and adds utility. The flag gets used on match days, the figure stays on the shelf after. Two items, two uses, $40 CAD total.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What's a good World Cup 2026 gift for a Canadian soccer fan?",
+        a: "The FIFA 2026 Maple Funko Pop (#82) is a standout gift — officially licensed, $24.99 CAD, ships from Toronto. Canada's moose mascot in a red goalkeeper kit, built to last on a shelf long after the tournament.",
+      },
+      {
+        q: "How much do the FIFA 2026 Funko Pops cost in Canada?",
+        a: "Each FIFA 2026 mascot Funko Pop (Maple, Zayu, Clutch) is $24.99 CAD at World Fan Gear. All three ship from Toronto with no USD conversion or duty surprises.",
+      },
+      {
+        q: "Can I buy FIFA 2026 fan gear gifts with fast shipping in Canada?",
+        a: "Yes — World Fan Gear ships from North York, Toronto. GTA delivery is 1–2 business days. Ontario-wide is 2–3 business days. Orders before 2 PM ET ship same day.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
