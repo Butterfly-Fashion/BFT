@@ -4086,6 +4086,129 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "monopoly-panini-prizm-fifa-world-cup-board-game-review",
+    title: "Monopoly: Panini Prizm FIFA World Cup — The Board Game for Soccer Fans",
+    description:
+      "Monopoly meets Panini Prizm FIFA World Cup legends. Collect, trade, and compete with 2026 stars and all-time greats — plus 6 exclusive Prizm cards. The complete guide for Canadian fans.",
+    publishedAt: "2026-06-24",
+    category: "Collectibles",
+    heroImage: "/asset/blog/generated/monopoly-panini-prizm-fifa-world-cup-board-game.png",
+    heroAlt: "Monopoly Panini Prizm FIFA World Cup board game front and back box",
+    productSlugs: [
+      "monopoly-panini-prizm-fifa-world-cup-26-board-game",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "fifa-2026-maple-funko-pop",
+    ],
+    sections: [
+      {
+        heading: "What this game actually is",
+        body: [
+          "Monopoly: Panini Prizm FIFA World Cup isn't a reskin of the classic board game. It's built around the Panini Prizm card universe — current World Cup players alongside FIFA legends, all integrated into the property-buying and trading mechanics. Instead of Boardwalk and Park Place, you're collecting and competing with the best players in football history.",
+          "The game is rated 8+ and plays 2–6 players. It includes 6 exclusive Panini Prizm cards you can't get anywhere else, a custom game board, and full Monopoly ruleset adapted for the football world.",
+        ],
+      },
+      {
+        heading: "The 6 exclusive Prizm cards",
+        body: [
+          "This is the collector's hook. Six cards exclusive to this edition — current World Cup stars and FIFA legends — are packed inside every copy. If you follow Panini Prizm trading cards, these exclusives alone make the game worth owning.",
+          "They're physical cards, not digital, and they're included with the board game. Whether you're buying to play or to collect, these are the items that won't show up in any other Prizm release.",
+        ],
+      },
+      {
+        heading: "Who it's for",
+        body: [
+          "The overlap between Monopoly players and Panini collectors is real, and this game is built for that exact group. If you have a household that opens sticker packs for the World Cup and also plays board games together, this is a natural next purchase.",
+          "It also works as a standalone gift. Someone who follows soccer at any level will recognise the Prizm branding and the players on the cards. The World Cup timing makes it land well — it's a game you buy in June and play through the tournament.",
+        ],
+      },
+      {
+        heading: "Pair it with Panini stickers for a full match night",
+        body: [
+          "Open a Panini sticker pack before the first dice roll. Use the stickers as markers on the board. Pull a Prizm card mid-game and argue over which player is worth more. This is the setup for a World Cup watch party where you play between matches, not instead of them.",
+          "A sticker box (50 packs) and the Monopoly board game together covers a full evening for four to six people. Two items, one themed night.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What is Monopoly Panini Prizm FIFA World Cup?",
+        a: "It's a Monopoly edition built around the Panini Prizm FIFA World Cup card universe — current players and legends, plus 6 exclusive Prizm cards included in every game. Rated 8+, plays 2–6 players.",
+      },
+      {
+        q: "What exclusive cards come with the Monopoly FIFA World Cup board game?",
+        a: "Six exclusive Panini Prizm cards are included — current World Cup players and FIFA legends that aren't available in any other Prizm release.",
+      },
+      {
+        q: "Where can I buy the Monopoly FIFA World Cup board game in Canada?",
+        a: "The Monopoly Panini Prizm FIFA World Cup board game is available at World Fan Gear and ships from Toronto. No USD conversion, no duty surprises.",
+      },
+      {
+        q: "Is the Monopoly FIFA World Cup game good for kids?",
+        a: "It's rated 8+ and plays like standard Monopoly with a football theme. Good for families who follow soccer — the Panini cards add a collectible layer that older kids and adults both enjoy.",
+      },
+    ],
+  },
+  {
+    slug: "world-cup-2026-board-games-canada",
+    title: "Best World Cup 2026 Board Games for Canadian Fans",
+    description:
+      "Planning a World Cup 2026 game night in Canada? From Monopoly Panini Prizm to sticker swapping, here's how to build a match-day setup that lasts the whole tournament.",
+    publishedAt: "2026-06-25",
+    category: "Fan Gear Guide",
+    heroImage: "/asset/blog/generated/monopoly-panini-prizm-fifa-world-cup-board-game.png",
+    heroAlt: "World Cup 2026 board game and collectibles for a Canadian fan game night",
+    productSlugs: [
+      "monopoly-panini-prizm-fifa-world-cup-26-board-game",
+      "panini-fifa-world-cup-2026-sticker-box-50-packs",
+      "panini-fifa-world-cup-2026-official-sticker-album",
+      "fifa-2026-maple-funko-pop",
+    ],
+    sections: [
+      {
+        heading: "The tournament runs for a month — plan accordingly",
+        body: [
+          "FIFA 2026 runs from June 11 to July 19. That's six weeks of matches, including the group stage, knockouts, and the final at MetLife Stadium. One watch party is easy to plan. Six weeks of rotating hosting duties is a different challenge.",
+          "Building a game night setup that works for the whole tournament means having things to do between matches, not just during them. A board game and a sticker pack box handle the waiting.",
+        ],
+      },
+      {
+        heading: "Monopoly: Panini Prizm FIFA World Cup",
+        body: [
+          "This is the centrepiece. It's a full Monopoly game built around the Panini Prizm card universe — World Cup players and FIFA legends — with 6 exclusive Prizm cards included. Plays 2–6, rated 8+.",
+          "The format works well for World Cup nights. Play a round before kickoff, pause for the match, finish after the final whistle. The game doesn't require finishing in one sitting — which is useful when the match goes to extra time.",
+        ],
+      },
+      {
+        heading: "Sticker packs as the warm-up act",
+        body: [
+          "Open packs before the game starts. Assign duplicates as Monopoly currency. Let whoever pulls a gold Prizm card start first. These small rituals turn a product into an experience.",
+          "A 50-pack box gives you enough stickers for multiple sessions. The official Panini album gives the whole group something to fill together over the tournament — a shared project that builds week by week.",
+        ],
+      },
+      {
+        heading: "The Funko Pop shelf as the scoreboard",
+        body: [
+          "Set up the three FIFA 2026 mascot Funko Pops — Maple (Canada), Zayu (Mexico), Clutch (USA) — on a shelf above the TV. Move the losing nation's figure face-down after their team is eliminated. A visual bracket that costs $75 and takes five seconds to update.",
+          "Small rituals make a long tournament feel like an event. The gear is just props. The ritual is what people remember.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "What's a good board game for a World Cup 2026 watch party in Canada?",
+        a: "Monopoly: Panini Prizm FIFA World Cup is the top pick — built around real players and legends, includes 6 exclusive Prizm cards, plays 2–6. Available in Canada from World Fan Gear, ships from Toronto.",
+      },
+      {
+        q: "What World Cup 2026 games can I buy in Canada?",
+        a: "Monopoly Panini Prizm FIFA World Cup and Panini sticker packs (including the official album and a 50-pack box) are in stock at World Fan Gear and ship from Toronto in CAD — no duty surprises.",
+      },
+      {
+        q: "How do I make a World Cup 2026 watch party more fun?",
+        a: "Open Panini sticker packs before kickoff, play Monopoly Panini Prizm between matches, and use the FIFA 2026 mascot Funko Pops as a visual bracket. Simple setup, strong atmosphere.",
+      },
+    ],
+  },
 ];
 
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
