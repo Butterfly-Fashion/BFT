@@ -132,12 +132,9 @@ export const US_STATES = [
 ] as const;
 
 export const CATEGORIES = [
-  "Boxing Gloves",
-  "Caps",
-  "Bucket Hats",
-  "Car Flags",
-  "Sticker Packs",
-  "Figures",
+  "Fashion",
+  "Collectibles",
+  "Accessories",
 ] as const;
 
 // ─── Supabase order management ──────────────────────────────────────────────

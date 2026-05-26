@@ -12,10 +12,9 @@ import { CartDrawer } from "@/components/store/cart-drawer";
 
 const navLinks = [
   { href: "/products", label: "Shop All" },
-  { href: "/collections/world-cup-caps", label: "Caps" },
-  { href: "/collections/world-cup-bucket-hats", label: "Bucket Hats" },
-  { href: "/collections/world-cup-car-flags", label: "Car Flags" },
-  { href: "/products?category=Sticker+Packs", label: "Sticker Packs" },
+  { href: "/products?category=Fashion", label: "Fashion" },
+  { href: "/products?category=Collectibles", label: "Collectibles" },
+  { href: "/products?category=Accessories", label: "Accessories" },
   { href: "/blog", label: "Guides" },
 ];
 

@@ -4,23 +4,17 @@ import { getB2CDescription, getB2CName } from "./product-copy";
 import sourceData from "./source-products.json";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
-  "Boxing Gloves": "linear-gradient(145deg, #8b0000 0%, #c41e3a 100%)",
-  "Caps": "linear-gradient(145deg, #1a1a2e 0%, #2d4a7a 100%)",
-  "Bucket Hats": "linear-gradient(145deg, #2d4a22 0%, #4a7a34 100%)",
-  "Car Flags": "linear-gradient(145deg, #4a3a2d 0%, #8b6914 100%)",
-  "Sticker Packs": "linear-gradient(145deg, #0d3b6e 0%, #1565c0 100%)",
-  "Figures": "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
+  "Fashion":      "linear-gradient(145deg, #1a1a2e 0%, #2d4a7a 100%)",
+  "Collectibles": "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
+  "Accessories":  "linear-gradient(145deg, #4a3a2d 0%, #8b6914 100%)",
 };
 
 // Per-category shipping weights (kg) — product + typical packaging materials
 // Sources: eBay/Amazon listings, Canada Post guides, manufacturer specs
 const CATEGORY_WEIGHTS: Record<string, number> = {
-  "Boxing Gloves": 0.30, // mini souvenir 6-8" display gloves ~150-200g + box
-  "Caps":          0.25, // snapback/fitted ~100g + cardboard box 150g
-  "Bucket Hats":   0.20, // foldable fan hat ~100-150g + poly mailer
-  "Car Flags":     0.12, // polyester flag + clip/pole + poly bag ~80-120g
-  "Sticker Packs": 0.15, // sticker sheets + cardboard mailer
-  "Accessories":   0.15,
+  "Fashion":      0.25,
+  "Collectibles": 0.20,
+  "Accessories":  0.15,
 };
 
 export function dbProductToProduct(p: DbProduct): Product {
@@ -72,7 +66,7 @@ const staticProducts: Product[] = [
     id: String(raw.length + 1),
     slug: "panini-fifa-world-cup-2026-sticker-box-50-packs",
     name: "Panini FIFA World Cup 2026 Sticker Box – 50 Packs",
-    category: "Sticker Packs",
+    category: "Collectibles",
     price: 125,
     description: "The ultimate collector's haul. Each box contains 50 Panini sticker packs — over 250 stickers featuring players from all 48 nations.",
     imageUrl: "/asset/stickers/world_cup_sticker_box_50.png",
@@ -85,7 +79,7 @@ const staticProducts: Product[] = [
     id: String(raw.length + 2),
     slug: "panini-fifa-world-cup-2026-official-sticker-album",
     name: "Panini FIFA World Cup 2026 Official Sticker Album",
-    category: "Sticker Packs",
+    category: "Collectibles",
     price: 8.99,
     description: "The official Panini FIFA World Cup 2026 sticker album. Features dedicated pages for all 48 teams.",
     imageUrl: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -97,7 +91,7 @@ const staticProducts: Product[] = [
     id: String(raw.length + 3),
     slug: "panini-fifa-world-cup-2026-bundle-album-sticker-box",
     name: "Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box",
-    category: "Sticker Packs",
+    category: "Collectibles",
     price: 130,
     description: "The ultimate World Cup 2026 collector's bundle. Album + 50-Pack Box together.",
     imageUrl: "/asset/stickers/fwc26_bundle_main.png",
