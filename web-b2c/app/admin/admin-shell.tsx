@@ -1,9 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-type Section = "orders" | "products" | "revenue" | "messages";
+type Section = "orders" | "products" | "revenue" | "messages" | "newsletter";
 
 const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading orders..." />,
@@ -21,6 +21,10 @@ const MessagesDashboard = dynamic(() => import("./messages-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading messages..." />,
 });
 
+const NewsletterDashboard = dynamic(() => import("./newsletter-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading subscribers..." />,
+});
+
 function AdminSectionLoader({ label }: { label: string }) {
   return (
     <div className="flex h-full items-center justify-center bg-gray-50">
@@ -32,8 +36,29 @@ function AdminSectionLoader({ label }: { label: string }) {
   );
 }
 
+const SECTIONS: Section[] = ["orders", "products", "revenue", "messages", "newsletter"];
+
+function hashToSection(): Section {
+  const hash = window.location.hash.replace("#", "") as Section;
+  return SECTIONS.includes(hash) ? hash : "orders";
+}
+
 export default function AdminShell({ logoutAction }: { logoutAction: () => Promise<void> }) {
   const [section, setSection] = useState<Section>("orders");
+
+  useEffect(() => {
+    // Set correct tab from URL hash after hydration
+    setSection(hashToSection());
+
+    const onHashChange = () => setSection(hashToSection());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  function navigate(s: Section) {
+    window.location.hash = s;
+    setSection(s);
+  }
 
   return (
     <div className="flex h-full flex-col">
@@ -43,10 +68,10 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <span className="text-xs font-bold uppercase tracking-widest text-[#C41E3A] mr-4 py-4">
             World Fan Gear
           </span>
-          {(["orders", "products", "revenue", "messages"] as const).map((s) => (
+          {SECTIONS.map((s) => (
             <button
               key={s}
-              onClick={() => setSection(s)}
+              onClick={() => navigate(s)}
               className={`px-4 py-4 text-sm font-semibold border-b-2 transition-colors ${
                 section === s
                   ? "border-[#C41E3A] text-[#C41E3A]"
@@ -59,16 +84,26 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
                 ? "Products"
                 : s === "revenue"
                 ? "Revenue"
-                : "Messages"}
+                : s === "messages"
+                ? "Messages"
+                : "Newsletter"}
             </button>
           ))}
         </div>
-        <button
-          onClick={() => logoutAction()}
-          className="text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors"
-        >
-          Log out
-        </button>
+        <div className="flex items-center gap-4">
+          <a
+            href="/"
+            className="text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors"
+          >
+            ← Site
+          </a>
+          <button
+            onClick={() => logoutAction()}
+            className="text-sm font-semibold text-gray-400 hover:text-gray-700 transition-colors"
+          >
+            Log out
+          </button>
+        </div>
       </nav>
 
       {/* Section content */}
@@ -79,8 +114,10 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <ProductsDashboard />
         ) : section === "revenue" ? (
           <RevenueDashboard />
-        ) : (
+        ) : section === "messages" ? (
           <MessagesDashboard />
+        ) : (
+          <NewsletterDashboard />
         )}
       </div>
     </div>
