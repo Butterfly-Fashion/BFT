@@ -102,13 +102,14 @@ export default async function ProductsPage({ searchParams }: Props) {
         {CATEGORIES.map((cat) => {
           const effective = childMap.get(cat) ?? [cat];
           const count = allProducts.filter((p) => effective.includes(p.category)).length;
+          const isSelected = category === cat || (category && (childMap.get(cat) ?? []).includes(category));
           return (
             <Link
               key={cat}
               href={`/products?category=${encodeURIComponent(cat)}`}
               className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-150 ${
-                category === cat
-                  ? "bg-gray-900 text-white border-gray-900"
+                isSelected
+                  ? "bg-[#C41E3A] text-white border-[#C41E3A]"
                   : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
               }`}
             >
@@ -118,12 +119,16 @@ export default async function ProductsPage({ searchParams }: Props) {
         })}
       </div>
 
-      {/* Sub-category pills */}
+      {/* Sub-category pills — only for the selected parent category */}
       {(() => {
-        const subCats: string[] = [];
-        for (const [, children] of childMap) {
-          if (children.length > 1) subCats.push(...children);
-        }
+        // Find the active parent: direct selection or parent of a selected leaf
+        const activeParent = category
+          ? (childMap.has(category)
+              ? category
+              : Array.from(childMap.entries()).find(([, ch]) => ch.includes(category))?.[0])
+          : undefined;
+        if (!activeParent) return null;
+        const subCats = (childMap.get(activeParent) ?? []).filter((n) => n !== activeParent);
         const visible = subCats.filter((n) => allProducts.some((p) => p.category === n));
         if (visible.length === 0) return null;
         return (
