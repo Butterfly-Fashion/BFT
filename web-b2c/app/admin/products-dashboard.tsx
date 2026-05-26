@@ -5,7 +5,6 @@ import Image from "next/image";
 import type { DbProduct, DbProductImage, ProductStatus } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 
-const CATEGORIES = ["Boxing Gloves", "Caps", "Bucket Hats", "Car Flags", "Sticker Packs"];
 const PAGE_SIZE = 25;
 
 interface ProductsResponse {
@@ -40,13 +39,14 @@ function shouldBypassImageOptimization(src: string): boolean {
 }
 
 const EMPTY = {
-  name: "", slug: "", category: "Boxing Gloves", description: "",
+  name: "", slug: "", category: "", description: "",
   price: "", compare_at_price: "", weight_kg: "0.5", badge: "",
   in_stock: true, stock_qty: "", status: "active" as ProductStatus,
 };
 
 export default function ProductsDashboard() {
   const [products, setProducts] = useState<DbProduct[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -64,6 +64,13 @@ export default function ProductsDashboard() {
   const [images, setImages] = useState<DbProductImage[]>([]);
   const [pending, setPending] = useState<{ file: File; preview: string }[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then((r) => r.json())
+      .then((d) => setCategories((d.categories ?? []).map((c: { name: string }) => c.name)))
+      .catch(() => {});
+  }, []);
 
   const fetchProducts = useCallback(async (pageNum = 1) => {
     setPage(pageNum);
@@ -245,7 +252,7 @@ export default function ProductsDashboard() {
             <select value={catFilter} onChange={(e) => setCatFilter(e.target.value)}
               className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#C41E3A]">
               <option value="all">All categories</option>
-              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as "all" | ProductStatus)}
               className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#C41E3A]">
@@ -373,7 +380,8 @@ export default function ProductsDashboard() {
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Category *</label>
                     <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
                       className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]">
-                      {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                      <option value="">Select category…</option>
+                      {categories.map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
                   </div>
                   <div>

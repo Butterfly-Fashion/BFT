@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 
-type Section = "orders" | "products" | "revenue" | "messages" | "newsletter";
+type Section = "orders" | "products" | "revenue" | "messages" | "newsletter" | "categories";
 
 const OrdersDashboard = dynamic(() => import("./orders-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading orders..." />,
@@ -25,6 +25,10 @@ const NewsletterDashboard = dynamic(() => import("./newsletter-dashboard"), {
   loading: () => <AdminSectionLoader label="Loading subscribers..." />,
 });
 
+const CategoriesDashboard = dynamic(() => import("./categories-dashboard"), {
+  loading: () => <AdminSectionLoader label="Loading categories..." />,
+});
+
 function AdminSectionLoader({ label }: { label: string }) {
   return (
     <div className="flex h-full items-center justify-center bg-gray-50">
@@ -36,7 +40,7 @@ function AdminSectionLoader({ label }: { label: string }) {
   );
 }
 
-const SECTIONS: Section[] = ["orders", "products", "revenue", "messages", "newsletter"];
+const SECTIONS: Section[] = ["orders", "products", "revenue", "messages", "newsletter", "categories"];
 
 function hashToSection(): Section {
   const hash = window.location.hash.replace("#", "") as Section;
@@ -86,7 +90,9 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
                 ? "Revenue"
                 : s === "messages"
                 ? "Messages"
-                : "Newsletter"}
+                : s === "newsletter"
+                ? "Newsletter"
+                : "Categories"}
             </button>
           ))}
         </div>
@@ -116,8 +122,10 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
           <RevenueDashboard />
         ) : section === "messages" ? (
           <MessagesDashboard />
-        ) : (
+        ) : section === "newsletter" ? (
           <NewsletterDashboard />
+        ) : (
+          <CategoriesDashboard />
         )}
       </div>
     </div>
