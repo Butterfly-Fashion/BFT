@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/store/newsletter-form";
+import {
+  BUSINESS_LOCALITY,
+  BUSINESS_NAME,
+  BUSINESS_POSTAL_CODE,
+  BUSINESS_REGION,
+  BUSINESS_STREET_ADDRESS,
+} from "@/lib/seo";
 
 export function Footer() {
   return (
@@ -36,6 +43,11 @@ export function Footer() {
           <p className="text-sm leading-relaxed">
             Premium World Cup 2026 merchandise for Canadian fans. Shipped from
             North York, Canada.
+          </p>
+          <p className="mt-3 text-xs leading-5 text-gray-500">
+            {BUSINESS_NAME}
+            <br />
+            {BUSINESS_STREET_ADDRESS}, {BUSINESS_LOCALITY}, {BUSINESS_REGION} {BUSINESS_POSTAL_CODE}
           </p>
           <p className="text-xs mt-4 text-gray-500">
             Not affiliated with FIFA or any official organizing body.

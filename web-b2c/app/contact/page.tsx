@@ -1,4 +1,12 @@
 import type { Metadata } from "next";
+import {
+  BUSINESS_EMAIL,
+  BUSINESS_LOCALITY,
+  BUSINESS_NAME,
+  BUSINESS_POSTAL_CODE,
+  BUSINESS_REGION,
+  BUSINESS_STREET_ADDRESS,
+} from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -23,8 +31,8 @@ export default function ContactPage() {
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4 shadow-sm">
           <div>
             <p className="font-semibold text-gray-900 mb-1">Email</p>
-            <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">
-              jameskimkim1@gmail.com
+            <a href={`mailto:${BUSINESS_EMAIL}`} className="text-[#C41E3A] hover:underline">
+              {BUSINESS_EMAIL}
             </a>
             <p className="text-gray-400 text-xs mt-1">We respond within 1–2 business days.</p>
           </div>
@@ -37,7 +45,10 @@ export default function ContactPage() {
 
           <div>
             <p className="font-semibold text-gray-900 mb-1">Based in</p>
-            <p>North York, Ontario, Canada</p>
+            <p>{BUSINESS_NAME}</p>
+            <p>
+              {BUSINESS_STREET_ADDRESS}, {BUSINESS_LOCALITY}, {BUSINESS_REGION} {BUSINESS_POSTAL_CODE}, Canada
+            </p>
             <p className="text-gray-400 text-xs mt-1">
               Orders ship from the Toronto area to customers across Canada.
             </p>

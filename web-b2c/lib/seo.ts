@@ -2,6 +2,20 @@ import type { Product } from "@/lib/types";
 
 export const SITE_URL = "https://fifa2026.ca";
 export const SITE_NAME = "World Fan Gear";
+export const BUSINESS_NAME = "Butterfly Fashion Trading";
+export const BUSINESS_STREET_ADDRESS = "178 Bentworth Ave";
+export const BUSINESS_LOCALITY = "North York";
+export const BUSINESS_REGION = "ON";
+export const BUSINESS_POSTAL_CODE = "M6A 1P7";
+export const BUSINESS_COUNTRY = "CA";
+export const BUSINESS_EMAIL = "jameskimkim1@gmail.com";
+
+export interface ProductReviewJsonLdInput {
+  author_name: string;
+  rating: number;
+  body: string | null;
+  created_at: string;
+}
 
 export function absoluteUrl(path = "/"): string {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -20,13 +34,19 @@ export function productSeoDescription(product: Product): string {
   return `Shop ${product.name} from World Fan Gear. Canada 2026-inspired soccer fan merchandise shipping from Toronto.`;
 }
 
-export function productJsonLd(product: Product) {
+export function productJsonLd(product: Product, reviews: ProductReviewJsonLdInput[] = []) {
   const images = [absoluteUrl(product.imageUrl)];
   if (product.additionalImages?.length) {
     images.push(...product.additionalImages.map(absoluteUrl));
   }
+  const validReviews = reviews.filter(
+    (review) => review.rating >= 1 && review.rating <= 5 && review.author_name.trim()
+  );
+  const ratingValue = validReviews.length
+    ? validReviews.reduce((sum, review) => sum + review.rating, 0) / validReviews.length
+    : null;
 
-  return {
+  const productJson = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
@@ -52,7 +72,8 @@ export function productJsonLd(product: Product) {
       itemCondition: "https://schema.org/NewCondition",
       seller: {
         "@type": "Organization",
-        name: SITE_NAME,
+        "@id": `${SITE_URL}/#organization`,
+        name: BUSINESS_NAME,
         url: SITE_URL,
       },
       shippingDetails: {
@@ -93,6 +114,35 @@ export function productJsonLd(product: Product) {
       },
     },
   };
+
+  if (ratingValue) {
+    Object.assign(productJson, {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: ratingValue.toFixed(1),
+        reviewCount: validReviews.length,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      review: validReviews.slice(0, 10).map((review) => ({
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: review.author_name,
+        },
+        datePublished: review.created_at.slice(0, 10),
+        reviewBody: review.body ?? undefined,
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: review.rating,
+          bestRating: 5,
+          worstRating: 1,
+        },
+      })),
+    });
+  }
+
+  return productJson;
 }
 
 export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
@@ -113,10 +163,11 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": ["Organization", "OnlineStore", "LocalBusiness"],
     "@id": `${SITE_URL}/#organization`,
-    name: SITE_NAME,
+    name: BUSINESS_NAME,
+    alternateName: [SITE_NAME, "Butterfly Fashion"],
     url: SITE_URL,
     logo: absoluteUrl("/asset/logo.jpg"),
-    legalName: "Butterfly Fashion Trading",
+    legalName: BUSINESS_NAME,
     description:
       "Toronto-based World Cup 2026 fan gear store. Caps, bucket hats, car flags, Panini sticker packs shipped from North York, ON across Canada.",
     areaServed: [
@@ -126,11 +177,11 @@ export function organizationJsonLd() {
     ],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "178 Bentworth Ave",
-      addressLocality: "North York",
-      addressRegion: "ON",
-      postalCode: "M6A 1P7",
-      addressCountry: "CA",
+      streetAddress: BUSINESS_STREET_ADDRESS,
+      addressLocality: BUSINESS_LOCALITY,
+      addressRegion: BUSINESS_REGION,
+      postalCode: BUSINESS_POSTAL_CODE,
+      addressCountry: BUSINESS_COUNTRY,
     },
     geo: {
       "@type": "GeoCoordinates",
@@ -138,9 +189,23 @@ export function organizationJsonLd() {
       longitude: -79.453,
     },
     priceRange: "$10 – $35 CAD",
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        opens: "09:00",
+        closes: "17:30",
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: "Sunday",
+        opens: "11:00",
+        closes: "17:00",
+      },
+    ],
     contactPoint: {
       "@type": "ContactPoint",
-      email: "jameskimkim1@gmail.com",
+      email: BUSINESS_EMAIL,
       contactType: "customer support",
       areaServed: "CA",
       availableLanguage: ["en"],

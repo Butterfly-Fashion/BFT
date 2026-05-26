@@ -83,7 +83,7 @@ export default async function ProductDetailPage({ params }: Props) {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLd(productJsonLd(product)) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(productJsonLd(product, initialReviews)) }}
       />
       <script
         type="application/ld+json"
