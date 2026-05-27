@@ -132,9 +132,9 @@ export default function HomePage() {
               View all stickers →
             </Link>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="flex sm:grid sm:grid-cols-3 gap-4 overflow-x-auto pb-2 sm:overflow-visible sm:pb-0">
             {/* Album — entry product */}
-            <Link href="/products/panini-fifa-world-cup-2026-official-sticker-album" className="group bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
+            <Link href="/products/panini-fifa-world-cup-2026-official-sticker-album" className="group shrink-0 w-64 sm:w-auto bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
               <div className="text-xs font-bold uppercase tracking-widest text-blue-300">Step 1 · Start here</div>
               <div className="font-bold text-white text-lg leading-snug">Official Sticker Album</div>
               <div className="text-3xl font-black text-white">$8.99</div>
@@ -142,7 +142,7 @@ export default function HomePage() {
               <div className="mt-auto pt-3 text-sm font-semibold text-white group-hover:underline">Get the album →</div>
             </Link>
             {/* Box */}
-            <Link href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs" className="group bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
+            <Link href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs" className="group shrink-0 w-64 sm:w-auto bg-white/10 hover:bg-white/20 transition-colors rounded-2xl p-5 flex flex-col gap-3 border border-white/20">
               <div className="text-xs font-bold uppercase tracking-widest text-blue-300">Step 2 · Fill it up</div>
               <div className="font-bold text-white text-lg leading-snug">50-Pack Sticker Box</div>
               <div className="text-3xl font-black text-white">$125</div>
@@ -150,7 +150,7 @@ export default function HomePage() {
               <div className="mt-auto pt-3 text-sm font-semibold text-white group-hover:underline">Shop the box →</div>
             </Link>
             {/* Bundle */}
-            <Link href="/products/panini-fifa-world-cup-2026-bundle-album-sticker-box" className="group bg-yellow-400/20 hover:bg-yellow-400/30 transition-colors rounded-2xl p-5 flex flex-col gap-3 border-2 border-yellow-400/60">
+            <Link href="/products/panini-fifa-world-cup-2026-bundle-album-sticker-box" className="group shrink-0 w-64 sm:w-auto bg-yellow-400/20 hover:bg-yellow-400/30 transition-colors rounded-2xl p-5 flex flex-col gap-3 border-2 border-yellow-400/60">
               <div className="text-xs font-bold uppercase tracking-widest text-yellow-300">Best value · Bundle</div>
               <div className="font-bold text-white text-lg leading-snug">Album + 50-Pack Box</div>
               <div className="flex items-baseline gap-2">
@@ -190,7 +190,7 @@ export default function HomePage() {
 
       <SocialProof />
 
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
+      <section className="hidden sm:block max-w-6xl mx-auto px-4 sm:px-6 py-14 border-t border-gray-100">
         <div className="grid gap-8 md:grid-cols-[280px_1fr] md:items-start">
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">

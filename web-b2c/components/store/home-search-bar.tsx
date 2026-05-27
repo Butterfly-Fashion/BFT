@@ -63,8 +63,8 @@ export function HomeSearchBar() {
         </button>
       </form>
 
-      {/* Popular team chips */}
-      <div className="mt-3 flex flex-wrap gap-2">
+      {/* Popular team chips — desktop only */}
+      <div className="mt-3 hidden sm:flex flex-wrap gap-2">
         {POPULAR_TEAMS.map((team) => (
           <button
             key={team.name}
