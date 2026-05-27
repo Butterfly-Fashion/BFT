@@ -60,3 +60,42 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 These guidelines are working if: fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+## Deployment
+
+### 프로젝트 구조
+| 사이트 | 폴더 | Vercel 프로젝트 | 도메인 | 계정 |
+|---|---|---|---|---|
+| B2C (쇼핑몰) | `web-b2c/` | `bft` | fifa2026.ca | butterfly-fashion |
+| B2B (도매) | `web-b2b/` | `b2b` | (b2b subdomain) | butterfly-fashion |
+
+### B2C 배포 (`web-b2c/` → fifa2026.ca)
+```
+# 반드시 repo 루트에서 실행
+cd c:/Users/butte/codes/ecommerce-demo
+vercel --prod --yes
+```
+- 루트의 `.vercel/project.json` → `bft` 프로젝트로 연결됨
+- `web-b2c/` 안에서 실행하면 경로 오류 남
+
+### B2B 배포 (`web-b2b/`)
+```
+# git push하면 Vercel GitHub 연동으로 자동 배포
+git push origin master
+```
+- B2B는 CLI로 직접 배포 불가 (rootDirectory 설정 충돌)
+- `web-b2b/.vercel/project.json` → `b2b` 프로젝트
+- Vercel이 `web-b2b/` 폴더만 빌드하도록 설정돼 있음
+
+### 배포 전 체크
+```
+# B2C 빌드 확인
+cd web-b2c && npm run build
+
+# B2B 빌드 확인
+cd web-b2b && npm run build
+```
+- 빌드 실패하면 배포하지 말 것
+- 환경변수는 `.env.local` (로컬) / Vercel 대시보드 (프로덕션) 별도 관리
