@@ -39,8 +39,8 @@ function CategoryNavLinks() {
             href={item.href}
             className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold tracking-wide transition-colors ${
               isActive
-                ? "bg-orange-100 text-orange-700 ring-1 ring-orange-200"
-                : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
+                ? "bg-blue-100 text-blue-700 ring-1 ring-blue-200"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`}
           >
             {item.label}
@@ -58,7 +58,7 @@ function CategoryNavFallback() {
         <Link
           key={item.label}
           href={item.href}
-          className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold tracking-wide text-gray-600 transition-colors hover:bg-orange-50 hover:text-orange-600"
+          className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold tracking-wide text-gray-600 transition-colors hover:bg-blue-50 hover:text-blue-600"
         >
           {item.label}
         </Link>

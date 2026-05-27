@@ -36,7 +36,7 @@ export default async function LoginPage({
           )}
 
           <div className="card overflow-hidden">
-            <div className="border-b border-gray-100 bg-orange-50 px-6 py-4">
+            <div className="border-b border-gray-100 bg-blue-50 px-6 py-4">
               <h1 className="text-xl font-black text-gray-900">Sign in to your account</h1>
               <p className="mt-0.5 text-sm font-medium text-gray-500">
                 Access your B2B order history and submit new requests.
@@ -64,7 +64,7 @@ export default async function LoginPage({
 
           {/* B2B note */}
           <div className="mt-4 flex items-start gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3">
-            <ShieldCheck size={14} className="mt-0.5 shrink-0 text-orange-400" />
+            <ShieldCheck size={14} className="mt-0.5 shrink-0 text-blue-500" />
             <p className="text-xs font-semibold leading-relaxed text-gray-500">
               This is a B2B platform. Accounts are reviewed before wholesale pricing is activated.
             </p>

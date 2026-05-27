@@ -16,10 +16,10 @@ import type { Product } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 const CATEGORIES = [
-  { label: "Car Flags", icon: Flag, href: "/products?category=Car+Flags", desc: "49+ country styles", color: "from-orange-400 to-orange-500" },
-  { label: "Caps", icon: HardHat, href: "/products?category=Caps", desc: "3D embroidered caps", color: "from-orange-500 to-orange-600" },
-  { label: "Bucket Hats", icon: Package, href: "/products?category=Bucket+Hats", desc: "Licensed bucket hats", color: "from-amber-400 to-orange-500" },
-  { label: "Boxing Gloves", icon: Package, href: "/products?category=Boxing+Gloves", desc: "Licensed souvenir gloves", color: "from-orange-300 to-orange-500" },
+  { label: "Car Flags", icon: Flag, href: "/products?category=Car+Flags", desc: "49+ country styles", color: "from-blue-500 to-blue-600" },
+  { label: "Caps", icon: HardHat, href: "/products?category=Caps", desc: "3D embroidered caps", color: "from-blue-600 to-blue-700" },
+  { label: "Bucket Hats", icon: Package, href: "/products?category=Bucket+Hats", desc: "Licensed bucket hats", color: "from-blue-400 to-blue-600" },
+  { label: "Boxing Gloves", icon: Package, href: "/products?category=Boxing+Gloves", desc: "Licensed souvenir gloves", color: "from-sky-400 to-blue-500" },
 ];
 
 const PROCESS_STEPS = [
@@ -53,14 +53,14 @@ export default async function HomePage() {
         {/* ── Hero ── */}
         <section className="border-b border-gray-100 bg-white">
           {/* Top accent stripe */}
-          <div className="h-1.5 bg-linear-to-r from-orange-400 via-orange-500 to-amber-400" />
+          <div className="h-1.5 bg-linear-to-r from-blue-600 via-blue-500 to-yellow-400" />
 
           <div className="container-shell py-12 sm:py-16 lg:py-20">
             <div className="grid gap-10 lg:grid-cols-[1fr_400px] lg:items-center">
 
               {/* Left: copy */}
               <div>
-                <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3.5 py-1.5 text-xs font-bold text-orange-600 ring-1 ring-orange-200">
+                <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3.5 py-1.5 text-xs font-bold text-blue-600 ring-1 ring-blue-200">
                   B2B Wholesale Platform
                 </div>
 
@@ -83,7 +83,7 @@ export default async function HomePage() {
                     Shop the Collection <ArrowRight size={15} className="shrink-0" />
                   </Link>
                   <Link
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-gray-200 bg-white px-7 py-3 text-sm font-bold text-gray-700 transition-colors hover:border-orange-200 hover:bg-orange-50 hover:text-orange-600"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-gray-200 bg-white px-7 py-3 text-sm font-bold text-gray-700 transition-colors hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600"
                     href="/account/quotes"
                   >
                     Get Bulk Quote
@@ -104,7 +104,7 @@ export default async function HomePage() {
               <div className="grid gap-3">
                 {PROCESS_STEPS.map((step) => (
                   <div key={step.n} className="flex gap-3 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-black text-white bg-orange-500">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-black text-white bg-blue-600">
                       {step.n}
                     </span>
                     <div>
@@ -120,11 +120,11 @@ export default async function HomePage() {
         </section>
 
         {/* ── Trust signals ── */}
-        <section className="border-y border-gray-100 bg-orange-50">
-          <div className="container-shell grid grid-cols-2 gap-px bg-orange-100 lg:grid-cols-4">
+        <section className="border-y border-gray-100 bg-blue-50">
+          <div className="container-shell grid grid-cols-2 gap-px bg-blue-100 lg:grid-cols-4">
             {TRUST_SIGNALS.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2.5 bg-orange-50 px-5 py-4 sm:gap-3">
-                <Icon size={16} className="shrink-0 text-orange-500" />
+              <div key={label} className="flex items-center gap-2.5 bg-blue-50 px-5 py-4 sm:gap-3">
+                <Icon size={16} className="shrink-0 text-blue-600" />
                 <span className="text-xs font-bold text-gray-700 sm:text-sm">{label}</span>
               </div>
             ))}
@@ -135,7 +135,7 @@ export default async function HomePage() {
         <section className="container-shell py-8 sm:py-10">
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="mb-1 text-xs font-black uppercase tracking-widest text-orange-500">Shop by category</p>
+              <p className="mb-1 text-xs font-black uppercase tracking-widest text-blue-600">Shop by category</p>
               <h2 className="text-xl font-black text-gray-900 sm:text-2xl">Browse our catalog</h2>
             </div>
             <Link className="btn-secondary shrink-0 text-xs" href="/products">
@@ -147,13 +147,13 @@ export default async function HomePage() {
               <Link
                 key={label}
                 href={href}
-                className="group flex items-center gap-4 overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-lg"
+                className="group flex items-center gap-4 overflow-hidden rounded-2xl border border-gray-100 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg"
               >
                 <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-linear-to-br ${color} text-white shadow-sm`}>
                   <Icon size={22} />
                 </span>
                 <div>
-                  <p className="text-sm font-black text-gray-900 transition-colors group-hover:text-orange-600">{label}</p>
+                  <p className="text-sm font-black text-gray-900 transition-colors group-hover:text-blue-600">{label}</p>
                   <p className="text-xs font-semibold text-gray-500">{desc}</p>
                 </div>
               </Link>
@@ -166,7 +166,7 @@ export default async function HomePage() {
           <div className="container-shell py-8 sm:py-10">
             <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="mb-1 text-xs font-black uppercase tracking-widest text-orange-500">🔥 Featured products</p>
+                <p className="mb-1 text-xs font-black uppercase tracking-widest text-blue-600">🔥 Featured products</p>
                 <h2 className="text-xl font-black text-gray-900 sm:text-2xl">Popular this season</h2>
                 <p className="mt-1 text-xs font-medium text-gray-500 sm:text-sm">
                   Starting prices shown — final totals confirmed before payment.
