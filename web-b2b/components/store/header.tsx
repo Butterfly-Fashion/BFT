@@ -37,10 +37,10 @@ function CategoryNavLinks() {
           <Link
             key={item.label}
             href={item.href}
-            className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-bold tracking-wide transition-colors ${
+            className={`whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold tracking-wide transition-colors ${
               isActive
-                ? "bg-slate-200 text-slate-950 ring-1 ring-slate-300"
-                : "text-slate-600 hover:bg-slate-200 hover:text-slate-900"
+                ? "bg-orange-100 text-orange-700 ring-1 ring-orange-200"
+                : "text-gray-600 hover:bg-orange-50 hover:text-orange-600"
             }`}
           >
             {item.label}
@@ -58,7 +58,7 @@ function CategoryNavFallback() {
         <Link
           key={item.label}
           href={item.href}
-          className="whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-bold tracking-wide text-slate-600 transition-colors hover:bg-slate-200 hover:text-slate-900"
+          className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold tracking-wide text-gray-600 transition-colors hover:bg-orange-50 hover:text-orange-600"
         >
           {item.label}
         </Link>
@@ -142,7 +142,7 @@ function UserMenu({ profile }: { profile: Profile }) {
 
 export function Header({ profile }: { profile: Profile | null }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white shadow-sm">
+    <header className="sticky top-0 z-40 border-b border-gray-200 bg-white shadow-sm">
       {/* Announcement bar */}
       <div
         className="px-4 py-1.5 text-center text-xs font-semibold tracking-wide text-white"
@@ -206,19 +206,18 @@ export function Header({ profile }: { profile: Profile | null }) {
       </div>
 
       {/* Category nav */}
-      <nav className="border-t border-slate-100 bg-slate-50">
+      <nav className="border-t border-gray-100 bg-gray-50">
         <div className="relative">
-          <div className="container-shell category-nav-scroll flex items-center gap-0.5 overflow-x-auto py-1.5">
+          <div className="container-shell category-nav-scroll flex items-center gap-1 overflow-x-auto py-2">
             <Suspense fallback={<CategoryNavFallback />}>
               <CategoryNavLinks />
             </Suspense>
-            <span className="ml-auto hidden shrink-0 items-center gap-1 text-[10px] font-semibold text-slate-400 lg:flex">
+            <span className="ml-auto hidden shrink-0 items-center gap-1 text-[10px] font-semibold text-gray-400 lg:flex">
               <ChevronRight size={12} />
               B2B accounts get custom pricing
             </span>
           </div>
-          {/* Fade hint — visible on mobile to indicate horizontal scroll */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-linear-to-l from-slate-50 to-transparent lg:hidden" />
+          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-linear-to-l from-gray-50 to-transparent lg:hidden" />
         </div>
       </nav>
     </header>
