@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Search, ChevronRight, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText } from "lucide-react";
+import { Search, ChevronRight, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import type { Profile } from "@/lib/types";
 import { CartButton } from "@/components/store/cart-button";
@@ -111,6 +111,16 @@ function UserMenu({ profile }: { profile: Profile }) {
                 <FileText size={14} className="text-slate-400" />
                 Request a Quote
               </Link>
+              {profile.is_b2b_approved && (
+                <Link
+                  href="/preorders"
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                  onClick={() => setOpen(false)}
+                >
+                  <CalendarClock size={14} className="text-slate-400" />
+                  Pre-orders
+                </Link>
+              )}
               {profile.role === "admin" && (
                 <Link
                   href="/admin"

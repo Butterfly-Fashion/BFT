@@ -222,11 +222,11 @@ export async function createOrderRequestAction(input: {
 
   const { data: customerPrices } = await supabase
     .from("customer_prices")
-    .select("product_id, price")
+    .select("product_id, unit_price")
     .eq("customer_id", profile.id)
     .in("product_id", productIds);
 
-  const priceMap = new Map((customerPrices || []).map((row) => [row.product_id, Number(row.price)]));
+  const priceMap = new Map((customerPrices || []).map((row) => [row.product_id, row.unit_price != null ? Number(row.unit_price) : null]));
   const productMap = new Map(products.map((product) => [product.id, product]));
   if (input.items.some((item) => !productMap.has(item.productId))) {
     return { error: "A product in your cart is no longer available. Please remove it and try again." };
@@ -235,7 +235,7 @@ export async function createOrderRequestAction(input: {
     const product = productMap.get(item.productId);
     if (!product) throw new Error("Missing product after validation.");
     const quantity = Math.max(1, Number(item.quantity));
-    const unitPrice = profile.is_b2b_approved ? priceMap.get(product.id) ?? Number(product.base_price) : Number(product.base_price);
+    const unitPrice = profile.is_b2b_approved ? (priceMap.get(product.id) ?? Number(product.unit_price)) : Number(product.unit_price);
     return {
       product,
       quantity,
@@ -496,13 +496,19 @@ export async function upsertProductAction(formData: FormData) {
   const rawBoxW = formData.get("box_width_cm");
   const rawBoxH = formData.get("box_height_cm");
 
+  const unitPrice = Number(formData.get("unit_price") || 0);
+  const rawCasePrice = formData.get("case_price");
+  const rawCaseQty = formData.get("case_qty");
+
   const payload = {
     name,
     slug,
     description: String(formData.get("description") || ""),
     sku,
     barcode: String(formData.get("barcode") || "") || null,
-    base_price: Number(formData.get("base_price") || 0),
+    unit_price: unitPrice,
+    case_price: rawCasePrice ? Number(rawCasePrice) : null,
+    case_qty: rawCaseQty ? Number(rawCaseQty) : null,
     image_url: uploadedImageUrl || String(formData.get("image_url") || "") || null,
     category,
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
@@ -526,15 +532,87 @@ export async function setCustomerPriceAction(formData: FormData) {
   const admin = createSupabaseAdminClient();
   const customerId = String(formData.get("customer_id"));
   const productId = String(formData.get("product_id"));
-  const price = Number(formData.get("price"));
+  const unitPrice = Number(formData.get("unit_price") || formData.get("price") || 0);
+  const rawCasePrice = formData.get("case_price");
+  const casePrice = rawCasePrice ? Number(rawCasePrice) : null;
+
   await admin.from("customer_prices").upsert({
     customer_id: customerId,
     product_id: productId,
-    price,
+    price: unitPrice,
+    unit_price: unitPrice,
+    case_price: casePrice,
     min_quantity: null,
     updated_at: new Date().toISOString(),
   }, { onConflict: "customer_id,product_id,min_quantity" });
   revalidatePath("/admin/customers");
+  revalidatePath(`/admin/customers/${customerId}`);
+}
+
+export async function createPreorderCampaignAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const productId = String(formData.get("product_id") || "");
+  const title = String(formData.get("title") || "").trim();
+  const description = String(formData.get("description") || "");
+  const unitPrice = Number(formData.get("unit_price") || 0);
+  const rawCasePrice = formData.get("case_price");
+  const rawCaseQty = formData.get("case_qty");
+  const rawClosesAt = formData.get("closes_at");
+
+  if (!productId || !title) return;
+
+  const { error } = await admin.from("preorder_campaigns").insert({
+    product_id: productId,
+    title,
+    description,
+    unit_price: unitPrice,
+    case_price: rawCasePrice ? Number(rawCasePrice) : null,
+    case_qty: rawCaseQty ? Number(rawCaseQty) : null,
+    status: "open",
+    closes_at: rawClosesAt ? new Date(String(rawClosesAt)).toISOString() : null,
+  });
+  if (error) return;
+
+  revalidatePath("/admin/preorders");
+  redirect("/admin/preorders");
+}
+
+export async function updatePreorderCampaignStatusAction(campaignId: string, status: "open" | "closed" | "cancelled") {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("preorder_campaigns").update({
+    status,
+    updated_at: new Date().toISOString(),
+  }).eq("id", campaignId);
+  revalidatePath("/admin/preorders");
+  revalidatePath(`/admin/preorders/${campaignId}`);
+}
+
+export async function submitPreorderCommitmentAction(formData: FormData) {
+  const profile = await requireProfile();
+  const supabase = await createSupabaseServerClient();
+  const campaignId = String(formData.get("campaign_id") || "");
+  const quantity = Math.max(1, Number(formData.get("quantity") || 1));
+  const notes = String(formData.get("notes") || "") || null;
+
+  const { data: campaign } = await supabase
+    .from("preorder_campaigns")
+    .select("id, status")
+    .eq("id", campaignId)
+    .single();
+
+  if (!campaign || campaign.status !== "open") return;
+
+  await supabase.from("preorder_commitments").upsert({
+    campaign_id: campaignId,
+    customer_id: profile.id,
+    quantity,
+    notes,
+    updated_at: new Date().toISOString(),
+  }, { onConflict: "campaign_id,customer_id" });
+
+  revalidatePath("/preorders");
 }
 
 export async function respondQuoteAction(formData: FormData) {

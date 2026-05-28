@@ -14,7 +14,9 @@ type ProductFormProps = {
     description?: string | null;
     sku: string;
     barcode?: string | null;
-    base_price: number;
+    unit_price: number;
+    case_price?: number | null;
+    case_qty?: number | null;
     image_url?: string | null;
     category: string;
     availability_status: string;
@@ -88,7 +90,26 @@ export function ProductForm({ mode, product }: ProductFormProps) {
                   <option>Accessories</option>
                 </select>
               </label>
-              <label className="label">Base price<input className="field" name="base_price" defaultValue={product?.base_price ?? ""} required step="0.01" type="number" /></label>
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500">Pricing</p>
+              <p className="mt-1 mb-3 text-xs font-semibold text-slate-500">
+                Unit price is required. Case price and case quantity are optional — set both together.
+              </p>
+              <div className="grid gap-4 md:grid-cols-3">
+                <label className="label">
+                  Unit price (낱개)
+                  <input className="field" name="unit_price" defaultValue={product?.unit_price ?? ""} required step="0.01" min="0" type="number" placeholder="e.g. 5.99" />
+                </label>
+                <label className="label">
+                  Case price (케이스)
+                  <input className="field" name="case_price" defaultValue={product?.case_price ?? ""} step="0.01" min="0" type="number" placeholder="e.g. 59.99" />
+                </label>
+                <label className="label">
+                  Case qty (개/케이스)
+                  <input className="field" name="case_qty" defaultValue={product?.case_qty ?? ""} step="1" min="1" type="number" placeholder="e.g. 12" />
+                </label>
+              </div>
             </div>
             {/* Shipping — weight & box dimensions for accurate carrier quotes */}
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-4">

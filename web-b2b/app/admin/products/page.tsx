@@ -23,7 +23,7 @@ export default async function AdminProductsPage({
 
   const [{ data: products }, { data: allProducts }] = await Promise.all([
     query,
-    admin.from("products").select("category,is_hidden,base_price"),
+    admin.from("products").select("category,is_hidden,unit_price"),
   ]);
 
   const productList = products || [];
@@ -31,7 +31,7 @@ export default async function AdminProductsPage({
   const visibleCount = all.filter((p) => !p.is_hidden).length;
   const hiddenCount = all.filter((p) => p.is_hidden).length;
   const categories = [...new Set(all.map((p) => p.category).filter(Boolean))].sort();
-  const inventoryValue = all.reduce((sum, p) => sum + Number(p.base_price || 0), 0);
+  const inventoryValue = all.reduce((sum, p) => sum + Number(p.unit_price || 0), 0);
 
   return (
     <>
@@ -112,7 +112,7 @@ export default async function AdminProductsPage({
                   <th className="px-5 py-3">Product</th>
                   <th className="px-5 py-3">Category</th>
                   <th className="px-5 py-3">SKU</th>
-                  <th className="px-5 py-3">Base price</th>
+                  <th className="px-5 py-3">Unit price</th>
                   <th className="px-5 py-3">Availability</th>
                   <th className="px-5 py-3">Visibility</th>
                   <th className="px-5 py-3 text-right">Actions</th>
@@ -146,7 +146,7 @@ export default async function AdminProductsPage({
                         {product.sku}
                       </span>
                     </td>
-                    <td className="px-5 py-3 whitespace-nowrap font-black">{formatMoney(product.base_price)}</td>
+                    <td className="px-5 py-3 whitespace-nowrap font-black">{formatMoney(product.unit_price)}</td>
                     <td className="px-5 py-3"><span className="badge max-w-full justify-center text-center">{product.availability_status}</span></td>
                     <td className="px-5 py-3">
                       {product.is_hidden ? (

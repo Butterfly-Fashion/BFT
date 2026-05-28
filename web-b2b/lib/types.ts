@@ -14,6 +14,7 @@ export type OrderStatus =
 export type PaymentStatus = "Unpaid" | "Payment Link Sent" | "Paid" | "Refunded" | "Failed";
 export type DeliveryMethod = "Pickup" | "Shipping";
 export type AvailabilityStatus = "Available" | "Limited" | "Manual Confirm" | "Hidden";
+export type PreorderStatus = "open" | "closed" | "cancelled";
 
 export type Profile = {
   id: string;
@@ -43,7 +44,9 @@ export type Product = {
   description: string;
   sku: string;
   barcode?: string | null;
-  base_price: number;
+  unit_price: number;
+  case_price?: number | null;
+  case_qty?: number | null;
   image_url?: string | null;
   category: string;
   availability_status: AvailabilityStatus;
@@ -53,7 +56,18 @@ export type Product = {
 
 export type PricedProduct = Product & {
   display_price: number;
+  display_case_price: number | null;
   has_customer_price: boolean;
+};
+
+export type CustomerPrice = {
+  id: string;
+  customer_id: string;
+  product_id: string;
+  unit_price: number | null;
+  case_price: number | null;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CartItem = {
@@ -95,4 +109,29 @@ export type OrderItem = {
   quantity: number;
   unit_price_snapshot: number;
   line_total: number;
+};
+
+export type PreorderCampaign = {
+  id: string;
+  product_id: string;
+  title: string;
+  description: string;
+  unit_price: number;
+  case_price: number | null;
+  case_qty: number | null;
+  status: PreorderStatus;
+  closes_at: string | null;
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PreorderCommitment = {
+  id: string;
+  campaign_id: string;
+  customer_id: string;
+  quantity: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
 };

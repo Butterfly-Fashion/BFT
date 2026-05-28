@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut } from "lucide-react";
+import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
 import { logoutAction } from "@/app/actions";
 
@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { label: "Products", href: "/admin/products", icon: ShoppingBag },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Orders", href: "/admin/orders", icon: ClipboardList },
+  { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
   { label: "Quotes", href: "/admin/quotes", icon: FileText },
 ];
 

@@ -14,9 +14,9 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
 
   const [{ data: customer }, { data: products }, { data: orders }, { data: customerPrices }, { data: purchaseItems }] = await Promise.all([
     admin.from("profiles").select("*").eq("id", id).single(),
-    admin.from("products").select("id,name,sku,base_price").eq("is_hidden", false).order("name"),
+    admin.from("products").select("id,name,sku,unit_price,case_price,case_qty").eq("is_hidden", false).order("name"),
     admin.from("orders").select("*").eq("customer_id", id).order("created_at", { ascending: false }),
-    admin.from("customer_prices").select("*, products(name,sku,base_price,image_url)").eq("customer_id", id).order("created_at", { ascending: false }),
+    admin.from("customer_prices").select("*, products(name,sku,unit_price,case_price,case_qty,image_url)").eq("customer_id", id).order("created_at", { ascending: false }),
     admin
       .from("order_items")
       .select("product_id, product_name_snapshot, sku_snapshot, quantity, unit_price_snapshot, line_total, orders!inner(id,customer_id,status,payment_status,created_at)")
@@ -114,11 +114,20 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
               <h2 className="mb-3 text-xl font-black">Set customer price</h2>
               <form action={setCustomerPriceAction} className="grid gap-2">
                 <input name="customer_id" type="hidden" value={customer.id} />
-                <select className="field" name="product_id">{(products || []).map((product) => <option value={product.id} key={product.id}>{product.name} ({formatMoney(product.base_price)})</option>)}</select>
-                <div className="grid grid-cols-[1fr_auto] gap-2">
-                  <input className="field" name="price" placeholder="Customer price" step="0.01" type="number" />
-                  <button className="btn-primary" type="submit">Set</button>
-                </div>
+                <select className="field" name="product_id">
+                  {(products || []).map((product) => (
+                    <option value={product.id} key={product.id}>
+                      {product.name} (unit: {formatMoney(product.unit_price)}{product.case_price ? ` / case: ${formatMoney(product.case_price)}` : ""})
+                    </option>
+                  ))}
+                </select>
+                <label className="label">Unit price (낱개)
+                  <input className="field" name="unit_price" placeholder="e.g. 4.50" step="0.01" min="0" type="number" />
+                </label>
+                <label className="label">Case price (케이스, optional)
+                  <input className="field" name="case_price" placeholder="e.g. 45.00" step="0.01" min="0" type="number" />
+                </label>
+                <button className="btn-primary" type="submit">Set prices</button>
               </form>
             </section>
           </aside>
@@ -150,14 +159,15 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
               <div className="border-b border-slate-200 bg-[#fafafa] p-4"><h2 className="text-xl font-black">Customer-specific prices</h2></div>
               <div className="overflow-auto">
                 <table className="w-full min-w-[760px] text-sm">
-                  <thead><tr className="border-b text-left text-xs font-black uppercase text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Base</th><th>Customer price</th></tr></thead>
+                  <thead><tr className="border-b text-left text-xs font-black uppercase text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Base unit</th><th>Custom unit</th><th>Custom case</th></tr></thead>
                   <tbody>
                     {(customerPrices || []).map((price) => (
                       <tr className="border-b last:border-b-0" key={price.id}>
                         <td className="p-3 font-black">{price.products?.name}</td>
                         <td className="font-mono text-xs">{price.products?.sku}</td>
-                        <td>{formatMoney(price.products?.base_price || 0)}</td>
-                        <td className="font-black">{formatMoney(price.price)}</td>
+                        <td>{formatMoney(price.products?.unit_price || 0)}</td>
+                        <td className="font-black">{price.unit_price != null ? formatMoney(price.unit_price) : "—"}</td>
+                        <td className="font-black">{price.case_price != null ? formatMoney(price.case_price) : "—"}</td>
                       </tr>
                     ))}
                   </tbody>
