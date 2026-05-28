@@ -1,10 +1,9 @@
 import Link from "next/link";
 
 const categories = [
-  { name: "Fashion", emoji: "🧢", href: "/products?category=Fashion" },
+  { name: "Fashion",      emoji: "🧢", href: "/products?category=Fashion" },
   { name: "Collectibles", emoji: "🏆", href: "/products?category=Collectibles" },
-  { name: "Accessories", emoji: "🚗", href: "/products?category=Accessories" },
-  { name: "Sticker Packs", emoji: "🎴", href: "/products?category=Sticker+Packs" },
+  { name: "Accessories",  emoji: "🚗", href: "/products?category=Accessories" },
 ];
 
 export function CategoryStrip() {
