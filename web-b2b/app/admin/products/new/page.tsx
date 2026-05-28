@@ -10,7 +10,7 @@ export default async function AdminProductNewPage() {
     <>
       <AdminNav />
       <main className="container-shell py-6">
-        <ProductForm mode="create" categories={categories.map((c) => c.name)} />
+        <ProductForm mode="create" categories={categories} />
       </main>
     </>
   );

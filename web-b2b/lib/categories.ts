@@ -1,38 +1,23 @@
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 
-export type Category = {
-  id: string;
-  name: string;
-  slug: string;
-  sort_order: number;
-  is_active: boolean;
-};
+export type { Category, CategoryTree } from "@/lib/category-utils";
+export { buildCategoryTree, resolveFilterCategories, navCategories } from "@/lib/category-utils";
 
-export async function fetchCategories(): Promise<Category[]> {
+export async function fetchCategories() {
   const supabase = await createSupabaseServerClient();
   const { data } = await supabase
     .from("b2b_categories")
-    .select("id, name, slug, sort_order, is_active")
+    .select("id, name, slug, sort_order, is_active, parent_id")
     .eq("is_active", true)
     .order("sort_order");
-  return (data || []) as Category[];
+  return (data || []) as import("@/lib/category-utils").Category[];
 }
 
-export async function fetchAllCategories(): Promise<Category[]> {
+export async function fetchAllCategories() {
   const admin = createSupabaseAdminClient();
   const { data } = await admin
     .from("b2b_categories")
-    .select("id, name, slug, sort_order, is_active")
+    .select("id, name, slug, sort_order, is_active, parent_id")
     .order("sort_order");
-  return (data || []) as Category[];
-}
-
-export function categoryNavItems(categories: Category[]) {
-  return [
-    ...categories.map((c) => ({
-      label: c.name,
-      href: `/products?category=${encodeURIComponent(c.name)}`,
-    })),
-    { label: "All products", href: "/products" },
-  ];
+  return (data || []) as import("@/lib/category-utils").Category[];
 }

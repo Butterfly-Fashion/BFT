@@ -6,7 +6,7 @@ import { CatalogFilterSidebar } from "@/components/store/catalog-filter-sidebar"
 import { CatalogTopBar } from "@/components/store/catalog-top-bar";
 import { getCurrentProfile } from "@/lib/auth";
 import { applyCustomerPrices } from "@/lib/pricing";
-import { fetchCategories } from "@/lib/categories";
+import { fetchCategories, buildCategoryTree, resolveFilterCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
@@ -24,9 +24,13 @@ export default async function ProductsPage({
     createSupabaseServerClient(),
   ]);
 
+  const categoryTree = buildCategoryTree(categories);
   let query = supabase.from("products").select("*").eq("is_hidden", false);
-  if (params.category && params.category !== "All Products")
-    query = query.eq("category", params.category);
+  if (params.category && params.category !== "All Products") {
+    const filterNames = resolveFilterCategories(params.category, categoryTree);
+    if (filterNames.length === 1) query = query.eq("category", filterNames[0]);
+    else query = query.in("category", filterNames);
+  }
   if (params.q)
     query = query.or(`name.ilike.%${params.q}%,sku.ilike.%${params.q}%,category.ilike.%${params.q}%,country.ilike.%${params.q}%`);
   if (params.stock === "instock") query = query.eq("availability_status", "Available");

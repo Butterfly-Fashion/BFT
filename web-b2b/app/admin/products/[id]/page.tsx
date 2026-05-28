@@ -41,7 +41,7 @@ export default async function AdminProductEditPage({ params }: { params: Promise
           </div>
         </div>
 
-        <ProductForm mode="edit" product={product} categories={categories.map((c) => c.name)} />
+        <ProductForm mode="edit" product={product} categories={categories} />
       </main>
     </>
   );

@@ -4,12 +4,24 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ImagePlus, UploadCloud } from "lucide-react";
 import { upsertProductAction } from "@/app/actions";
+import type { Category } from "@/lib/category-utils";
+import { buildCategoryTree } from "@/lib/category-utils";
 
-const FALLBACK_CATEGORIES = ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves", "Rolling Papers", "Bongs & Pipes", "Lighters", "Winter Items", "Accessories"];
+const FALLBACK_CATEGORIES: Category[] = [
+  { id: "1", name: "Car Flags", slug: "car-flags", sort_order: 1, is_active: true, parent_id: null },
+  { id: "2", name: "Caps", slug: "caps", sort_order: 2, is_active: true, parent_id: null },
+  { id: "3", name: "Bucket Hats", slug: "bucket-hats", sort_order: 3, is_active: true, parent_id: null },
+  { id: "4", name: "Boxing Gloves", slug: "boxing-gloves", sort_order: 4, is_active: true, parent_id: null },
+  { id: "5", name: "Rolling Papers", slug: "rolling-papers", sort_order: 5, is_active: true, parent_id: null },
+  { id: "6", name: "Bongs & Pipes", slug: "bongs-pipes", sort_order: 6, is_active: true, parent_id: null },
+  { id: "7", name: "Lighters", slug: "lighters", sort_order: 7, is_active: true, parent_id: null },
+  { id: "8", name: "Winter Items", slug: "winter-items", sort_order: 8, is_active: true, parent_id: null },
+  { id: "9", name: "Accessories", slug: "accessories", sort_order: 9, is_active: true, parent_id: null },
+];
 
 type ProductFormProps = {
   mode: "create" | "edit";
-  categories?: string[];
+  categories?: Category[];
   product?: {
     id: string;
     name: string;
@@ -33,7 +45,9 @@ type ProductFormProps = {
 };
 
 export function ProductForm({ mode, product, categories }: ProductFormProps) {
-  const categoryList = categories?.length ? categories : FALLBACK_CATEGORIES;
+  const catList = categories?.length ? categories : FALLBACK_CATEGORIES;
+  const tree = buildCategoryTree(catList);
+  const defaultCategory = product?.category || (tree[0]?.children[0]?.name ?? tree[0]?.name ?? "");
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState(product?.image_url || "");
   const [dragging, setDragging] = useState(false);
@@ -86,8 +100,18 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
             <label className="label">Description<textarea className="field min-h-40" name="description" defaultValue={product?.description || ""} placeholder="Short operational product description for customers and admin review." /></label>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="label">Category
-                <select className="field" name="category" defaultValue={product?.category || categoryList[0]} required>
-                  {categoryList.map((cat) => <option key={cat}>{cat}</option>)}
+                <select className="field" name="category" defaultValue={defaultCategory} required>
+                  {tree.map((parent) =>
+                    parent.children.length === 0 ? (
+                      <option key={parent.id} value={parent.name}>{parent.name}</option>
+                    ) : (
+                      <optgroup key={parent.id} label={parent.name}>
+                        {parent.children.map((child) => (
+                          <option key={child.id} value={child.name}>{child.name}</option>
+                        ))}
+                      </optgroup>
+                    )
+                  )}
                 </select>
               </label>
             </div>

@@ -6,7 +6,8 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock, ShoppingCart } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import type { Profile } from "@/lib/types";
-import type { Category } from "@/lib/categories";
+import type { Category } from "@/lib/category-utils";
+import { navCategories } from "@/lib/category-utils";
 import { CartButton } from "@/components/store/cart-button";
 import { logoutAction } from "@/app/actions";
 
@@ -21,13 +22,8 @@ const DEFAULT_CATEGORIES = [
 
 function buildNavItems(categories?: Category[]) {
   if (!categories?.length) return DEFAULT_CATEGORIES;
-  return [
-    ...categories.map((c) => ({
-      label: c.name,
-      href: `/products?category=${encodeURIComponent(c.name)}`,
-    })),
-    { label: "All products", href: "/products" },
-  ];
+  const items = navCategories(categories);
+  return [...items, { label: "All products", href: "/products" }];
 }
 
 function CategoryNavLinks({ categories }: { categories?: Category[] }) {

@@ -782,10 +782,25 @@ export async function createCategoryAction(formData: FormData) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const name = String(formData.get("name") || "").trim();
+  const rawParentId = String(formData.get("parent_id") || "").trim();
+  const parentId = rawParentId || null;
   if (!name) return;
   const slug = slugifyCategory(name);
   const { data: last } = await admin.from("b2b_categories").select("sort_order").order("sort_order", { ascending: false }).limit(1).single();
-  await admin.from("b2b_categories").insert({ name, slug, sort_order: (last?.sort_order ?? 0) + 1 });
+  await admin.from("b2b_categories").insert({ name, slug, sort_order: (last?.sort_order ?? 0) + 1, parent_id: parentId });
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function setCategoryParentAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const id = String(formData.get("id") || "");
+  const rawParentId = String(formData.get("parent_id") || "").trim();
+  const parentId = rawParentId || null;
+  if (!id) return;
+  await admin.from("b2b_categories").update({ parent_id: parentId, updated_at: new Date().toISOString() }).eq("id", id);
   revalidatePath("/admin/categories");
   revalidatePath("/products");
   revalidatePath("/");
