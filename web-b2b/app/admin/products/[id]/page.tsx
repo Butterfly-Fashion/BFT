@@ -13,7 +13,10 @@ export default async function AdminProductEditPage({ params }: { params: Promise
   const admin = createSupabaseAdminClient();
   const [{ data: product }, categories] = await Promise.all([
     admin.from("products").select("*").eq("id", id).single(),
-    fetchAllCategories(),
+    fetchAllCategories().catch((err) => {
+      console.error("[admin product edit] failed to load categories", err);
+      return [];
+    }),
   ]);
   if (!product) notFound();
 

@@ -64,6 +64,9 @@ type ProductFormProps = {
     is_hidden: boolean; weight_kg?: number | null; box_length_cm?: number | null;
     box_width_cm?: number | null; box_height_cm?: number | null;
     stock_qty?: number | null; country?: string | null; lead_time?: string | null;
+    stripe_product_id?: string | null; stripe_price_id?: string | null;
+    stripe_sync_status?: "pending" | "synced" | "failed" | null;
+    stripe_sync_error?: string | null; stripe_synced_at?: string | null;
   };
 };
 
@@ -164,6 +167,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const hasInventory = !!(product?.stock_qty != null || product?.country || product?.lead_time);
   const hasShipping = !!(product?.weight_kg || product?.box_length_cm);
   const hasIds = !!(product?.slug || product?.sku || product?.barcode);
+  const stripeStatus = product?.stripe_sync_status || (product?.stripe_product_id ? "synced" : "pending");
 
   async function handleFile(file?: File) {
     if (!file) return;
@@ -447,6 +451,38 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 Hide from storefront
               </label>
             </div>
+          </div>
+
+          {/* Stripe sync */}
+          <div className="card p-4">
+            <p className="mb-3 text-sm font-bold text-slate-700">Stripe sync</p>
+            <div
+              className={`rounded-lg border px-3 py-2.5 text-sm font-semibold ${
+                stripeStatus === "synced"
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                  : stripeStatus === "failed"
+                    ? "border-red-200 bg-red-50 text-red-700"
+                    : "border-amber-200 bg-amber-50 text-amber-800"
+              }`}
+            >
+              {stripeStatus === "synced" ? "Synced automatically" : stripeStatus === "failed" ? "Sync needs attention" : "Will sync after save"}
+            </div>
+            {product?.stripe_synced_at && (
+              <p className="mt-2 text-xs font-semibold text-slate-400">
+                Last synced {new Date(product.stripe_synced_at).toLocaleString("en-CA")}
+              </p>
+            )}
+            {product?.stripe_sync_error && (
+              <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-700">
+                {product.stripe_sync_error}
+              </p>
+            )}
+            {(product?.stripe_product_id || product?.stripe_price_id) && (
+              <div className="mt-2 space-y-1 text-[11px] font-semibold text-slate-400">
+                {product.stripe_product_id && <p className="truncate">Product: <span className="font-mono">{product.stripe_product_id}</span></p>}
+                {product.stripe_price_id && <p className="truncate">Price: <span className="font-mono">{product.stripe_price_id}</span></p>}
+              </div>
+            )}
           </div>
         </div>
       </div>

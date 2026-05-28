@@ -23,7 +23,7 @@ export default async function AdminProductsPage({
 
   const [{ data: products }, { data: allProducts }] = await Promise.all([
     query,
-    admin.from("products").select("category,is_hidden,unit_price"),
+    admin.from("products").select("*"),
   ]);
 
   const productList = products || [];
@@ -32,6 +32,7 @@ export default async function AdminProductsPage({
   const hiddenCount = all.filter((p) => p.is_hidden).length;
   const categories = [...new Set(all.map((p) => p.category).filter(Boolean))].sort();
   const inventoryValue = all.reduce((sum, p) => sum + Number(p.unit_price || 0), 0);
+  const stripeFailedCount = all.filter((p) => p.stripe_sync_status === "failed").length;
 
   return (
     <>
@@ -54,12 +55,13 @@ export default async function AdminProductsPage({
         </section>
 
         {/* Stats */}
-        <section className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {[
             { label: "Total products", value: all.length },
             { label: "Visible", value: visibleCount },
             { label: "Hidden", value: hiddenCount },
             { label: `${categories.length} categories · Base total`, value: formatMoney(inventoryValue) },
+            { label: "Stripe sync issues", value: stripeFailedCount },
           ].map(({ label, value }) => (
             <div key={label} className="card p-4">
               <p className="text-xs font-semibold text-slate-500">{label}</p>
@@ -97,14 +99,15 @@ export default async function AdminProductsPage({
         {/* Table */}
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div className="overflow-auto">
-            <table className="w-full min-w-[1180px] table-fixed text-sm">
+            <table className="w-full min-w-[1300px] table-fixed text-sm">
               <colgroup>
-                <col className="w-[360px]" />
+                <col className="w-[330px]" />
                 <col className="w-[120px]" />
-                <col className="w-[250px]" />
+                <col className="w-[220px]" />
                 <col className="w-[100px]" />
                 <col className="w-[130px]" />
                 <col className="w-[105px]" />
+                <col className="w-[120px]" />
                 <col className="w-[105px]" />
               </colgroup>
               <thead>
@@ -115,6 +118,7 @@ export default async function AdminProductsPage({
                   <th className="px-5 py-3">Unit price</th>
                   <th className="px-5 py-3">Availability</th>
                   <th className="px-5 py-3">Visibility</th>
+                  <th className="px-5 py-3">Stripe</th>
                   <th className="px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -153,6 +157,15 @@ export default async function AdminProductsPage({
                         <span className="badge justify-center border-slate-300 bg-slate-100 text-slate-600">Hidden</span>
                       ) : (
                         <span className="badge justify-center border-emerald-200 bg-emerald-50 text-emerald-800">Visible</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-3">
+                      {product.stripe_sync_status === "synced" ? (
+                        <span className="badge justify-center border-emerald-200 bg-emerald-50 text-emerald-800">Synced</span>
+                      ) : product.stripe_sync_status === "failed" ? (
+                        <span className="badge justify-center border-red-200 bg-red-50 text-red-700">Failed</span>
+                      ) : (
+                        <span className="badge justify-center border-amber-200 bg-amber-50 text-amber-800">Pending</span>
                       )}
                     </td>
                     <td className="px-5 py-3 text-right">
