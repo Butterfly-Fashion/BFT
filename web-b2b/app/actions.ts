@@ -614,6 +614,28 @@ export async function createPreorderCampaignAction(formData: FormData) {
   redirect("/admin/preorders");
 }
 
+export async function updatePreorderCampaignAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const campaignId = String(formData.get("campaign_id") || "");
+  const title = String(formData.get("title") || "").trim();
+  const description = String(formData.get("description") || "");
+  const unitPrice = Number(formData.get("unit_price") || 0);
+  const rawCasePrice = formData.get("case_price");
+  const rawClosesAt = formData.get("closes_at");
+  if (!campaignId || !title) return;
+  await admin.from("preorder_campaigns").update({
+    title,
+    description,
+    unit_price: unitPrice,
+    case_price: rawCasePrice ? Number(rawCasePrice) : null,
+    closes_at: rawClosesAt ? new Date(String(rawClosesAt)).toISOString() : null,
+    updated_at: new Date().toISOString(),
+  }).eq("id", campaignId);
+  revalidatePath(`/admin/preorders/${campaignId}`);
+  revalidatePath("/admin/preorders");
+}
+
 export async function updatePreorderCampaignStatusAction(campaignId: string, status: "open" | "closed" | "cancelled") {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
@@ -660,5 +682,76 @@ export async function respondQuoteAction(formData: FormData) {
     admin_response: String(formData.get("admin_response") || ""),
     updated_at: new Date().toISOString(),
   }).eq("id", quoteId);
+  revalidatePath("/admin/quotes");
+}
+
+export async function deleteProductAction(productId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const { count } = await admin.from("order_items").select("*", { count: "exact", head: true }).eq("product_id", productId);
+  if (count && count > 0) {
+    // Has order history — hide instead of delete to preserve records
+    await admin.from("products").update({ is_hidden: true }).eq("id", productId);
+  } else {
+    await admin.from("products").delete().eq("id", productId);
+  }
+  revalidatePath("/admin/products");
+  revalidatePath("/products");
+  redirect("/admin/products");
+}
+
+export async function duplicateProductAction(productId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const { data: original } = await admin.from("products").select("*").eq("id", productId).single();
+  if (!original) return;
+  const slug = await uniqueProductValue(admin, "slug", slugify(`${original.name}-copy`));
+  const sku = await uniqueProductValue(admin, "sku", `${original.sku}-COPY`);
+  const { data: newProduct } = await admin.from("products").insert({
+    name: `${original.name} (Copy)`,
+    slug, sku,
+    description: original.description,
+    barcode: null,
+    unit_price: original.unit_price,
+    case_price: original.case_price,
+    case_qty: original.case_qty,
+    image_url: original.image_url,
+    category: original.category,
+    availability_status: original.availability_status,
+    is_bulk_available: original.is_bulk_available,
+    is_hidden: true,
+    weight_kg: original.weight_kg,
+    box_length_cm: original.box_length_cm,
+    box_width_cm: original.box_width_cm,
+    box_height_cm: original.box_height_cm,
+    stock_qty: null,
+    country: original.country,
+    lead_time: original.lead_time,
+    updated_at: new Date().toISOString(),
+  }).select().single();
+  revalidatePath("/admin/products");
+  if (newProduct) redirect(`/admin/products/${newProduct.id}`);
+}
+
+export async function cancelOrderAction(orderId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("orders").update({ status: "Cancelled", updated_at: new Date().toISOString() })
+    .eq("id", orderId).neq("status", "Paid");
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
+export async function deleteCustomerPriceAction(priceId: string, customerId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("customer_prices").delete().eq("id", priceId);
+  revalidatePath(`/admin/customers/${customerId}`);
+}
+
+export async function deleteQuoteAction(quoteId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("quotes").delete().eq("id", quoteId);
   revalidatePath("/admin/quotes");
 }

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { approveB2BCustomerAction, setCustomerPriceAction } from "@/app/actions";
+import { approveB2BCustomerAction, setCustomerPriceAction, deleteCustomerPriceAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -137,7 +138,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
               <div className="border-b border-slate-200 bg-[#fafafa] p-4"><h2 className="text-xl font-black">Purchase history and previous prices</h2></div>
               <div className="overflow-auto">
                 <table className="w-full min-w-[760px] text-sm">
-                  <thead><tr className="border-b text-left text-xs font-black uppercase text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Qty</th><th>Last price</th><th>Total bought</th><th>Last order</th></tr></thead>
+                  <thead><tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Qty</th><th>Last price</th><th>Total bought</th><th>Last order</th></tr></thead>
                   <tbody>
                     {[...purchasedProducts.values()].map((item) => (
                       <tr className="border-b last:border-b-0" key={item.sku}>
@@ -156,31 +157,51 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
             </section>
 
             <section className="overflow-hidden rounded border border-slate-200 bg-white">
-              <div className="border-b border-slate-200 bg-[#fafafa] p-4"><h2 className="text-xl font-black">Customer-specific prices</h2></div>
+              <div className="border-b border-slate-100 px-4 py-3">
+                <h2 className="text-base font-bold text-slate-900">Customer-specific prices</h2>
+                <p className="mt-0.5 text-xs text-slate-500">These override the standard catalogue prices for this customer.</p>
+              </div>
               <div className="overflow-auto">
-                <table className="w-full min-w-[760px] text-sm">
-                  <thead><tr className="border-b text-left text-xs font-black uppercase text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Base unit</th><th>Custom unit</th><th>Custom case</th></tr></thead>
+                <table className="w-full min-w-190 text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
+                      <th className="px-4 py-3">Product</th>
+                      <th className="px-4 py-3">SKU</th>
+                      <th className="px-4 py-3">Standard</th>
+                      <th className="px-4 py-3">Custom unit</th>
+                      <th className="px-4 py-3">Custom case</th>
+                      <th className="px-4 py-3"></th>
+                    </tr>
+                  </thead>
                   <tbody>
                     {(customerPrices || []).map((price) => (
-                      <tr className="border-b last:border-b-0" key={price.id}>
-                        <td className="p-3 font-black">{price.products?.name}</td>
-                        <td className="font-mono text-xs">{price.products?.sku}</td>
-                        <td>{formatMoney(price.products?.unit_price || 0)}</td>
-                        <td className="font-black">{price.unit_price != null ? formatMoney(price.unit_price) : "—"}</td>
-                        <td className="font-black">{price.case_price != null ? formatMoney(price.case_price) : "—"}</td>
+                      <tr className="border-b border-slate-100 last:border-b-0" key={price.id}>
+                        <td className="px-4 py-3 font-semibold text-slate-900">{price.products?.name}</td>
+                        <td className="px-4 py-3 font-mono text-xs text-slate-500">{price.products?.sku}</td>
+                        <td className="px-4 py-3 text-slate-500">{formatMoney(price.products?.unit_price || 0)}</td>
+                        <td className="px-4 py-3 font-black text-slate-900">{price.unit_price != null ? formatMoney(price.unit_price) : "—"}</td>
+                        <td className="px-4 py-3 font-semibold text-slate-700">{price.case_price != null ? formatMoney(price.case_price) : "—"}</td>
+                        <td className="px-4 py-3 text-right">
+                          <DangerForm
+                            action={deleteCustomerPriceAction.bind(null, price.id, customer.id)}
+                            confirmMessage={`Remove custom pricing for "${price.products?.name}"?\n\nThis customer will revert to standard catalogue pricing.`}
+                            submitLabel="Remove"
+                            className="contents"
+                          />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              {!customerPrices?.length && <div className="p-8 text-center text-sm font-bold text-slate-500">No custom prices yet.</div>}
+              {!customerPrices?.length && <div className="p-8 text-center text-sm font-bold text-slate-500">No custom prices set. Use the form on the left to add custom pricing.</div>}
             </section>
 
             <section className="overflow-hidden rounded border border-slate-200 bg-white">
               <div className="border-b border-slate-200 bg-[#fafafa] p-4"><h2 className="text-xl font-black">Orders</h2></div>
               <div className="overflow-auto">
                 <table className="w-full min-w-[760px] text-sm">
-                  <thead><tr className="border-b text-left text-xs font-black uppercase text-slate-500"><th className="p-3">Order</th><th>Status</th><th>Payment</th><th>Total</th><th>Date</th></tr></thead>
+                  <thead><tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500"><th className="p-3">Order</th><th>Status</th><th>Payment</th><th>Total</th><th>Date</th></tr></thead>
                   <tbody>
                     {(orders || []).map((order) => (
                       <tr className="border-b last:border-b-0" key={order.id}>

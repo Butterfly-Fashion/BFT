@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import { updatePreorderCampaignStatusAction } from "@/app/actions";
+import { updatePreorderCampaignStatusAction, updatePreorderCampaignAction } from "@/app/actions";
 
 export const dynamic = "force-dynamic";
 
@@ -46,7 +46,7 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
           {/* Main */}
           <div className="grid gap-5">
             <section className="card p-5">
-              <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Campaign</p>
+              <p className="section-label">Campaign</p>
               <h1 className="mt-1 text-2xl font-black text-slate-900">{campaign.title}</h1>
               {campaign.description && (
                 <p className="mt-2 text-sm text-slate-500">{campaign.description}</p>
@@ -71,9 +71,9 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                 <p className="text-sm font-black text-slate-700">Total: <span className="text-(--primary)">{totalUnits} units</span>{caseCount != null ? ` (${caseCount} cases)` : ""}</p>
               </div>
               <div className="overflow-auto">
-                <table className="w-full min-w-[640px] text-sm">
+                <table className="w-full min-w-160 text-sm">
                   <thead>
-                    <tr className="border-b border-slate-100 text-left text-xs font-black uppercase text-slate-500">
+                    <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                       <th className="px-5 py-3">Business</th>
                       <th className="px-5 py-3">Contact</th>
                       <th className="px-5 py-3">Qty</th>
@@ -132,11 +132,46 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
             </section>
 
             <section className="card p-4">
-              <h2 className="mb-3 text-base font-black">캠페인 상태 변경</h2>
+              <h2 className="mb-3 text-base font-bold text-slate-900">Edit campaign</h2>
+              <form action={updatePreorderCampaignAction} className="grid gap-3">
+                <input type="hidden" name="campaign_id" value={id} />
+                <label className="label">
+                  Title
+                  <input className="field text-sm" name="title" defaultValue={campaign.title} required />
+                </label>
+                <label className="label">
+                  Description
+                  <textarea className="field min-h-16 text-sm" name="description" defaultValue={campaign.description || ""} placeholder="Optional description for customers" />
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <label className="label">
+                    Unit price
+                    <input className="field text-sm" name="unit_price" type="number" step="0.01" min="0" defaultValue={campaign.unit_price} required />
+                  </label>
+                  <label className="label">
+                    Case price
+                    <input className="field text-sm" name="case_price" type="number" step="0.01" min="0" defaultValue={campaign.case_price ?? ""} placeholder="Optional" />
+                  </label>
+                </div>
+                <label className="label">
+                  Closing date
+                  <input
+                    className="field text-sm"
+                    name="closes_at"
+                    type="date"
+                    defaultValue={campaign.closes_at ? new Date(campaign.closes_at).toISOString().slice(0, 10) : ""}
+                  />
+                </label>
+                <button className="btn-primary w-full text-sm" type="submit">Save changes</button>
+              </form>
+            </section>
+
+            <section className="card p-4">
+              <h2 className="mb-3 text-base font-bold text-slate-900">Campaign status</h2>
               <div className="grid gap-2">
                 {campaign.status === "open" && (
                   <form action={async () => { "use server"; await updatePreorderCampaignStatusAction(id, "closed"); }}>
-                    <button className="btn-primary w-full text-sm" type="submit">Close campaign</button>
+                    <button className="btn-secondary w-full text-sm" type="submit">Close campaign</button>
                   </form>
                 )}
                 {campaign.status === "closed" && (
@@ -145,7 +180,10 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                   </form>
                 )}
                 {campaign.status !== "cancelled" && (
-                  <form action={async () => { "use server"; await updatePreorderCampaignStatusAction(id, "cancelled"); }}>
+                  <form
+                    action={async () => { "use server"; await updatePreorderCampaignStatusAction(id, "cancelled"); }}
+                    onSubmit={undefined}
+                  >
                     <button className="btn-danger w-full text-sm" type="submit">Cancel campaign</button>
                   </form>
                 )}

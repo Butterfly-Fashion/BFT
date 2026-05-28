@@ -29,12 +29,12 @@ export default async function AdminPreordersPage() {
     <>
       <AdminNav />
       <main className="container-shell py-7">
-        <section className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
+        <section className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Pre-order management</p>
+            <p className="section-label">Pre-order management</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Pre-order Campaigns</h1>
-            <p className="mt-1.5 text-sm font-medium text-slate-500">
-              재고 없는 상품의 수요를 미리 파악해 발주 계획을 세우세요.
+            <p className="mt-1.5 text-sm text-slate-500">
+              Gauge demand for out-of-stock products before placing your wholesale order.
             </p>
           </div>
           <Link className="btn-primary gap-1.5 text-xs" href="/admin/preorders/new">
@@ -43,16 +43,16 @@ export default async function AdminPreordersPage() {
         </section>
 
         <section className="mb-5 grid gap-3 sm:grid-cols-3">
-          <div className="card p-4"><p className="text-xs font-black uppercase text-slate-500">Total campaigns</p><strong className="mt-2 block text-2xl">{list.length}</strong></div>
-          <div className="card p-4"><p className="text-xs font-black uppercase text-slate-500">Open</p><strong className="mt-2 block text-2xl text-emerald-600">{openCount}</strong></div>
-          <div className="card p-4"><p className="text-xs font-black uppercase text-slate-500">Closed</p><strong className="mt-2 block text-2xl text-slate-500">{closedCount}</strong></div>
+          <div className="card p-4"><p className="text-xs font-semibold text-slate-500">Total campaigns</p><strong className="mt-2 block text-2xl">{list.length}</strong></div>
+          <div className="card p-4"><p className="text-xs font-semibold text-slate-500">Open</p><strong className="mt-2 block text-2xl text-emerald-600">{openCount}</strong></div>
+          <div className="card p-4"><p className="text-xs font-semibold text-slate-500">Closed</p><strong className="mt-2 block text-2xl text-slate-500">{closedCount}</strong></div>
         </section>
 
         <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
           <div className="overflow-auto">
             <table className="w-full min-w-[900px] text-sm">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Campaign</th>
                   <th className="px-5 py-3">Product</th>
                   <th className="px-5 py-3">Unit price</th>
