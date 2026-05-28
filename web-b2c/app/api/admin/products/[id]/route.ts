@@ -5,6 +5,13 @@ import { verifyAdminCookie } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
+function salesChannelsFromBody(body: Record<string, unknown>) {
+  if (!("sales_channels" in body)) return undefined;
+  const raw = Array.isArray(body.sales_channels) ? body.sales_channels : ["b2c"];
+  const channels = raw.filter((channel): channel is "b2c" | "b2b" => channel === "b2c" || channel === "b2b");
+  return channels.length ? channels : ["b2c"];
+}
+
 // GET /api/admin/products/[id] — full product details for edit panel
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const isAuthenticated = await verifyAdminCookie();
@@ -48,6 +55,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   for (const f of fields) {
     if (f in body) updates[f] = body[f];
   }
+  if (body.price != null) {
+    updates.unit_price = body.price;
+    updates.base_price = body.price;
+  }
+  if (body.status === "archived") updates.is_hidden = true;
+  if (body.status === "active") updates.is_hidden = false;
+  if (body.in_stock != null) updates.availability_status = body.in_stock === false ? "Hidden" : "Available";
+  const salesChannels = salesChannelsFromBody(body);
+  if (salesChannels) updates.sales_channels = salesChannels;
 
   // If price changed: archive old Stripe Price, create new one
   if (body.price != null && body.price !== current.price && current.stripe_product_id) {

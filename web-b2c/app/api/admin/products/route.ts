@@ -6,6 +6,16 @@ import type { DbProductImage } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+function salesChannelsFromBody(body: Record<string, unknown>) {
+  const raw = Array.isArray(body.sales_channels) ? body.sales_channels : ["b2c"];
+  const channels = raw.filter((channel): channel is "b2c" | "b2b" => channel === "b2c" || channel === "b2b");
+  return channels.length ? channels : ["b2c"];
+}
+
+function slugSku(slug: string) {
+  return `B2C-${slug.toUpperCase().replace(/[^A-Z0-9]+/g, "-").slice(0, 56)}`;
+}
+
 // GET /api/admin/products — lightweight product list
 export async function GET(req: NextRequest) {
   const isAuthenticated = await verifyAdminCookie();
@@ -17,12 +27,13 @@ export async function GET(req: NextRequest) {
   const search = searchParams.get("search")?.trim();
   const category = searchParams.get("category");
   const status = searchParams.get("status");
+  const channel = searchParams.get("channel");
 
   const supabase = supabaseAdmin();
   let query = supabase
     .from("products")
     .select(
-      "id,name,slug,category,price,compare_at_price,in_stock,stock_qty,status,images,stripe_product_id,stripe_price_id,created_at,updated_at",
+      "id,name,slug,category,price,compare_at_price,in_stock,stock_qty,status,images,sales_channels,stripe_product_id,stripe_price_id,created_at,updated_at",
       { count: "exact" }
     );
 
@@ -32,6 +43,10 @@ export async function GET(req: NextRequest) {
 
   if (status && status !== "all") {
     query = query.eq("status", status);
+  }
+
+  if (channel === "b2c" || channel === "b2b") {
+    query = query.contains("sales_channels", [channel]);
   }
 
   if (search) {
@@ -67,6 +82,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const { name, slug, category, description, price, compare_at_price, weight_kg,
           badge, in_stock, stock_qty, status, images, player_cards } = body;
+  const sales_channels = salesChannelsFromBody(body);
 
   if (!name || !slug || !category || price == null) {
     return NextResponse.json({ error: "name, slug, category, price are required" }, { status: 400 });
@@ -94,12 +110,18 @@ export async function POST(req: NextRequest) {
     .insert({
       name, slug, category, description: description ?? null,
       price, compare_at_price: compare_at_price ?? null,
+      base_price: price,
+      unit_price: price,
+      sku: slugSku(slug),
       weight_kg: weight_kg ?? 0.5,
       badge: badge ?? null,
       in_stock: in_stock ?? true,
       stock_qty: stock_qty ?? null,
       status: status ?? "active",
+      availability_status: in_stock === false ? "Hidden" : "Available",
+      is_hidden: status === "archived",
       images: images ?? [],
+      sales_channels,
       player_cards: player_cards ?? null,
       stripe_product_id: stripeProduct.id,
       stripe_price_id: stripePrice.id,

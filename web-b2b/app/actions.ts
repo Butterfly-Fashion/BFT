@@ -656,6 +656,10 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
   const rawBoxW = formData.get("box_width_cm");
   const rawBoxH = formData.get("box_height_cm");
   const rawStockQty = formData.get("stock_qty");
+  const salesChannels = [
+    formData.get("sales_channel_b2b") === "on" ? "b2b" : null,
+    formData.get("sales_channel_b2c") === "on" ? "b2c" : null,
+  ].filter((channel): channel is "b2b" | "b2c" => Boolean(channel));
 
   const unitPrice = Number(formData.get("unit_price") || 0);
   const rawCasePrice = formData.get("case_price");
@@ -676,6 +680,7 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
     is_bulk_available: formData.get("is_bulk_available") === "on",
     is_hidden: formData.get("is_hidden") === "on",
+    sales_channels: salesChannels.length ? salesChannels : ["b2b"],
     weight_kg: rawWeightKg ? Number(rawWeightKg) : null,
     box_length_cm: rawBoxL ? Number(rawBoxL) : null,
     box_width_cm: rawBoxW ? Number(rawBoxW) : null,
@@ -897,6 +902,7 @@ export async function duplicateProductAction(productId: string) {
     case_qty: original.case_qty,
     image_url: original.image_url,
     category: original.category,
+    sales_channels: original.sales_channels?.length ? original.sales_channels : ["b2b"],
     availability_status: original.availability_status,
     is_bulk_available: original.is_bulk_available,
     is_hidden: true,

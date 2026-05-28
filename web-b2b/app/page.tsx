@@ -29,7 +29,7 @@ export default async function HomePage() {
     getCurrentProfile(),
     fetchCategories(),
     createSupabaseServerClient().then((supabase) =>
-      supabase.from("products").select("*").eq("is_hidden", false).order("created_at", { ascending: false }).limit(10)
+      supabase.from("products").select("*").eq("is_hidden", false).contains("sales_channels", ["b2b"]).order("created_at", { ascending: false }).limit(10)
     ),
   ]);
   const products = await applyCustomerPrices((supabaseResult.data || []) as Product[], profile);

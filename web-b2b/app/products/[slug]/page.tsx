@@ -17,7 +17,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const { slug } = await params;
   const profile = await getCurrentProfile();
   const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("products").select("*").eq("slug", slug).eq("is_hidden", false).single();
+  const { data } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"])
+    .single();
   if (!data) notFound();
   const [product] = await applyCustomerPrices([data as Product], profile);
 

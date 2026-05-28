@@ -1,3 +1,4 @@
+import { supabaseAdmin } from "./supabase";
 import type { Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
 import sourceData from "./source-products.json";
@@ -82,20 +83,81 @@ const staticProducts: Product[] = [
   },
 ];
 
+type DbStoreProduct = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  price?: number | string | null;
+  unit_price?: number | string | null;
+  compare_at_price?: number | null;
+  description?: string | null;
+  image_url?: string | null;
+  images?: Array<{ url: string; alt?: string }> | null;
+  badge?: string | null;
+  in_stock?: boolean | null;
+  stock_qty?: number | null;
+  weight_kg?: number | null;
+  player_cards?: Product["playerCards"] | null;
+};
+
+function dbStoreProductToProduct(p: DbStoreProduct): Product {
+  const imageUrl = p.images?.[0]?.url || p.image_url || "";
+  const price = Number(p.price ?? p.unit_price ?? 0);
+  return {
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    category: p.category,
+    price,
+    comparePrice: p.compare_at_price ?? undefined,
+    description: p.description ?? "",
+    imageUrl,
+    additionalImages: p.images?.slice(1).map((image) => image.url),
+    placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
+    inStock: p.in_stock ?? p.stock_qty !== 0,
+    badge: p.badge ?? undefined,
+    weightKg: p.weight_kg ?? CATEGORY_WEIGHTS[p.category] ?? 0.5,
+    playerCards: p.player_cards ?? undefined,
+  };
+}
+
+async function getB2CDbProducts(): Promise<Product[]> {
+  try {
+    const supabase = supabaseAdmin();
+    const { data, error } = await supabase
+      .from("products")
+      .select("id,slug,name,category,price,unit_price,compare_at_price,description,image_url,images,badge,in_stock,stock_qty,weight_kg,player_cards")
+      .contains("sales_channels", ["b2c"])
+      .eq("is_hidden", false)
+      .eq("status", "active")
+      .order("updated_at", { ascending: false });
+    if (error || !data?.length) return [];
+    return (data as DbStoreProduct[]).map(dbStoreProductToProduct);
+  } catch {
+    return [];
+  }
+}
+
 // ─── Public B2C catalog accessors ────────────────────────────────────────────
-// B2C and B2B use different product lists. Keep the storefront pinned to the
-// checked-in B2C catalog so B2B admin products never leak into fifa2026.ca.
+// B2C and B2B use different product lists. Only products explicitly tagged for
+// B2C can join this storefront; the checked-in catalog remains the fallback.
 
 export async function getAllProducts(): Promise<Product[]> {
-  return staticProducts;
+  const dbProducts = await getB2CDbProducts();
+  if (!dbProducts.length) return staticProducts;
+  const dbSlugs = new Set(dbProducts.map((product) => product.slug));
+  return [...dbProducts, ...staticProducts.filter((product) => !dbSlugs.has(product.slug))];
 }
 
 export async function getProductBySlugFromDb(slug: string): Promise<Product | undefined> {
-  return staticProducts.find((p) => p.slug === slug);
+  const all = await getAllProducts();
+  return all.find((p) => p.slug === slug);
 }
 
 export async function getAllSlugs(): Promise<string[]> {
-  return staticProducts.map((p) => p.slug);
+  const all = await getAllProducts();
+  return all.map((p) => p.slug);
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {

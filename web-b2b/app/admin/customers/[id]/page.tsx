@@ -15,7 +15,12 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
 
   const [{ data: customer }, { data: products }, { data: orders }, { data: customerPrices }, { data: purchaseItems }] = await Promise.all([
     admin.from("profiles").select("*").eq("id", id).single(),
-    admin.from("products").select("id,name,sku,unit_price,case_price,case_qty").eq("is_hidden", false).order("name"),
+    admin
+      .from("products")
+      .select("id,name,sku,unit_price,case_price,case_qty")
+      .eq("is_hidden", false)
+      .contains("sales_channels", ["b2b"])
+      .order("name"),
     admin.from("orders").select("*").eq("customer_id", id).order("created_at", { ascending: false }),
     admin.from("customer_prices").select("*, products(name,sku,unit_price,case_price,case_qty,image_url)").eq("customer_id", id).order("created_at", { ascending: false }),
     admin

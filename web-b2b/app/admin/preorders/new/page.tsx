@@ -12,6 +12,7 @@ export default async function NewPreorderCampaignPage() {
     .from("products")
     .select("id, name, sku, unit_price, case_price, case_qty, category")
     .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"])
     .order("name");
 
   return (

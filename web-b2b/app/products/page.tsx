@@ -25,7 +25,7 @@ export default async function ProductsPage({
   ]);
 
   const categoryTree = buildCategoryTree(categories);
-  let query = supabase.from("products").select("*").eq("is_hidden", false);
+  let query = supabase.from("products").select("*").eq("is_hidden", false).contains("sales_channels", ["b2b"]);
   if (params.category && params.category !== "All Products") {
     const filterNames = resolveFilterCategories(params.category, categoryTree);
     if (filterNames.length === 1) query = query.eq("category", filterNames[0]);

@@ -159,6 +159,7 @@ export async function POST() {
           stock_qty: null,
           status: "active",
           images: [{ url: p.image_url, alt: p.name }],
+          sales_channels: ["b2c"],
           player_cards: p.player_cards,
           stripe_product_id: stripeProductId,
           stripe_price_id: stripePriceId,

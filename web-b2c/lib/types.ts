@@ -205,6 +205,7 @@ export interface DbOrder {
 // ─── Supabase product management ────────────────────────────────────────────
 
 export type ProductStatus = "active" | "draft" | "archived";
+export type SalesChannel = "b2c" | "b2b";
 
 export interface DbProductImage {
   url: string;
@@ -228,6 +229,8 @@ export interface DbProduct {
   stock_qty: number | null;
   status: ProductStatus;
   images: DbProductImage[];
+  image_url?: string | null;
+  sales_channels?: SalesChannel[] | null;
   player_cards: PlayerCard[] | null;
   stripe_product_id: string | null;
   stripe_price_id: string | null;

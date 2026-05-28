@@ -10,7 +10,12 @@ export default async function AccountQuotesPage({ searchParams }: { searchParams
   const sp = await searchParams;
   const supabase = await createSupabaseServerClient();
   const { data: quotes } = await supabase.from("quotes").select("*").eq("customer_id", profile.id).order("created_at", { ascending: false });
-  const { data: products } = await supabase.from("products").select("id,name").eq("is_hidden", false).order("name");
+  const { data: products } = await supabase
+    .from("products")
+    .select("id,name")
+    .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"])
+    .order("name");
   return (
     <>
       <Header profile={profile} />

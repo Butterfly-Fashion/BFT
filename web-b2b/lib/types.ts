@@ -15,6 +15,7 @@ export type PaymentStatus = "Unpaid" | "Payment Link Sent" | "Paid" | "Refunded"
 export type DeliveryMethod = "Pickup" | "Shipping";
 export type AvailabilityStatus = "Available" | "Limited" | "Manual Confirm" | "Hidden";
 export type PreorderStatus = "open" | "closed" | "cancelled";
+export type SalesChannel = "b2c" | "b2b";
 
 export type Profile = {
   id: string;
@@ -52,6 +53,7 @@ export type Product = {
   availability_status: AvailabilityStatus;
   is_bulk_available: boolean;
   is_hidden: boolean;
+  sales_channels?: SalesChannel[] | null;
   /* B2B wholesale fields */
   stock_qty?: number | null;
   country?: string | null;

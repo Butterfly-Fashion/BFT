@@ -61,7 +61,7 @@ type ProductFormProps = {
     sku: string; barcode?: string | null; unit_price: number;
     case_price?: number | null; case_qty?: number | null; image_url?: string | null;
     category: string; availability_status: string; is_bulk_available: boolean;
-    is_hidden: boolean; weight_kg?: number | null; box_length_cm?: number | null;
+    is_hidden: boolean; sales_channels?: string[] | null; weight_kg?: number | null; box_length_cm?: number | null;
     box_width_cm?: number | null; box_height_cm?: number | null;
     stock_qty?: number | null; country?: string | null; lead_time?: string | null;
     stripe_product_id?: string | null; stripe_price_id?: string | null;
@@ -168,6 +168,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const hasShipping = !!(product?.weight_kg || product?.box_length_cm);
   const hasIds = !!(product?.slug || product?.sku || product?.barcode);
   const stripeStatus = product?.stripe_sync_status || (product?.stripe_product_id ? "synced" : "pending");
+  const salesChannels = product?.sales_channels?.length ? product.sales_channels : ["b2b"];
 
   async function handleFile(file?: File) {
     if (!file) return;
@@ -433,6 +434,20 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
           <div className="card p-4">
             <p className="mb-3 text-sm font-bold text-slate-700">Visibility & status</p>
             <div className="grid gap-3">
+              <div className="rounded-lg border border-slate-200 bg-white p-3">
+                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Sales channels</p>
+                <div className="grid gap-2">
+                  <label className="flex cursor-pointer items-center gap-2.5 text-sm font-semibold text-slate-700">
+                    <input name="sales_channel_b2b" type="checkbox" defaultChecked={salesChannels.includes("b2b")} className="accent-green-600" />
+                    B2B Wholesale
+                  </label>
+                  <label className="flex cursor-pointer items-center gap-2.5 text-sm font-semibold text-slate-700">
+                    <input name="sales_channel_b2c" type="checkbox" defaultChecked={salesChannels.includes("b2c")} className="accent-green-600" />
+                    B2C Store
+                  </label>
+                </div>
+                <p className="mt-2 text-xs font-medium text-slate-400">Choose one or both storefronts for this product.</p>
+              </div>
               <label className="label">
                 Availability
                 <select className="field" name="availability_status" defaultValue={product?.availability_status || "Manual Confirm"}>

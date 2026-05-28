@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; visibility?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; visibility?: string; channel?: string }>;
 }) {
   const params = await searchParams;
   const admin = createSupabaseAdminClient();
@@ -18,6 +18,8 @@ export default async function AdminProductsPage({
   if (params.category) query = query.eq("category", params.category);
   if (params.visibility === "visible") query = query.eq("is_hidden", false);
   if (params.visibility === "hidden") query = query.eq("is_hidden", true);
+  if (params.channel === "b2c") query = query.contains("sales_channels", ["b2c"]);
+  if (params.channel === "b2b") query = query.contains("sales_channels", ["b2b"]);
   if (params.q)
     query = query.or(`name.ilike.%${params.q}%,sku.ilike.%${params.q}%,category.ilike.%${params.q}%`);
 
@@ -30,6 +32,8 @@ export default async function AdminProductsPage({
   const all = allProducts || [];
   const visibleCount = all.filter((p) => !p.is_hidden).length;
   const hiddenCount = all.filter((p) => p.is_hidden).length;
+  const b2cCount = all.filter((p) => (p.sales_channels || ["b2b"]).includes("b2c")).length;
+  const b2bCount = all.filter((p) => (p.sales_channels || ["b2b"]).includes("b2b")).length;
   const categories = [...new Set(all.map((p) => p.category).filter(Boolean))].sort();
   const inventoryValue = all.reduce((sum, p) => sum + Number(p.unit_price || 0), 0);
   const stripeFailedCount = all.filter((p) => p.stripe_sync_status === "failed").length;
@@ -55,11 +59,13 @@ export default async function AdminProductsPage({
         </section>
 
         {/* Stats */}
-        <section className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <section className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
           {[
             { label: "Total products", value: all.length },
             { label: "Visible", value: visibleCount },
             { label: "Hidden", value: hiddenCount },
+            { label: "B2C Store", value: b2cCount },
+            { label: "B2B Wholesale", value: b2bCount },
             { label: `${categories.length} categories · Base total`, value: formatMoney(inventoryValue) },
             { label: "Stripe sync issues", value: stripeFailedCount },
           ].map(({ label, value }) => (
@@ -72,7 +78,7 @@ export default async function AdminProductsPage({
 
         {/* Filters */}
         <form className="mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_170px_auto] lg:items-end">
+          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_170px_170px_auto] lg:items-end">
             <label className="label">
               Search products
               <input className="field" defaultValue={params.q || ""} name="q" placeholder="Product name, SKU, or category" />
@@ -92,6 +98,14 @@ export default async function AdminProductsPage({
                 <option value="hidden">Hidden</option>
               </select>
             </label>
+            <label className="label">
+              Channel
+              <select className="field" defaultValue={params.channel || ""} name="channel">
+                <option value="">All channels</option>
+                <option value="b2c">B2C Store</option>
+                <option value="b2b">B2B Wholesale</option>
+              </select>
+            </label>
             <button className="btn-primary" type="submit">Filter</button>
           </div>
         </form>
@@ -106,6 +120,7 @@ export default async function AdminProductsPage({
                 <col className="w-[220px]" />
                 <col className="w-[100px]" />
                 <col className="w-[130px]" />
+                <col className="w-[135px]" />
                 <col className="w-[105px]" />
                 <col className="w-[120px]" />
                 <col className="w-[105px]" />
@@ -117,6 +132,7 @@ export default async function AdminProductsPage({
                   <th className="px-5 py-3">SKU</th>
                   <th className="px-5 py-3">Unit price</th>
                   <th className="px-5 py-3">Availability</th>
+                  <th className="px-5 py-3">Channels</th>
                   <th className="px-5 py-3">Visibility</th>
                   <th className="px-5 py-3">Stripe</th>
                   <th className="px-5 py-3 text-right">Actions</th>
@@ -152,6 +168,16 @@ export default async function AdminProductsPage({
                     </td>
                     <td className="px-5 py-3 whitespace-nowrap font-black">{formatMoney(product.unit_price)}</td>
                     <td className="px-5 py-3"><span className="badge max-w-full justify-center text-center">{product.availability_status}</span></td>
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {((product.sales_channels || ["b2b"]) as string[]).includes("b2c") && (
+                          <span className="badge border-blue-200 bg-blue-50 text-blue-700">B2C</span>
+                        )}
+                        {((product.sales_channels || ["b2b"]) as string[]).includes("b2b") && (
+                          <span className="badge border-green-200 bg-green-50 text-green-800">B2B</span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-5 py-3">
                       {product.is_hidden ? (
                         <span className="badge justify-center border-slate-300 bg-slate-100 text-slate-600">Hidden</span>
