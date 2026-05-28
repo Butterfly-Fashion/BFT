@@ -4,6 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
+import { CategoriesProvider } from "@/components/store/categories-provider";
+import { fetchCategories } from "@/lib/categories";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -12,11 +14,15 @@ export const metadata: Metadata = {
   description: "Variety & novelty wholesale. B2B order platform by Butterfly Fashion Trading, Toronto.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const categories = await fetchCategories();
+
   return (
     <html lang="en" className={inter.className}>
       <body>
-        <CartProvider>{children}</CartProvider>
+        <CategoriesProvider categories={categories}>
+          <CartProvider>{children}</CartProvider>
+        </CategoriesProvider>
         <Analytics />
         <SpeedInsights />
       </body>

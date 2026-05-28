@@ -2,7 +2,6 @@ import Link from "next/link";
 import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Flame, Leaf, Snowflake, TrendingUp } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { getCurrentProfile } from "@/lib/auth";
-import { fetchCategories } from "@/lib/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -43,11 +42,11 @@ const WHY_B2B = [
 ];
 
 export default async function AboutPage() {
-  const [profile, categories] = await Promise.all([getCurrentProfile(), fetchCategories()]);
+  const profile = await getCurrentProfile();
 
   return (
     <>
-      <Header profile={profile} categories={categories} />
+      <Header profile={profile} />
       <main>
 
         {/* ── Hero ── */}

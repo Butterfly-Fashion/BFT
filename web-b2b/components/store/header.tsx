@@ -3,34 +3,24 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock, ShoppingCart } from "lucide-react";
+import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import type { Profile } from "@/lib/types";
-import type { Category } from "@/lib/category-utils";
 import { navCategories } from "@/lib/category-utils";
 import { CartButton } from "@/components/store/cart-button";
 import { logoutAction } from "@/app/actions";
+import { useCategories } from "@/components/store/categories-provider";
 
-const DEFAULT_CATEGORIES = [
-  { label: "Car Flags", href: "/products?category=Car+Flags" },
-  { label: "Caps", href: "/products?category=Caps" },
-  { label: "Bucket Hats", href: "/products?category=Bucket+Hats" },
-  { label: "Boxing Gloves", href: "/products?category=Boxing+Gloves" },
-  { label: "Accessories", href: "/products?category=Accessories" },
-  { label: "All products", href: "/products" },
-];
-
-function buildNavItems(categories?: Category[]) {
-  if (!categories?.length) return DEFAULT_CATEGORIES;
-  const items = navCategories(categories);
-  return [...items, { label: "All products", href: "/products" }];
+function buildNavItems(categories: ReturnType<typeof navCategories>) {
+  return [...categories, { label: "All products", href: "/products" }];
 }
 
-function CategoryNavLinks({ categories }: { categories?: Category[] }) {
+function CategoryNavLinks() {
+  const categories = useCategories();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
-  const items = buildNavItems(categories);
+  const items = buildNavItems(navCategories(categories));
 
   return (
     <>
@@ -64,24 +54,9 @@ function CategoryNavLinks({ categories }: { categories?: Category[] }) {
   );
 }
 
-function CategoryNavFallback({ categories }: { categories?: Category[] }) {
-  const items = buildNavItems(categories);
+function CategoryNavFallback() {
   return (
-    <>
-      {items.map((item) => (
-        <Link
-          key={item.label}
-          href={item.href}
-          className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900"
-          style={{ borderBottom: "2px solid transparent" }}
-        >
-          {item.label}
-        </Link>
-      ))}
-      <Link href="/about" className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900" style={{ borderBottom: "2px solid transparent" }}>
-        About
-      </Link>
-    </>
+    <span className="px-1 py-1.5 text-sm text-gray-400">Loading…</span>
   );
 }
 
@@ -147,7 +122,7 @@ function UserMenu({ profile }: { profile: Profile }) {
   );
 }
 
-export function Header({ profile, categories }: { profile: Profile | null; categories?: Category[] }) {
+export function Header({ profile }: { profile: Profile | null }) {
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
       {/* Main header */}
@@ -163,14 +138,16 @@ export function Header({ profile, categories }: { profile: Profile | null; categ
           </div>
         </Link>
 
-        {/* Search */}
+        {/* Search — inline styles override .field padding so icon doesn't overlap */}
         <form action="/products" className="relative order-3 lg:order-0">
           <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
           <input
-            className="field pl-9 pr-20 text-sm"
+            className="field text-sm"
+            style={{ paddingLeft: "2.25rem", paddingRight: "5rem" }}
             name="q"
             placeholder="Search products, SKU, country…"
-            type="search"
+            type="text"
+            autoComplete="off"
           />
           <button
             className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md px-3 py-1.5 text-xs font-semibold text-white"
@@ -210,8 +187,8 @@ export function Header({ profile, categories }: { profile: Profile | null; categ
       <div className="border-t border-gray-100">
         <div className="container-shell">
           <div className="category-nav-scroll flex items-center gap-5 overflow-x-auto">
-            <Suspense fallback={<CategoryNavFallback categories={categories} />}>
-              <CategoryNavLinks categories={categories} />
+            <Suspense fallback={<CategoryNavFallback />}>
+              <CategoryNavLinks />
             </Suspense>
           </div>
         </div>

@@ -47,7 +47,7 @@ export default async function ProductsPage({
 
   return (
     <>
-      <Header profile={profile} categories={categories} />
+      <Header profile={profile} />
       <main className="container-shell py-6">
         {/* Access banners */}
         {profile && !isApproved && (
