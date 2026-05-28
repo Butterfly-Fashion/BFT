@@ -7,18 +7,11 @@ import { SetupRequired } from "@/components/setup-required";
 import { getCurrentProfile } from "@/lib/auth";
 import { isSupabaseConfigured } from "@/lib/env";
 import { applyCustomerPrices } from "@/lib/pricing";
+import { fetchCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
-
-const CATEGORIES = [
-  { label: "Car Flags", href: "/products?category=Car+Flags" },
-  { label: "Caps", href: "/products?category=Caps" },
-  { label: "Bucket Hats", href: "/products?category=Bucket+Hats" },
-  { label: "Boxing Gloves", href: "/products?category=Boxing+Gloves" },
-  { label: "Accessories", href: "/products?category=Accessories" },
-];
 
 const WHY_BUY = [
   { icon: MapPin, title: "Toronto warehouse", desc: "Pick up same-day or ship next business day from our Toronto location." },
@@ -32,19 +25,18 @@ const WHY_BUY = [
 export default async function HomePage() {
   if (!isSupabaseConfigured()) return <SetupRequired />;
 
-  const profile = await getCurrentProfile();
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from("products")
-    .select("*")
-    .eq("is_hidden", false)
-    .order("created_at", { ascending: false })
-    .limit(10);
-  const products = await applyCustomerPrices((data || []) as Product[], profile);
+  const [profile, categories, supabaseResult] = await Promise.all([
+    getCurrentProfile(),
+    fetchCategories(),
+    createSupabaseServerClient().then((supabase) =>
+      supabase.from("products").select("*").eq("is_hidden", false).order("created_at", { ascending: false }).limit(10)
+    ),
+  ]);
+  const products = await applyCustomerPrices((supabaseResult.data || []) as Product[], profile);
 
   return (
     <>
-      <Header profile={profile} />
+      <Header profile={profile} categories={categories} />
       <main>
 
         {/* ── Hero ── */}
@@ -93,13 +85,13 @@ export default async function HomePage() {
           <div className="container-shell">
             <div className="flex flex-wrap gap-2 py-4">
               <span className="self-center text-xs font-semibold text-gray-400 mr-1">Categories:</span>
-              {CATEGORIES.map(({ label, href }) => (
+              {categories.map((cat) => (
                 <Link
-                  key={label}
-                  href={href}
+                  key={cat.name}
+                  href={`/products?category=${encodeURIComponent(cat.name)}`}
                   className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
                 >
-                  {label}
+                  {cat.name}
                 </Link>
               ))}
               <Link

@@ -755,3 +755,71 @@ export async function deleteQuoteAction(quoteId: string) {
   await admin.from("quotes").delete().eq("id", quoteId);
   revalidatePath("/admin/quotes");
 }
+
+// ── Category CRUD ──────────────────────────────────────────────────────────────
+
+function slugifyCategory(name: string) {
+  return name.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+}
+
+export async function createCategoryAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const name = String(formData.get("name") || "").trim();
+  if (!name) return;
+  const slug = slugifyCategory(name);
+  const { data: last } = await admin.from("b2b_categories").select("sort_order").order("sort_order", { ascending: false }).limit(1).single();
+  await admin.from("b2b_categories").insert({ name, slug, sort_order: (last?.sort_order ?? 0) + 1 });
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function renameCategoryAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const id = String(formData.get("id") || "");
+  const name = String(formData.get("name") || "").trim();
+  if (!id || !name) return;
+  await admin.from("b2b_categories").update({ name, updated_at: new Date().toISOString() }).eq("id", id);
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function toggleCategoryAction(id: string, isActive: boolean) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("b2b_categories").update({ is_active: isActive, updated_at: new Date().toISOString() }).eq("id", id);
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function deleteCategoryAction(id: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("b2b_categories").delete().eq("id", id);
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}
+
+export async function moveCategoryAction(id: string, direction: "up" | "down") {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const { data: all } = await admin.from("b2b_categories").select("id, sort_order").order("sort_order");
+  if (!all?.length) return;
+  const idx = all.findIndex((c) => c.id === id);
+  const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+  if (swapIdx < 0 || swapIdx >= all.length) return;
+  const current = all[idx];
+  const swap = all[swapIdx];
+  await Promise.all([
+    admin.from("b2b_categories").update({ sort_order: swap.sort_order }).eq("id", current.id),
+    admin.from("b2b_categories").update({ sort_order: current.sort_order }).eq("id", swap.id),
+  ]);
+  revalidatePath("/admin/categories");
+  revalidatePath("/products");
+  revalidatePath("/");
+}

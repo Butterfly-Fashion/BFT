@@ -6,10 +6,11 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock, ShoppingCart } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import type { Profile } from "@/lib/types";
+import type { Category } from "@/lib/categories";
 import { CartButton } from "@/components/store/cart-button";
 import { logoutAction } from "@/app/actions";
 
-const CATEGORIES = [
+const DEFAULT_CATEGORIES = [
   { label: "Car Flags", href: "/products?category=Car+Flags" },
   { label: "Caps", href: "/products?category=Caps" },
   { label: "Bucket Hats", href: "/products?category=Bucket+Hats" },
@@ -18,14 +19,26 @@ const CATEGORIES = [
   { label: "All products", href: "/products" },
 ];
 
-function CategoryNavLinks() {
+function buildNavItems(categories?: Category[]) {
+  if (!categories?.length) return DEFAULT_CATEGORIES;
+  return [
+    ...categories.map((c) => ({
+      label: c.name,
+      href: `/products?category=${encodeURIComponent(c.name)}`,
+    })),
+    { label: "All products", href: "/products" },
+  ];
+}
+
+function CategoryNavLinks({ categories }: { categories?: Category[] }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const currentCategory = searchParams.get("category");
+  const items = buildNavItems(categories);
 
   return (
     <>
-      {CATEGORIES.map((item) => {
+      {items.map((item) => {
         const itemCategory = item.href.includes("?")
           ? new URLSearchParams(item.href.split("?")[1]).get("category")
           : null;
@@ -44,14 +57,22 @@ function CategoryNavLinks() {
           </Link>
         );
       })}
+      <Link
+        href="/about"
+        className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
+        style={pathname === "/about" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
+      >
+        About
+      </Link>
     </>
   );
 }
 
-function CategoryNavFallback() {
+function CategoryNavFallback({ categories }: { categories?: Category[] }) {
+  const items = buildNavItems(categories);
   return (
     <>
-      {CATEGORIES.map((item) => (
+      {items.map((item) => (
         <Link
           key={item.label}
           href={item.href}
@@ -61,6 +82,9 @@ function CategoryNavFallback() {
           {item.label}
         </Link>
       ))}
+      <Link href="/about" className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-900" style={{ borderBottom: "2px solid transparent" }}>
+        About
+      </Link>
     </>
   );
 }
@@ -127,7 +151,7 @@ function UserMenu({ profile }: { profile: Profile }) {
   );
 }
 
-export function Header({ profile }: { profile: Profile | null }) {
+export function Header({ profile, categories }: { profile: Profile | null; categories?: Category[] }) {
   return (
     <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
       {/* Main header */}
@@ -190,8 +214,8 @@ export function Header({ profile }: { profile: Profile | null }) {
       <div className="border-t border-gray-100">
         <div className="container-shell">
           <div className="category-nav-scroll flex items-center gap-5 overflow-x-auto">
-            <Suspense fallback={<CategoryNavFallback />}>
-              <CategoryNavLinks />
+            <Suspense fallback={<CategoryNavFallback categories={categories} />}>
+              <CategoryNavLinks categories={categories} />
             </Suspense>
           </div>
         </div>

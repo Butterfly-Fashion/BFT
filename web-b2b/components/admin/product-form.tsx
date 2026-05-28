@@ -5,8 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { ImagePlus, UploadCloud } from "lucide-react";
 import { upsertProductAction } from "@/app/actions";
 
+const FALLBACK_CATEGORIES = ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves", "Rolling Papers", "Bongs & Pipes", "Lighters", "Winter Items", "Accessories"];
+
 type ProductFormProps = {
   mode: "create" | "edit";
+  categories?: string[];
   product?: {
     id: string;
     name: string;
@@ -29,7 +32,8 @@ type ProductFormProps = {
   };
 };
 
-export function ProductForm({ mode, product }: ProductFormProps) {
+export function ProductForm({ mode, product, categories }: ProductFormProps) {
+  const categoryList = categories?.length ? categories : FALLBACK_CATEGORIES;
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState(product?.image_url || "");
   const [dragging, setDragging] = useState(false);
@@ -82,12 +86,8 @@ export function ProductForm({ mode, product }: ProductFormProps) {
             <label className="label">Description<textarea className="field min-h-40" name="description" defaultValue={product?.description || ""} placeholder="Short operational product description for customers and admin review." /></label>
             <div className="grid gap-4 md:grid-cols-2">
               <label className="label">Category
-                <select className="field" name="category" defaultValue={product?.category || "Car Flags"} required>
-                  <option>Car Flags</option>
-                  <option>Caps</option>
-                  <option>Bucket Hats</option>
-                  <option>Boxing Gloves</option>
-                  <option>Accessories</option>
+                <select className="field" name="category" defaultValue={product?.category || categoryList[0]} required>
+                  {categoryList.map((cat) => <option key={cat}>{cat}</option>)}
                 </select>
               </label>
             </div>

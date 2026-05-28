@@ -1,10 +1,12 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import type { Category } from "@/lib/categories";
 
-const CATEGORIES = ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves", "Accessories", "Sticker Packs", "Scarves", "Figures"];
+const FALLBACK_CATEGORIES = ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves", "Accessories"];
 
-export function CatalogFilterSidebar({ productCount }: { productCount: number }) {
+export function CatalogFilterSidebar({ productCount, categories }: { productCount: number; categories?: Category[] }) {
+  const categoryNames = categories?.length ? categories.map((c) => c.name) : FALLBACK_CATEGORIES;
   const router = useRouter();
   const params = useSearchParams();
 
@@ -58,7 +60,7 @@ export function CatalogFilterSidebar({ productCount }: { productCount: number })
               All categories
               <span className="ml-1.5 text-xs opacity-60">({productCount})</span>
             </button>
-            {CATEGORIES.map((cat) => (
+            {categoryNames.map((cat) => (
               <button
                 key={cat}
                 onClick={() => set("category", cat)}

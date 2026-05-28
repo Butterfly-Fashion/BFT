@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock } from "lucide-react";
+import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock, Tag } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
   { label: "Products", href: "/admin/products", icon: ShoppingBag },
+  { label: "Categories", href: "/admin/categories", icon: Tag },
   { label: "Customers", href: "/admin/customers", icon: Users },
   { label: "Orders", href: "/admin/orders", icon: ClipboardList },
   { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },

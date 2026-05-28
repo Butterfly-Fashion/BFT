@@ -6,6 +6,7 @@ import { CatalogFilterSidebar } from "@/components/store/catalog-filter-sidebar"
 import { CatalogTopBar } from "@/components/store/catalog-top-bar";
 import { getCurrentProfile } from "@/lib/auth";
 import { applyCustomerPrices } from "@/lib/pricing";
+import { fetchCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
@@ -17,8 +18,11 @@ export default async function ProductsPage({
   searchParams: Promise<{ q?: string; category?: string; sort?: string; stock?: string }>;
 }) {
   const params = await searchParams;
-  const profile = await getCurrentProfile();
-  const supabase = await createSupabaseServerClient();
+  const [profile, categories, supabase] = await Promise.all([
+    getCurrentProfile(),
+    fetchCategories(),
+    createSupabaseServerClient(),
+  ]);
 
   let query = supabase.from("products").select("*").eq("is_hidden", false);
   if (params.category && params.category !== "All Products")
@@ -39,15 +43,15 @@ export default async function ProductsPage({
 
   return (
     <>
-      <Header profile={profile} />
+      <Header profile={profile} categories={categories} />
       <main className="container-shell py-6">
         {/* Access banners */}
         {profile && !isApproved && (
           <div className="mb-5 flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm">
             <span className="stock-dot" style={{ background: "#D97706" }} />
             <span className="font-semibold text-amber-800">
-              가격은 승인된 B2B 계정에만 표시됩니다.
-              <span className="ml-2 font-normal text-amber-600">· 승인 대기 중</span>
+              Wholesale pricing is visible to approved B2B accounts only.
+              <span className="ml-2 font-normal text-amber-600">· Pending approval</span>
             </span>
           </div>
         )}
@@ -55,10 +59,10 @@ export default async function ProductsPage({
           <div className="mb-5 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm">
             <span className="stock-dot bg-gray-400" />
             <span className="text-gray-600">
-              도매가 확인은{" "}
-              <Link href="/register" className="font-semibold underline" style={{ color: "var(--primary)" }}>계정 신청</Link>
-              {" "}또는{" "}
-              <Link href="/login" className="font-semibold underline" style={{ color: "var(--primary)" }}>로그인</Link> 후 가능합니다.
+              Wholesale pricing visible after{" "}
+              <Link href="/register" className="font-semibold underline" style={{ color: "var(--primary)" }}>registering</Link>
+              {" "}or{" "}
+              <Link href="/login" className="font-semibold underline" style={{ color: "var(--primary)" }}>signing in</Link>.
             </span>
           </div>
         )}
@@ -79,7 +83,7 @@ export default async function ProductsPage({
         {/* Sidebar + Table */}
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-5">
           <Suspense fallback={null}>
-            <CatalogFilterSidebar productCount={products.length} />
+            <CatalogFilterSidebar productCount={products.length} categories={categories} />
           </Suspense>
 
           <div className="min-w-0 flex-1">

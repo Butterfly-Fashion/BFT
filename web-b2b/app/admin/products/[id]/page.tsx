@@ -3,6 +3,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
 import { ProductForm } from "@/components/admin/product-form";
 import { DangerForm } from "@/components/admin/danger-form";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
+import { fetchAllCategories } from "@/lib/categories";
 import { duplicateProductAction, deleteProductAction } from "@/app/actions";
 
 export const dynamic = "force-dynamic";
@@ -10,7 +11,10 @@ export const dynamic = "force-dynamic";
 export default async function AdminProductEditPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const admin = createSupabaseAdminClient();
-  const { data: product } = await admin.from("products").select("*").eq("id", id).single();
+  const [{ data: product }, categories] = await Promise.all([
+    admin.from("products").select("*").eq("id", id).single(),
+    fetchAllCategories(),
+  ]);
   if (!product) notFound();
 
   return (
@@ -37,7 +41,7 @@ export default async function AdminProductEditPage({ params }: { params: Promise
           </div>
         </div>
 
-        <ProductForm mode="edit" product={product} />
+        <ProductForm mode="edit" product={product} categories={categories.map((c) => c.name)} />
       </main>
     </>
   );
