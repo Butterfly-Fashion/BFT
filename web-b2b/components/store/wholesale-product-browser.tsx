@@ -14,6 +14,12 @@ type WholesaleProductBrowserProps = {
   profile: Profile | null;
 };
 
+const STATUS_DOT: Record<string, string> = {
+  Available: "bg-emerald-400",
+  Limited: "bg-amber-400",
+  "Out of Stock": "bg-gray-300",
+};
+
 export function WholesaleProductBrowser({ products, profile }: WholesaleProductBrowserProps) {
   const cart = useCart();
   const router = useRouter();
@@ -64,31 +70,36 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
 
   if (!products.length) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-200 bg-white p-12 text-center">
-        <Package size={32} className="mx-auto mb-3 text-slate-300" />
-        <p className="font-bold text-slate-500">No products match your filters.</p>
-        <p className="mt-1 text-sm text-slate-400">Try adjusting your search or category.</p>
+      <div className="rounded-2xl border border-dashed border-gray-200 bg-white p-14 text-center">
+        <Package size={28} className="mx-auto mb-3 text-gray-300" />
+        <p className="font-bold text-gray-500">No products match your filters.</p>
+        <p className="mt-1 text-sm text-gray-400">Try adjusting your search or category.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
       {/* Product grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {products.map((product) => {
           const qty = padMap.get(product.id) || 0;
           const hasQty = qty > 0;
+          const statusDot = STATUS_DOT[product.availability_status] ?? "bg-gray-300";
+
           return (
             <article
-              className={`product-card flex flex-col overflow-hidden rounded-2xl border bg-white transition-all ${
-                hasQty ? "border-(--primary) ring-2 ring-(--primary)/10" : "border-slate-100"
+              className={`product-card flex flex-col overflow-hidden rounded-2xl bg-white transition-all ${
+                hasQty
+                  ? "ring-2 shadow-lg"
+                  : "shadow-sm hover:shadow-md"
               }`}
+              style={hasQty ? { "--tw-ring-color": "rgba(49,130,246,0.25)" } as React.CSSProperties : {}}
               key={product.id}
             >
               {/* Image */}
               <Link
-                className="relative block shrink-0 overflow-hidden bg-slate-50"
+                className="relative block shrink-0 overflow-hidden bg-gray-50"
                 href={`/products/${product.slug}`}
                 style={{ aspectRatio: "1 / 1" }}
               >
@@ -97,54 +108,49 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
                   src={product.image_url}
                   alt={product.name}
                 />
-                {product.availability_status === "Limited" && (
-                  <span className="absolute top-2 right-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black text-amber-700">
-                    Limited
-                  </span>
-                )}
+                {/* Status dot */}
+                <span className={`absolute top-3 right-3 h-2.5 w-2.5 rounded-full ${statusDot} ring-2 ring-white`} />
               </Link>
 
               {/* Info */}
-              <div className="flex flex-1 flex-col gap-1.5 p-3">
-                <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+              <div className="flex flex-1 flex-col gap-1 p-3.5">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
                   {product.category}
                 </span>
                 <Link
-                  className="line-clamp-2 min-h-10 text-sm font-bold leading-snug text-slate-900 hover:text-(--primary) transition-colors"
+                  className="line-clamp-2 text-sm font-bold leading-snug text-gray-900 transition-colors hover:text-blue-600"
                   href={`/products/${product.slug}`}
                 >
                   {product.name}
                 </Link>
 
-                <div className="mt-auto pt-1">
+                <div className="mt-auto pt-2">
                   {isApproved ? (
-                    <div className="space-y-0.5">
-                      <div className="flex items-baseline gap-2">
-                        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">낱개</span>
-                        <strong className="text-base font-black text-slate-900">
+                    <div>
+                      <div className="flex items-baseline gap-1.5">
+                        <strong className="text-lg font-black text-gray-900">
                           {formatMoney(product.display_price)}
                         </strong>
+                        <span className="text-[10px] font-semibold text-gray-400">/ea</span>
                         {product.has_customer_price && (
-                          <span className="rounded bg-blue-50 px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wide text-blue-600">
+                          <span
+                            className="rounded-full px-1.5 py-0.5 text-[9px] font-black text-white"
+                            style={{ background: "var(--primary)" }}
+                          >
                             내 가격
                           </span>
                         )}
                       </div>
                       {product.display_case_price != null && product.case_qty && (
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">
-                            케이스 ({product.case_qty}개)
-                          </span>
-                          <span className="text-sm font-black text-slate-700">
-                            {formatMoney(product.display_case_price)}
-                          </span>
-                        </div>
+                        <p className="mt-0.5 text-xs font-semibold text-gray-400">
+                          케이스 ({product.case_qty}개) {formatMoney(product.display_case_price)}
+                        </p>
                       )}
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 rounded-lg bg-slate-50 px-2.5 py-2">
-                      <Lock size={12} className="shrink-0 text-slate-400" />
-                      <span className="text-xs font-semibold text-slate-500">승인 후 가격 확인</span>
+                    <div className="flex items-center gap-1.5 text-gray-400">
+                      <Lock size={11} className="shrink-0" />
+                      <span className="text-xs font-semibold">승인 후 가격 확인</span>
                     </div>
                   )}
                 </div>
@@ -152,21 +158,22 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
 
               {/* Order qty */}
               {isApproved && (
-                <div className="border-t border-slate-100 p-3">
-                  <label className="label">
-                    Order Qty
+                <div className="border-t border-gray-100 px-3.5 py-3">
+                  <div className="flex items-center gap-2">
+                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-gray-400">수량</span>
                     <input
                       aria-label={`Quantity for ${product.name}`}
-                      className={`field quantity-input text-center font-bold ${
-                        hasQty ? "border-(--primary) bg-blue-50" : ""
+                      className={`field quantity-input min-h-0 h-8 py-0 text-center text-sm font-bold ${
+                        hasQty ? "border-blue-400 bg-blue-50 text-blue-700" : ""
                       }`}
                       inputMode="numeric"
                       min={0}
                       type="number"
                       value={qty || ""}
+                      placeholder="0"
                       onChange={(e) => setProductQuantity(product, e.target.value)}
                     />
-                  </label>
+                  </div>
                 </div>
               )}
             </article>
@@ -174,16 +181,16 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
         })}
       </div>
 
-      {/* Aside cart panel — only for approved users */}
+      {/* Aside cart panel — approved users only */}
       {isApproved && (
         <aside className="xl:sticky xl:top-32 xl:h-fit">
-          <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
-            <div className="border-b border-slate-100 px-4 py-3">
-              <h2 className="flex items-center gap-2 text-base font-black text-slate-900">
-                <ShoppingCart size={16} className="text-(--primary)" />
+          <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+            <div className="border-b border-gray-100 px-4 py-3.5">
+              <h2 className="flex items-center gap-2 text-sm font-black text-gray-900">
+                <ShoppingCart size={15} style={{ color: "var(--primary)" }} />
                 Request Cart
               </h2>
-              <p className="mt-0.5 text-xs font-medium text-slate-500">
+              <p className="mt-0.5 text-xs text-gray-400">
                 Items persist while you browse.
               </p>
             </div>
@@ -192,15 +199,15 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
               {cart.orderPadItems.length > 0 && (
                 <div>
                   <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-100 bg-blue-50 px-4 py-2">
-                    <p className="text-[10px] font-black uppercase tracking-wide text-blue-700">
+                    <p className="text-[10px] font-black uppercase tracking-wide text-blue-600">
                       Order pad · {cart.orderPadCount} units
                     </p>
-                    <p className="text-xs font-black text-blue-900">{formatMoney(selectedTotal)}</p>
+                    <p className="text-xs font-black text-blue-800">{formatMoney(selectedTotal)}</p>
                   </div>
                   {cart.orderPadItems.map((item) => (
                     <div
                       key={item.productId}
-                      className="grid grid-cols-[40px_1fr_52px] items-center gap-2.5 border-b border-blue-50 bg-blue-50/40 px-3 py-2 last:border-b-0"
+                      className="grid grid-cols-[36px_1fr_48px] items-center gap-2.5 border-b border-blue-50/70 px-3 py-2.5 last:border-b-0"
                     >
                       <ProductImage
                         className="aspect-square rounded-lg border border-blue-100 object-cover"
@@ -209,20 +216,20 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
                       />
                       <div className="min-w-0">
                         {item.slug ? (
-                          <Link className="line-clamp-2 text-xs font-bold leading-snug text-slate-800 hover:underline" href={`/products/${item.slug}`}>
+                          <Link className="line-clamp-2 text-xs font-bold leading-snug text-gray-800 hover:underline" href={`/products/${item.slug}`}>
                             {item.name}
                           </Link>
                         ) : (
-                          <p className="line-clamp-2 text-xs font-bold leading-snug text-slate-800">{item.name || item.productId}</p>
+                          <p className="line-clamp-2 text-xs font-bold leading-snug text-gray-800">{item.name || item.productId}</p>
                         )}
-                        <p className="text-[10px] font-semibold text-blue-600">
-                          {item.price ? formatMoney(item.price) : "Price TBD"} × {item.quantity}
+                        <p className="text-[10px] font-semibold text-blue-500">
+                          {item.price ? formatMoney(item.price) : "TBD"} × {item.quantity}
                           {item.price ? ` = ${formatMoney(item.price * item.quantity)}` : ""}
                         </p>
                       </div>
                       <input
                         aria-label={`Qty for ${item.name || item.productId}`}
-                        className="field quantity-input h-8 min-h-8 px-1 text-center text-xs font-bold"
+                        className="field quantity-input h-8 min-h-0 px-1 text-center text-xs font-bold"
                         inputMode="numeric"
                         min={0}
                         type="number"
@@ -238,29 +245,29 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
 
               {cart.items.length > 0 && (
                 <div>
-                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-slate-100 px-4 py-2">
-                    <p className="text-[10px] font-black uppercase tracking-wide text-slate-600">
+                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-gray-50 px-4 py-2">
+                    <p className="text-[10px] font-black uppercase tracking-wide text-gray-500">
                       In cart · {cart.count} units
                     </p>
-                    <p className="text-xs font-black text-slate-800">{formatMoney(cartTotal)}</p>
+                    <p className="text-xs font-black text-gray-700">{formatMoney(cartTotal)}</p>
                   </div>
                   {cart.items.map((item) => (
-                    <div className="grid grid-cols-[40px_1fr_52px] items-center gap-2.5 border-b border-slate-100 px-3 py-2 last:border-b-0" key={item.productId}>
-                      <ProductImage className="aspect-square rounded-lg border border-slate-200 object-cover" src={item.imageUrl} alt={item.name || "Product"} />
+                    <div className="grid grid-cols-[36px_1fr_48px] items-center gap-2.5 border-b border-gray-100 px-3 py-2.5 last:border-b-0" key={item.productId}>
+                      <ProductImage className="aspect-square rounded-lg border border-gray-100 object-cover" src={item.imageUrl} alt={item.name || "Product"} />
                       <div className="min-w-0">
                         {item.slug ? (
                           <Link className="line-clamp-2 text-xs font-bold leading-snug hover:underline" href={`/products/${item.slug}`}>{item.name}</Link>
                         ) : (
                           <p className="line-clamp-2 text-xs font-bold leading-snug">{item.name || item.productId}</p>
                         )}
-                        <p className="text-[10px] font-semibold text-slate-500">
-                          {item.price ? formatMoney(item.price) : "Price TBD"}
+                        <p className="text-[10px] font-semibold text-gray-400">
+                          {item.price ? formatMoney(item.price) : "TBD"}
                           {item.sku && <> · {item.sku}</>}
                         </p>
                       </div>
                       <input
                         aria-label={`Cart qty for ${item.name || item.productId}`}
-                        className="field quantity-input h-8 min-h-8 px-1 text-center text-xs font-bold"
+                        className="field quantity-input h-8 min-h-0 px-1 text-center text-xs font-bold"
                         inputMode="numeric"
                         min={0}
                         type="number"
@@ -275,40 +282,40 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
               )}
 
               {!cart.orderPadItems.length && !cart.items.length && (
-                <div className="p-6 text-center">
-                  <ShoppingCart size={28} className="mx-auto mb-3 text-slate-200" />
-                  <p className="text-sm font-bold text-slate-500">Request cart is empty</p>
-                  <p className="mt-1 text-xs text-slate-400">Enter quantities to build your order</p>
+                <div className="p-8 text-center">
+                  <ShoppingCart size={24} className="mx-auto mb-3 text-gray-200" />
+                  <p className="text-sm font-bold text-gray-400">Request cart is empty</p>
+                  <p className="mt-1 text-xs text-gray-300">Enter quantities to build your order</p>
                 </div>
               )}
             </div>
 
-            <div className="border-t border-slate-100 p-4">
-              <div className="mb-3 grid gap-1">
-                <div className="flex justify-between text-sm font-medium text-slate-600">
+            <div className="border-t border-gray-100 p-4">
+              <div className="mb-3 space-y-1">
+                <div className="flex justify-between text-xs font-semibold text-gray-500">
                   <span>Cart units</span>
-                  <span className="font-bold text-slate-900">{cart.count}</span>
+                  <span className="font-bold text-gray-800">{cart.count}</span>
                 </div>
-                <div className="flex justify-between text-sm font-medium text-slate-600">
+                <div className="flex justify-between text-xs font-semibold text-gray-500">
                   <span>Est. subtotal</span>
-                  <span className="font-black text-slate-900">{formatMoney(cartTotal)}</span>
+                  <span className="font-black text-gray-900">{formatMoney(cartTotal)}</span>
                 </div>
               </div>
 
-              <div className="mb-3 rounded-xl bg-slate-50 px-3 py-2 text-xs font-medium leading-relaxed text-slate-500">
+              <p className="mb-3 rounded-xl bg-gray-50 px-3 py-2 text-[11px] font-medium leading-relaxed text-gray-400">
                 Final pricing confirmed by our team before payment.
-              </div>
+              </p>
 
               <button
-                className="btn-primary w-full"
+                className="btn-primary w-full text-sm"
                 type="button"
                 disabled={!cart.orderPadItems.length}
                 onClick={addSelectedToCart}
               >
                 <ShoppingCart size={14} />
-                Add {cart.orderPadCount > 0 ? `${cart.orderPadCount} items` : "selected"} to cart
+                {cart.orderPadCount > 0 ? `${cart.orderPadCount}개 항목 추가` : "선택 항목 추가"}
               </button>
-              <Link className="btn-secondary mt-2 w-full" href="/cart">
+              <Link className="btn-secondary mt-2 w-full text-sm" href="/cart">
                 Open request cart
               </Link>
             </div>

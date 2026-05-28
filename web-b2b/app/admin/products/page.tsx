@@ -39,7 +39,7 @@ export default async function AdminProductsPage({
       <main className="container-shell py-7">
         <section className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--accent)">Product management</p>
+            <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Product management</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Products</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
               Manage catalog, pricing, images, and storefront visibility.

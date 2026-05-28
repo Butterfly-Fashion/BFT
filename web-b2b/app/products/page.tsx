@@ -1,4 +1,3 @@
-import { SlidersHorizontal } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { ProductGrid } from "@/components/store/product-grid";
 import { getCurrentProfile } from "@/lib/auth";
@@ -35,59 +34,57 @@ export default async function ProductsPage({
   const products = await applyCustomerPrices((data || []) as Product[], profile);
 
   const isApproved = profile?.is_b2b_approved ?? false;
-  const activeFilter = params.category || params.q || params.stock;
 
   return (
     <>
       <Header profile={profile} />
-      <main className="container-shell py-6">
-        {/* Pending approval banner */}
+      <main className="container-shell py-8">
+        {/* Access banners */}
         {profile && !isApproved && (
-          <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-800">
-            가격은 <strong>승인된 B2B 계정</strong>에만 표시됩니다. 계정 승인 후 확인 가능합니다.
-            <span className="ml-2 text-amber-600">· 승인 대기 중</span>
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
+            <div className="h-2 w-2 shrink-0 rounded-full bg-amber-400" />
+            <p className="text-sm font-semibold text-amber-800">
+              가격은 <strong>승인된 B2B 계정</strong>에만 표시됩니다. 계정 승인 후 확인 가능합니다.
+              <span className="ml-2 font-normal text-amber-600">· 승인 대기 중</span>
+            </p>
           </div>
         )}
         {!profile && (
-          <div className="mb-5 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
-            가격 확인을 위해{" "}
-            <a href="/register" className="text-(--primary) underline">계정을 신청</a>하거나{" "}
-            <a href="/login" className="text-(--primary) underline">로그인</a>하세요.
-            승인 후 도매가 전체 공개됩니다.
+          <div className="mb-6 flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <div className="h-2 w-2 shrink-0 rounded-full bg-gray-400" />
+            <p className="text-sm font-semibold text-gray-600">
+              가격 확인을 위해{" "}
+              <a href="/register" className="font-bold underline" style={{ color: "var(--primary)" }}>계정을 신청</a>하거나{" "}
+              <a href="/login" className="font-bold underline" style={{ color: "var(--primary)" }}>로그인</a>하세요.
+              승인 후 도매가 전체 공개됩니다.
+            </p>
           </div>
         )}
 
-        {/* Page header */}
-        <div className="mb-6 border-b border-slate-200 pb-5">
-          <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--primary)">
-            {params.category || "All categories"}
-          </p>
-          <h1 className="text-3xl font-black text-slate-900">
-            {params.category ? params.category : "Shop Products"}
-          </h1>
-          <p className="mt-1.5 text-sm font-medium text-slate-500">
-            {products.length} product{products.length !== 1 ? "s" : ""}
-            {isApproved ? " · B2B pricing shown" : " · Prices visible after approval"}
-          </p>
+        {/* Page header + filters row */}
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            {params.category && (
+              <span className="section-label">{params.category}</span>
+            )}
+            <h1 className="mt-1 text-2xl font-black text-gray-900 sm:text-3xl">
+              {params.category || "All Products"}
+            </h1>
+            <p className="mt-1 text-sm text-gray-400">
+              {products.length} product{products.length !== 1 ? "s" : ""}
+              {isApproved ? " · B2B pricing shown" : ""}
+            </p>
+          </div>
         </div>
 
         {/* Filters */}
-        <form className="mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-4 py-2.5">
-            <SlidersHorizontal size={14} className="text-slate-500" />
-            <span className="text-xs font-black uppercase tracking-wide text-slate-600">Filters</span>
-            {activeFilter && (
-              <a href="/products" className="ml-auto text-xs font-bold text-slate-400 hover:text-slate-700 transition-colors">
-                Clear filters
-              </a>
-            )}
-          </div>
-          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_160px_180px_160px_auto] lg:items-end">
-            <label className="label">
+        <form className="mb-6">
+          <div className="flex flex-wrap items-end gap-3">
+            <label className="label flex-1 min-w-48">
               Search
               <input className="field" defaultValue={params.q || ""} name="q" placeholder="Name, SKU, or category" />
             </label>
-            <label className="label">
+            <label className="label w-44">
               Category
               <select className="field" defaultValue={params.category || ""} name="category">
                 <option value="">All Products</option>
@@ -99,7 +96,7 @@ export default async function ProductsPage({
                 <option>Bulk Orders</option>
               </select>
             </label>
-            <label className="label">
+            <label className="label w-44">
               Sort by
               <select className="field" defaultValue={params.sort || ""} name="sort">
                 <option value="">Name A–Z</option>
@@ -108,7 +105,7 @@ export default async function ProductsPage({
                 <option value="newest">Newest</option>
               </select>
             </label>
-            <label className="label">
+            <label className="label w-40">
               Stock
               <select className="field" defaultValue={params.stock || ""} name="stock">
                 <option value="">All</option>
@@ -116,7 +113,12 @@ export default async function ProductsPage({
                 <option value="limited">In Stock + Limited</option>
               </select>
             </label>
-            <button className="btn-primary" type="submit">Apply</button>
+            <div className="flex gap-2">
+              <button className="btn-primary" type="submit">Apply</button>
+              {(params.q || params.category || params.stock || params.sort) && (
+                <a href="/products" className="btn-secondary">Clear</a>
+              )}
+            </div>
           </div>
         </form>
 

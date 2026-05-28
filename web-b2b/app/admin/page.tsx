@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
         {/* Page header */}
         <section className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--accent)">Operations</p>
+            <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Operations</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Dashboard</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
               Order requests, approvals, revenue, and customer activity.
@@ -163,7 +163,7 @@ export default async function AdminDashboardPage() {
         <section className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-5 py-3">
             <h2 className="text-base font-black text-slate-900">Recent orders</h2>
-            <Link href="/admin/orders" className="text-xs font-bold text-(--accent) hover:underline">
+            <Link href="/admin/orders" className="text-xs font-bold text-(--primary) hover:underline">
               View all →
             </Link>
           </div>
