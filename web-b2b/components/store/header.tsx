@@ -138,19 +138,21 @@ export function Header({ profile }: { profile: Profile | null }) {
           </div>
         </Link>
 
-        {/* Search — inline styles override .field padding so icon doesn't overlap */}
-        <form action="/products" className="relative order-3 lg:order-0">
-          <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+        {/* Search */}
+        <form
+          action="/products"
+          className="order-3 flex h-10 items-center overflow-hidden rounded-lg border border-gray-200 bg-white transition-colors focus-within:border-green-600 focus-within:ring-2 focus-within:ring-green-600/10 lg:order-0"
+        >
+          <Search className="ml-3 shrink-0 text-gray-400" size={14} />
           <input
-            className="field text-sm"
-            style={{ paddingLeft: "2.25rem", paddingRight: "5rem" }}
+            className="min-w-0 flex-1 bg-transparent px-2.5 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none"
             name="q"
             placeholder="Search products, SKU, country…"
             type="text"
             autoComplete="off"
           />
           <button
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md px-3 py-1.5 text-xs font-semibold text-white"
+            className="shrink-0 rounded-r-lg px-4 py-2 text-xs font-semibold text-white"
             style={{ background: "var(--primary)" }}
             type="submit"
           >
