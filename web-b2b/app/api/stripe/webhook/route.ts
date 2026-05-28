@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { sendEmail } from "@/lib/email";
+import { sendEmail, paymentReceivedEmail, adminOrderPaidEmail } from "@/lib/email";
 import { requireEnv } from "@/lib/env";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
@@ -61,12 +61,24 @@ export async function POST(request: Request) {
     const invoiceNumber = `INV-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${orderId.slice(0, 8).toUpperCase()}`;
     await admin.from("invoices").upsert({ order_id: orderId, invoice_number: invoiceNumber }, { onConflict: "order_id" });
 
-    const { data: order } = await admin.from("orders").select("*, profiles(email)").eq("id", orderId).single();
+    const { data: order } = await admin.from("orders").select("*, profiles(email, business_name, contact_name)").eq("id", orderId).single();
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || "https://b2b.butterfly-fashion.ca";
     if (order?.profiles?.email) {
-      await sendEmail({ to: order.profiles.email, subject: "Payment received and invoice created", html: `<p>Your payment was received. Invoice ${invoiceNumber} has been created.</p>` });
+      const displayName = order.profiles.business_name || order.profiles.contact_name || order.profiles.email;
+      await sendEmail({
+        to: order.profiles.email,
+        subject: "Payment received — Butterfly Fashion",
+        html: paymentReceivedEmail(displayName, orderId, invoiceNumber, origin),
+      });
     }
-    if (process.env.ADMIN_EMAIL) {
-      await sendEmail({ to: process.env.ADMIN_EMAIL, subject: "Order paid", html: `<p>Order ${orderId} has been paid.</p>` });
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail) {
+      const displayName = order?.profiles?.business_name || order?.profiles?.email || orderId;
+      await sendEmail({
+        to: adminEmail,
+        subject: `Order paid — ${invoiceNumber}`,
+        html: adminOrderPaidEmail(displayName, orderId, invoiceNumber, origin),
+      });
     }
   }
 

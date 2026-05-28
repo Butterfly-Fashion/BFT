@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CheckCircle, ChevronLeft, CreditCard } from "lucide-react";
+import { CheckCircle, ChevronLeft, CreditCard, FileText } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { requireProfile } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
+import { ReorderButton } from "@/components/store/reorder-button";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,16 @@ export default async function AccountOrderDetailPage({
     .eq("order_id", id);
   const isPaid = order.status === "Paid" || order.payment_status === "Paid";
   const isPaymentReady = !!order.stripe_payment_link && !isPaid;
+
+  const reorderItems = (items || []).map((item) => ({
+    productId: item.product_id,
+    name: item.product_name_snapshot,
+    sku: item.sku_snapshot || "",
+    quantity: item.quantity,
+    price: Number(item.unit_price_snapshot || 0),
+    imageUrl: (item.products as { image_url?: string } | null)?.image_url ?? undefined,
+    slug: (item.products as { slug?: string } | null)?.slug ?? undefined,
+  }));
 
   return (
     <>
@@ -84,9 +95,18 @@ export default async function AccountOrderDetailPage({
                 {order.delivery_method && <> · {order.delivery_method}</>}
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status={order.status} />
               <StatusBadge status={order.payment_status} type="payment" />
+              {isPaid && (
+                <Link
+                  href={`/account/orders/${id}/invoice`}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                >
+                  <FileText size={12} /> Invoice
+                </Link>
+              )}
+              <ReorderButton items={reorderItems} />
             </div>
           </div>
 

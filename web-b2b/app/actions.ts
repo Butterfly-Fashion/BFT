@@ -1,12 +1,14 @@
 "use server";
 
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { calculateTotals } from "@/lib/money";
-import { sendEmail } from "@/lib/email";
+import {
+  sendEmail, emailHtml,
+  registrationEmail, orderReceivedEmail, adminNewOrderEmail,
+  paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail,
+} from "@/lib/email";
 import { createOrderCheckoutSession } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { requireAdmin, requireProfile } from "@/lib/auth";
@@ -83,16 +85,23 @@ async function uniqueProductValue(
 async function saveProductImage(file: File, slug: string) {
   if (!file.size) return null;
   if (!file.type.startsWith("image/")) throw new Error("Please upload a valid image file.");
+  const MAX_SIZE = 5 * 1024 * 1024;
+  if (file.size > MAX_SIZE) throw new Error("Image must be under 5 MB.");
 
   const extFromName = file.name.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "");
   const extFromType = file.type.split("/")[1]?.replace("jpeg", "jpg");
   const ext = extFromName || extFromType || "jpg";
   const safeName = `${slug}-${Date.now()}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "asset", "images", "admin-products");
-  await mkdir(uploadDir, { recursive: true });
+
+  const admin = createSupabaseAdminClient();
   const bytes = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(uploadDir, safeName), bytes);
-  return `/asset/images/admin-products/${safeName}`;
+  const { error } = await admin.storage.from("product-images").upload(safeName, bytes, {
+    contentType: file.type,
+    upsert: false,
+  });
+  if (error) throw new Error(`Image upload failed: ${error.message}`);
+  const { data: { publicUrl } } = admin.storage.from("product-images").getPublicUrl(safeName);
+  return publicUrl;
 }
 
 const registerSchema = z
@@ -166,7 +175,7 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   await sendEmail({
     to: parsed.data.email,
     subject: "Butterfly Fashion Trading — account created",
-    html: "<p>Your account has been created. B2B pricing will be available after admin approval.</p>",
+    html: registrationEmail(parsed.data.contact_name || parsed.data.business_name, siteUrl()),
   });
 
   redirect("/login?registered=1");
@@ -279,14 +288,17 @@ export async function createOrderRequestAction(input: {
 
   await sendEmail({
     to: profile.email,
-    subject: "Order request received",
-    html: `<p>Your order request has been submitted. We will confirm availability, pricing, and delivery details before payment.</p><p>Order ID: ${order.id}</p>`,
+    subject: "Order request received — Butterfly Fashion",
+    html: orderReceivedEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
   });
-  await sendEmail({
-    to: process.env.ADMIN_EMAIL || profile.email,
-    subject: "New order request",
-    html: `<p>New order request from ${profile.business_name}.</p><p>Order ID: ${order.id}</p>`,
-  });
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (adminEmail) {
+    await sendEmail({
+      to: adminEmail,
+      subject: `New order request — ${profile.business_name || profile.email}`,
+      html: adminNewOrderEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
+    });
+  }
 
   revalidatePath("/admin/orders");
   return { orderId: order.id };
@@ -320,6 +332,23 @@ export async function updateOrderReviewAction(formData: FormData) {
   }
   const subtotal = updatedItems.reduce((sum, item) => sum + Number(item.line_total), 0);
   const total = subtotal - discount + shipping + tax;
+
+  // Deduct stock_qty once when order transitions to Completed
+  if (status === "Completed") {
+    const { data: currentOrder } = await admin.from("orders").select("status").eq("id", orderId).single();
+    if (currentOrder?.status !== "Completed") {
+      for (const item of updatedItems) {
+        if (!item.product_id) continue;
+        const { data: prod } = await admin.from("products").select("stock_qty").eq("id", item.product_id).single();
+        if (prod?.stock_qty != null) {
+          await admin.from("products").update({
+            stock_qty: Math.max(0, prod.stock_qty - item.quantity),
+          }).eq("id", item.product_id);
+        }
+      }
+    }
+  }
+
   await admin.from("orders").update({
     subtotal,
     shipping_fee: shipping,
@@ -359,8 +388,8 @@ export async function approveOrderAction(orderId: string) {
     }).eq("id", orderId);
     await sendEmail({
       to: order.profiles.email,
-      subject: "Your order is ready — Pay Now",
-      html: `<p>Your order has been reviewed and is ready for payment. Click the link below to complete your purchase.</p><p><a href="${paymentLink}">Pay Now</a></p>`,
+      subject: "Your order is approved — pay now",
+      html: paymentLinkEmail(order.profiles.business_name || order.profiles.email, order.id, paymentLink, siteUrl()),
     });
   } else {
     await admin.from("orders").update({ status: "Approved", updated_at: new Date().toISOString() }).eq("id", orderId);
@@ -405,8 +434,8 @@ export async function createPaymentLinkAction(orderId: string): Promise<{ error:
 
   await sendEmail({
     to: order.profiles.email,
-    subject: "Your payment link is ready",
-    html: `<p>Your order has been approved. Please complete payment here:</p><p><a href="${paymentLink}">${paymentLink}</a></p>`,
+    subject: "Your order is approved — pay now",
+    html: paymentLinkEmail(order.profiles.business_name || order.profiles.email, order.id, paymentLink, siteUrl()),
   });
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${orderId}`);
@@ -423,18 +452,14 @@ export async function approveB2BCustomerAction(customerId: string, approved: boo
     if (approved) {
       await sendEmail({
         to: profile.email,
-        subject: "Your B2B account has been approved",
-        html: `<p>Hi ${profile.contact_name || profile.business_name},</p>
-<p>Your B2B account has been approved. You can now log in and place wholesale orders at your B2B pricing.</p>
-<p><a href="${siteUrl()}/login">Log in to your account →</a></p>
-<p>If you have any questions, reply to this email or contact us directly.</p>`,
+        subject: "Your B2B account has been approved — Butterfly Fashion",
+        html: b2bApprovedEmail(profile.contact_name || profile.business_name, siteUrl()),
       });
     } else {
       await sendEmail({
         to: profile.email,
-        subject: "Your B2B account status has changed",
-        html: `<p>Hi ${profile.contact_name || profile.business_name},</p>
-<p>Your B2B account access has been updated. Please contact us if you have any questions.</p>`,
+        subject: "Your B2B account application update",
+        html: b2bRejectedEmail(profile.contact_name || profile.business_name),
       });
     }
   }
@@ -465,11 +490,18 @@ export async function createQuoteAction(formData: FormData) {
       requested_price: requestedPrice,
     });
   }
-  await sendEmail({
-    to: process.env.ADMIN_EMAIL || profile.email,
-    subject: "New quote request",
-    html: `<p>${profile.business_name} requested a quote.</p><p>${message}</p>`,
-  });
+  const quoteAdminEmail = process.env.ADMIN_EMAIL;
+  if (quoteAdminEmail) {
+    await sendEmail({
+      to: quoteAdminEmail,
+      subject: `New quote request — ${profile.business_name || profile.email}`,
+      html: emailHtml("New quote request", `
+        <p><strong>${profile.business_name || profile.contact_name}</strong> submitted a quote request.</p>
+        ${message ? `<p style="margin-top:12px;padding:12px;background:#F9FAFB;border-radius:6px;font-size:13px;">${message}</p>` : ""}
+        <p style="margin-top:16px;"><a href="${siteUrl()}/admin/quotes" style="color:#166534;font-weight:600;">View quote requests →</a></p>
+      `),
+    });
+  }
   revalidatePath("/account/quotes");
   revalidatePath("/admin/quotes");
 }
