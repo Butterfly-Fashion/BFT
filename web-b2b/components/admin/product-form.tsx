@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { ImagePlus, UploadCloud, ChevronDown, ChevronRight } from "lucide-react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { ImagePlus, UploadCloud, ChevronDown, ChevronRight, AlertCircle, Loader2 } from "lucide-react";
 import { upsertProductAction } from "@/app/actions";
 import type { Category } from "@/lib/category-utils";
 import { buildCategoryTree } from "@/lib/category-utils";
@@ -19,76 +19,70 @@ const FALLBACK_CATEGORIES: Category[] = [
   { id: "9", name: "Accessories", slug: "accessories", sort_order: 9, is_active: true, parent_id: null },
 ];
 
+/** Resize image to max 1200px on longest side, convert to JPEG 85% quality */
+async function compressImage(file: File): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      const MAX = 1200;
+      let { width, height } = img;
+      if (width > MAX || height > MAX) {
+        if (width >= height) { height = Math.round((height * MAX) / width); width = MAX; }
+        else { width = Math.round((width * MAX) / height); height = MAX; }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) { resolve(file); return; }
+          const ext = file.name.match(/\.(png|gif|webp)$/i) ? file.name : file.name.replace(/\.[^.]+$/, ".jpg");
+          resolve(new File([blob], ext, { type: "image/jpeg" }));
+        },
+        "image/jpeg",
+        0.85
+      );
+    };
+
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); resolve(file); };
+    img.src = objectUrl;
+  });
+}
+
 type ProductFormProps = {
   mode: "create" | "edit";
   categories?: Category[];
   product?: {
-    id: string;
-    name: string;
-    slug: string;
-    description?: string | null;
-    sku: string;
-    barcode?: string | null;
-    unit_price: number;
-    case_price?: number | null;
-    case_qty?: number | null;
-    image_url?: string | null;
-    category: string;
-    availability_status: string;
-    is_bulk_available: boolean;
-    is_hidden: boolean;
-    weight_kg?: number | null;
-    box_length_cm?: number | null;
-    box_width_cm?: number | null;
-    box_height_cm?: number | null;
-    stock_qty?: number | null;
-    country?: string | null;
-    lead_time?: string | null;
+    id: string; name: string; slug: string; description?: string | null;
+    sku: string; barcode?: string | null; unit_price: number;
+    case_price?: number | null; case_qty?: number | null; image_url?: string | null;
+    category: string; availability_status: string; is_bulk_available: boolean;
+    is_hidden: boolean; weight_kg?: number | null; box_length_cm?: number | null;
+    box_width_cm?: number | null; box_height_cm?: number | null;
+    stock_qty?: number | null; country?: string | null; lead_time?: string | null;
   };
 };
 
 function OptionalBadge() {
-  return (
-    <span className="ml-1.5 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400">
-      Optional
-    </span>
-  );
-}
-
-function SectionHeader({ title, description, optional }: { title: string; description?: string; optional?: boolean }) {
-  return (
-    <div className="mb-4">
-      <p className="flex items-center text-sm font-bold text-slate-700">
-        {title}
-        {optional && <OptionalBadge />}
-      </p>
-      {description && <p className="mt-0.5 text-xs text-slate-400">{description}</p>}
-    </div>
-  );
+  return <span className="ml-1.5 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400">Optional</span>;
 }
 
 function CollapsibleSection({ title, description, defaultOpen = false, children }: {
-  title: string;
-  description?: string;
-  defaultOpen?: boolean;
-  children: React.ReactNode;
+  title: string; description?: string; defaultOpen?: boolean; children: React.ReactNode;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="rounded-lg border border-slate-200 bg-slate-50/50">
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
-      >
+      <button type="button" onClick={() => setOpen((v) => !v)} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left">
         <div>
           <p className="flex items-center text-sm font-bold text-slate-600">
-            {title}
-            <OptionalBadge />
+            {title} <OptionalBadge />
           </p>
-          {description && !open && (
-            <p className="mt-0.5 text-xs text-slate-400">{description}</p>
-          )}
+          {!open && description && <p className="mt-0.5 text-xs text-slate-400">{description}</p>}
         </div>
         {open ? <ChevronDown size={14} className="shrink-0 text-slate-400" /> : <ChevronRight size={14} className="shrink-0 text-slate-400" />}
       </button>
@@ -102,24 +96,55 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const tree = buildCategoryTree(catList);
   const defaultCategory = product?.category || (tree[0]?.children[0]?.name ?? tree[0]?.name ?? "");
 
+  const [state, formAction, isPending] = useActionState(upsertProductAction, null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState(product?.image_url || "");
   const [dragging, setDragging] = useState(false);
+  const [compressing, setCompressing] = useState(false);
+  const [imageInfo, setImageInfo] = useState<string | null>(null);
 
   const hasInventory = !!(product?.stock_qty != null || product?.country || product?.lead_time);
   const hasShipping = !!(product?.weight_kg || product?.box_length_cm);
   const hasIds = !!(product?.slug || product?.sku || product?.barcode);
 
   useEffect(() => {
-    return () => {
-      if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-    };
+    return () => { if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl); };
   }, [previewUrl]);
 
-  function previewFile(file?: File) {
-    if (!file || !file.type.startsWith("image/")) return;
-    if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(URL.createObjectURL(file));
+  async function handleFile(file?: File) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setImageInfo("❌ Not an image file. Please select a JPG, PNG, or WebP.");
+      return;
+    }
+    setCompressing(true);
+    setImageInfo(null);
+    try {
+      const originalKb = Math.round(file.size / 1024);
+      const compressed = await compressImage(file);
+      const compressedKb = Math.round(compressed.size / 1024);
+
+      if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(compressed));
+
+      if (inputRef.current) {
+        const dt = new DataTransfer();
+        dt.items.add(compressed);
+        inputRef.current.files = dt.files;
+      }
+
+      if (originalKb > compressedKb + 50) {
+        setImageInfo(`✓ Compressed: ${originalKb} KB → ${compressedKb} KB`);
+      } else {
+        setImageInfo(`✓ Image ready (${compressedKb} KB)`);
+      }
+    } catch {
+      setImageInfo("⚠️ Could not compress — uploading original.");
+      if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(URL.createObjectURL(file));
+    } finally {
+      setCompressing(false);
+    }
   }
 
   function openFilePicker() { inputRef.current?.click(); }
@@ -127,16 +152,11 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   function handleDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
     setDragging(false);
-    const file = event.dataTransfer.files?.[0];
-    if (!file || !inputRef.current) return;
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    inputRef.current.files = dataTransfer.files;
-    previewFile(file);
+    handleFile(event.dataTransfer.files?.[0]);
   }
 
   return (
-    <form action={upsertProductAction} className="grid gap-5">
+    <form action={formAction} className="grid gap-5">
       {product?.id && <input name="id" type="hidden" value={product.id} />}
       <input name="image_url" type="hidden" value={product?.image_url || ""} />
 
@@ -151,30 +171,36 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
         <Link className="btn-secondary" href="/admin/products">← Back to products</Link>
       </div>
 
+      {/* Error banner */}
+      {state?.error && (
+        <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4">
+          <AlertCircle size={16} className="mt-0.5 shrink-0 text-red-500" />
+          <div>
+            <p className="text-sm font-bold text-red-800">Could not save product</p>
+            <p className="mt-0.5 text-sm text-red-700">{state.error}</p>
+          </div>
+        </div>
+      )}
+
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
-        {/* ── Left: main fields ── */}
+        {/* ── Left ── */}
         <div className="grid gap-4">
 
-          {/* REQUIRED: basics */}
+          {/* Required: basics */}
           <div className="card p-5">
-            <SectionHeader title="Basic info" description="Name and category are required to save." />
+            <p className="mb-4 text-sm font-bold text-slate-700">Basic info</p>
             <div className="grid gap-4">
               <label className="label">
                 Product name <span className="text-red-500">*</span>
-                <input
-                  className="field"
-                  name="name"
-                  defaultValue={product?.name || ""}
-                  required
-                  placeholder="e.g. Canada Car Flag"
-                />
+                <input className="field" name="name" defaultValue={product?.name || ""} required placeholder="e.g. Canada Car Flag" />
               </label>
 
               <label className="label">
                 Category <span className="text-red-500">*</span>
                 {tree.length === 0 ? (
-                  <div className="field flex items-center text-sm text-slate-400">
-                    No categories — <Link href="/admin/categories" className="ml-1 underline text-slate-600">add one first</Link>
+                  <div className="field flex items-center text-sm text-amber-700 bg-amber-50 border-amber-200">
+                    No categories yet —{" "}
+                    <Link href="/admin/categories" className="ml-1 underline font-semibold">add one in Admin → Categories</Link>
                   </div>
                 ) : (
                   <select className="field" name="category" defaultValue={defaultCategory} required>
@@ -195,177 +221,86 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
 
               <label className="label">
                 Description <OptionalBadge />
-                <textarea
-                  className="field min-h-24"
-                  name="description"
-                  defaultValue={product?.description || ""}
-                  placeholder="Short description for customers and admin. Leave blank if not needed."
-                />
+                <textarea className="field min-h-24" name="description" defaultValue={product?.description || ""} placeholder="Short product description. Leave blank if not needed." />
               </label>
             </div>
           </div>
 
-          {/* REQUIRED: pricing */}
+          {/* Required: pricing */}
           <div className="card p-5">
-            <SectionHeader title="Pricing" />
+            <p className="mb-4 text-sm font-bold text-slate-700">Pricing</p>
             <div className="grid gap-4 sm:grid-cols-3">
-              <label className="label sm:col-span-1">
+              <label className="label">
                 Unit price / ea <span className="text-red-500">*</span>
                 <div className="relative">
                   <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">$</span>
-                  <input
-                    className="field"
-                    style={{ paddingLeft: "1.5rem" }}
-                    name="unit_price"
-                    defaultValue={product?.unit_price ?? ""}
-                    required
-                    step="0.01"
-                    min="0"
-                    type="number"
-                    placeholder="0.00"
-                  />
+                  <input className="field" style={{ paddingLeft: "1.5rem" }} name="unit_price" defaultValue={product?.unit_price ?? ""} required step="0.01" min="0" type="number" placeholder="0.00" />
                 </div>
               </label>
               <label className="label">
                 Case price <OptionalBadge />
                 <div className="relative">
                   <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">$</span>
-                  <input
-                    className="field"
-                    style={{ paddingLeft: "1.5rem" }}
-                    name="case_price"
-                    defaultValue={product?.case_price ?? ""}
-                    step="0.01"
-                    min="0"
-                    type="number"
-                    placeholder="0.00"
-                  />
+                  <input className="field" style={{ paddingLeft: "1.5rem" }} name="case_price" defaultValue={product?.case_price ?? ""} step="0.01" min="0" type="number" placeholder="0.00" />
                 </div>
               </label>
               <label className="label">
                 Case qty / MOQ <OptionalBadge />
-                <input
-                  className="field"
-                  name="case_qty"
-                  defaultValue={product?.case_qty ?? ""}
-                  step="1"
-                  min="1"
-                  type="number"
-                  placeholder="e.g. 12"
-                />
+                <input className="field" name="case_qty" defaultValue={product?.case_qty ?? ""} step="1" min="1" type="number" placeholder="e.g. 12" />
               </label>
             </div>
-            <p className="mt-2 text-xs text-slate-400">
-              Case price + MOQ are optional. If set, customers see the per-case price alongside individual pricing.
-            </p>
           </div>
 
-          {/* OPTIONAL: inventory */}
-          <CollapsibleSection
-            title="Inventory & origin"
-            description="Stock count, country variant, lead time"
-            defaultOpen={hasInventory}
-          >
+          {/* Optional: inventory */}
+          <CollapsibleSection title="Inventory & origin" description="Stock count, country, lead time" defaultOpen={hasInventory}>
             <div className="grid gap-4 sm:grid-cols-3">
               <label className="label">
                 Stock qty
-                <input
-                  className="field"
-                  name="stock_qty"
-                  defaultValue={product?.stock_qty ?? ""}
-                  step="1"
-                  min="0"
-                  type="number"
-                  placeholder="Leave blank if unknown"
-                />
-                <span className="mt-1 block text-xs text-slate-400">Decrements automatically when orders complete.</span>
+                <input className="field" name="stock_qty" defaultValue={product?.stock_qty ?? ""} step="1" min="0" type="number" placeholder="Leave blank if unknown" />
+                <span className="mt-1 block text-xs text-slate-400">Auto-decrements when orders complete.</span>
               </label>
               <label className="label">
                 Country / variant
-                <input
-                  className="field"
-                  name="country"
-                  defaultValue={product?.country ?? ""}
-                  placeholder="e.g. Canada, Mexico"
-                />
+                <input className="field" name="country" defaultValue={product?.country ?? ""} placeholder="e.g. Canada, Mexico" />
               </label>
               <label className="label">
                 Lead time
-                <input
-                  className="field"
-                  name="lead_time"
-                  defaultValue={product?.lead_time ?? ""}
-                  placeholder="e.g. In stock, 2–3 days"
-                />
+                <input className="field" name="lead_time" defaultValue={product?.lead_time ?? ""} placeholder="e.g. In stock, 2–3 days" />
               </label>
             </div>
           </CollapsibleSection>
 
-          {/* OPTIONAL: shipping dimensions */}
-          <CollapsibleSection
-            title="Shipping dimensions"
-            description="Weight and box size for carrier rate calculation"
-            defaultOpen={hasShipping}
-          >
+          {/* Optional: shipping */}
+          <CollapsibleSection title="Shipping dimensions" description="Weight and box size for shipping rate calculation" defaultOpen={hasShipping}>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="label">
                 Weight (kg, incl. packaging)
-                <input
-                  className="field"
-                  name="weight_kg"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  placeholder="e.g. 0.25"
-                  defaultValue={product?.weight_kg ?? ""}
-                />
+                <input className="field" name="weight_kg" type="number" step="0.01" min="0" placeholder="e.g. 0.25" defaultValue={product?.weight_kg ?? ""} />
               </label>
               <div>
                 <p className="label mb-1">Box dimensions (cm)</p>
                 <div className="grid grid-cols-3 gap-2">
-                  <label className="label text-xs">
-                    L
-                    <input className="field" name="box_length_cm" type="number" step="0.1" min="0" placeholder="L" defaultValue={product?.box_length_cm ?? ""} />
-                  </label>
-                  <label className="label text-xs">
-                    W
-                    <input className="field" name="box_width_cm" type="number" step="0.1" min="0" placeholder="W" defaultValue={product?.box_width_cm ?? ""} />
-                  </label>
-                  <label className="label text-xs">
-                    H
-                    <input className="field" name="box_height_cm" type="number" step="0.1" min="0" placeholder="H" defaultValue={product?.box_height_cm ?? ""} />
-                  </label>
+                  <label className="label text-xs">L<input className="field" name="box_length_cm" type="number" step="0.1" min="0" placeholder="L" defaultValue={product?.box_length_cm ?? ""} /></label>
+                  <label className="label text-xs">W<input className="field" name="box_width_cm" type="number" step="0.1" min="0" placeholder="W" defaultValue={product?.box_width_cm ?? ""} /></label>
+                  <label className="label text-xs">H<input className="field" name="box_height_cm" type="number" step="0.1" min="0" placeholder="H" defaultValue={product?.box_height_cm ?? ""} /></label>
                 </div>
               </div>
             </div>
           </CollapsibleSection>
 
-          {/* OPTIONAL: system IDs */}
-          <CollapsibleSection
-            title="System IDs"
-            description="Auto-generated from name — only fill if you need specific values"
-            defaultOpen={hasIds}
-          >
+          {/* Optional: system IDs */}
+          <CollapsibleSection title="System IDs" description="Auto-generated from name — only fill if you need specific values" defaultOpen={hasIds}>
             <div className="grid gap-4 sm:grid-cols-3">
-              <label className="label">
-                Slug
-                <input className="field" name="slug" defaultValue={product?.slug || ""} placeholder="auto-generate" />
-              </label>
-              <label className="label">
-                SKU
-                <input className="field" name="sku" defaultValue={product?.sku || ""} placeholder="auto-generate" />
-              </label>
-              <label className="label">
-                Barcode
-                <input className="field" name="barcode" defaultValue={product?.barcode || ""} placeholder="—" />
-              </label>
+              <label className="label">Slug<input className="field" name="slug" defaultValue={product?.slug || ""} placeholder="auto-generate" /></label>
+              <label className="label">SKU<input className="field" name="sku" defaultValue={product?.sku || ""} placeholder="auto-generate" /></label>
+              <label className="label">Barcode<input className="field" name="barcode" defaultValue={product?.barcode || ""} placeholder="—" /></label>
             </div>
           </CollapsibleSection>
         </div>
 
         {/* ── Right: image + visibility ── */}
         <div className="grid gap-4">
-          {/* Image upload */}
+          {/* Image */}
           <div className="card p-4">
             <p className="mb-3 flex items-center text-sm font-bold text-slate-700">
               Product image <OptionalBadge />
@@ -376,7 +311,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
               name="image_file"
               type="file"
               accept="image/*"
-              onChange={(e) => previewFile(e.target.files?.[0])}
+              onChange={(e) => handleFile(e.target.files?.[0])}
             />
             <div
               role="button"
@@ -387,16 +322,22 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
               onDragOver={(e) => e.preventDefault()}
               onDragLeave={() => setDragging(false)}
               onDrop={handleDrop}
-              className={`cursor-pointer rounded-lg border border-dashed p-2 transition-colors ${
-                dragging ? "border-green-500 bg-green-50" : "border-slate-300 hover:border-green-500"
-              }`}
+              className={`cursor-pointer rounded-lg border border-dashed p-2 transition-colors ${dragging ? "border-green-500 bg-green-50" : "border-slate-300 hover:border-green-500"}`}
             >
-              <div className="aspect-square overflow-hidden rounded border border-slate-200 bg-white">
+              <div className="relative aspect-square overflow-hidden rounded border border-slate-200 bg-white">
+                {compressing && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+                    <div className="flex flex-col items-center gap-2 text-slate-500">
+                      <Loader2 size={20} className="animate-spin text-green-600" />
+                      <span className="text-xs font-semibold">Compressing…</span>
+                    </div>
+                  </div>
+                )}
                 {previewUrl ? (
                   <img alt="preview" className="h-full w-full object-contain" src={previewUrl} />
                 ) : (
-                  <div className="grid h-full place-items-center text-center text-sm text-slate-400">
-                    <span>
+                  <div className="grid h-full place-items-center text-center">
+                    <span className="text-slate-400">
                       <ImagePlus size={24} className="mx-auto mb-1.5 text-slate-300" />
                       <span className="text-xs">Click or drag & drop</span>
                     </span>
@@ -404,9 +345,14 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 )}
               </div>
               <p className="mt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400">
-                <UploadCloud size={12} /> Max 5 MB · JPG, PNG, WebP
+                <UploadCloud size={12} /> Any image — auto-compressed before upload
               </p>
             </div>
+            {imageInfo && (
+              <p className={`mt-2 text-xs font-semibold ${imageInfo.startsWith("✓") ? "text-green-600" : imageInfo.startsWith("❌") ? "text-red-500" : "text-amber-600"}`}>
+                {imageInfo}
+              </p>
+            )}
           </div>
 
           {/* Visibility */}
@@ -437,13 +383,12 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
 
       {/* Sticky save bar */}
       <div className="sticky bottom-0 z-10 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-1 py-3 backdrop-blur">
-        <p className="text-xs text-slate-400">
-          <span className="text-red-500">*</span> Required fields
-        </p>
+        <p className="text-xs text-slate-400"><span className="text-red-500">*</span> Required fields</p>
         <div className="flex gap-3">
           <Link className="btn-secondary" href="/admin/products">Cancel</Link>
-          <button className="btn-primary" type="submit">
-            {mode === "create" ? "Create product" : "Save changes"}
+          <button className="btn-primary gap-2" type="submit" disabled={isPending || compressing}>
+            {isPending && <Loader2 size={14} className="animate-spin" />}
+            {isPending ? "Saving…" : mode === "create" ? "Create product" : "Save changes"}
           </button>
         </div>
       </div>

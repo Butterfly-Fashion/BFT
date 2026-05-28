@@ -506,12 +506,19 @@ export async function createQuoteAction(formData: FormData) {
   revalidatePath("/admin/quotes");
 }
 
-export async function upsertProductAction(formData: FormData) {
+export async function upsertProductAction(
+  _prev: { error: string } | null,
+  formData: FormData
+): Promise<{ error: string } | null> {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const id = String(formData.get("id") || "");
   const name = String(formData.get("name") || "").trim();
   const category = String(formData.get("category") || "").trim();
+
+  if (!name) return { error: "Product name is required." };
+  if (!category) return { error: "Please select a category. If none exist, add one in Admin → Categories first." };
+
   const requestedSlug = String(formData.get("slug") || "").trim();
   const requestedSku = String(formData.get("sku") || "").trim();
   const slugBase = slugify(requestedSlug || name);
@@ -562,8 +569,16 @@ export async function upsertProductAction(formData: FormData) {
     lead_time: String(formData.get("lead_time") || "") || null,
     updated_at: new Date().toISOString(),
   };
-  if (id) await admin.from("products").update(payload).eq("id", id);
-  else await admin.from("products").insert(payload);
+  try {
+    if (id) await admin.from("products").update(payload).eq("id", id);
+    else await admin.from("products").insert(payload);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    if (msg.includes("duplicate") || msg.includes("unique")) {
+      return { error: "A product with this slug or SKU already exists. Try a different name or clear the System IDs fields to auto-generate." };
+    }
+    return { error: `Failed to save product: ${msg}` };
+  }
   revalidatePath("/admin/products");
   revalidatePath("/products");
   redirect("/admin/products");
