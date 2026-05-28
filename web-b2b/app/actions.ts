@@ -685,6 +685,22 @@ export async function respondQuoteAction(formData: FormData) {
   revalidatePath("/admin/quotes");
 }
 
+export async function declineB2BAccountAction(customerId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("profiles").update({ b2b_declined: true, is_b2b_approved: false }).eq("id", customerId);
+  const { data: profile } = await admin.from("profiles").select("email, business_name, contact_name").eq("id", customerId).single();
+  if (profile?.email) {
+    await sendEmail({
+      to: profile.email,
+      subject: "Your B2B account application update",
+      html: b2bRejectedEmail(profile.contact_name || profile.business_name),
+    });
+  }
+  revalidatePath("/admin/approvals");
+  revalidatePath("/admin/customers");
+}
+
 export async function deleteProductAction(productId: string) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
