@@ -39,7 +39,7 @@ export default async function ProductsPage({
   if (params.sort === "priceAsc") query = query.order("unit_price", { ascending: true });
   else if (params.sort === "priceDesc") query = query.order("unit_price", { ascending: false });
   else if (params.sort === "newest") query = query.order("created_at", { ascending: false });
-  else query = query.order("name");
+  else query = query.order("created_at", { ascending: false });
 
   const { data } = await query;
   const products = await applyCustomerPrices((data || []) as Product[], profile);

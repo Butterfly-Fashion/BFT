@@ -18,6 +18,7 @@ const CATEGORY_WEIGHTS: Record<string, number> = {
 };
 
 export function dbProductToProduct(p: DbProduct): Product {
+  const imageUrl = p.images?.[0]?.url || p.image_url || "";
   return {
     id: p.id,
     slug: p.slug,
@@ -26,7 +27,7 @@ export function dbProductToProduct(p: DbProduct): Product {
     price: Number(p.price) || 0,
     comparePrice: p.compare_at_price ?? undefined,
     description: p.description ?? "",
-    imageUrl: p.images?.[0]?.url ?? "",
+    imageUrl,
     additionalImages: p.images?.slice(1).map((i) => i.url),
     placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
     inStock: p.in_stock,
@@ -111,7 +112,7 @@ export async function getAllProducts(): Promise<Product[]> {
       .from("products")
       .select("*")
       .eq("status", "active")
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false });
     if (error || !data?.length) return staticProducts;
     return (data as DbProduct[]).map(dbProductToProduct);
   } catch {
