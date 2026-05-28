@@ -21,6 +21,7 @@ interface Category {
 const STATIC_LINKS = [
   { href: "/products", label: "Shop All" },
   { href: "/blog", label: "Guides" },
+  { href: "/about", label: "About Us" },
 ];
 
 // Top-level categories that get dropdown treatment (in order)
@@ -73,7 +74,7 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-gray-500">
+        <nav className="hidden md:flex items-center gap-0.5 text-sm font-semibold text-gray-500">
           {/* Category dropdowns */}
           {topLevel.map((cat) => {
             const children = childrenOf(cat.id);
@@ -81,7 +82,7 @@ export function Header() {
               <div key={cat.id} className="relative group">
                 <Link
                   href={`/products?category=${encodeURIComponent(cat.name)}`}
-                  className="flex items-center gap-1 px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
+                  className="flex items-center gap-1 px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150"
                 >
                   {cat.name}
                   {children.length > 0 && (
@@ -90,11 +91,11 @@ export function Header() {
                 </Link>
 
                 {children.length > 0 && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-1.5 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-150 z-50">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-150 z-50">
                     <div className="bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-45">
                       <Link
                         href={`/products?category=${encodeURIComponent(cat.name)}`}
-                        className="block px-4 py-2 text-xs font-semibold text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                        className="block px-4 py-2 text-xs font-semibold text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         View all {cat.name} →
                       </Link>
@@ -103,7 +104,7 @@ export function Header() {
                         <Link
                           key={child.id}
                           href={`/products?category=${encodeURIComponent(child.name)}`}
-                          className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-[#C41E3A] hover:bg-gray-100 transition-colors"
+                          className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-[#C41E3A] hover:bg-gray-50 transition-colors"
                         >
                           {child.name}
                         </Link>
@@ -115,20 +116,18 @@ export function Header() {
             );
           })}
 
-          {/* Guides */}
-          <Link
-            href="/blog"
-            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
-          >
+          {/* Divider */}
+          <span className="mx-2 h-4 w-px bg-gray-200" />
+
+          {/* Static links */}
+          <Link href="/products" className="px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150">
+            Shop All
+          </Link>
+          <Link href="/blog" className="px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150">
             Guides
           </Link>
-
-          {/* Shop All — rightmost */}
-          <Link
-            href="/products"
-            className="px-3 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-100 transition-colors duration-150"
-          >
-            Shop All
+          <Link href="/about" className="px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150">
+            About Us
           </Link>
         </nav>
 
@@ -222,19 +221,15 @@ export function Header() {
               </div>
             );
           })}
-          <Link
-            href="/blog"
-            onClick={() => setMenuOpen(false)}
-            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors"
-          >
+          <div className="my-1 border-t border-gray-100" />
+          <Link href="/products" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors">
+            Shop All
+          </Link>
+          <Link href="/blog" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors">
             Guides
           </Link>
-          <Link
-            href="/products"
-            onClick={() => setMenuOpen(false)}
-            className="px-2 py-3 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Shop All
+          <Link href="/about" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors">
+            About Us
           </Link>
         </nav>
       </div>
