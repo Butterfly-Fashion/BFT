@@ -63,6 +63,21 @@ function friendlyDatabaseError(action: string, message?: string) {
   return `We could not ${action} right now. Please try again.`;
 }
 
+function errorMessage(err: unknown) {
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === "object") {
+    const record = err as Record<string, unknown>;
+    return String(
+      record.message ||
+      record.details ||
+      record.hint ||
+      record.code ||
+      JSON.stringify(record)
+    );
+  }
+  return String(err);
+}
+
 type ProductStripeSyncRecord = {
   id: string;
   name: string;
@@ -120,7 +135,7 @@ async function syncProductToStripeAfterSave(
       stripe_synced_at: new Date().toISOString(),
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
+    const message = errorMessage(err);
     console.error("[product stripe sync failed]", message);
     await markProductStripeSync(admin, product.id, {
       stripe_sync_status: "failed",
@@ -583,7 +598,7 @@ export async function upsertProductAction(
   } catch (err: unknown) {
     // Re-throw Next.js special errors (redirect / not-found / etc.)
     if (err && typeof err === "object" && "digest" in err) throw err;
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = errorMessage(err);
     console.error("[upsertProductAction] unhandled error:", msg);
     return { error: `Unexpected error: ${msg}. Please try again or contact support.` };
   }
@@ -653,6 +668,7 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     sku,
     barcode: String(formData.get("barcode") || "") || null,
     unit_price: unitPrice,
+    price: unitPrice,
     case_price: rawCasePrice ? Number(rawCasePrice) : null,
     case_qty: rawCaseQty ? Number(rawCaseQty) : null,
     image_url: uploadedImageUrl || String(formData.get("image_url") || "") || null,
@@ -685,7 +701,7 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     if (error) throw error;
     savedProduct = data as unknown as ProductStripeSyncRecord;
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = errorMessage(err);
     if (hasStripeSyncColumns && (msg.includes("stripe_sync_status") || msg.includes("stripe_sync_error") || msg.includes("stripe_product_id"))) {
       hasStripeSyncColumns = false;
       const retryQuery = id
