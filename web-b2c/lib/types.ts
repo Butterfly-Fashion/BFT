@@ -228,7 +228,6 @@ export interface DbProduct {
   stock_qty: number | null;
   status: ProductStatus;
   images: DbProductImage[];
-  image_url: string | null;
   player_cards: PlayerCard[] | null;
   stripe_product_id: string | null;
   stripe_price_id: string | null;

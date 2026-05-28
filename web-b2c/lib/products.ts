@@ -1,5 +1,4 @@
-import { supabaseAdmin } from "./supabase";
-import type { DbProduct, Product } from "./types";
+import type { Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
 import sourceData from "./source-products.json";
 
@@ -17,27 +16,7 @@ const CATEGORY_WEIGHTS: Record<string, number> = {
   "Accessories":  0.15,
 };
 
-export function dbProductToProduct(p: DbProduct): Product {
-  const imageUrl = p.images?.[0]?.url || p.image_url || "";
-  return {
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    category: p.category,
-    price: Number(p.price) || 0,
-    comparePrice: p.compare_at_price ?? undefined,
-    description: p.description ?? "",
-    imageUrl,
-    additionalImages: p.images?.slice(1).map((i) => i.url),
-    placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
-    inStock: p.in_stock,
-    badge: p.badge ?? undefined,
-    weightKg: p.weight_kg,
-    playerCards: p.player_cards ?? undefined,
-  };
-}
-
-// ─── Static fallback (used when DB unavailable) ──────────────────────────────
+// ─── Static B2C catalog ─────────────────────────────────────────────────────
 
 interface RawProduct {
   slug: string;
@@ -103,47 +82,20 @@ const staticProducts: Product[] = [
   },
 ];
 
-// ─── DB-backed async functions ────────────────────────────────────────────────
+// ─── Public B2C catalog accessors ────────────────────────────────────────────
+// B2C and B2B use different product lists. Keep the storefront pinned to the
+// checked-in B2C catalog so B2B admin products never leak into fifa2026.ca.
 
 export async function getAllProducts(): Promise<Product[]> {
-  try {
-    const supabase = supabaseAdmin();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("status", "active")
-      .order("created_at", { ascending: false });
-    if (error || !data?.length) return staticProducts;
-    return (data as DbProduct[]).map(dbProductToProduct);
-  } catch {
-    return staticProducts;
-  }
+  return staticProducts;
 }
 
 export async function getProductBySlugFromDb(slug: string): Promise<Product | undefined> {
-  try {
-    const supabase = supabaseAdmin();
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("slug", slug)
-      .single();
-    if (error || !data) return staticProducts.find((p) => p.slug === slug);
-    return dbProductToProduct(data as DbProduct);
-  } catch {
-    return staticProducts.find((p) => p.slug === slug);
-  }
+  return staticProducts.find((p) => p.slug === slug);
 }
 
 export async function getAllSlugs(): Promise<string[]> {
-  try {
-    const supabase = supabaseAdmin();
-    const { data, error } = await supabase.from("products").select("slug").eq("status", "active");
-    if (error || !data?.length) return staticProducts.map((p) => p.slug);
-    return data.map((p: { slug: string }) => p.slug);
-  } catch {
-    return staticProducts.map((p) => p.slug);
-  }
+  return staticProducts.map((p) => p.slug);
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {

@@ -1,9 +1,9 @@
 import { ProductCard } from "@/components/store/product-card";
 import { ProductSortSelect } from "@/components/store/product-sort-select";
 import { ProductSearchInput } from "@/components/store/product-search-input";
+import { buildStoreCategoryChildMap } from "@/lib/categories";
 import { getAllProducts } from "@/lib/products";
 import { CATEGORIES } from "@/lib/types";
-import { supabaseAdmin } from "@/lib/supabase";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -34,30 +34,12 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   };
 }
 
-// Build a map from parent category name → list of child category names
-async function buildChildMap(): Promise<Map<string, string[]>> {
-  try {
-    const supabase = supabaseAdmin();
-    const { data } = await supabase.from("categories").select("id, name, parent_id");
-    const cats = data ?? [];
-    const map = new Map<string, string[]>();
-    for (const cat of cats) {
-      if (!cat.parent_id) {
-        const children = cats.filter((c) => c.parent_id === cat.id).map((c) => c.name);
-        map.set(cat.name, children.length > 0 ? children : [cat.name]);
-      }
-    }
-    return map;
-  } catch {
-    return new Map();
-  }
-}
-
 export default async function ProductsPage({ searchParams }: Props) {
   const { category, search = "", sort = "default" } = await searchParams;
   const normalizedSearch = search.trim().toLowerCase();
 
-  const [allProducts, childMap] = await Promise.all([getAllProducts(), buildChildMap()]);
+  const allProducts = await getAllProducts();
+  const childMap = buildStoreCategoryChildMap();
 
   // If the selected category is a parent, expand to all its children
   const effectiveCategories = category ? (childMap.get(category) ?? [category]) : undefined;
