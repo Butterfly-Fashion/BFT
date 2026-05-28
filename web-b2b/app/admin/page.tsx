@@ -58,12 +58,12 @@ export default async function AdminDashboardPage() {
   const maxStatus = Math.max(1, ...statusCounts.map((s) => s.count));
 
   const KPI_CARDS = [
-    { label: "Paid Revenue", value: formatMoney(revenue), icon: DollarSign, color: "text-emerald-600", bg: "bg-emerald-50 border-emerald-100" },
-    { label: "Requested Value", value: formatMoney(requestedValue), icon: TrendingUp, color: "text-blue-600", bg: "bg-blue-50 border-blue-100" },
-    { label: "Pending Review", value: pendingCount, icon: Clock, color: "text-amber-600", bg: "bg-amber-50 border-amber-100" },
-    { label: "Approved", value: approvedCount, icon: CheckCircle, color: "text-lime-600", bg: "bg-lime-50 border-lime-100" },
-    { label: "Customers", value: customers ?? 0, icon: Users, color: "text-violet-600", bg: "bg-violet-50 border-violet-100" },
-    { label: "Active Products", value: products ?? 0, icon: Package, color: "text-slate-600", bg: "bg-slate-50 border-slate-200" },
+    { label: "Paid Revenue", value: formatMoney(revenue), icon: DollarSign, color: "text-emerald-600" },
+    { label: "Requested Value", value: formatMoney(requestedValue), icon: TrendingUp, color: "text-blue-600" },
+    { label: "Pending Review", value: pendingCount, icon: Clock, color: "text-amber-600" },
+    { label: "Approved", value: approvedCount, icon: CheckCircle, color: "text-green-600" },
+    { label: "Customers", value: customers ?? 0, icon: Users, color: "text-slate-600" },
+    { label: "Active Products", value: products ?? 0, icon: Package, color: "text-slate-600" },
   ];
 
   return (
@@ -71,9 +71,9 @@ export default async function AdminDashboardPage() {
       <AdminNav />
       <main className="container-shell py-7">
         {/* Page header */}
-        <section className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
+        <section className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Operations</p>
+            <p className="section-label">Operations</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Dashboard</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
               Order requests, approvals, revenue, and customer activity.
@@ -87,10 +87,10 @@ export default async function AdminDashboardPage() {
 
         {/* KPI cards */}
         <section className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {KPI_CARDS.map(({ label, value, icon: Icon, color, bg }) => (
-            <div key={label} className={`card border p-4 ${bg}`}>
+          {KPI_CARDS.map(({ label, value, icon: Icon, color }) => (
+            <div key={label} className="card p-4">
               <div className="mb-2 flex items-center justify-between">
-                <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
+                <p className="text-xs font-semibold text-slate-500">{label}</p>
                 <Icon size={14} className={color} />
               </div>
               <strong className="text-2xl font-black text-slate-900">{value}</strong>
@@ -161,8 +161,8 @@ export default async function AdminDashboardPage() {
 
         {/* Recent orders */}
         <section className="mt-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-5 py-3">
-            <h2 className="text-base font-black text-slate-900">Recent orders</h2>
+          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3">
+            <h2 className="text-base font-bold text-slate-900">Recent orders</h2>
             <Link href="/admin/orders" className="text-xs font-bold text-(--primary) hover:underline">
               View all →
             </Link>
@@ -170,7 +170,7 @@ export default async function AdminDashboardPage() {
           <div className="overflow-auto">
             <table className="w-full min-w-200 text-sm">
               <thead>
-                <tr className="border-b border-slate-100 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Order</th>
                   <th className="px-5 py-3">Customer</th>
                   <th className="px-5 py-3">Status</th>

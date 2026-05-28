@@ -447,7 +447,7 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
 
               {/* Selected address display */}
               {!showAddNew && (
-                <div className="rounded-lg bg-blue-50 border border-blue-100 px-3 py-2 text-xs font-semibold text-blue-800">
+                <div className="rounded-lg border border-(--primary-border) bg-(--primary-light) px-3 py-2 text-xs font-semibold" style={{ color: "var(--primary-dark)" }}>
                   Shipping to: {shippingAddress}
                 </div>
               )}

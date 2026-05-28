@@ -13,9 +13,9 @@ export default async function CartPage() {
     <>
       <Header profile={profile} />
       <main className="container-shell py-8">
-        <div className="mb-7 border-b border-slate-200 pb-5">
-          <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">B2B checkout</p>
-          <h1 className="flex items-center gap-3 text-3xl font-black text-slate-900">
+        <div className="mb-7">
+          <p className="section-label">B2B checkout</p>
+          <h1 className="mt-1 flex items-center gap-3 text-3xl font-black text-slate-900">
             <ShoppingCart size={26} />
             Submit Order Request
           </h1>

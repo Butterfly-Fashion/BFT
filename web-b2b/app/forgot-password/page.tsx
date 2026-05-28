@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
         <AuthActionForm action={forgotPasswordAction} submitLabel="Send reset email">
           <label className="label">Email<input className="field" name="email" required type="email" /></label>
         </AuthActionForm>
-        <Link className="mt-4 inline-flex text-sm font-black text-(--accent)" href="/login">Back to login</Link>
+        <Link className="mt-4 inline-flex text-sm font-semibold text-(--primary)" href="/login">Back to login</Link>
       </section>
     </main>
   );

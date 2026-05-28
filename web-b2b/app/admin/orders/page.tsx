@@ -25,9 +25,9 @@ export default async function AdminOrdersPage({
     <>
       <AdminNav />
       <main className="container-shell py-7">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--accent)">Order management</p>
+            <p className="section-label">Order management</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Orders</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
               Review, approve, and create payment links for B2B order requests.
@@ -56,7 +56,7 @@ export default async function AdminOrdersPage({
           <div className="overflow-auto">
             <table className="w-full min-w-230 text-sm">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Order</th>
                   <th className="px-5 py-3">Customer</th>
                   <th className="px-5 py-3">Order status</th>

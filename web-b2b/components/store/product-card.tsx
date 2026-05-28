@@ -67,7 +67,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
 
         {/* Name */}
         <Link
-          className="line-clamp-2 min-h-10 text-sm font-bold leading-snug text-slate-900 transition-colors hover:text-(--accent)"
+          className="line-clamp-2 min-h-10 text-sm font-bold leading-snug text-slate-900 transition-colors hover:text-(--primary)"
           href={`/products/${product.slug}`}
         >
           {product.name}
@@ -98,7 +98,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
 
         {/* Button */}
         <button
-          className={`btn-primary w-full text-xs text-white transition-all ${added ? "border-emerald-600 bg-emerald-600" : ""}`}
+          className={`btn-primary w-full text-xs text-white transition-all ${added ? "opacity-80" : ""}`}
           type="button"
           onClick={addToCart}
         >

@@ -158,7 +158,7 @@ export default async function AccountOrderDetailPage({
                             {slug ? (
                               <Link
                                 href={`/products/${slug}`}
-                                className="font-bold text-slate-900 hover:text-(--accent)"
+                                className="font-bold text-slate-900 hover:text-(--primary)"
                               >
                                 {item.product_name_snapshot}
                               </Link>

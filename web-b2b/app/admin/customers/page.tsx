@@ -50,8 +50,8 @@ export default async function AdminCustomersPage({
     <>
       <AdminNav />
       <main className="container-shell py-7">
-        <section className="mb-6 border-b border-slate-200 pb-5">
-          <p className="text-xs font-black uppercase tracking-widest text-(--accent)">Customer management</p>
+        <section className="mb-6">
+          <p className="section-label">Customer management</p>
           <h1 className="mt-1 text-3xl font-black text-slate-900">Customers</h1>
           <p className="mt-1.5 text-sm font-medium text-slate-500">
             Search and manage B2B customer accounts, approval status, and pricing.
@@ -67,7 +67,7 @@ export default async function AdminCustomersPage({
             { label: "Business types", value: businessTypes.length },
           ].map(({ label, value }) => (
             <div key={label} className="card p-4">
-              <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
+              <p className="text-xs font-semibold text-slate-500">{label}</p>
               <strong className="mt-2 block text-2xl font-black text-slate-900">{value}</strong>
             </div>
           ))}
@@ -104,7 +104,7 @@ export default async function AdminCustomersPage({
           <div className="overflow-auto">
             <table className="w-full min-w-230 text-sm">
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Business</th>
                   <th className="px-5 py-3">Contact</th>
                   <th className="px-5 py-3">Type</th>

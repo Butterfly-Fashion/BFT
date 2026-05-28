@@ -91,7 +91,7 @@ export function ProductDetailActions({
       {/* CTA buttons */}
       <div className="grid gap-2 sm:grid-cols-2">
         <button
-          className={`btn-primary gap-2 py-3 text-sm ${added ? "bg-emerald-600 border-emerald-600" : ""}`}
+          className={`btn-primary gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
           type="button"
           onClick={addToCart}
         >

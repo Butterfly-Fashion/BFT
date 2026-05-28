@@ -48,7 +48,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
         <section className="mb-5 rounded border border-slate-200 bg-white p-5">
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 pb-4">
             <div className="min-w-0">
-            <p className="text-xs font-black uppercase text-[var(--accent)]">Customer profile</p>
+            <p className="section-label">Customer profile</p>
             <h1 className="mt-2 text-4xl font-black leading-tight text-slate-950">{customer.business_name}</h1>
             <div className="mt-3 flex flex-wrap gap-2">
               {customer.is_b2b_approved ? (
@@ -146,7 +146,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
                         <td className="font-black">{item.quantity}</td>
                         <td>{formatMoney(item.lastPrice)}</td>
                         <td>{formatMoney(item.total)}</td>
-                        <td>{item.lastOrder ? <Link className="font-black text-[var(--accent)]" href={`/admin/orders/${item.lastOrder}`}>{item.lastOrder.slice(0, 8)}</Link> : "-"}</td>
+                        <td>{item.lastOrder ? <Link className="font-black text-(--primary)" href={`/admin/orders/${item.lastOrder}`}>{item.lastOrder.slice(0, 8)}</Link> : "-"}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -184,7 +184,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
                   <tbody>
                     {(orders || []).map((order) => (
                       <tr className="border-b last:border-b-0" key={order.id}>
-                        <td className="p-3"><Link className="font-black text-[var(--accent)]" href={`/admin/orders/${order.id}`}>{order.id.slice(0, 8)}</Link></td>
+                        <td className="p-3"><Link className="font-black text-(--primary)" href={`/admin/orders/${order.id}`}>{order.id.slice(0, 8)}</Link></td>
                         <td><StatusBadge status={order.status} /></td>
                         <td><StatusBadge status={order.payment_status} type="payment" /></td>
                         <td className="font-black">{formatMoney(order.total_amount)}</td>

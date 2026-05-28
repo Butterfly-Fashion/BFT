@@ -24,10 +24,10 @@ export default async function AccountOrdersPage() {
     <>
       <Header profile={profile} />
       <main className="container-shell py-8">
-        <div className="mb-6 flex items-end justify-between gap-4 border-b border-slate-200 pb-5">
+        <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">My account</p>
-            <h1 className="flex items-center gap-2.5 text-3xl font-black text-slate-900">
+            <p className="section-label">My account</p>
+            <h1 className="mt-1 flex items-center gap-2.5 text-3xl font-black text-slate-900">
               <ClipboardList size={26} />
               My Orders
             </h1>

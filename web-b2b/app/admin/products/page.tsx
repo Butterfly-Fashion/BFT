@@ -37,9 +37,9 @@ export default async function AdminProductsPage({
     <>
       <AdminNav />
       <main className="container-shell py-7">
-        <section className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-200 pb-5">
+        <section className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Product management</p>
+            <p className="section-label">Product management</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Products</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
               Manage catalog, pricing, images, and storefront visibility.
@@ -62,7 +62,7 @@ export default async function AdminProductsPage({
             { label: `${categories.length} categories · Base total`, value: formatMoney(inventoryValue) },
           ].map(({ label, value }) => (
             <div key={label} className="card p-4">
-              <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
+              <p className="text-xs font-semibold text-slate-500">{label}</p>
               <strong className="mt-2 block text-2xl font-black text-slate-900">{value}</strong>
             </div>
           ))}
@@ -108,7 +108,7 @@ export default async function AdminProductsPage({
                 <col className="w-[105px]" />
               </colgroup>
               <thead>
-                <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Product</th>
                   <th className="px-5 py-3">Category</th>
                   <th className="px-5 py-3">SKU</th>

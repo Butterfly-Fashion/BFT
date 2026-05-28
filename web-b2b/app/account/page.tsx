@@ -12,9 +12,9 @@ export default async function AccountPage() {
     <>
       <Header profile={profile} />
       <main className="container-shell py-8">
-        <div className="mb-6 border-b border-slate-200 pb-5">
-          <p className="mb-1 text-xs font-black uppercase tracking-widest text-(--accent)">My account</p>
-          <h1 className="text-3xl font-black text-slate-900">Account Overview</h1>
+        <div className="mb-6">
+          <p className="section-label">My account</p>
+          <h1 className="mt-1 text-3xl font-black text-slate-900">Account Overview</h1>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[1fr_320px]">
