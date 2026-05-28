@@ -10,7 +10,7 @@ import { ToastProvider } from "@/components/store/toast-provider";
 import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { jsonLd, organizationJsonLd, SITE_URL, websiteJsonLd } from "@/lib/seo";
+import { AEO_STORE_DESCRIPTION, jsonLd, organizationJsonLd, SITE_URL, websiteJsonLd } from "@/lib/seo";
 import ChatWidget from "@/components/support/chat-widget";
 
 const inter = Inter({
@@ -25,8 +25,7 @@ export const metadata: Metadata = {
     default: "World Fan Gear | Canada 2026",
     template: "%s | World Fan Gear",
   },
-  description:
-    "Shop World Cup 2026 fan gear for Canadian fans — caps, bucket hats, car flags, and souvenirs shipped from Toronto across Canada. FIFA 2026 merchandise for every team.",
+  description: AEO_STORE_DESCRIPTION,
   keywords: [
     "World Cup 2026",
     "FIFA 2026 merchandise",
@@ -40,11 +39,14 @@ export const metadata: Metadata = {
     "World Cup 2026 car flags",
     "Canada 2026 fan merchandise",
     "Panini World Cup 2026 stickers Toronto",
+    "Toronto World Cup store",
+    "World Cup flags Toronto",
+    "Canada USA Mexico fan gear",
+    "fifa2026.ca Toronto football merchandise",
   ],
   openGraph: {
     title: "World Fan Gear | Canada 2026",
-    description:
-      "Shop Canada 2026-inspired soccer fan gear shipping across Canada from Toronto.",
+    description: AEO_STORE_DESCRIPTION,
     url: SITE_URL,
     siteName: "World Fan Gear",
     locale: "en_CA",
@@ -54,8 +56,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "World Fan Gear | Canada 2026",
-    description:
-      "Shop Canada 2026-inspired soccer fan gear shipping across Canada from Toronto.",
+    description: AEO_STORE_DESCRIPTION,
     images: ["/asset/hero-banner.jpg"],
   },
   alternates: {

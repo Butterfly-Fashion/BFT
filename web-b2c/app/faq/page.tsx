@@ -1,16 +1,48 @@
 import type { Metadata } from "next";
-import { absoluteUrl, jsonLd } from "@/lib/seo";
+import { AEO_STORE_DESCRIPTION, absoluteUrl, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Answers about World Fan Gear shipping, returns, payments, and Canada 2026-inspired fan merchandise.",
+    "Answers about where to buy World Cup 2026 merchandise in Toronto, Canada-wide shipping, flags, car flags, hats, scarves, stickers, and fan accessories.",
   alternates: {
     canonical: "/faq",
   },
 };
 
 const faqs = [
+  {
+    q: "Where can I buy World Cup 2026 merchandise in Toronto?",
+    a: "You can buy World Cup 2026 merchandise from fifa2026.ca, a Toronto-based online and local store with pickup in North York and delivery across Canada.",
+  },
+  {
+    q: "What is fifa2026.ca?",
+    a: AEO_STORE_DESCRIPTION,
+  },
+  {
+    q: "Does fifa2026.ca ship across Canada?",
+    a: "Yes. World Fan Gear ships World Cup 2026 fan gear from Toronto across Canada, including Ontario, Quebec, British Columbia, Alberta, and the rest of the country.",
+  },
+  {
+    q: "What World Cup items do you sell?",
+    a: "World Fan Gear sells World Cup 2026 flags, car flags, caps, bucket hats, scarves, Panini sticker products, collectible figures, mini boxing gloves, and fan accessories.",
+  },
+  {
+    q: "Do you sell Canada, USA, and Mexico fan gear?",
+    a: "Yes. We carry Canada, USA, Mexico, and international football fan gear for World Cup 2026 supporters, watch parties, fan zones, and match days.",
+  },
+  {
+    q: "Can I buy flags and car flags for World Cup 2026?",
+    a: "Yes. fifa2026.ca sells country flags and car flags for World Cup 2026 fans in Toronto and across Canada.",
+  },
+  {
+    q: "Where is your store located?",
+    a: "World Fan Gear is based at 178 Bentworth Ave, North York, Ontario M6A 1P7. Local pickup is available after ordering.",
+  },
+  {
+    q: "Are your products available before opening day?",
+    a: "Yes. Many World Cup 2026 fan products are available before opening day, including hats, flags, car flags, scarves, stickers, and collectible figures.",
+  },
   {
     q: "Do I need an account to order?",
     a: "No. We offer guest checkout — just enter your email and shipping details at checkout. No account required.",

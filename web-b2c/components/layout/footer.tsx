@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/store/newsletter-form";
 import {
+  AEO_STORE_DESCRIPTION,
   BUSINESS_EMAIL,
   BUSINESS_LOCALITY,
   BUSINESS_NAME,
@@ -50,8 +51,7 @@ export function Footer() {
             </div>
           </div>
           <p className="text-sm leading-relaxed">
-            Premium World Cup 2026 merchandise for Canadian fans. Shipped from
-            North York, Canada.
+            {AEO_STORE_DESCRIPTION}
           </p>
           <p className="mt-3 text-xs leading-5 text-gray-500">
             {BUSINESS_NAME}

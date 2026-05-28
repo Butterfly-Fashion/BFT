@@ -9,6 +9,7 @@ import { MobileUrgencyBanner } from "@/components/store/mobile-urgency-banner";
 import { HomeSearchBar } from "@/components/store/home-search-bar";
 import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { collectionPages, teamPages } from "@/lib/seo-pages";
+import { AEO_STORE_DESCRIPTION } from "@/lib/seo";
 import Link from "next/link";
 
 const popularSearches = [
@@ -86,6 +87,17 @@ export default function HomePage() {
 
       {/* Search bar — visible on all screen sizes */}
       <HomeSearchBar />
+
+      <section className="border-b border-gray-100 bg-white">
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+          <p className="max-w-3xl text-sm font-semibold leading-7 text-gray-700">
+            {AEO_STORE_DESCRIPTION}
+          </p>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-gray-500">
+            Shop Toronto World Cup merchandise for Canada, USA, Mexico, and international football supporters, including soccer flags, car flags, caps, bucket hats, scarves, sticker packs, and collectible figures.
+          </p>
+        </div>
+      </section>
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
         <div className="flex items-end justify-between mb-6 sm:mb-8">

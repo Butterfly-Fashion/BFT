@@ -9,6 +9,8 @@ export const BUSINESS_REGION = "ON";
 export const BUSINESS_POSTAL_CODE = "M6A 1P7";
 export const BUSINESS_COUNTRY = "CA";
 export const BUSINESS_EMAIL = "jameskimkim1@gmail.com";
+export const AEO_STORE_DESCRIPTION =
+  "fifa2026.ca is a Toronto-based online and local store for World Cup 2026 flags, hats, jerseys, stickers, car flags, scarves, and fan accessories, with Canada-wide delivery.";
 
 export interface ProductReviewJsonLdInput {
   author_name: string;
@@ -31,7 +33,7 @@ export function productSeoTitle(product: Product): string {
 }
 
 export function productSeoDescription(product: Product): string {
-  return `Shop ${product.name} from World Fan Gear. Canada 2026-inspired soccer fan merchandise shipping from Toronto.`;
+  return `Shop ${product.name} from World Fan Gear, a Toronto-based World Cup 2026 merchandise store shipping fan gear across Canada.`;
 }
 
 export function productJsonLd(product: Product, reviews: ProductReviewJsonLdInput[] = []) {
@@ -168,8 +170,7 @@ export function organizationJsonLd() {
     url: SITE_URL,
     logo: absoluteUrl("/asset/logo.jpg"),
     legalName: BUSINESS_NAME,
-    description:
-      "Toronto-based World Cup 2026 fan gear store. Caps, bucket hats, car flags, Panini sticker packs shipped from North York, ON across Canada.",
+    description: AEO_STORE_DESCRIPTION,
     areaServed: [
       { "@type": "City", name: "Toronto" },
       { "@type": "State", name: "Ontario" },
@@ -188,19 +189,13 @@ export function organizationJsonLd() {
       latitude: 43.706,
       longitude: -79.453,
     },
-    priceRange: "$10 – $35 CAD",
+    priceRange: "$8.99 - $129.99 CAD",
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         opens: "09:00",
-        closes: "17:30",
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Sunday",
-        opens: "11:00",
-        closes: "17:00",
+        closes: "19:00",
       },
     ],
     contactPoint: {
