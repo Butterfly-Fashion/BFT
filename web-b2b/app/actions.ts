@@ -519,9 +519,15 @@ export async function upsertProductAction(formData: FormData) {
   const skuBase = requestedSku || `WFG-${skuPrefixForCategory(category)}-${slug.replace(/-/g, "-").toUpperCase().slice(0, 48)}`;
   const sku = await uniqueProductValue(admin, "sku", skuBase, id || undefined);
   const imageFile = formData.get("image_file");
-  const uploadedImageUrl = imageFile instanceof File && imageFile.size > 0
-    ? await saveProductImage(imageFile, slug)
-    : null;
+  let uploadedImageUrl: string | null = null;
+  if (imageFile instanceof File && imageFile.size > 0) {
+    try {
+      uploadedImageUrl = await saveProductImage(imageFile, slug);
+    } catch (err) {
+      console.error("[product image upload failed]", err);
+      // Continue saving product without image rather than crashing
+    }
+  }
 
   const rawWeightKg = formData.get("weight_kg");
   const rawBoxL = formData.get("box_length_cm");
