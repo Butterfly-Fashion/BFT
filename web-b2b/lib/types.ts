@@ -52,6 +52,14 @@ export type Product = {
   availability_status: AvailabilityStatus;
   is_bulk_available: boolean;
   is_hidden: boolean;
+  /* B2B wholesale fields */
+  stock_qty?: number | null;
+  country?: string | null;
+  lead_time?: string | null;
+  weight_kg?: number | null;
+  box_length_cm?: number | null;
+  box_width_cm?: number | null;
+  box_height_cm?: number | null;
 };
 
 export type PricedProduct = Product & {

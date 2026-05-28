@@ -495,6 +495,7 @@ export async function upsertProductAction(formData: FormData) {
   const rawBoxL = formData.get("box_length_cm");
   const rawBoxW = formData.get("box_width_cm");
   const rawBoxH = formData.get("box_height_cm");
+  const rawStockQty = formData.get("stock_qty");
 
   const unitPrice = Number(formData.get("unit_price") || 0);
   const rawCasePrice = formData.get("case_price");
@@ -518,6 +519,9 @@ export async function upsertProductAction(formData: FormData) {
     box_length_cm: rawBoxL ? Number(rawBoxL) : null,
     box_width_cm: rawBoxW ? Number(rawBoxW) : null,
     box_height_cm: rawBoxH ? Number(rawBoxH) : null,
+    stock_qty: rawStockQty ? Number(rawStockQty) : null,
+    country: String(formData.get("country") || "") || null,
+    lead_time: String(formData.get("lead_time") || "") || null,
     updated_at: new Date().toISOString(),
   };
   if (id) await admin.from("products").update(payload).eq("id", id);
