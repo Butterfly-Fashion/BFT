@@ -510,6 +510,20 @@ export async function upsertProductAction(
   _prev: { error: string } | null,
   formData: FormData
 ): Promise<{ error: string } | null> {
+  // Top-level catch: convert any unhandled error into a visible message
+  // instead of crashing the page. Re-throw Next.js internal errors (redirect, not-found).
+  try {
+    return await _upsertProductActionInner(formData);
+  } catch (err: unknown) {
+    // Re-throw Next.js special errors (redirect / not-found / etc.)
+    if (err && typeof err === "object" && "digest" in err) throw err;
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[upsertProductAction] unhandled error:", msg);
+    return { error: `Unexpected error: ${msg}. Please try again or contact support.` };
+  }
+}
+
+async function _upsertProductActionInner(formData: FormData): Promise<{ error: string } | null> {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const id = String(formData.get("id") || "");

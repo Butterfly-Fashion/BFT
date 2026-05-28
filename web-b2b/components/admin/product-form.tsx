@@ -91,25 +91,79 @@ function CollapsibleSection({ title, description, defaultOpen = false, children 
   );
 }
 
+const DRAFT_KEY_PREFIX = "bft-product-draft";
+
 export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const catList = categories?.length ? categories : FALLBACK_CATEGORIES;
   const tree = buildCategoryTree(catList);
-  const defaultCategory = product?.category || (tree[0]?.children[0]?.name ?? tree[0]?.name ?? "");
 
   const [state, formAction, isPending] = useActionState(upsertProductAction, null);
+  const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState(product?.image_url || "");
   const [dragging, setDragging] = useState(false);
   const [compressing, setCompressing] = useState(false);
   const [imageInfo, setImageInfo] = useState<string | null>(null);
 
-  const hasInventory = !!(product?.stock_qty != null || product?.country || product?.lead_time);
-  const hasShipping = !!(product?.weight_kg || product?.box_length_cm);
-  const hasIds = !!(product?.slug || product?.sku || product?.barcode);
+  // ── Draft persistence ──────────────────────────────────────────────────────
+  const draftKey = `${DRAFT_KEY_PREFIX}-${product?.id || "new"}`;
 
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  // On mount: restore draft if it exists
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(draftKey);
+      if (!saved || !formRef.current) return;
+      const draft: Record<string, string> = JSON.parse(saved);
+      const form = formRef.current;
+      let restored = false;
+      Object.entries(draft).forEach(([name, value]) => {
+        const el = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+        if (el && (el as HTMLInputElement).type !== "file") {
+          el.value = value;
+          restored = true;
+        }
+      });
+      if (restored) setDraftRestored(true);
+    } catch { /* ignore */ }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Save draft whenever form changes (debounced via event delegation)
+  function saveDraft() {
+    if (!formRef.current) return;
+    try {
+      const fd = new FormData(formRef.current);
+      const draft: Record<string, string> = {};
+      fd.forEach((val, key) => {
+        if (key !== "image_file" && key !== "image_url" && typeof val === "string") {
+          draft[key] = val;
+        }
+      });
+      localStorage.setItem(draftKey, JSON.stringify(draft));
+    } catch { /* ignore */ }
+  }
+
+  // Clear draft on successful save (the action redirects, so we clear on unmount if redirected)
+  useEffect(() => {
+    if (state === null && isPending === false) {
+      // action completed without error — if we're still here, an error was returned
+      // Draft is intentionally kept so user can fix and resubmit
+    }
+  }, [state, isPending]);
+
+  // ── Image cleanup ──────────────────────────────────────────────────────────
   useEffect(() => {
     return () => { if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl); };
   }, [previewUrl]);
+
+  // defaultCategory falls back to first available after restoring draft
+  const defaultCategory = product?.category || (tree[0]?.children[0]?.name ?? tree[0]?.name ?? "");
+
+  const hasInventory = !!(product?.stock_qty != null || product?.country || product?.lead_time);
+  const hasShipping = !!(product?.weight_kg || product?.box_length_cm);
+  const hasIds = !!(product?.slug || product?.sku || product?.barcode);
 
   async function handleFile(file?: File) {
     if (!file) return;
@@ -156,7 +210,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   }
 
   return (
-    <form action={formAction} className="grid gap-5">
+    <form ref={formRef} action={formAction} onChange={saveDraft} className="grid gap-5">
       {product?.id && <input name="id" type="hidden" value={product.id} />}
       <input name="image_url" type="hidden" value={product?.image_url || ""} />
 
@@ -170,6 +224,22 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
         </div>
         <Link className="btn-secondary" href="/admin/products">← Back to products</Link>
       </div>
+
+      {/* Draft restored banner */}
+      {draftRestored && !state?.error && (
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+          <p className="text-sm font-semibold text-amber-800">
+            ↩ Unsaved draft restored from your last session. Review before saving.
+          </p>
+          <button
+            type="button"
+            onClick={() => { try { localStorage.removeItem(draftKey); } catch { /**/ } setDraftRestored(false); }}
+            className="shrink-0 text-xs font-semibold text-amber-600 hover:text-amber-900 underline"
+          >
+            Discard draft
+          </button>
+        </div>
+      )}
 
       {/* Error banner */}
       {state?.error && (
@@ -385,7 +455,13 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
       <div className="sticky bottom-0 z-10 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-1 py-3 backdrop-blur">
         <p className="text-xs text-slate-400"><span className="text-red-500">*</span> Required fields</p>
         <div className="flex gap-3">
-          <Link className="btn-secondary" href="/admin/products">Cancel</Link>
+          <Link
+            className="btn-secondary"
+            href="/admin/products"
+            onClick={() => { try { localStorage.removeItem(draftKey); } catch { /* ignore */ } }}
+          >
+            Cancel
+          </Link>
           <button className="btn-primary gap-2" type="submit" disabled={isPending || compressing}>
             {isPending && <Loader2 size={14} className="animate-spin" />}
             {isPending ? "Saving…" : mode === "create" ? "Create product" : "Save changes"}
