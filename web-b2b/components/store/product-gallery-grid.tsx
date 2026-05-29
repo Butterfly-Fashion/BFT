@@ -12,17 +12,17 @@ type Props = {
 };
 
 const STOCK_COLOR: Record<string, string> = {
-  Available:     "#16A34A",
-  Limited:       "#D97706",
-  "Manual Confirm": "#9CA3AF",
-  Hidden:        "#9CA3AF",
+  Available:        "#16A34A",
+  Limited:          "#D97706",
+  "Manual Confirm": "#2563EB",
+  Hidden:           "#9CA3AF",
 };
 
 const STOCK_LABEL: Record<string, string> = {
-  Available:     "In stock",
-  Limited:       "Limited",
-  "Manual Confirm": "On request",
-  Hidden:        "—",
+  Available:        "In stock",
+  Limited:          "Limited",
+  "Manual Confirm": "Available",
+  Hidden:           "—",
 };
 
 function StockBadge({ status, qty }: { status: string; qty?: number | null }) {
@@ -30,7 +30,7 @@ function StockBadge({ status, qty }: { status: string; qty?: number | null }) {
   const label = qty != null ? `${qty} left` : (STOCK_LABEL[status] ?? "—");
   return (
     <span className="flex items-center gap-1.5">
-      <span className="inline-block h-2 w-2 rounded-full flex-shrink-0" style={{ background: color }} />
+      <span className="inline-block h-2 w-2 rounded-full shrink-0" style={{ background: color }} />
       <span className="text-xs font-semibold" style={{ color }}>
         {label}
       </span>

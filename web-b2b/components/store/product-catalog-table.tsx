@@ -16,10 +16,10 @@ type Props = {
 };
 
 const STOCK_DOT: Record<string, string> = {
-  Available: "#16A34A",
-  Limited: "#D97706",
-  "Manual Confirm": "#9CA3AF",
-  Hidden: "#9CA3AF",
+  Available:        "#16A34A",
+  Limited:          "#D97706",
+  "Manual Confirm": "#2563EB",
+  Hidden:           "#9CA3AF",
 };
 
 function StockCell({ status, qty }: { status: string; qty?: number | null }) {
@@ -27,7 +27,7 @@ function StockCell({ status, qty }: { status: string; qty?: number | null }) {
   const label =
     status === "Available" ? "In stock"
     : status === "Limited" ? "Limited"
-    : status === "Manual Confirm" ? "On request"
+    : status === "Manual Confirm" ? "Available"
     : "—";
   return (
     <span className="flex items-center gap-1.5 whitespace-nowrap">
