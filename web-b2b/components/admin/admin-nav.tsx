@@ -2,21 +2,105 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock, Tag, UserCheck, Mail, MessageSquare } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import {
+  Package, LayoutDashboard, ShoppingBag, Users,
+  ClipboardList, FileText, ExternalLink, LogOut,
+  CalendarClock, Tag, UserCheck, Mail, MessageSquare,
+  ChevronDown,
+} from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
-const NAV_ITEMS = [
+type NavItem = { label: string; href: string; icon: React.ElementType; exact?: boolean };
+type NavGroup = { label: string; items: NavItem[] };
+
+const NAV_GROUPS: (NavItem | NavGroup)[] = [
+  // standalone
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard, exact: true },
-  { label: "Approvals", href: "/admin/approvals", icon: UserCheck },
-  { label: "Products", href: "/admin/products", icon: ShoppingBag },
-  { label: "Categories", href: "/admin/categories", icon: Tag },
-  { label: "Customers", href: "/admin/customers", icon: Users },
-  { label: "Orders", href: "/admin/orders", icon: ClipboardList },
-  { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
-  { label: "Quotes", href: "/admin/quotes", icon: FileText },
-  { label: "Messages", href: "/admin/messages", icon: MessageSquare },
-  { label: "Newsletter", href: "/admin/newsletter", icon: Mail },
+
+  // Customers group
+  {
+    label: "Customers",
+    items: [
+      { label: "Approvals", href: "/admin/approvals", icon: UserCheck },
+      { label: "Customer list", href: "/admin/customers", icon: Users },
+      { label: "Messages", href: "/admin/messages", icon: MessageSquare },
+      { label: "Newsletter", href: "/admin/newsletter", icon: Mail },
+    ],
+  },
+
+  // Catalog group
+  {
+    label: "Catalog",
+    items: [
+      { label: "Products", href: "/admin/products", icon: ShoppingBag },
+      { label: "Categories", href: "/admin/categories", icon: Tag },
+    ],
+  },
+
+  // Orders group
+  {
+    label: "Orders",
+    items: [
+      { label: "Orders", href: "/admin/orders", icon: ClipboardList },
+      { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
+      { label: "Quotes", href: "/admin/quotes", icon: FileText },
+    ],
+  },
 ];
+
+function isGroup(item: NavItem | NavGroup): item is NavGroup {
+  return "items" in item;
+}
+
+function NavDropdown({ group, isAnyActive }: { group: NavGroup; isAnyActive: boolean }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold transition-colors"
+        style={
+          isAnyActive
+            ? { background: "var(--primary-light)", color: "var(--primary)" }
+            : { color: "#6B7280" }
+        }
+      >
+        {group.label}
+        <ChevronDown
+          size={11}
+          className={`transition-transform duration-150 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 top-full z-50 mt-1 min-w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+          {group.items.map(({ label, href, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
+            >
+              <Icon size={13} className="shrink-0 text-slate-400" />
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -39,22 +123,30 @@ export function AdminNav() {
 
         <span className="h-5 w-px shrink-0 bg-slate-200" />
 
-        {/* Nav links */}
-        <nav className="flex flex-1 gap-0.5 overflow-x-auto">
-          {NAV_ITEMS.map(({ label, href, icon: Icon, exact }) => {
-            const active = isActive(href, exact);
+        {/* Nav */}
+        <nav className="flex flex-1 items-center gap-0.5 overflow-x-auto">
+          {NAV_GROUPS.map((entry) => {
+            if (isGroup(entry)) {
+              const anyActive = entry.items.some((item) => isActive(item.href, item.exact));
+              return (
+                <NavDropdown key={entry.label} group={entry} isAnyActive={anyActive} />
+              );
+            }
+            const active = isActive(entry.href, entry.exact);
+            const Icon = entry.icon;
             return (
               <Link
-                key={href}
-                href={href}
+                key={entry.href}
+                href={entry.href}
                 className="flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-2 text-xs font-bold transition-colors"
-                style={active
-                  ? { background: "var(--primary-light)", color: "var(--primary)" }
-                  : { color: "#6B7280" }
+                style={
+                  active
+                    ? { background: "var(--primary-light)", color: "var(--primary)" }
+                    : { color: "#6B7280" }
                 }
               >
                 <Icon size={13} />
-                {label}
+                {entry.label}
               </Link>
             );
           })}
