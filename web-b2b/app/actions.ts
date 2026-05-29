@@ -953,11 +953,13 @@ export async function deleteCustomerPriceAction(priceId: string, customerId: str
 export async function sendCustomerMessageAction(formData: FormData) {
   const profile = await requireProfile();
   const content = String(formData.get("content") || "").trim();
-  if (!content) return;
+  const imageUrl = String(formData.get("image_url") || "").trim() || null;
+  if (!content && !imageUrl) return;
   const supabase = await createSupabaseServerClient();
   await supabase.from("b2b_messages").insert({
     profile_id: profile.id,
-    content,
+    content: content || "",
+    image_url: imageUrl,
     is_from_admin: false,
     is_read: false,
   });
@@ -969,10 +971,12 @@ export async function adminReplyMessageAction(formData: FormData) {
   const admin = createSupabaseAdminClient();
   const profileId = String(formData.get("profile_id") || "");
   const content = String(formData.get("content") || "").trim();
-  if (!content || !profileId) return;
+  const imageUrl = String(formData.get("image_url") || "").trim() || null;
+  if ((!content && !imageUrl) || !profileId) return;
   await admin.from("b2b_messages").insert({
     profile_id: profileId,
-    content,
+    content: content || "",
+    image_url: imageUrl,
     is_from_admin: true,
     is_read: true,
   });
