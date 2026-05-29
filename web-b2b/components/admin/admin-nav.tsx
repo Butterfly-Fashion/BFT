@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock, Tag, UserCheck, Mail } from "lucide-react";
+import { Package, LayoutDashboard, ShoppingBag, Users, ClipboardList, FileText, ExternalLink, LogOut, CalendarClock, Tag, UserCheck, Mail, MessageSquare } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
 const NAV_ITEMS = [
@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { label: "Orders", href: "/admin/orders", icon: ClipboardList },
   { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
   { label: "Quotes", href: "/admin/quotes", icon: FileText },
+  { label: "Messages", href: "/admin/messages", icon: MessageSquare },
   { label: "Newsletter", href: "/admin/newsletter", icon: Mail },
 ];
 

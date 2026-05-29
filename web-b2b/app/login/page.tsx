@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, CheckCircle } from "lucide-react";
+import { ShieldCheck, CheckCircle, Mail } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import { loginAction } from "@/app/actions";
 import { AuthActionForm } from "@/components/auth/action-form-status";
@@ -7,9 +7,9 @@ import { AuthActionForm } from "@/components/auth/action-form-status";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ registered?: string }>;
+  searchParams: Promise<{ registered?: string; verified?: string }>;
 }) {
-  const { registered } = await searchParams;
+  const { registered, verified } = await searchParams;
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -26,25 +26,34 @@ export default async function LoginPage({
             </div>
           </Link>
 
-          {registered === "1" && (
+          {verified === "1" && (
             <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3">
               <CheckCircle size={15} className="mt-0.5 shrink-0 text-emerald-600" />
               <p className="text-sm font-semibold leading-relaxed text-emerald-800">
-                Account created! Sign in below. B2B pricing will be activated after admin review.
+                Email verified! Log in below.
+              </p>
+            </div>
+          )}
+
+          {registered === "1" && (
+            <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3">
+              <Mail size={15} className="mt-0.5 shrink-0 text-blue-600" />
+              <p className="text-sm font-semibold leading-relaxed text-blue-800">
+                Check your email to confirm your account before logging in.
               </p>
             </div>
           )}
 
           <div className="card overflow-hidden">
             <div className="border-b border-gray-100 bg-blue-50 px-6 py-4">
-              <h1 className="text-xl font-black text-gray-900">Sign in to your account</h1>
+              <h1 className="text-xl font-black text-gray-900">Log in to your account</h1>
               <p className="mt-0.5 text-sm font-medium text-gray-500">
                 Access your B2B order history and submit new requests.
               </p>
             </div>
 
             <div className="p-6">
-              <AuthActionForm action={loginAction} submitLabel="Sign in">
+              <AuthActionForm action={loginAction} submitLabel="Log in">
                 <label className="label">
                   Email address
                   <input className="field" name="email" required type="email" autoComplete="email" />

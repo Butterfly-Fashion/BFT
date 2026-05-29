@@ -272,7 +272,7 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
     html: registrationEmail(parsed.data.contact_name || parsed.data.business_name, siteUrl()),
   });
 
-  redirect("/login?registered=1");
+  redirect("/register/verify-email");
 }
 
 export async function loginAction(_prevState: unknown, formData: FormData) {
@@ -946,6 +946,55 @@ export async function deleteCustomerPriceAction(priceId: string, customerId: str
   const admin = createSupabaseAdminClient();
   await admin.from("customer_prices").delete().eq("id", priceId);
   revalidatePath(`/admin/customers/${customerId}`);
+}
+
+// ── CS Messaging ───────────────────────────────────────────────────────────────
+
+export async function sendCustomerMessageAction(formData: FormData) {
+  const profile = await requireProfile();
+  const content = String(formData.get("content") || "").trim();
+  if (!content) return;
+  const supabase = await createSupabaseServerClient();
+  await supabase.from("b2b_messages").insert({
+    profile_id: profile.id,
+    content,
+    is_from_admin: false,
+    is_read: false,
+  });
+  revalidatePath("/account/messages");
+}
+
+export async function adminReplyMessageAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const profileId = String(formData.get("profile_id") || "");
+  const content = String(formData.get("content") || "").trim();
+  if (!content || !profileId) return;
+  await admin.from("b2b_messages").insert({
+    profile_id: profileId,
+    content,
+    is_from_admin: true,
+    is_read: true,
+  });
+  // Mark all customer messages in this thread as read
+  await admin
+    .from("b2b_messages")
+    .update({ is_read: true })
+    .eq("profile_id", profileId)
+    .eq("is_from_admin", false);
+  revalidatePath(`/admin/messages/${profileId}`);
+  revalidatePath("/admin/messages");
+}
+
+export async function markMessagesReadAction(profileId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin
+    .from("b2b_messages")
+    .update({ is_read: true })
+    .eq("profile_id", profileId)
+    .eq("is_from_admin", false);
+  revalidatePath("/admin/messages");
 }
 
 export async function deleteQuoteAction(quoteId: string) {

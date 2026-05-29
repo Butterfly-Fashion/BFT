@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock } from "lucide-react";
+import { Search, ChevronDown, LogOut, ReceiptText, ShieldCheck, FileText, CalendarClock, MessageSquare } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 import type { Profile } from "@/lib/types";
 import { navCategories } from "@/lib/category-utils";
@@ -93,6 +93,9 @@ function UserMenu({ profile }: { profile: Profile }) {
             <div className="py-1">
               <Link href="/account/orders" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
                 <ReceiptText size={14} className="text-gray-400" /> My Orders
+              </Link>
+              <Link href="/account/messages" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
+                <MessageSquare size={14} className="text-gray-400" /> Messages
               </Link>
               <Link href="/account/quotes" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
                 <FileText size={14} className="text-gray-400" /> Request a Quote
