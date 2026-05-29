@@ -38,16 +38,28 @@ function friendlyAuthError(message?: string) {
     return "The email or password is incorrect. Please check your details and try again.";
   }
   if (text.includes("email not confirmed")) {
-    return "Please confirm your email address before signing in.";
+    return "Your account was created, but sign-in is not enabled yet. Please contact us for help.";
   }
   if (text.includes("user already registered") || text.includes("already exists")) {
     return "An account with this email already exists. Please sign in or use a different email.";
   }
+  if (text.includes("password should be at least") || text.includes("password is too short")) {
+    return "Password must be at least 6 characters long.";
+  }
   if (text.includes("password")) {
     return "Please choose a stronger password and try again.";
   }
-  if (text.includes("rate limit")) {
-    return "Too many attempts. Please wait a moment and try again.";
+  if (
+    text.includes("rate limit") ||
+    text.includes("too many") ||
+    text.includes("only request this once") ||
+    text.includes("request this after") ||
+    text.includes("security purposes")
+  ) {
+    return "Too many attempts — please wait a minute before trying again.";
+  }
+  if (text.includes("signup is disabled")) {
+    return "New registrations are temporarily unavailable. Please try again later.";
   }
   return "Something went wrong. Please try again, or contact us if the issue continues.";
 }
@@ -190,9 +202,9 @@ const registerSchema = z
     business_name: z.string().min(2, "Please enter your business name."),
     contact_name: z.string().min(2, "Please enter the main contact name."),
     email: z.string().email("Please enter a valid email address."),
-    phone: z.preprocess((v) => (v === "" ? undefined : v), z.string().min(5, "Please enter a valid phone number.").optional()),
-    password: z.string().min(8, "Password must be at least 8 characters."),
-    confirm_password: z.string().min(8, "Please confirm your password."),
+    phone: z.string().optional(),
+    password: z.string().min(6, "Password must be at least 6 characters."),
+    confirm_password: z.string().min(1, "Please confirm your password."),
     business_address: z.string().min(3, "Please enter your street address."),
     city: z.string().min(2, "Please enter your city."),
     province: z.string().min(2, "Please enter your province or state."),
@@ -215,6 +227,27 @@ const registerSchema = z
 
 type RegisterState = { error?: string; values?: Record<string, string> } | null;
 
+async function insertProfileWithSchemaFallback(
+  admin: ReturnType<typeof createSupabaseAdminClient>,
+  payload: Record<string, unknown>
+) {
+  let nextPayload = { ...payload };
+
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const { error } = await admin.from("profiles").insert(nextPayload);
+    if (!error) return null;
+
+    const missingColumn = error.message.match(/Could not find the '([^']+)' column/)?.[1];
+    if (!missingColumn || !(missingColumn in nextPayload)) return error;
+
+    console.warn("[register profile create retry without missing column]", missingColumn);
+    const { [missingColumn]: _removed, ...withoutMissingColumn } = nextPayload;
+    nextPayload = withoutMissingColumn;
+  }
+
+  return new Error("Could not create profile after removing missing schema columns.");
+}
+
 export async function registerAction(_prevState: RegisterState, formData: FormData): Promise<RegisterState> {
   const raw = Object.fromEntries(formData) as Record<string, string>;
   const safeValues = { ...raw, password: "", confirm_password: "", _ts: Date.now().toString() };
@@ -222,21 +255,37 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message || "Please check the highlighted account details and try again.", values: safeValues };
 
-  const supabase = await createSupabaseServerClient();
   const admin = createSupabaseAdminClient();
-  const { data, error } = await supabase.auth.signUp({
+
+  // Pre-check: existing email in profiles (avoids confusing Supabase errors)
+  const { data: existingProfile } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("email", parsed.data.email.toLowerCase())
+    .maybeSingle();
+  if (existingProfile) {
+    return { error: "An account with this email already exists. Please sign in or use a different email.", values: safeValues };
+  }
+
+  // Use admin client to create auth user — bypasses per-IP rate limits that
+  // affect the public signUp() endpoint. Email confirmation is handled by our
+  // own SMTP email below, not Supabase's built-in flow.
+  const { data: authData, error: authError } = await admin.auth.admin.createUser({
     email: parsed.data.email,
     password: parsed.data.password,
+    email_confirm: true, // mark confirmed so user can log in immediately
   });
-  if (error || !data.user) return { error: friendlyAuthError(error?.message), values: safeValues };
+  if (authError || !authData.user) {
+    return { error: friendlyAuthError(authError?.message), values: safeValues };
+  }
 
-  const { error: profileError } = await admin.from("profiles").insert({
-    auth_user_id: data.user.id,
+  const profileError = await insertProfileWithSchemaFallback(admin, {
+    auth_user_id: authData.user.id,
     role: "customer",
     business_name: parsed.data.business_name,
     contact_name: parsed.data.contact_name,
     email: parsed.data.email,
-    phone: parsed.data.phone || null,
+    phone: parsed.data.phone || "",
     business_address: parsed.data.business_address,
     city: parsed.data.city,
     province: parsed.data.province,
@@ -250,6 +299,10 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
     preferred_delivery_method: parsed.data.preferred_delivery_method || null,
   });
   if (profileError) {
+    console.error("[register profile create failed]", profileError.message);
+    await admin.auth.admin.deleteUser(authData.user.id).catch((err) => {
+      console.error("[register orphan auth cleanup failed]", errorMessage(err));
+    });
     return { error: friendlyDatabaseError("create your account", profileError.message), values: safeValues };
   }
 
@@ -272,7 +325,7 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
     html: registrationEmail(parsed.data.contact_name || parsed.data.business_name, siteUrl()),
   });
 
-  redirect("/register/verify-email");
+  redirect("/login?registered=1");
 }
 
 export async function loginAction(_prevState: unknown, formData: FormData) {
@@ -292,16 +345,28 @@ export async function logoutAction() {
 
 export async function forgotPasswordAction(_prevState: unknown, formData: FormData) {
   const email = String(formData.get("email") || "");
+  if (!email) return { error: "Please enter your email address." };
   const supabase = await createSupabaseServerClient();
-  await supabase.auth.resetPasswordForEmail(email, {
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl()}/reset-password`,
   });
-  return { success: "If an account exists, password reset instructions will be sent." };
+  if (error) {
+    // "For security purposes, you can only request this once every 60 seconds"
+    if (
+      error.message.toLowerCase().includes("security purposes") ||
+      error.message.toLowerCase().includes("only request this once") ||
+      error.message.toLowerCase().includes("too many")
+    ) {
+      return { error: "Please wait 60 seconds before requesting another reset link." };
+    }
+  }
+  // Always return success to avoid email enumeration
+  return { success: "If an account with that email exists, a password reset link has been sent." };
 }
 
 export async function resetPasswordAction(_prevState: unknown, formData: FormData) {
   const password = String(formData.get("password") || "");
-  if (password.length < 8) return { error: "Password must be at least 8 characters." };
+  if (!password) return { error: "Please enter a password." };
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return { error: "We could not update your password. Please use the latest reset link and try again." };
@@ -539,7 +604,12 @@ export async function createPaymentLinkAction(orderId: string): Promise<{ error:
 export async function approveB2BCustomerAction(customerId: string, approved: boolean) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
-  await admin.from("profiles").update({ is_b2b_approved: approved }).eq("id", customerId);
+  // When approving, also clear b2b_declined so the account doesn't appear in
+  // both "Approved" and "Declined" lists simultaneously.
+  await admin.from("profiles").update({
+    is_b2b_approved: approved,
+    ...(approved ? { b2b_declined: false } : {}),
+  }).eq("id", customerId);
 
   const { data: profile } = await admin.from("profiles").select("email, business_name, contact_name").eq("id", customerId).single();
   if (profile?.email) {
@@ -560,6 +630,55 @@ export async function approveB2BCustomerAction(customerId: string, approved: boo
 
   revalidatePath("/admin/customers");
   revalidatePath(`/admin/customers/${customerId}`);
+}
+
+export async function promoteAdminByEmailAction(formData: FormData) {
+  await requireAdmin();
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  if (!email) redirect("/admin/admins?error=missing-email");
+
+  const admin = createSupabaseAdminClient();
+  const { data: profile } = await admin
+    .from("profiles")
+    .select("id,email,role")
+    .ilike("email", email)
+    .maybeSingle();
+
+  if (!profile) redirect("/admin/admins?error=user-not-found");
+  if (profile.role === "admin") redirect("/admin/admins?status=already-admin");
+
+  await admin
+    .from("profiles")
+    .update({ role: "admin", updated_at: new Date().toISOString() })
+    .eq("id", profile.id);
+
+  revalidatePath("/admin/admins");
+  revalidatePath("/admin/customers");
+  revalidatePath(`/admin/customers/${profile.id}`);
+  redirect("/admin/admins?status=promoted");
+}
+
+export async function removeAdminRoleAction(profileId: string) {
+  const currentAdmin = await requireAdmin();
+  if (currentAdmin.id === profileId) redirect("/admin/admins?error=self-demote");
+
+  const admin = createSupabaseAdminClient();
+  const { count } = await admin
+    .from("profiles")
+    .select("*", { count: "exact", head: true })
+    .eq("role", "admin");
+
+  if ((count || 0) <= 1) redirect("/admin/admins?error=last-admin");
+
+  await admin
+    .from("profiles")
+    .update({ role: "customer", updated_at: new Date().toISOString() })
+    .eq("id", profileId);
+
+  revalidatePath("/admin/admins");
+  revalidatePath("/admin/customers");
+  revalidatePath(`/admin/customers/${profileId}`);
+  redirect("/admin/admins?status=removed");
 }
 
 export async function createQuoteAction(formData: FormData) {

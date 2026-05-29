@@ -93,6 +93,9 @@ export function RegisterForm() {
             Confirm password <Required />
             <PasswordInput name="confirm_password" autoComplete="new-password" />
           </label>
+          <p className="sm:col-span-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold leading-5 text-slate-500">
+            Minimum 6 characters. Both fields must match.
+          </p>
         </div>
       </div>
 
