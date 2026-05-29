@@ -253,6 +253,19 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
     return { error: friendlyDatabaseError("create your account", profileError.message), values: safeValues };
   }
 
+  // Newsletter consent
+  if (raw.newsletter_consent === "on") {
+    await admin.from("newsletter_subscribers").upsert(
+      {
+        email: parsed.data.email,
+        name: parsed.data.business_name || parsed.data.contact_name,
+        source: "b2b",
+        subscribed_at: new Date().toISOString(),
+      },
+      { onConflict: "email" }
+    ); // non-fatal — ignore error
+  }
+
   await sendEmail({
     to: parsed.data.email,
     subject: "Butterfly Fashion Trading — account created",

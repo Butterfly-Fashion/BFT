@@ -147,6 +147,17 @@ export function RegisterForm() {
         </div>
       </div>
 
+      {/* Newsletter consent */}
+      <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+        <input name="newsletter_consent" type="checkbox" className="mt-0.5 shrink-0 accent-(--primary)" defaultChecked />
+        <span>
+          <span className="font-semibold">Subscribe to the Butterfly Fashion wholesale newsletter</span>
+          <span className="mt-0.5 block text-xs font-normal text-slate-400">
+            New arrivals, seasonal promotions, restock alerts, and exclusive wholesale deals. Unsubscribe anytime.
+          </span>
+        </span>
+      </label>
+
       {/* Terms */}
       <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
         <input name="agree_to_terms" required type="checkbox" className="mt-0.5 shrink-0 accent-(--primary)" />
