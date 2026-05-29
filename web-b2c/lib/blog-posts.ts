@@ -18,6 +18,7 @@ export interface BlogPost {
   productSlugs: string[];
   sections: BlogSection[];
   faqs: Array<{ q: string; a: string }>;
+  noindex?: boolean;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -1368,6 +1369,7 @@ export const blogPosts: BlogPost[] = [
     title: "World Cup 2026 Snacks Themed by Country — Watch Party Guide",
     description: "World Cup 2026 watch party snacks by country — poutine for Canada, brigadeiros for Brazil, tacos for Mexico. Easy themed food for every match day without specialist cooking.",
     publishedAt: "2026-05-26",
+    noindex: true,
     category: "Watch Parties",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "World Cup 2026 country-themed watch party snacks guide",

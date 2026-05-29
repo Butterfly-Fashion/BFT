@@ -48,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const blogRoutes: MetadataRoute.Sitemap = getPublishedPosts().map((post) => ({
+  const blogRoutes: MetadataRoute.Sitemap = getPublishedPosts().filter((post) => !post.noindex).map((post) => ({
     url: `${base}/blog/${post.slug}`,
     lastModified: new Date(post.updatedAt ?? post.publishedAt),
     changeFrequency: "monthly",

@@ -126,7 +126,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.name}
           </h1>
 
-          <div className="flex items-baseline gap-3 mb-5">
+          <div className="flex items-baseline gap-3 mb-3">
             <span className="text-2xl font-bold text-gray-900">
               {formatCAD(product.price)}
             </span>
@@ -136,6 +136,20 @@ export default async function ProductDetailPage({ params }: Props) {
               </span>
             )}
             <span className="text-xs text-gray-400">CAD</span>
+          </div>
+
+          <div className="flex items-center gap-2 mb-5">
+            {product.inStock ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                In Stock · Ships from Toronto
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-500">
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                Sold Out
+              </span>
+            )}
           </div>
 
           <p className="text-sm text-gray-600 leading-relaxed mb-6">

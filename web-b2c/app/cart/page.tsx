@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Lock, RotateCcw, Truck } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
@@ -126,6 +127,12 @@ export default function CartPage() {
                     {shipping === 0 ? "Free" : formatCAD(shipping)}
                   </span>
                 </div>
+                <div className="text-xs text-gray-400 flex flex-col gap-1 -mt-1">
+                  <span>Ships from Toronto · 4–7 business days</span>
+                  <Link href="/checkout" className="text-[#C41E3A] hover:underline font-medium">
+                    Or pick up free at our North York location
+                  </Link>
+                </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Tax (HST 13%)</span>
                   <span className="font-medium text-gray-900">{formatCAD(tax)}</span>
@@ -169,6 +176,21 @@ export default function CartPage() {
               >
                 Continue Shopping
               </Link>
+
+              <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
+                <div className="flex flex-col items-center gap-1">
+                  <Truck className="h-4 w-4 text-[#C41E3A]" />
+                  <span className="text-[10px] font-semibold text-gray-500 leading-tight">Ships from<br/>Toronto</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <RotateCcw className="h-4 w-4 text-[#C41E3A]" />
+                  <span className="text-[10px] font-semibold text-gray-500 leading-tight">30-day<br/>returns</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <Lock className="h-4 w-4 text-[#C41E3A]" />
+                  <span className="text-[10px] font-semibold text-gray-500 leading-tight">Secure<br/>payments</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
