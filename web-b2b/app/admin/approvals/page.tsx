@@ -37,7 +37,8 @@ export default async function AdminApprovalsPage() {
 
   const all = (profiles || []) as Profile[];
   const pending = all.filter((p) => !p.is_b2b_approved && !p.b2b_declined);
-  const declined = all.filter((p) => p.b2b_declined);
+  // Guard: approved always wins — never show in declined even if b2b_declined flag is stale
+  const declined = all.filter((p) => p.b2b_declined && !p.is_b2b_approved);
   const approved = all.filter((p) => p.is_b2b_approved);
 
   return (
