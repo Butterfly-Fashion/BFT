@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
-import { X, ShoppingCart, Truck, Store, AlertCircle, Package, Loader2, Minus, Plus } from "lucide-react";
+import { X, ShoppingCart, Truck, Store, AlertCircle, Package, Loader2, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
@@ -115,21 +115,27 @@ export function CartDrawer({ open, onClose, defaultAddress }: Props) {
                     </p>
                   </div>
 
-                  {/* Qty controls */}
-                  <div className="flex shrink-0 flex-col items-end gap-1">
-                    <div className="flex items-center gap-1">
+                  {/* Qty + remove */}
+                  <div className="flex shrink-0 flex-col items-end gap-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        type="number"
+                        inputMode="numeric"
+                        min={1}
+                        max={9999}
+                        value={item.quantity}
+                        onChange={(e) => {
+                          const v = parseInt(e.target.value || "0") || 0;
+                          cart.setQuantity(item.productId, Math.max(0, Math.min(9999, v)));
+                        }}
+                        className="quantity-input h-7 w-14 rounded border border-slate-200 bg-white text-center text-sm font-bold text-slate-900 outline-none focus:border-slate-400"
+                      />
                       <button
-                        onClick={() => cart.setQuantity(item.productId, item.quantity - 1)}
-                        className="flex h-6 w-6 items-center justify-center rounded border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors"
+                        onClick={() => cart.setQuantity(item.productId, 0)}
+                        className="flex h-7 w-7 items-center justify-center rounded border border-slate-200 text-slate-400 hover:border-red-300 hover:bg-red-50 hover:text-red-500 transition-colors"
+                        title="Remove"
                       >
-                        <Minus size={10} />
-                      </button>
-                      <span className="w-7 text-center text-sm font-bold text-slate-900">{item.quantity}</span>
-                      <button
-                        onClick={() => cart.setQuantity(item.productId, item.quantity + 1)}
-                        className="flex h-6 w-6 items-center justify-center rounded border border-slate-200 text-slate-500 hover:bg-slate-100 transition-colors"
-                      >
-                        <Plus size={10} />
+                        <Trash2 size={11} />
                       </button>
                     </div>
                     <p className="text-xs font-black text-slate-800">

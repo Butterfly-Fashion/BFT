@@ -326,8 +326,10 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   {/* Qty input (approved only) */}
                   {isApproved && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
-                      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400">Quantity</p>
-                      <div className="flex items-center gap-2">
+                      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400">
+                        Qty{product.case_qty ? ` · 1cs = ${product.case_qty}ea` : ""}
+                      </p>
+                      <div className="flex items-center gap-1.5">
                         <input
                           aria-label={`Quantity for ${product.name}`}
                           type="number"
@@ -336,22 +338,45 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                           value={qty || ""}
                           placeholder="0"
                           onChange={(e) => setQty(product, e.target.value)}
-                          className="h-9 flex-1 rounded-lg border px-3 text-center text-sm font-bold outline-none transition-colors min-w-0"
+                          className="quantity-input h-9 w-14 shrink-0 rounded-lg border px-1 text-center text-sm font-bold outline-none transition-colors"
                           style={
                             selected
                               ? { borderColor: "var(--primary)", background: "var(--primary-light)", color: "var(--primary)" }
                               : { borderColor: "var(--line)", background: "white", color: "#111827" }
                           }
                         />
-                        {product.case_qty && (
-                          <button
-                            onClick={() => addCase(product)}
-                            className="shrink-0 rounded-lg border px-3 h-9 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors whitespace-nowrap"
-                            style={{ borderColor: "var(--line)" }}
-                            title={`Add 1 case (${product.case_qty})`}
-                          >
-                            +1 case
-                          </button>
+                        {product.case_qty ? (
+                          <>
+                            <button
+                              onClick={() => setQty(product, String(Math.max(0, qty - product.case_qty!)))}
+                              className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:border-red-300 hover:text-red-600 transition-colors"
+                              style={{ borderColor: "var(--line)" }}
+                              title={`Remove 1 case (${product.case_qty})`}
+                            >
+                              −1cs
+                            </button>
+                            <button
+                              onClick={() => addCase(product)}
+                              className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:border-green-400 hover:text-green-700 transition-colors"
+                              style={{ borderColor: "var(--line)" }}
+                              title={`Add 1 case (${product.case_qty})`}
+                            >
+                              +1cs
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              onClick={() => setQty(product, String(Math.max(0, qty - 1)))}
+                              className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:bg-gray-50 transition-colors"
+                              style={{ borderColor: "var(--line)" }}
+                            >−</button>
+                            <button
+                              onClick={() => setQty(product, String(qty + 1))}
+                              className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:bg-gray-50 transition-colors"
+                              style={{ borderColor: "var(--line)" }}
+                            >+</button>
+                          </>
                         )}
                       </div>
                     </div>

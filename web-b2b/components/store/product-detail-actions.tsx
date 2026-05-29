@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, FileText, CheckCircle, Minus, Plus } from "lucide-react";
+import { ShoppingCart, FileText, CheckCircle } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
@@ -16,20 +16,22 @@ export function ProductDetailActions({
 }) {
   const cart = useCart();
   const router = useRouter();
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(product.case_qty || 1);
   const [added, setAdded] = useState(false);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const caseQty = product.case_qty || null;
+
   useEffect(() => () => { if (addedTimer.current) clearTimeout(addedTimer.current); }, []);
 
-  function decrement() { setQuantity((q) => Math.max(1, q - 1)); }
-  function increment() { setQuantity((q) => Math.min(9999, q + 1)); }
+  function clamp(v: number) { return Math.max(0, Math.min(9999, v)); }
+  function addUnits(n: number) { setQuantity((q) => clamp(q + n)); }
+  function addCases(n: number) { if (!caseQty) return; setQuantity((q) => clamp(q + n * caseQty)); }
+  function cases() { return caseQty ? Math.floor(quantity / caseQty) : null; }
 
   function addToCart() {
-    if (!profile) {
-      router.push(`/login?next=/products/${product.slug}`);
-      return;
-    }
+    if (!profile) { router.push(`/login?next=/products/${product.slug}`); return; }
+    if (quantity <= 0) return;
     cart.addItem({
       productId: product.id,
       quantity,
@@ -48,44 +50,80 @@ export function ProductDetailActions({
     else router.push(`/account/quotes?product=${product.id}`);
   }
 
+  const total = product.display_price * quantity;
+
   return (
-    <div className="grid gap-4">
-      {/* Quantity selector */}
-      <div>
-        <p className="label mb-2">Quantity</p>
-        <div className="flex items-center gap-0">
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-l-md border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 active:bg-slate-100"
-            type="button"
-            onClick={decrement}
-            aria-label="Decrease quantity"
-          >
-            <Minus size={14} />
-          </button>
-          <input
-            aria-label="Quantity"
-            className="quantity-input h-10 w-16 border-y border-slate-300 bg-white text-center text-sm font-bold text-slate-900 outline-none focus:border-slate-900"
-            inputMode="numeric"
-            min={1}
-            max={9999}
-            type="number"
-            value={quantity}
-            onChange={(e) =>
-              setQuantity(Math.max(1, Math.min(9999, Number.parseInt(e.target.value || "1", 10) || 1)))
-            }
-          />
-          <button
-            className="flex h-10 w-10 items-center justify-center rounded-r-md border border-slate-300 bg-white text-slate-600 transition-colors hover:bg-slate-50 active:bg-slate-100"
-            type="button"
-            onClick={increment}
-            aria-label="Increase quantity"
-          >
-            <Plus size={14} />
-          </button>
-          <span className="ml-3 text-sm font-semibold text-slate-500">
-            = {formatMoney(product.display_price * quantity)}
-          </span>
+    <div className="grid gap-5">
+
+      {/* Quantity section */}
+      <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 space-y-4">
+
+        {/* Unit input */}
+        <div>
+          <div className="mb-2 flex items-center justify-between">
+            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Units</p>
+            <p className="text-xs font-semibold text-slate-400">
+              {quantity} ea · <span className="font-black text-slate-800">{formatMoney(total)}</span>
+            </p>
+          </div>
+          <div className="flex h-10 overflow-hidden rounded-lg border border-slate-200 bg-white">
+            <button
+              type="button"
+              onClick={() => addUnits(-1)}
+              className="flex w-10 items-center justify-center border-r border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors font-bold text-lg"
+            >−</button>
+            <input
+              type="number"
+              inputMode="numeric"
+              min={0}
+              max={9999}
+              value={quantity || ""}
+              placeholder="0"
+              onChange={(e) => setQuantity(clamp(parseInt(e.target.value || "0") || 0))}
+              className="quantity-input flex-1 bg-transparent text-center text-sm font-bold text-slate-900 outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => addUnits(1)}
+              className="flex w-10 items-center justify-center border-l border-slate-200 text-slate-500 hover:bg-slate-50 transition-colors font-bold text-lg"
+            >+</button>
+          </div>
         </div>
+
+        {/* Case shortcuts (only if MOQ/case_qty exists) */}
+        {caseQty && (
+          <div>
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                By case <span className="ml-1 rounded bg-slate-200 px-1.5 py-0.5 text-[10px] font-black text-slate-600">{caseQty} ea / case</span>
+              </p>
+              {cases()! > 0 && (
+                <p className="text-xs font-semibold text-slate-400">
+                  {cases()} case{cases()! > 1 ? "s" : ""} = {cases()! * caseQty} ea
+                </p>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => addCases(-1)}
+                disabled={quantity < caseQty}
+                className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-600 transition-colors hover:border-red-300 hover:text-red-600 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                − 1 case
+                <span className="text-xs font-normal text-slate-400">({caseQty})</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => addCases(1)}
+                className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-600 transition-colors hover:border-green-400 hover:text-green-700"
+              >
+                + 1 case
+                <span className="text-xs font-normal text-slate-400">({caseQty})</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* CTA buttons */}
@@ -93,6 +131,7 @@ export function ProductDetailActions({
         <button
           className={`btn-primary gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
           type="button"
+          disabled={quantity <= 0}
           onClick={addToCart}
         >
           {added ? (
@@ -108,9 +147,9 @@ export function ProductDetailActions({
       </div>
 
       {/* B2B note */}
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs font-semibold leading-relaxed text-slate-600">
+      <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
         No payment collected now — we review your order, confirm availability and final pricing, then send a payment link.
-      </div>
+      </p>
     </div>
   );
 }
