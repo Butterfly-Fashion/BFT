@@ -245,31 +245,10 @@ export function ProductGalleryGrid({ products, profile }: Props) {
 
   return (
     <>
-      {/* Order pad summary bar (when items selected) */}
-      {isApproved && cart.orderPadItems.length > 0 && (
-        <div
-          className="mb-3 flex items-center justify-between rounded-xl border px-4 py-2.5"
-          style={{ background: "var(--primary-light)", borderColor: "var(--primary-border)" }}
-        >
-          <span className="text-sm font-semibold" style={{ color: "var(--primary)" }}>
-            {cart.orderPadCount} items selected ·{" "}
-            {formatMoney(cart.orderPadItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0))}
-          </span>
-          <button
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-bold text-white"
-            style={{ background: "var(--primary)" }}
-            onClick={() => cart.addOrderPadToCart()}
-          >
-            <ShoppingCart size={13} />
-            Add to cart
-          </button>
-        </div>
-      )}
-
       {/* Gallery + side panel */}
       <div className="flex gap-5 items-start">
         {/* Cards */}
-        <div className="flex-1 grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        <div className="flex-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {products.map((product) => {
             const qty = padMap.get(product.id) || 0;
             const selected = qty > 0;
@@ -346,33 +325,35 @@ export function ProductGalleryGrid({ products, profile }: Props) {
 
                   {/* Qty input (approved only) */}
                   {isApproved && (
-                    <div className="mt-auto flex items-center gap-2 border-t border-gray-100 pt-2.5">
-                      <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-gray-400">Qty</span>
-                      <input
-                        aria-label={`Quantity for ${product.name}`}
-                        type="number"
-                        inputMode="numeric"
-                        min={0}
-                        value={qty || ""}
-                        placeholder="0"
-                        onChange={(e) => setQty(product, e.target.value)}
-                        className="h-8 flex-1 rounded-lg border px-2 text-center text-sm font-bold outline-none transition-colors min-w-0"
-                        style={
-                          selected
-                            ? { borderColor: "var(--primary)", background: "var(--primary-light)", color: "var(--primary)" }
-                            : { borderColor: "var(--line)", background: "white", color: "#111827" }
-                        }
-                      />
-                      {product.case_qty && (
-                        <button
-                          onClick={() => addCase(product)}
-                          className="shrink-0 rounded-lg border px-2 h-8 text-[10px] font-bold text-gray-500 hover:text-gray-900 transition-colors whitespace-nowrap"
-                          style={{ borderColor: "var(--line)" }}
-                          title={`Add 1 case (${product.case_qty})`}
-                        >
-                          +1 case
-                        </button>
-                      )}
+                    <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
+                      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400">Quantity</p>
+                      <div className="flex items-center gap-2">
+                        <input
+                          aria-label={`Quantity for ${product.name}`}
+                          type="number"
+                          inputMode="numeric"
+                          min={0}
+                          value={qty || ""}
+                          placeholder="0"
+                          onChange={(e) => setQty(product, e.target.value)}
+                          className="h-9 flex-1 rounded-lg border px-3 text-center text-sm font-bold outline-none transition-colors min-w-0"
+                          style={
+                            selected
+                              ? { borderColor: "var(--primary)", background: "var(--primary-light)", color: "var(--primary)" }
+                              : { borderColor: "var(--line)", background: "white", color: "#111827" }
+                          }
+                        />
+                        {product.case_qty && (
+                          <button
+                            onClick={() => addCase(product)}
+                            className="shrink-0 rounded-lg border px-3 h-9 text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors whitespace-nowrap"
+                            style={{ borderColor: "var(--line)" }}
+                            title={`Add 1 case (${product.case_qty})`}
+                          >
+                            +1 case
+                          </button>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
