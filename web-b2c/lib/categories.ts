@@ -42,7 +42,8 @@ export function buildStoreCategoryChildMap(
         .filter((child) => child.parent_id === category.id)
         .sort((a, b) => a.sort_order - b.sort_order)
         .map((child) => child.name);
-      map.set(category.name, children.length > 0 ? children : [category.name]);
+      // Include parent name itself so products tagged with the parent also appear
+      map.set(category.name, children.length > 0 ? [category.name, ...children] : [category.name]);
     }
   }
   return map;
