@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Header } from "@/components/store/header";
-import { ProductCatalogTable } from "@/components/store/product-catalog-table";
+import { ProductGalleryGrid } from "@/components/store/product-gallery-grid";
 import { CatalogFilterSidebar } from "@/components/store/catalog-filter-sidebar";
 import { CatalogTopBar } from "@/components/store/catalog-top-bar";
 import { getCurrentProfile } from "@/lib/auth";
@@ -91,7 +91,7 @@ export default async function ProductsPage({
           </Suspense>
 
           <div className="min-w-0 flex-1">
-            <ProductCatalogTable products={products} profile={profile} />
+            <ProductGalleryGrid products={products} profile={profile} />
           </div>
         </div>
       </main>

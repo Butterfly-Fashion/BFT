@@ -111,7 +111,7 @@ function UserMenu({ profile }: { profile: Profile }) {
             <div className="border-t border-gray-100 py-1">
               <form action={logoutAction}>
                 <button className="flex w-full items-center gap-2.5 px-4 py-2.5 text-sm text-gray-400 hover:bg-gray-50" type="submit">
-                  <LogOut size={14} /> Sign out
+                  <LogOut size={14} /> Log out
                 </button>
               </form>
             </div>
@@ -174,7 +174,7 @@ export function Header({ profile }: { profile: Profile | null }) {
           ) : (
             <>
               <Link className="text-sm font-semibold text-gray-600 transition-colors hover:text-gray-900" href="/login">
-                Sign in
+                Log in
               </Link>
               <Link className="btn-primary min-h-8 px-4 text-sm" href="/register">
                 Create account
