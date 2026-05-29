@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
+import { CartOpenProvider } from "@/components/store/cart-open-context";
 import { CategoriesProvider } from "@/components/store/categories-provider";
 import { ChatWidget } from "@/components/store/chat-widget";
 import { fetchCategories } from "@/lib/categories";
@@ -22,10 +23,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en" className={inter.className}>
       <body>
         <CategoriesProvider categories={categories}>
-          <CartProvider>
-            {children}
-            <ChatWidget />
-          </CartProvider>
+          <CartOpenProvider>
+            <CartProvider>
+              {children}
+              <ChatWidget />
+            </CartProvider>
+          </CartOpenProvider>
         </CategoriesProvider>
         <Analytics />
         <SpeedInsights />

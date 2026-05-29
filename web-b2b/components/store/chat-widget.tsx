@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X, Send, ImagePlus, Loader2, ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useCartOpen } from "@/components/store/cart-open-context";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 type Message = {
@@ -18,6 +19,7 @@ const supabase = createSupabaseBrowserClient();
 
 export function ChatWidget() {
   const pathname = usePathname();
+  const { cartOpen } = useCartOpen();
   const [open, setOpen] = useState(false);
   const [profileId, setProfileId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -29,8 +31,9 @@ export function ChatWidget() {
   const fileRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Hide on admin / auth pages
+  // Hide when cart is open or on admin/auth pages
   if (
+    cartOpen ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/register") ||

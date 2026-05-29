@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
+import { useCartOpen } from "@/components/store/cart-open-context";
 import { CartDrawer } from "@/components/store/cart-drawer";
 
 export function CartButton() {
   const cart = useCart();
-  const [open, setOpen] = useState(false);
+  const { cartOpen: open, setCartOpen: setOpen } = useCartOpen();
 
   return (
     <>
