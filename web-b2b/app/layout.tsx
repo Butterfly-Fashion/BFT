@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/store/cart-provider";
 import { CategoriesProvider } from "@/components/store/categories-provider";
+import { FloatingChatButton } from "@/components/store/floating-chat-button";
 import { fetchCategories } from "@/lib/categories";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -21,7 +22,10 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang="en" className={inter.className}>
       <body>
         <CategoriesProvider categories={categories}>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            {children}
+            <FloatingChatButton />
+          </CartProvider>
         </CategoriesProvider>
         <Analytics />
         <SpeedInsights />

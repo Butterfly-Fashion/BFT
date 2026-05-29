@@ -1,6 +1,5 @@
-import { notFound } from "next/navigation";
 import { Header } from "@/components/store/header";
-import { getCurrentProfile } from "@/lib/auth";
+import { requireProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { sendCustomerMessageAction } from "@/app/actions";
 import { MessageSquare, Send } from "lucide-react";
@@ -8,8 +7,7 @@ import { MessageSquare, Send } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default async function AccountMessagesPage() {
-  const profile = await getCurrentProfile();
-  if (!profile) notFound();
+  const profile = await requireProfile(); // redirects to /login if not authenticated
 
   const supabase = await createSupabaseServerClient();
   const { data: messages } = await supabase
