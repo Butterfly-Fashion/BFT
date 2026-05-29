@@ -5,9 +5,7 @@ import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { CartDrawer } from "@/components/store/cart-drawer";
 
-type Props = { defaultAddress?: string };
-
-export function CartButton({ defaultAddress = "" }: Props) {
+export function CartButton() {
   const cart = useCart();
   const [open, setOpen] = useState(false);
 
@@ -28,7 +26,6 @@ export function CartButton({ defaultAddress = "" }: Props) {
       <CartDrawer
         open={open}
         onClose={() => setOpen(false)}
-        defaultAddress={defaultAddress}
       />
     </>
   );

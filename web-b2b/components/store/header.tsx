@@ -191,7 +191,7 @@ export function Header({ profile }: { profile: Profile | null }) {
               </Link>
             </>
           )}
-          <CartButton defaultAddress={profile ? `${profile.business_address}, ${profile.city}, ${profile.province} ${profile.postal_code}, ${profile.country}` : ""} />
+          <CartButton />
         </div>
       </div>
 
