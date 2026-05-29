@@ -42,7 +42,6 @@ const EMPTY = {
   name: "", slug: "", category: "", description: "",
   price: "", compare_at_price: "", weight_kg: "0.5", badge: "",
   in_stock: true, stock_qty: "", status: "active" as ProductStatus,
-  sales_channels: ["b2c"] as Array<"b2c" | "b2b">,
 };
 
 export default function ProductsDashboard() {
@@ -54,7 +53,6 @@ export default function ProductsDashboard() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [catFilter, setCatFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState<"all" | ProductStatus>("all");
-  const [channelFilter, setChannelFilter] = useState<"all" | "b2c" | "b2b">("all");
   const [selected, setSelected] = useState<DbProduct | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [totalProducts, setTotalProducts] = useState(0);
@@ -86,7 +84,6 @@ export default function ProductsDashboard() {
       if (debouncedSearch.trim()) params.set("search", debouncedSearch.trim());
       if (catFilter !== "all") params.set("category", catFilter);
       if (statusFilter !== "all") params.set("status", statusFilter);
-      if (channelFilter !== "all") params.set("channel", channelFilter);
 
       const res = await fetch(`/api/admin/products?${params.toString()}`);
       if (!res.ok) throw new Error("HTTP " + res.status);
@@ -98,7 +95,7 @@ export default function ProductsDashboard() {
     } finally {
       setLoading(false);
     }
-  }, [catFilter, channelFilter, debouncedSearch, statusFilter]);
+  }, [catFilter, debouncedSearch, statusFilter]);
 
   useEffect(() => {
     const id = window.setTimeout(() => setDebouncedSearch(search), 250);
@@ -122,7 +119,6 @@ export default function ProductsDashboard() {
       in_stock: p.in_stock,
       stock_qty: p.stock_qty != null ? String(p.stock_qty) : "",
       status: p.status,
-      sales_channels: p.sales_channels?.length ? p.sales_channels : ["b2c"],
     });
     setImages(p.images ?? []); setPending([]); setSaveMsg(null);
 
@@ -140,7 +136,6 @@ export default function ProductsDashboard() {
         in_stock: detail.in_stock,
         stock_qty: detail.stock_qty != null ? String(detail.stock_qty) : "",
         status: detail.status,
-        sales_channels: detail.sales_channels?.length ? detail.sales_channels : ["b2c"],
       });
       setImages(detail.images ?? []);
     } catch (e) {
@@ -181,10 +176,6 @@ export default function ProductsDashboard() {
       setSaveMsg({ type: "err", text: "Name, slug and price are required." });
       return;
     }
-    if (form.sales_channels.length === 0) {
-      setSaveMsg({ type: "err", text: "Choose at least one sales channel." });
-      return;
-    }
     setSaving(true); setSaveMsg(null);
     try {
       const newImgs = await uploadPending();
@@ -198,7 +189,6 @@ export default function ProductsDashboard() {
         badge: form.badge || null, in_stock: form.in_stock,
         stock_qty: form.stock_qty ? parseInt(form.stock_qty) : null,
         status: form.status, images: allImages,
-        sales_channels: form.sales_channels.length ? form.sales_channels : ["b2c"],
       };
       const url = isNew ? "/api/admin/products" : "/api/admin/products/" + selected!.id;
       const res = await fetch(url, { method: isNew ? "POST" : "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
@@ -271,12 +261,6 @@ export default function ProductsDashboard() {
               <option value="draft">Draft</option>
               <option value="archived">Archived</option>
             </select>
-            <select value={channelFilter} onChange={(e) => setChannelFilter(e.target.value as "all" | "b2c" | "b2b")}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#C41E3A]">
-              <option value="all">All channels</option>
-              <option value="b2c">B2C Store</option>
-              <option value="b2b">B2B Wholesale</option>
-            </select>
           </div>
         </div>
       </div>
@@ -304,7 +288,6 @@ export default function ProductsDashboard() {
                     <th className="px-4 py-3 font-bold hidden md:table-cell">Category</th>
                     <th className="px-4 py-3 font-bold">Price</th>
                   <th className="px-4 py-3 font-bold hidden md:table-cell">Stock</th>
-                  <th className="px-4 py-3 font-bold hidden lg:table-cell">Channel</th>
                   <th className="px-4 py-3 font-bold">Status</th>
                   </tr>
                 </thead>
@@ -341,16 +324,6 @@ export default function ProductsDashboard() {
                           {p.stock_qty != null
                             ? <span className={`text-xs font-semibold ${p.stock_qty <= 5 ? "text-red-500" : "text-gray-600"}`}>{p.stock_qty} units</span>
                             : <span className="text-xs text-gray-400">-</span>}
-                        </td>
-                        <td className="px-4 py-3 hidden lg:table-cell">
-                          <div className="flex flex-wrap gap-1">
-                            {(p.sales_channels?.length ? p.sales_channels : ["b2c"]).includes("b2c") && (
-                              <span className="rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-700">B2C</span>
-                            )}
-                            {(p.sales_channels?.length ? p.sales_channels : ["b2c"]).includes("b2b") && (
-                              <span className="rounded-full border border-green-200 bg-green-50 px-2 py-0.5 text-[10px] font-bold text-green-700">B2B</span>
-                            )}
-                          </div>
                         </td>
                         <td className="px-4 py-3"><StatusBadge status={p.status} /></td>
                       </tr>
@@ -420,40 +393,6 @@ export default function ProductsDashboard() {
                       <option value="archived">Archived</option>
                     </select>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-600 mb-2">Sales Channels</label>
-                  <div className="grid grid-cols-2 gap-2 rounded-xl border border-gray-200 bg-gray-50 p-3">
-                    <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={form.sales_channels.includes("b2c")}
-                        onChange={(e) => setForm((p) => ({
-                          ...p,
-                          sales_channels: e.target.checked
-                            ? Array.from(new Set([...p.sales_channels, "b2c" as const]))
-                            : p.sales_channels.filter((channel) => channel !== "b2c"),
-                        }))}
-                      />
-                      B2C Store
-                    </label>
-                    <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-gray-700">
-                      <input
-                        type="checkbox"
-                        checked={form.sales_channels.includes("b2b")}
-                        onChange={(e) => setForm((p) => ({
-                          ...p,
-                          sales_channels: e.target.checked
-                            ? Array.from(new Set([...p.sales_channels, "b2b" as const]))
-                            : p.sales_channels.filter((channel) => channel !== "b2b"),
-                        }))}
-                      />
-                      B2B Wholesale
-                    </label>
-                  </div>
-                  {form.sales_channels.length === 0 && (
-                    <p className="mt-1 text-xs font-semibold text-red-500">Choose at least one channel.</p>
-                  )}
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>

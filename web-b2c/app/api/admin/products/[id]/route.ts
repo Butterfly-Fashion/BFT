@@ -5,13 +5,6 @@ import { verifyAdminCookie } from "@/lib/admin-auth";
 
 export const dynamic = "force-dynamic";
 
-function salesChannelsFromBody(body: Record<string, unknown>) {
-  if (!("sales_channels" in body)) return undefined;
-  const raw = Array.isArray(body.sales_channels) ? body.sales_channels : ["b2c"];
-  const channels = raw.filter((channel): channel is "b2c" | "b2b" => channel === "b2c" || channel === "b2b");
-  return channels.length ? channels : ["b2c"];
-}
-
 // GET /api/admin/products/[id] — full product details for edit panel
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const isAuthenticated = await verifyAdminCookie();
@@ -20,7 +13,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const { id } = await params;
   const supabase = supabaseAdmin();
   const { data, error } = await supabase
-    .from("products")
+    .from("b2c_products")
     .select("*")
     .eq("id", id)
     .single();
@@ -40,9 +33,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const supabase = supabaseAdmin();
   const stripe = stripeClient();
 
-  // Fetch current product to compare price
   const { data: current, error: fetchErr } = await supabase
-    .from("products")
+    .from("b2c_products")
     .select("*")
     .eq("id", id)
     .single();
@@ -55,15 +47,6 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   for (const f of fields) {
     if (f in body) updates[f] = body[f];
   }
-  if (body.price != null) {
-    updates.unit_price = body.price;
-    updates.base_price = body.price;
-  }
-  if (body.status === "archived") updates.is_hidden = true;
-  if (body.status === "active") updates.is_hidden = false;
-  if (body.in_stock != null) updates.availability_status = body.in_stock === false ? "Hidden" : "Available";
-  const salesChannels = salesChannelsFromBody(body);
-  if (salesChannels) updates.sales_channels = salesChannels;
 
   // If price changed: archive old Stripe Price, create new one
   if (body.price != null && body.price !== current.price && current.stripe_product_id) {
@@ -84,7 +67,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   }
 
   const { data, error } = await supabase
-    .from("products")
+    .from("b2c_products")
     .update(updates)
     .eq("id", id)
     .select("*")
@@ -103,13 +86,13 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
   const supabase = supabaseAdmin();
   const stripe = stripeClient();
 
-  const { data: current } = await supabase.from("products").select("stripe_product_id").eq("id", id).single();
+  const { data: current } = await supabase.from("b2c_products").select("stripe_product_id").eq("id", id).single();
 
   if (current?.stripe_product_id) {
     await stripe.products.update(current.stripe_product_id, { active: false }).catch(() => {});
   }
 
-  const { error } = await supabase.from("products").update({ status: "archived" }).eq("id", id);
+  const { error } = await supabase.from("b2c_products").update({ status: "archived" }).eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ success: true });
 }

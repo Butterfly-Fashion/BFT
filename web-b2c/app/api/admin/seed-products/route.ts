@@ -26,8 +26,6 @@ const CATEGORY_WEIGHTS: Record<string, number> = {
   "Sticker Packs": 0.15,
 };
 
-const STICKER_GRADIENT = "linear-gradient(145deg, #0d3b6e 0%, #1565c0 100%)";
-
 const EXTRA_PRODUCTS = [
   {
     slug: "panini-fifa-world-cup-2026-sticker-box-50-packs",
@@ -88,7 +86,7 @@ export async function POST() {
   let skipped = 0;
   const errors: string[] = [];
 
-  // Build full product list — EXTRA_PRODUCTS first so they're never skipped by timeout
+  // EXTRA_PRODUCTS first so they're never skipped by timeout
   const allProducts = [
     ...EXTRA_PRODUCTS.map((p) => ({
       slug: p.slug,
@@ -116,9 +114,8 @@ export async function POST() {
 
   for (const p of allProducts) {
     try {
-      // Check if already exists in Supabase
       const { data: existing } = await supabase
-        .from("products")
+        .from("b2c_products")
         .select("id, stripe_product_id, stripe_price_id")
         .eq("slug", p.slug)
         .single();
@@ -126,7 +123,6 @@ export async function POST() {
       let stripeProductId = existing?.stripe_product_id;
       let stripePriceId = existing?.stripe_price_id;
 
-      // Create Stripe Product/Price if not already linked
       if (!stripeProductId) {
         const sp = await stripe.products.create({
           name: p.name,
@@ -145,7 +141,7 @@ export async function POST() {
         stripePriceId = sp.id;
       }
 
-      await supabase.from("products").upsert(
+      await supabase.from("b2c_products").upsert(
         {
           slug: p.slug,
           name: p.name,
@@ -159,7 +155,6 @@ export async function POST() {
           stock_qty: null,
           status: "active",
           images: [{ url: p.image_url, alt: p.name }],
-          sales_channels: ["b2c"],
           player_cards: p.player_cards,
           stripe_product_id: stripeProductId,
           stripe_price_id: stripePriceId,
