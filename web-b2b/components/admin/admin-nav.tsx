@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef, useState } from "react";
 import {
   Package, LayoutDashboard, ShoppingBag, Users,
   ClipboardList, FileText, ExternalLink, LogOut,
@@ -45,6 +46,68 @@ function isGroup(item: NavItem | NavGroup): item is NavGroup {
   return "items" in item;
 }
 
+function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean }) {
+  const [open, setOpen] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function show() {
+    if (timer.current) clearTimeout(timer.current);
+    setOpen(true);
+  }
+
+  function hide() {
+    timer.current = setTimeout(() => setOpen(false), 120);
+  }
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+    >
+      {/* Trigger */}
+      <button
+        type="button"
+        className="flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold transition-colors select-none"
+        style={anyActive || open
+          ? { background: "var(--primary-light)", color: "var(--primary)" }
+          : { color: "#6B7280" }
+        }
+      >
+        {group.label}
+        <ChevronDown
+          size={11}
+          className="transition-transform duration-150"
+          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+        />
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div
+          className="absolute left-0 top-full z-50 min-w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
+          style={{ marginTop: 2 }}
+          onMouseEnter={show}
+          onMouseLeave={hide}
+        >
+          {group.items.map(({ label, href, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold transition-colors hover:bg-slate-50"
+              style={{ color: "#374151" }}
+              onClick={() => setOpen(false)}
+            >
+              <Icon size={13} className="shrink-0 text-slate-400" />
+              {label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function AdminNav() {
   const pathname = usePathname();
 
@@ -55,10 +118,9 @@ export function AdminNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white shadow-sm">
       <div className="container-shell flex min-h-14 items-center gap-4">
-
         {/* Brand */}
         <Link href="/admin" className="flex shrink-0 items-center gap-2">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-(--primary) text-white">
+          <span className="grid h-7 w-7 place-items-center rounded-md text-white" style={{ background: "var(--primary)" }}>
             <Package size={14} />
           </span>
           <span className="text-xs font-black uppercase tracking-wider text-slate-700">Admin Desk</span>
@@ -84,50 +146,14 @@ export function AdminNav() {
                 </Link>
               );
             }
-
-            const groupActive = entry.items.some((i) => active(i.href, i.exact));
-
-            return (
-              <div key={entry.label} className="group relative">
-                {/* Trigger */}
-                <button
-                  className="flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold transition-colors"
-                  style={groupActive ? { background: "var(--primary-light)", color: "var(--primary)" } : { color: "#6B7280" }}
-                  tabIndex={0}
-                  type="button"
-                >
-                  {entry.label}
-                  <ChevronDown size={11} className="transition-transform duration-150 group-hover:rotate-180" />
-                </button>
-
-                {/* Dropdown — shown on group hover */}
-                <div className="invisible absolute left-0 top-full z-50 mt-1 min-w-44 overflow-hidden rounded-xl border border-slate-200 bg-white opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:opacity-100">
-                  {entry.items.map(({ label, href, icon: Icon }) => {
-                    const on = active(href);
-                    return (
-                      <Link
-                        key={href}
-                        href={href}
-                        className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold transition-colors hover:bg-slate-50"
-                        style={on ? { color: "var(--primary)", background: "var(--primary-light)" } : { color: "#374151" }}
-                      >
-                        <Icon size={13} className="shrink-0" style={{ color: on ? "var(--primary)" : "#9CA3AF" }} />
-                        {label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            );
+            const anyActive = entry.items.some((i) => active(i.href, i.exact));
+            return <NavDropdown key={entry.label} group={entry} anyActive={anyActive} />;
           })}
         </nav>
 
-        {/* Right actions */}
+        {/* Right */}
         <div className="ml-auto flex shrink-0 items-center gap-2">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 rounded-md px-3 py-2 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-100"
-          >
+          <Link href="/" className="flex items-center gap-1.5 rounded-md px-3 py-2 text-xs font-bold text-slate-600 transition-colors hover:bg-slate-100">
             <ExternalLink size={12} /> Storefront
           </Link>
           <form action={logoutAction}>
@@ -136,7 +162,6 @@ export function AdminNav() {
             </button>
           </form>
         </div>
-
       </div>
     </header>
   );

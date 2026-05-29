@@ -44,6 +44,13 @@ function CategoryNavLinks() {
         );
       })}
       <Link
+        href="/preorders"
+        className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
+        style={pathname === "/preorders" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
+      >
+        Pre-orders
+      </Link>
+      <Link
         href="/about"
         className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
         style={pathname === "/about" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
