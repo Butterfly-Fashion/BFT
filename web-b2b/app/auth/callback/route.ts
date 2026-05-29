@@ -14,6 +14,5 @@ export async function GET(request: Request) {
     }
   }
 
-  // Email confirmed but something went wrong — send to login with message
-  return NextResponse.redirect(`${origin}/login?verified=1`);
+  return NextResponse.redirect(`${origin}/login`);
 }

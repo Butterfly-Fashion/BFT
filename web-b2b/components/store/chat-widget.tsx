@@ -31,42 +31,46 @@ export function ChatWidget() {
   const fileRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Hide when cart is open or on admin/auth pages
-  if (
+  const shouldHide =
     cartOpen ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/register") ||
     pathname.startsWith("/forgot-password") ||
     pathname.startsWith("/reset-password") ||
-    pathname.startsWith("/auth")
-  ) return null;
+    pathname.startsWith("/auth");
 
   // Load profile once
   useEffect(() => {
+    if (shouldHide) return;
+
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
       const { data } = await supabase.from("profiles").select("id").eq("auth_user_id", user.id).single();
       if (data) setProfileId(data.id);
     })();
-  }, []);
+  }, [shouldHide]);
 
   // Load messages when opened
   useEffect(() => {
-    if (!open || !profileId) return;
+    if (shouldHide || !open || !profileId) return;
     supabase
       .from("b2b_messages")
       .select("id,content,image_url,is_from_admin,created_at")
       .eq("profile_id", profileId)
       .order("created_at", { ascending: true })
       .then(({ data }) => setMessages((data as Message[]) || []));
-  }, [open, profileId]);
+  }, [open, profileId, shouldHide]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if (open) setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
-  }, [messages, open]);
+    if (!shouldHide && open) setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+  }, [messages, open, shouldHide]);
+
+  // Hide when cart is open or on admin/auth pages. Keep this after hooks so route
+  // changes never alter the hook call order for the root-mounted widget.
+  if (shouldHide) return null;
 
   async function handleFile(file: File) {
     if (!file.type.startsWith("image/") || file.size > 5 * 1024 * 1024) return;

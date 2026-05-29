@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Package, LayoutDashboard, ShoppingBag, Users,
   ClipboardList, FileText, ExternalLink, LogOut,
   CalendarClock, Tag, UserCheck, Mail, MessageSquare,
-  ChevronDown,
+  ChevronDown, ShieldCheck,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
@@ -21,6 +21,7 @@ const NAV: (NavItem | NavGroup)[] = [
     items: [
       { label: "Approvals",     href: "/admin/approvals",  icon: UserCheck },
       { label: "Customer list", href: "/admin/customers",  icon: Users },
+      { label: "Administrators", href: "/admin/admins",    icon: ShieldCheck },
       { label: "Messages",      href: "/admin/messages",   icon: MessageSquare },
       { label: "Newsletter",    href: "/admin/newsletter", icon: Mail },
     ],
@@ -48,6 +49,7 @@ function isGroup(item: NavItem | NavGroup): item is NavGroup {
 
 function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean }) {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function show() {
@@ -59,8 +61,37 @@ function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean
     timer.current = setTimeout(() => setOpen(false), 120);
   }
 
+  function openDropdown() {
+    if (timer.current) clearTimeout(timer.current);
+    setOpen(true);
+  }
+
+  useEffect(() => {
+    function onPointerDown(event: PointerEvent) {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
   return (
     <div
+      ref={dropdownRef}
       className="relative"
       onMouseEnter={show}
       onMouseLeave={hide}
@@ -68,6 +99,9 @@ function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean
       {/* Trigger */}
       <button
         type="button"
+        aria-expanded={open}
+        aria-haspopup="menu"
+        onClick={openDropdown}
         className="flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold transition-colors select-none"
         style={anyActive || open
           ? { background: "var(--primary-light)", color: "var(--primary)" }
@@ -85,8 +119,9 @@ function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean
       {/* Dropdown */}
       {open && (
         <div
+          role="menu"
           className="absolute left-0 top-full z-50 min-w-44 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg"
-          style={{ marginTop: 2 }}
+          style={{ marginTop: 0 }}
           onMouseEnter={show}
           onMouseLeave={hide}
         >
@@ -94,6 +129,7 @@ function NavDropdown({ group, anyActive }: { group: NavGroup; anyActive: boolean
             <Link
               key={href}
               href={href}
+              role="menuitem"
               className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold transition-colors hover:bg-slate-50"
               style={{ color: "#374151" }}
               onClick={() => setOpen(false)}
@@ -129,7 +165,7 @@ export function AdminNav() {
         <span className="h-5 w-px shrink-0 bg-slate-200" />
 
         {/* Nav */}
-        <nav className="flex flex-1 items-center gap-0.5 overflow-x-auto">
+        <nav className="flex flex-1 items-center gap-0.5 overflow-visible">
           {NAV.map((entry) => {
             if (!isGroup(entry)) {
               const on = active(entry.href, entry.exact);

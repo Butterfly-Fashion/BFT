@@ -255,13 +255,28 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message || "Please check the highlighted account details and try again.", values: safeValues };
 
+  try {
+    return await _registerActionInner(parsed.data, safeValues, raw);
+  } catch (err: unknown) {
+    // Re-throw Next.js internal redirect/notFound errors — they must propagate
+    if (err && typeof err === "object" && "digest" in err) throw err;
+    console.error("[registerAction] unhandled error:", errorMessage(err));
+    return { error: "Something went wrong. Please try again, or contact us if the issue continues.", values: safeValues };
+  }
+}
+
+async function _registerActionInner(
+  data: ReturnType<typeof registerSchema.parse>,
+  safeValues: Record<string, string>,
+  raw: Record<string, string>
+): Promise<RegisterState> {
   const admin = createSupabaseAdminClient();
 
   // Pre-check: existing email in profiles (avoids confusing Supabase errors)
   const { data: existingProfile } = await admin
     .from("profiles")
     .select("id")
-    .eq("email", parsed.data.email.toLowerCase())
+    .eq("email", data.email.toLowerCase())
     .maybeSingle();
   if (existingProfile) {
     return { error: "An account with this email already exists. Please sign in or use a different email.", values: safeValues };
@@ -271,8 +286,8 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   // affect the public signUp() endpoint. Email confirmation is handled by our
   // own SMTP email below, not Supabase's built-in flow.
   const { data: authData, error: authError } = await admin.auth.admin.createUser({
-    email: parsed.data.email,
-    password: parsed.data.password,
+    email: data.email,
+    password: data.password,
     email_confirm: true, // mark confirmed so user can log in immediately
   });
   if (authError || !authData.user) {
@@ -282,21 +297,21 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   const profileError = await insertProfileWithSchemaFallback(admin, {
     auth_user_id: authData.user.id,
     role: "customer",
-    business_name: parsed.data.business_name,
-    contact_name: parsed.data.contact_name,
-    email: parsed.data.email,
-    phone: parsed.data.phone || "",
-    business_address: parsed.data.business_address,
-    city: parsed.data.city,
-    province: parsed.data.province,
-    postal_code: parsed.data.postal_code,
-    country: parsed.data.country,
-    business_type: parsed.data.business_type,
+    business_name: data.business_name,
+    contact_name: data.contact_name,
+    email: data.email,
+    phone: data.phone || "",
+    business_address: data.business_address,
+    city: data.city,
+    province: data.province,
+    postal_code: data.postal_code,
+    country: data.country,
+    business_type: data.business_type,
     is_b2b_approved: false,
-    tax_number: parsed.data.tax_number || null,
-    website: parsed.data.website || null,
-    notes: parsed.data.notes || null,
-    preferred_delivery_method: parsed.data.preferred_delivery_method || null,
+    tax_number: data.tax_number || null,
+    website: data.website || null,
+    notes: data.notes || null,
+    preferred_delivery_method: data.preferred_delivery_method || null,
   });
   if (profileError) {
     console.error("[register profile create failed]", profileError.message);
@@ -310,8 +325,8 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   if (raw.newsletter_consent === "on") {
     await admin.from("newsletter_subscribers").upsert(
       {
-        email: parsed.data.email,
-        name: parsed.data.business_name || parsed.data.contact_name,
+        email: data.email,
+        name: data.business_name || data.contact_name,
         source: "b2b",
         subscribed_at: new Date().toISOString(),
       },
@@ -320,9 +335,9 @@ export async function registerAction(_prevState: RegisterState, formData: FormDa
   }
 
   await sendEmail({
-    to: parsed.data.email,
+    to: data.email,
     subject: "Butterfly Fashion Trading — account created",
-    html: registrationEmail(parsed.data.contact_name || parsed.data.business_name, siteUrl()),
+    html: registrationEmail(data.contact_name || data.business_name, siteUrl()),
   });
 
   redirect("/login?registered=1");
