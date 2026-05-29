@@ -9,6 +9,8 @@ export interface CollectionPage {
   intro: string;
   category?: string;
   match?: (product: Product) => boolean;
+  /** When set, this page defers to another canonical URL (excluded from sitemap). */
+  canonicalUrl?: string;
 }
 
 export interface TeamPage {
@@ -110,6 +112,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Canada is a host nation for World Cup 2026. Show your support with fan gear made for Toronto match days, car parades, watch parties, and outdoor fan zones. Ships same day from our North York warehouse.",
     match: (product) => product.name.toLowerCase().includes("canada"),
+    canonicalUrl: "/collections/canada-2026-fan-gear",
   },
   {
     slug: "world-cup-merchandise-canada",
@@ -120,6 +123,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Browse the full range of World Cup 2026 merchandise available in Canada. All items are in stock and ship from our Toronto warehouse — perfect for fans, collectors, and gift-givers across Canada.",
     match: () => true,
+    canonicalUrl: "/collections/world-cup-gifts",
   },
   {
     slug: "best-fifa-2026-merch-canada",
@@ -130,6 +134,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Looking for FIFA 2026 merch in Canada? Start with practical match-day gear: caps for everyday wear, bucket hats for outdoor fan zones, car flags for the drive, stickers for collectors, and small souvenirs for gifts.",
     match: () => true,
+    canonicalUrl: "/collections/world-cup-gifts",
   },
   {
     slug: "world-cup-bucket-hats-toronto",
@@ -140,6 +145,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Toronto World Cup watch parties and outdoor fan zones call for gear that handles sun, crowds, and photos. Bucket hats are the practical match-day piece for summer screenings, patios, and stadium walks.",
     category: "Bucket Hats",
+    canonicalUrl: "/collections/world-cup-bucket-hats",
   },
   {
     slug: "canada-soccer-fan-gear",
@@ -150,6 +156,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Canada supporters need gear that works at home, on the road, and in the fan zone. Browse Canada soccer fan gear for World Cup 2026 watch parties, car parades, and gifts.",
     match: (product) => product.name.toLowerCase().includes("canada"),
+    canonicalUrl: "/collections/canada-2026-fan-gear",
   },
   {
     slug: "world-cup-party-supplies-canada",
@@ -160,6 +167,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Set up a World Cup 2026 watch party with fan gear that doubles as decor and take-home souvenirs. Car flags, stickers, bucket hats, caps, and mini souvenirs make the room feel like match day fast.",
     match: () => true,
+    canonicalUrl: "/collections/world-cup-gifts",
   },
   {
     slug: "world-cup-fan-gear-toronto",
@@ -170,6 +178,7 @@ export const collectionPages: CollectionPage[] = [
     intro:
       "Toronto is one of Canada's biggest World Cup cities. Get fan gear ready before match weeks: wearable pieces for patios and fan zones, car flags for the drive, and small souvenirs for watch party tables.",
     match: () => true,
+    canonicalUrl: "/toronto",
   },
 ];
 

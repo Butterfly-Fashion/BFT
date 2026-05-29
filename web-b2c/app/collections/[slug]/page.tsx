@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = getCollectionPage(slug);
   if (!page) return {};
-  const canonical = `/collections/${page.slug}`;
+  const canonical = page.canonicalUrl ?? `/collections/${page.slug}`;
 
   return {
     title: page.title,
@@ -35,6 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical,
     },
+    ...(page.canonicalUrl ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: page.title,
       description: page.description,

@@ -32,12 +32,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const collectionRoutes: MetadataRoute.Sitemap = collectionPages.map((page) => ({
-    url: `${base}/collections/${page.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+  const collectionRoutes: MetadataRoute.Sitemap = collectionPages
+    .filter((page) => !page.canonicalUrl)
+    .map((page) => ({
+      url: `${base}/collections/${page.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    }));
 
   const teamRoutes: MetadataRoute.Sitemap = teamPages.map((page) => ({
     url: `${base}/teams/${page.slug}`,
