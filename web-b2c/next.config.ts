@@ -19,13 +19,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "static.wixstatic.com",
-        pathname: "/media/**",
       },
       // Shopify CDN — Bucket Hat and Reversible Hat product images
       {
         protocol: "https",
         hostname: "cdn.shopify.com",
-        pathname: "/s/files/**",
       },
       // B2C Supabase storage (for when real product images are uploaded)
       {

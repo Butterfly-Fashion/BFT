@@ -3439,8 +3439,8 @@ export const blogPosts: BlogPost[] = [
   },
 
   {
-    slug: "world-cup-watch-parties-toronto",
-    title: "World Cup 2026 Watch Parties in Toronto",
+    slug: "toronto-world-cup-2026-watch-party-venues",
+    title: "Toronto World Cup 2026 Watch Party Venues Guide",
     description:
       "A Toronto-focused guide to World Cup 2026 watch parties, patio screenings, car flags, caps, bucket hats, and fan gear to prepare early.",
     publishedAt: "2026-06-15",

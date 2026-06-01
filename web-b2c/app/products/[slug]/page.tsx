@@ -17,7 +17,7 @@ import { productFaqJsonLd, productSeoFaqs, productSeoLinks, productSeoSections }
 import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
 import { ProductReviews } from "@/components/store/product-reviews";
 import Link from "next/link";
-import Image from "next/image";
+import { ProductImage } from "@/components/store/product-image";
 import type { PlayerCard, Product } from "@/lib/types";
 
 interface Props {
@@ -156,22 +156,43 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.description}
           </p>
 
-          {/* World Cup delivery deadline */}
-          {product.inStock && (
-            <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-start gap-3">
-              <span className="text-lg leading-none mt-0.5">⚽</span>
-              <div>
-                <p className="text-xs font-bold text-amber-900">Order by June 8 — arrive before kickoff</p>
-                <p className="text-xs text-amber-700 mt-0.5">World Cup opens June 12 · Ships from Toronto within 1–2 business days</p>
+          {/* World Cup delivery deadline — dynamic */}
+          {product.inStock && (() => {
+            const now = new Date();
+            const kickoff = new Date("2026-06-12T23:00:00Z");
+            const cutoff = new Date("2026-06-09T23:59:59Z");
+            if (now > kickoff) return null;
+            const isPastCutoff = now > cutoff;
+            return (
+              <div className="mb-5 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 flex items-start gap-3">
+                <span className="text-lg leading-none mt-0.5">⚽</span>
+                <div>
+                  <p className="text-xs font-bold text-amber-900">
+                    {isPastCutoff
+                      ? "Ships from Toronto within 1–2 business days"
+                      : "Order by June 9 — arrive before kickoff"}
+                  </p>
+                  <p className="text-xs text-amber-700 mt-0.5">
+                    {isPastCutoff
+                      ? "World Cup is on — order now while stock lasts"
+                      : "World Cup opens June 12 · Ships from Toronto within 1–2 business days"}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           {/* Interactive: size + qty + cart — client component */}
           <ProductActions product={product} />
 
         </div>
       </div>
+
+      {/* Parallel rarity table — sticker box & bundle only */}
+      {(product.slug === "panini-fifa-world-cup-2026-sticker-box-50-packs" ||
+        product.slug === "panini-fifa-world-cup-2026-bundle-album-sticker-box") && (
+        <RaritySection />
+      )}
 
       {/* Player cards section — sticker box only */}
       {product.playerCards && product.playerCards.length > 0 && (
@@ -285,25 +306,24 @@ function PlayerCardsSection({ cards }: { cards: PlayerCard[] }) {
     <div className="mt-16">
       <div className="mb-6">
         <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
-          Featured in This Box
+          Could your box have one of these?
         </p>
         <h2 className="text-xl font-bold text-gray-900">
-          Pull These Stars & Hundreds More
+          Rare Pulls. Iconic Stars. You Won't Know Until You Open It.
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Each 50-pack box includes stickers from all 48 World Cup nations. These are just some of the stars you could pull.
+          Every box is different. These are some of the stars buried across 50 packs — rare parallels, fan favourites, and players you'll want to keep.
         </p>
       </div>
       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
         {cards.map((card) => (
           <div key={card.name} className="group flex flex-col items-center gap-1.5">
             <div className="relative w-full aspect-2/3 rounded-xl overflow-hidden shadow-sm border border-gray-100 group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
-              <Image
+              <ProductImage
                 src={card.imageUrl}
                 alt={card.name}
-                fill
                 sizes="(max-width: 640px) 25vw, (max-width: 768px) 16vw, 12vw"
-                className="object-cover"
+                placeholderGradient="linear-gradient(145deg, #e0e0e0 0%, #c0c0c0 100%)"
               />
             </div>
             <p className="text-[10px] font-semibold text-gray-600 text-center leading-tight line-clamp-2">
@@ -312,6 +332,65 @@ function PlayerCardsSection({ cards }: { cards: PlayerCard[] }) {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+const PARALLELS = [
+  { color: "#2563eb", label: "Blue",   odds: "1 in 2 packs",     note: "Most common — still a great pull" },
+  { color: "#dc2626", label: "Red",    odds: "1 in 25 packs",    note: "Rare enough to stand out" },
+  { color: "#7c3aed", label: "Purple", odds: "1 in 200 packs",   note: "Very rare" },
+  { color: "#16a34a", label: "Green",  odds: "1 in 1,400 packs", note: "Extremely rare" },
+  { color: "#111827", label: "Black",  odds: "1 of 1",           note: "One exists in the world" },
+];
+
+function RaritySection() {
+  return (
+    <div className="mt-16">
+      <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
+        Parallel Rarity System
+      </p>
+      <h2 className="text-xl font-bold text-gray-900 mb-1">
+        What Could Be in Your Box?
+      </h2>
+      <p className="text-sm text-gray-500 mb-6">
+        Every box contains standard stickers — plus a chance at limited parallel versions of the same cards. The rarer the colour, the fewer exist in the world.
+      </p>
+
+      <div className="rounded-2xl border border-gray-100 overflow-hidden">
+        {/* header */}
+        <div className="grid grid-cols-3 bg-gray-50 px-5 py-3 text-xs font-bold uppercase tracking-widest text-gray-400">
+          <span>Parallel</span>
+          <span className="text-center">Pull Rate</span>
+          <span className="text-right">Rarity</span>
+        </div>
+
+        {PARALLELS.map((p, i) => (
+          <div
+            key={p.label}
+            className={`grid grid-cols-3 items-center px-5 py-4 ${i !== PARALLELS.length - 1 ? "border-b border-gray-100" : ""}`}
+          >
+            {/* colour swatch + label */}
+            <div className="flex items-center gap-3">
+              <span
+                className="w-4 h-4 rounded-full shrink-0 border border-black/10"
+                style={{ background: p.color }}
+              />
+              <span className="text-sm font-bold text-gray-900">{p.label}</span>
+            </div>
+
+            {/* odds */}
+            <span className="text-sm font-semibold text-gray-700 text-center">{p.odds}</span>
+
+            {/* note */}
+            <span className="text-xs text-gray-400 text-right">{p.note}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="mt-3 text-[11px] text-gray-400 px-1">
+        Pull rates are approximate. Black parallels are numbered 1/1 — only one exists per player.
+      </p>
     </div>
   );
 }

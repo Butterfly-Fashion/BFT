@@ -130,12 +130,12 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8 gap-2">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-blue-200 mb-1">
-                Official Panini · In Stock
+                Official Panini · In Stock Now
               </p>
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Start Your Collection
+                North America's World Cup.<br className="hidden sm:block" /> Start Collecting.
               </h2>
-              <p className="text-blue-200 text-sm mt-1">Begin with the album for $8.99 — add packs as you go.</p>
+              <p className="text-blue-200 text-sm mt-1">2026 is history in the making. The album is $8.99 — every pack you open is a memory.</p>
             </div>
             <Link
               href="/collections/panini-stickers"
@@ -167,9 +167,9 @@ export default function HomePage() {
               <div className="font-bold text-white text-lg leading-snug">Album + 50-Pack Box</div>
               <div className="flex items-baseline gap-2">
                 <div className="text-3xl font-black text-white">$129.99</div>
-                <div className="text-sm text-blue-300 line-through">$155</div>
+                <div className="text-sm text-blue-300 line-through">$133.99</div>
               </div>
-              <div className="text-xs text-blue-200">Save $25 · Everything in one order</div>
+              <div className="text-xs text-blue-200">One order · One shipment · Pay shipping once</div>
               <div className="mt-auto pt-3 text-sm font-semibold text-yellow-300 group-hover:underline">Get the bundle →</div>
             </Link>
           </div>
