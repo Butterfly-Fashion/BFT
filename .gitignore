@@ -1,4 +1,29 @@
+# Vercel & env
 .vercel
 .env*.local
-web-b2c/public/asset/images/
+
+# Next.js build output
+web-b2c/.next/
+web-b2b/.next/
 web/.next/
+
+# Node modules
+node_modules/
+
+# Large static asset folders (not tracked in git)
+web-b2c/public/asset/images/
+worldcup-figure/
+
+# Playwright test output & auth state
+web-b2b/test-results/
+web-b2b/tests/*-state.json
+
+# Spreadsheets & temp files
+*.xlsx
+*.xls
+
+# Loose image files in repo root (move to proper folders before committing)
+/*.webp
+/*.png
+/*.jpg
+/*.jpeg

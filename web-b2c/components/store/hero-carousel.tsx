@@ -42,75 +42,31 @@ function HeroSlide() {
   );
 }
 
-function StickerBoxSlide() {
+function StickerHeroSlide() {
+  const router = useRouter();
   return (
-    <div className="relative w-full h-full overflow-hidden bg-[#0d1b3e]">
-      {/* background pattern */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 20% 50%, #1565c0 0%, transparent 60%), radial-gradient(circle at 80% 30%, #C41E3A 0%, transparent 50%)",
-        }}
+    <div className="relative w-full h-full">
+      <Image
+        src="/asset/sticker-hero.png"
+        alt="Panini FIFA World Cup 2026 Official Sticker Collection"
+        fill
+        priority
+        className="object-cover object-center"
+        sizes="(max-width: 640px) 100vw, (max-width: 1280px) calc(100vw - 48px), 1152px"
       />
-
-      {/* content layout */}
-      <div className="relative z-10 flex h-full items-center justify-between px-[5%]">
-        {/* left — text */}
-        <div className="flex flex-col justify-center max-w-[48%]">
-          <p className="text-[#FFD700] font-black uppercase tracking-widest mb-2"
-            style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.85rem)" }}>
-            FIFA World Cup 2026 · Official Panini
-          </p>
-          <h2
-            className="text-white font-black leading-tight"
-            style={{ fontSize: "clamp(1rem, 3.5vw, 2.8rem)" }}
-          >
-            50-Pack
-            <br />
-            <span className="text-[#FFD700]">Sticker Box</span>
-          </h2>
-          <p className="text-blue-200 mt-2 leading-snug"
-            style={{ fontSize: "clamp(0.55rem, 1.1vw, 0.9rem)" }}>
-            250+ stickers · All 48 nations
-            <br />
-            Messi, Mbappé, Kane, Yamal &amp; more
-          </p>
-
-          <Link
-            href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs"
-            className="mt-4 inline-flex items-center gap-1.5 self-start bg-[#FFD700] hover:bg-yellow-400 active:scale-95 text-[#0d1b3e] font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150"
-            style={{
-              fontSize: "clamp(0.55rem, 1.2vw, 0.9rem)",
-              padding: "clamp(6px, 1vw, 12px) clamp(12px, 2.5vw, 28px)",
-            }}
-          >
-            Shop Now ›
-          </Link>
-        </div>
-
-        {/* right — product image */}
-        <div
-          className="relative flex-shrink-0"
-          style={{ width: "clamp(120px, 38%, 420px)", aspectRatio: "1/1" }}
-        >
-          <Image
-            src="/asset/stickers/world_cup_sticker_box_50.png"
-            alt="Panini FIFA World Cup 2026 Sticker Box 50 Packs"
-            fill
-            className="object-contain drop-shadow-2xl"
-            sizes="(max-width: 640px) 140px, 38vw"
-          />
-        </div>
-      </div>
-
-      {/* bottom badge strip */}
-      <div className="absolute bottom-0 left-0 right-0 bg-[#C41E3A] py-1.5 text-center">
-        <p className="text-white font-bold uppercase tracking-widest"
-          style={{ fontSize: "clamp(0.45rem, 0.9vw, 0.7rem)" }}>
-          🏆 100% Official Panini · Perfect Gift for Collectors &amp; Fans
-        </p>
-      </div>
+      <button
+        onClick={() => router.push("/collections/panini-stickers")}
+        aria-label="Shop Stickers"
+        className="absolute bg-[#FFD700] hover:bg-yellow-400 active:scale-95 text-[#0d1b3e] font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
+        style={{
+          left: "3.8%",
+          bottom: "14%",
+          fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
+          padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
+        }}
+      >
+        Shop Stickers ›
+      </button>
     </div>
   );
 }
@@ -143,8 +99,8 @@ function BundleSlide() {
 }
 
 const SLIDES: Slide[] = [
-  { id: "hero",        render: () => <HeroSlide /> },
-  { id: "sticker-box", render: () => <StickerBoxSlide /> },
+  { id: "sticker-hero", render: () => <StickerHeroSlide /> },
+  { id: "hero",         render: () => <HeroSlide /> },
 ];
 
 export function HeroCarousel() {

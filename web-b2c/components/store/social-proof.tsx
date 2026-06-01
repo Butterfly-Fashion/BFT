@@ -1,13 +1,13 @@
 const reviews = [
   {
+    quote: "Opened the whole box with my son. Pulled a Mbappé rare and he lost his mind. Best $125 I've spent.",
+    name: "David L., Toronto",
+    product: "Panini 50-Pack Sticker Box",
+  },
+  {
     quote: "Perfect for game day. Got so many compliments at the match.",
     name: "Sarah M., Toronto",
     product: "Canada Cap",
-  },
-  {
-    quote: "Shipped super fast. Quality is amazing for the price.",
-    name: "James K., Vancouver",
-    product: "Boxing Gloves",
   },
   {
     quote: "Love it. The whole family is geared up for 2026.",

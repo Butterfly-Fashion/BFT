@@ -353,6 +353,96 @@ export const teamPages: TeamPage[] = [
       "The Netherlands brings iconic orange colours to every World Cup. Find Dutch fan gear for match days, watch parties, and tournament celebrations across Canada.",
     terms: ["netherlands", "holland", "dutch"],
   },
+  {
+    slug: "colombia",
+    team: "Colombia",
+    title: "Colombia World Cup 2026 Fan Gear",
+    description:
+      "Shop Colombia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada. Great for Toronto's large Colombian community.",
+    intro:
+      "Colombia brings electric energy to every World Cup. Toronto has one of Canada's largest Colombian communities — find fan gear for match days, car parades, and watch parties.",
+    terms: ["colombia"],
+  },
+  {
+    slug: "jamaica",
+    team: "Jamaica",
+    title: "Jamaica World Cup 2026 Fan Gear",
+    description:
+      "Shop Jamaica soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Jamaica's return to the World Cup is a massive moment for fans across Toronto and Canada. Find fan gear built for match-day celebrations, car parades, and community watch parties.",
+    terms: ["jamaica"],
+  },
+  {
+    slug: "croatia",
+    team: "Croatia",
+    title: "Croatia World Cup 2026 Fan Gear",
+    description:
+      "Shop Croatia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Croatia punches above its weight every tournament. Toronto has a strong Croatian-Canadian community — find fan gear for match days, watch parties, and car parades.",
+    terms: ["croatia"],
+  },
+  {
+    slug: "poland",
+    team: "Poland",
+    title: "Poland World Cup 2026 Fan Gear",
+    description:
+      "Shop Poland soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Poland fans in Toronto and across Canada come out loud for every tournament. Find fan gear for match days, watch parties, and community celebrations.",
+    terms: ["poland"],
+  },
+  {
+    slug: "australia",
+    team: "Australia",
+    title: "Australia World Cup 2026 Fan Gear",
+    description:
+      "Shop Australia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "The Socceroos have a passionate fanbase across Canada. Find Australia fan gear for match days, watch parties, and tournament celebrations.",
+    terms: ["australia", "socceroos"],
+  },
+  {
+    slug: "belgium",
+    team: "Belgium",
+    title: "Belgium World Cup 2026 Fan Gear",
+    description:
+      "Shop Belgium soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Belgium's Golden Generation still has plenty left. Find fan gear for Canadian match days, watch parties, and car parades in Belgium colours.",
+    terms: ["belgium"],
+  },
+  {
+    slug: "ecuador",
+    team: "Ecuador",
+    title: "Ecuador World Cup 2026 Fan Gear",
+    description:
+      "Shop Ecuador soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Ecuador's growing fanbase is well-represented across Canada. Find fan gear for match days, community watch parties, and car parades.",
+    terms: ["ecuador"],
+  },
+  {
+    slug: "uruguay",
+    team: "Uruguay",
+    title: "Uruguay World Cup 2026 Fan Gear",
+    description:
+      "Shop Uruguay soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Uruguay always shows up at the World Cup. Find fan gear for match days, watch parties, and celebrations across Canada.",
+    terms: ["uruguay"],
+  },
+  {
+    slug: "saudi-arabia",
+    team: "Saudi Arabia",
+    title: "Saudi Arabia World Cup 2026 Fan Gear",
+    description:
+      "Shop Saudi Arabia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+    intro:
+      "Saudi Arabia made headlines at the last World Cup and brings passionate supporters. Find fan gear for match days and community celebrations across Canada.",
+    terms: ["saudi arabia", "saudi"],
+  },
 ];
 
 export function getCollectionPage(slug: string): CollectionPage | undefined {

@@ -3,6 +3,7 @@ import {
   BUSINESS_EMAIL,
   BUSINESS_LOCALITY,
   BUSINESS_NAME,
+  BUSINESS_PHONE,
   BUSINESS_POSTAL_CODE,
   BUSINESS_REGION,
   BUSINESS_STREET_ADDRESS,
@@ -29,6 +30,14 @@ export default function ContactPage() {
 
       <div className="space-y-8 text-sm text-gray-600">
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4 shadow-sm">
+          <div>
+            <p className="font-semibold text-gray-900 mb-1">Phone</p>
+            <a href={`tel:${BUSINESS_PHONE}`} className="text-[#C41E3A] hover:underline font-semibold">
+              {BUSINESS_PHONE}
+            </a>
+            <p className="text-gray-400 text-xs mt-1">Mon–Sat · 9 AM – 7 PM ET</p>
+          </div>
+
           <div>
             <p className="font-semibold text-gray-900 mb-1">Email</p>
             <a href={`mailto:${BUSINESS_EMAIL}`} className="text-[#C41E3A] hover:underline">

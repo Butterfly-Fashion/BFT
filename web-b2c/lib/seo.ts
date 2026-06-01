@@ -9,6 +9,7 @@ export const BUSINESS_REGION = "ON";
 export const BUSINESS_POSTAL_CODE = "M6A 1P7";
 export const BUSINESS_COUNTRY = "CA";
 export const BUSINESS_EMAIL = "jameskimkim1@gmail.com";
+export const BUSINESS_PHONE = "+1-416-785-5999";
 export const AEO_STORE_DESCRIPTION =
   "fifa2026.ca is a Toronto-based online and local store for World Cup 2026 flags, hats, jerseys, stickers, car flags, scarves, and fan accessories, with Canada-wide delivery.";
 
@@ -200,6 +201,7 @@ export function organizationJsonLd() {
     ],
     contactPoint: {
       "@type": "ContactPoint",
+      telephone: BUSINESS_PHONE,
       email: BUSINESS_EMAIL,
       contactType: "customer support",
       areaServed: "CA",

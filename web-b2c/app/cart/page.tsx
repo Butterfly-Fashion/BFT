@@ -9,6 +9,77 @@ import { calculateShipping, calculateTax, formatCAD } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 
+const ALBUM_SLUG  = "panini-fifa-world-cup-2026-official-sticker-album";
+const BOX_SLUG    = "panini-fifa-world-cup-2026-sticker-box-50-packs";
+const BUNDLE_SLUG = "panini-fifa-world-cup-2026-bundle-album-sticker-box";
+
+const UPSELL_DATA = {
+  album: {
+    name: "Panini FIFA World Cup 2026 Sticker Box – 50 Packs",
+    slug: BOX_SLUG,
+    price: 125,
+    image: "/asset/stickers/world_cup_sticker_box_50.png",
+    gradient: "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
+    message: "You have the album — now fill it.",
+    sub: "250+ stickers · All 48 nations · Rare parallels inside",
+  },
+  box: {
+    name: "Panini FIFA World Cup 2026 Official Sticker Album",
+    slug: ALBUM_SLUG,
+    price: 8.99,
+    image: "/asset/stickers/fwc26_stickerbook_cover.png",
+    gradient: "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
+    message: "Don't forget the album.",
+    sub: "670 sticker slots · All 48 nations · Only $8.99",
+  },
+};
+
+function StickerUpsell() {
+  const { items, addItem } = useCart();
+  const slugs = items.map((i) => i.slug);
+
+  const hasAlbum  = slugs.includes(ALBUM_SLUG);
+  const hasBox    = slugs.includes(BOX_SLUG);
+  const hasBundle = slugs.includes(BUNDLE_SLUG);
+
+  if (hasBundle) return null;
+
+  let upsell: typeof UPSELL_DATA.album | null = null;
+  if (hasAlbum && !hasBox)  upsell = UPSELL_DATA.album;
+  if (hasBox   && !hasAlbum) upsell = UPSELL_DATA.box;
+  if (!upsell) return null;
+
+  return (
+    <div className="rounded-xl border-2 border-[#C41E3A]/30 bg-red-50 p-4 flex items-center gap-4">
+      <div
+        className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden"
+        style={{ background: upsell.gradient }}
+      >
+        <ProductImage src={upsell.image} alt={upsell.name} placeholderGradient={upsell.gradient} sizes="56px" className="object-contain" />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-black text-gray-900">{upsell.message}</p>
+        <p className="text-xs text-gray-500 mt-0.5">{upsell.sub}</p>
+      </div>
+      <button
+        onClick={() => addItem({
+          id: upsell!.slug,
+          slug: upsell!.slug,
+          name: upsell!.name,
+          price: upsell!.price,
+          quantity: 1,
+          imageUrl: upsell!.image,
+          placeholderGradient: upsell!.gradient,
+          weightKg: upsell!.slug === BOX_SLUG ? 1.5 : 0.3,
+        })}
+        className="shrink-0 px-4 py-2 bg-[#C41E3A] text-white text-xs font-bold rounded-full hover:bg-[#A01830] transition-colors whitespace-nowrap"
+      >
+        Add {formatCAD(upsell.price)}
+      </button>
+    </div>
+  );
+}
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
   const shipping = calculateShipping(subtotal);
@@ -105,6 +176,8 @@ export default function CartPage() {
               );
             })}
           </div>
+
+          <StickerUpsell />
 
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
