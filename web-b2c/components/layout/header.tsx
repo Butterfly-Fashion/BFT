@@ -8,7 +8,11 @@ import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { ButterflyLogo } from "@/components/butterfly-logo";
-import { CartDrawer } from "@/components/store/cart-drawer";
+import dynamic from "next/dynamic";
+const CartDrawer = dynamic(
+  () => import("@/components/store/cart-drawer").then((m) => ({ default: m.CartDrawer })),
+  { ssr: false }
+);
 
 interface Category {
   id: string;
@@ -27,6 +31,27 @@ const STATIC_LINKS = [
 // Top-level categories that get dropdown treatment (in order)
 const TOP_LEVEL_SLUGS = ["fashion", "collectibles", "accessories"];
 
+// Module-level cache: shared across all Header instances, survives re-renders and navigations
+let _categoriesCache: Category[] | null = null;
+let _cachePromise: Promise<Category[]> | null = null;
+
+function fetchCategories(): Promise<Category[]> {
+  if (_categoriesCache) return Promise.resolve(_categoriesCache);
+  if (_cachePromise) return _cachePromise;
+  _cachePromise = fetch("/api/categories")
+    .then((r) => r.json())
+    .then((d) => {
+      _categoriesCache = d.categories ?? [];
+      _cachePromise = null;
+      return _categoriesCache!;
+    })
+    .catch(() => {
+      _cachePromise = null;
+      return [] as Category[];
+    });
+  return _cachePromise;
+}
+
 export function Header() {
   const router = useRouter();
   const { itemCount } = useCart();
@@ -37,10 +62,7 @@ export function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
-    fetch("/api/categories")
-      .then((r) => r.json())
-      .then((d) => setCategories(d.categories ?? []))
-      .catch(() => {});
+    fetchCategories().then(setCategories);
   }, []);
 
   const topLevel = TOP_LEVEL_SLUGS

@@ -15,7 +15,10 @@ import {
 } from "@/lib/seo";
 import { productFaqJsonLd, productSeoFaqs, productSeoLinks, productSeoSections } from "@/lib/product-seo";
 import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
-import { ProductReviews } from "@/components/store/product-reviews";
+import dynamic from "next/dynamic";
+const ProductReviews = dynamic(
+  () => import("@/components/store/product-reviews").then((m) => ({ default: m.ProductReviews }))
+);
 import Link from "next/link";
 import { ProductImage } from "@/components/store/product-image";
 import type { PlayerCard, Product } from "@/lib/types";

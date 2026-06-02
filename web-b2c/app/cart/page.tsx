@@ -200,17 +200,23 @@ export default function CartPage() {
                     {shipping === 0 ? "Free" : formatCAD(shipping)}
                   </span>
                 </div>
-                <div className="text-xs text-gray-400 flex flex-col gap-1 -mt-1">
-                  <span>Ships from Toronto · 4–7 business days</span>
-                  <Link href="/checkout" className="text-[#C41E3A] hover:underline font-medium">
-                    Or pick up free at our North York location
-                  </Link>
+                <div className="text-xs text-gray-400 -mt-1">
+                  Ships from Toronto · 4–7 business days
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Tax (HST 13%)</span>
                   <span className="font-medium text-gray-900">{formatCAD(tax)}</span>
                 </div>
               </div>
+
+              <Link
+                href="/checkout"
+                className="mt-4 block rounded-xl border border-green-200 bg-green-50 px-3 py-3 hover:bg-green-100 transition-colors"
+              >
+                <p className="text-xs font-bold text-green-900">📍 Free Local Pickup Available</p>
+                <p className="text-xs text-green-800 mt-0.5 font-medium">178 Bentworth Ave, North York, ON</p>
+                <p className="text-[11px] text-green-700 mt-0.5">Mon–Sat · 9 AM – 7 PM ET — Select at checkout</p>
+              </Link>
 
               <div className="border-t border-gray-100 mt-5 pt-4 flex justify-between text-gray-900">
                 <span className="font-bold text-lg">Estimated Total</span>

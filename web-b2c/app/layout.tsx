@@ -11,7 +11,8 @@ import { AnnouncementBar } from "@/components/layout/announcement-bar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { AEO_STORE_DESCRIPTION, jsonLd, organizationJsonLd, SITE_URL, websiteJsonLd } from "@/lib/seo";
-import ChatWidget from "@/components/support/chat-widget";
+import dynamic from "next/dynamic";
+const ChatWidget = dynamic(() => import("@/components/support/chat-widget"));
 
 const inter = Inter({
   subsets: ["latin"],

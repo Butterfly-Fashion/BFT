@@ -1,5 +1,15 @@
 import { Suspense } from "react";
-import { HeroCarousel } from "@/components/store/hero-carousel";
+import dynamic from "next/dynamic";
+const HeroCarousel = dynamic(
+  () => import("@/components/store/hero-carousel").then((m) => ({ default: m.HeroCarousel })),
+  {
+    loading: () => (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="w-full rounded-2xl bg-gray-200 animate-pulse" style={{ aspectRatio: "1717/916" }} />
+      </div>
+    ),
+  }
+);
 import { TrustStrip } from "@/components/store/trust-strip";
 import { CategoryStrip } from "@/components/store/category-strip";
 import { ProductCard } from "@/components/store/product-card";

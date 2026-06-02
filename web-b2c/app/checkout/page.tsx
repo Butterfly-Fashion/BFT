@@ -183,6 +183,7 @@ export default function CheckoutPage() {
         tax,
         total,
         createdAt: new Date().toISOString(),
+        deliveryMethod,
       };
       localStorage.setItem(`b2c-pending-${orderId}`, JSON.stringify(pendingOrder));
 
@@ -328,6 +329,9 @@ export default function CheckoutPage() {
                 <span className="text-xl">🏪</span>
                 <span className="text-sm font-bold text-gray-900">Pickup</span>
                 <span className="text-xs text-green-600 font-semibold">Free</span>
+                <span className="text-[11px] text-gray-500 leading-snug mt-0.5">
+                  178 Bentworth Ave<br />North York · M6A 1P7
+                </span>
               </button>
             </div>
           </fieldset>

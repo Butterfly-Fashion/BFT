@@ -54,6 +54,7 @@ export interface Order {
   tax: number;
   total: number;
   createdAt: string;
+  deliveryMethod?: "shipping" | "pickup";
 }
 
 export function getProvinceName(code: string): string {

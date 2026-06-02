@@ -216,24 +216,45 @@ function OrderConfirmationInner() {
             ))}
           </div>
 
-          {/* Shipping address */}
-          <div className="px-6 py-4 border-b border-gray-100">
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">
-              Shipping To
-            </p>
-            <p className="text-sm text-gray-700 leading-relaxed">
-              {order.address.firstName} {order.address.lastName}
-              <br />
-              {order.address.address}
-              {order.address.apartment && `, ${order.address.apartment}`}
-              <br />
-              {order.address.city}, {getProvinceName(order.address.province)}
-              {"  "}
-              {order.address.postalCode}
-              <br />
-              {order.address.country}
-            </p>
-          </div>
+          {/* Shipping / Pickup address */}
+          {order.deliveryMethod === "pickup" || (order.deliveryMethod == null && order.shipping === 0 && !order.address.address) ? (
+            <div className="px-6 py-4 border-b border-gray-100">
+              <div className="rounded-xl bg-green-50 border border-green-200 p-4 space-y-2">
+                <p className="text-sm font-bold text-green-900">📍 Pickup Reminder</p>
+                <p className="text-sm font-semibold text-green-800">178 Bentworth Ave, North York, ON M6A 1P7</p>
+                <p className="text-xs text-green-700 leading-5">
+                  Mon–Sat · 9 AM – 7 PM ET<br />
+                  Please wait for your confirmation email before coming to pick up.
+                </p>
+                <a
+                  href="https://maps.google.com/?q=178+Bentworth+Ave+North+York+ON"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block text-xs font-semibold text-green-700 underline hover:text-green-900"
+                >
+                  Get directions on Google Maps →
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div className="px-6 py-4 border-b border-gray-100">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">
+                Shipping To
+              </p>
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {order.address.firstName} {order.address.lastName}
+                <br />
+                {order.address.address}
+                {order.address.apartment && `, ${order.address.apartment}`}
+                <br />
+                {order.address.city}, {getProvinceName(order.address.province)}
+                {"  "}
+                {order.address.postalCode}
+                <br />
+                {order.address.country}
+              </p>
+            </div>
+          )}
 
           {/* Totals */}
           <div className="px-6 py-4">
