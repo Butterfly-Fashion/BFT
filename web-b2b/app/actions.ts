@@ -841,6 +841,8 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     case_qty: rawCaseQty ? Number(rawCaseQty) : null,
     image_url: uploadedImageUrl || String(formData.get("image_url") || "") || null,
     additional_images: additionalImages,
+    options: (() => { try { return JSON.parse(String(formData.get("options_json") || "[]")); } catch { return []; } })(),
+    variants: (() => { try { return JSON.parse(String(formData.get("variants_json") || "[]")); } catch { return []; } })(),
     category,
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
     is_bulk_available: formData.get("is_bulk_available") === "on",

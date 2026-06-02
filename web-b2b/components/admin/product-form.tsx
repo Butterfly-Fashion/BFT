@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { ImagePlus, UploadCloud, ChevronDown, ChevronRight, AlertCircle, Loader2 } from "lucide-react";
+import { ImagePlus, UploadCloud, ChevronDown, ChevronRight, AlertCircle, Loader2, X, Plus } from "lucide-react";
+import type { ProductOption, ProductVariant } from "@/lib/types";
 import { upsertProductAction } from "@/app/actions";
 import type { Category } from "@/lib/category-utils";
 import { buildCategoryTree } from "@/lib/category-utils";
@@ -68,6 +69,8 @@ type ProductFormProps = {
     stripe_sync_status?: "pending" | "synced" | "failed" | null;
     stripe_sync_error?: string | null; stripe_synced_at?: string | null;
     additional_images?: string[] | null;
+    options?: ProductOption[] | null;
+    variants?: ProductVariant[] | null;
   };
 };
 
@@ -108,6 +111,44 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const [dragging, setDragging] = useState(false);
   const [compressing, setCompressing] = useState(false);
   const [imageInfo, setImageInfo] = useState<string | null>(null);
+
+  // ── Variants / Options ────────────────────────────────────────────────────
+  const [options, setOptions] = useState<ProductOption[]>(
+    (product?.options as ProductOption[]) ?? []
+  );
+  const [variants, setVariants] = useState<ProductVariant[]>(
+    (product?.variants as ProductVariant[]) ?? []
+  );
+  const [showOptionModal, setShowOptionModal] = useState(false);
+  const [modalName, setModalName] = useState("");
+  const [modalValues, setModalValues] = useState("");
+
+  function handleAddOption() {
+    const values = modalValues.split(",").map((v) => v.trim()).filter(Boolean);
+    if (!modalName.trim() || !values.length) return;
+    setOptions((prev) => [...prev, { name: modalName.trim(), values }]);
+    const existing = new Set(variants.map((v) => v.label));
+    setVariants((prev) => [
+      ...prev,
+      ...values.filter((v) => !existing.has(v)).map((v) => ({ label: v, barcode: "" })),
+    ]);
+    setModalName("");
+    setModalValues("");
+    setShowOptionModal(false);
+  }
+
+  function removeOption(optIndex: number) {
+    const opt = options[optIndex];
+    setOptions((prev) => prev.filter((_, i) => i !== optIndex));
+    const removing = new Set(opt.values);
+    setVariants((prev) => prev.filter((v) => !removing.has(v.label)));
+  }
+
+  function updateVariantBarcode(label: string, barcode: string) {
+    setVariants((prev) =>
+      prev.map((v) => (v.label === label ? { ...v, barcode } : v))
+    );
+  }
 
   // Extra image slots
   type ExtraSlot = { previewUrl: string; compressing: boolean; info: string | null };
@@ -269,6 +310,8 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
     <form ref={formRef} action={formAction} onChange={saveDraft} className="grid gap-5">
       {product?.id && <input name="id" type="hidden" value={product.id} />}
       <input name="image_url" type="hidden" value={product?.image_url || ""} />
+      <input name="options_json" type="hidden" value={JSON.stringify(options)} />
+      <input name="variants_json" type="hidden" value={JSON.stringify(variants)} />
       {/* Extra image existing URLs — synced from extraSlots state */}
       {extraSlots.map((slot, i) => (
         <input key={i} name={`image_url_extra_${i}`} type="hidden" value={slot.previewUrl.startsWith("blob:") ? "" : slot.previewUrl} />
@@ -380,6 +423,72 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
               </label>
             </div>
           </div>
+
+          {/* Optional: variants */}
+          <CollapsibleSection
+            title="Product variants"
+            description="Color, size, or other options — each with their own barcode"
+            defaultOpen={options.length > 0}
+          >
+            <div className="space-y-4">
+              {/* Existing options */}
+              {options.map((opt, i) => (
+                <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+                  <span className="font-semibold text-slate-700">{opt.name}:</span>
+                  <span className="text-slate-500">{opt.values.join(", ")}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeOption(i)}
+                    className="ml-auto text-slate-300 hover:text-red-500 transition-colors"
+                    aria-label="Remove option"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+
+              {/* Add option button */}
+              <button
+                type="button"
+                onClick={() => setShowOptionModal(true)}
+                className="flex items-center gap-1.5 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-sm font-semibold text-slate-500 hover:border-green-500 hover:text-green-600 transition-colors"
+              >
+                <Plus size={14} /> 옵션 추가
+              </button>
+
+              {/* Variants table */}
+              {variants.length > 0 && (
+                <div>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">변형별 바코드 (UPC)</p>
+                  <div className="overflow-hidden rounded-lg border border-slate-200">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-semibold text-slate-500">
+                          <th className="px-3 py-2">변형</th>
+                          <th className="px-3 py-2">바코드 (UPC)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {variants.map((v) => (
+                          <tr key={v.label} className="border-b border-slate-100 last:border-0">
+                            <td className="px-3 py-2 font-semibold text-slate-700">{v.label}</td>
+                            <td className="px-3 py-2">
+                              <input
+                                className="field h-8 text-sm font-mono"
+                                placeholder="예: 693454880634"
+                                value={v.barcode}
+                                onChange={(e) => updateVariantBarcode(v.label, e.target.value)}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </div>
+          </CollapsibleSection>
 
           {/* Optional: inventory */}
           <CollapsibleSection title="Inventory & origin" description="Stock count, country, lead time" defaultOpen={hasInventory}>
@@ -623,6 +732,63 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
           </div>
         </div>
       </div>
+
+      {/* Option modal */}
+      {showOptionModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-base font-bold text-slate-900">제품 옵션 추가</h2>
+              <button type="button" onClick={() => setShowOptionModal(false)} className="text-slate-400 hover:text-slate-700">
+                <X size={18} />
+              </button>
+            </div>
+            <p className="mb-4 text-xs text-slate-500">나중에 제품 옵션의 가격 및 재고 목록을 관리할 수 있습니다.</p>
+
+            <div className="space-y-3">
+              <label className="label">
+                옵션 이름
+                <input
+                  className="field"
+                  placeholder="예: 색상, 사이즈"
+                  value={modalName}
+                  onChange={(e) => setModalName(e.target.value)}
+                  autoFocus
+                />
+              </label>
+              <label className="label">
+                선택 옵션 값
+                <input
+                  className="field"
+                  placeholder="쉼표로 구분 (예: ARMY, BLACK, RED)"
+                  value={modalValues}
+                  onChange={(e) => setModalValues(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddOption(); } }}
+                />
+                <span className="mt-1 block text-xs text-slate-400">쉼표(,)로 구분하거나 Enter로 추가</span>
+              </label>
+            </div>
+
+            <div className="mt-5 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => { setShowOptionModal(false); setModalName(""); setModalValues(""); }}
+                className="btn-secondary"
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                onClick={handleAddOption}
+                disabled={!modalName.trim() || !modalValues.trim()}
+                className="btn-primary disabled:opacity-40"
+              >
+                추가
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Sticky save bar */}
       <div className="sticky bottom-0 z-10 flex items-center justify-between gap-3 border-t border-slate-200 bg-white/95 px-1 py-3 backdrop-blur">

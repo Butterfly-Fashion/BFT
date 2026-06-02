@@ -38,6 +38,16 @@ export type Profile = {
   preferred_delivery_method?: DeliveryMethod | null;
 };
 
+export type ProductOption = {
+  name: string;
+  values: string[];
+};
+
+export type ProductVariant = {
+  label: string;
+  barcode: string;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -50,6 +60,8 @@ export type Product = {
   case_qty?: number | null;
   image_url?: string | null;
   additional_images?: string[] | null;
+  options?: ProductOption[] | null;
+  variants?: ProductVariant[] | null;
   category: string;
   availability_status: AvailabilityStatus;
   is_bulk_available: boolean;
