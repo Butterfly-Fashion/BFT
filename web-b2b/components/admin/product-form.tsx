@@ -67,6 +67,7 @@ type ProductFormProps = {
     stripe_product_id?: string | null; stripe_price_id?: string | null;
     stripe_sync_status?: "pending" | "synced" | "failed" | null;
     stripe_sync_error?: string | null; stripe_synced_at?: string | null;
+    additional_images?: string[] | null;
   };
 };
 
@@ -108,13 +109,24 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   const [compressing, setCompressing] = useState(false);
   const [imageInfo, setImageInfo] = useState<string | null>(null);
 
+  // Extra image slots
+  type ExtraSlot = { previewUrl: string; compressing: boolean; info: string | null };
+  const [extraSlots, setExtraSlots] = useState<ExtraSlot[]>(() =>
+    (product?.additional_images ?? []).map((url) => ({ previewUrl: url, compressing: false, info: null }))
+  );
+  const extraInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   // ── Draft persistence ──────────────────────────────────────────────────────
   const draftKey = `${DRAFT_KEY_PREFIX}-${product?.id || "new"}`;
 
   const [draftRestored, setDraftRestored] = useState(false);
 
-  // On mount: restore draft if it exists
+  // On mount: restore draft only for edit mode; clear stale "new" draft for create mode
   useEffect(() => {
+    if (mode === "create") {
+      try { localStorage.removeItem(draftKey); } catch { /* ignore */ }
+      return;
+    }
     try {
       const saved = localStorage.getItem(draftKey);
       if (!saved || !formRef.current) return;
@@ -160,6 +172,45 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
   useEffect(() => {
     return () => { if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl); };
   }, [previewUrl]);
+
+  async function handleExtraFile(index: number, file?: File) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setExtraSlots((prev) => prev.map((s, i) => i === index ? { ...s, info: "❌ Not an image file." } : s));
+      return;
+    }
+    setExtraSlots((prev) => prev.map((s, i) => i === index ? { ...s, compressing: true, info: null } : s));
+    try {
+      const originalKb = Math.round(file.size / 1024);
+      const compressed = await compressImage(file);
+      const compressedKb = Math.round(compressed.size / 1024);
+      const blobUrl = URL.createObjectURL(compressed);
+      if (extraInputRefs.current[index]) {
+        const dt = new DataTransfer();
+        dt.items.add(compressed);
+        extraInputRefs.current[index]!.files = dt.files;
+      }
+      const info = originalKb > compressedKb + 50
+        ? `✓ ${originalKb} KB → ${compressedKb} KB`
+        : `✓ ${compressedKb} KB`;
+      setExtraSlots((prev) => prev.map((s, i) => i === index ? { previewUrl: blobUrl, compressing: false, info } : s));
+    } catch {
+      setExtraSlots((prev) => prev.map((s, i) => i === index ? { ...s, compressing: false, info: "⚠️ Could not compress." } : s));
+    }
+  }
+
+  function addExtraSlot() {
+    if (extraSlots.length >= 9) return;
+    setExtraSlots((prev) => [...prev, { previewUrl: "", compressing: false, info: null }]);
+  }
+
+  function removeExtraSlot(index: number) {
+    setExtraSlots((prev) => {
+      const slot = prev[index];
+      if (slot.previewUrl.startsWith("blob:")) URL.revokeObjectURL(slot.previewUrl);
+      return prev.filter((_, i) => i !== index);
+    });
+  }
 
   // defaultCategory falls back to first available after restoring draft
   const defaultCategory = product?.category || (tree[0]?.children[0]?.name ?? tree[0]?.name ?? "");
@@ -218,6 +269,10 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
     <form ref={formRef} action={formAction} onChange={saveDraft} className="grid gap-5">
       {product?.id && <input name="id" type="hidden" value={product.id} />}
       <input name="image_url" type="hidden" value={product?.image_url || ""} />
+      {/* Extra image existing URLs — synced from extraSlots state */}
+      {extraSlots.map((slot, i) => (
+        <input key={i} name={`image_url_extra_${i}`} type="hidden" value={slot.previewUrl.startsWith("blob:") ? "" : slot.previewUrl} />
+      ))}
 
       {/* Page header */}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -375,59 +430,126 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
 
         {/* ── Right: image + visibility ── */}
         <div className="grid gap-4">
-          {/* Image */}
+          {/* Images */}
           <div className="card p-4">
-            <p className="mb-3 flex items-center text-sm font-bold text-slate-700">
-              Product image <OptionalBadge />
-            </p>
-            <input
-              ref={inputRef}
-              className="hidden"
-              name="image_file"
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFile(e.target.files?.[0])}
-            />
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={openFilePicker}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFilePicker(); }}
-              onDragEnter={(e) => { e.preventDefault(); setDragging(true); }}
-              onDragOver={(e) => e.preventDefault()}
-              onDragLeave={() => setDragging(false)}
-              onDrop={handleDrop}
-              className={`cursor-pointer rounded-lg border border-dashed p-2 transition-colors ${dragging ? "border-green-500 bg-green-50" : "border-slate-300 hover:border-green-500"}`}
-            >
-              <div className="relative aspect-square overflow-hidden rounded border border-slate-200 bg-white">
-                {compressing && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
-                    <div className="flex flex-col items-center gap-2 text-slate-500">
-                      <Loader2 size={20} className="animate-spin text-green-600" />
-                      <span className="text-xs font-semibold">Compressing…</span>
-                    </div>
+            <div className="mb-3 flex items-center justify-between">
+              <p className="flex items-center text-sm font-bold text-slate-700">
+                Product images <OptionalBadge />
+              </p>
+              <p className="text-xs text-slate-400">{1 + extraSlots.length} / 10</p>
+            </div>
+
+            {/* Hidden file inputs */}
+            <input ref={inputRef} className="hidden" name="image_file" type="file" accept="image/*" onChange={(e) => handleFile(e.target.files?.[0])} />
+            {extraSlots.map((_, i) => (
+              <input
+                key={i}
+                className="hidden"
+                name={`image_file_extra_${i}`}
+                type="file"
+                accept="image/*"
+                ref={(el) => { extraInputRefs.current[i] = el; }}
+                onChange={(e) => handleExtraFile(i, e.target.files?.[0])}
+              />
+            ))}
+
+            <div className="grid grid-cols-2 gap-2">
+              {/* Main image slot */}
+              <div className="relative">
+                <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400">Main</p>
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={openFilePicker}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") openFilePicker(); }}
+                  onDragEnter={(e) => { e.preventDefault(); setDragging(true); }}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={handleDrop}
+                  className={`cursor-pointer rounded-lg border border-dashed p-1.5 transition-colors ${dragging ? "border-green-500 bg-green-50" : "border-slate-300 hover:border-green-500"}`}
+                >
+                  <div className="relative aspect-square overflow-hidden rounded border border-slate-200 bg-white">
+                    {compressing ? (
+                      <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                        <Loader2 size={16} className="animate-spin text-green-600" />
+                      </div>
+                    ) : previewUrl ? (
+                      <img alt="main" className="h-full w-full object-contain" src={previewUrl} />
+                    ) : (
+                      <div className="grid h-full place-items-center">
+                        <ImagePlus size={20} className="text-slate-300" />
+                      </div>
+                    )}
                   </div>
-                )}
-                {previewUrl ? (
-                  <img alt="preview" className="h-full w-full object-contain" src={previewUrl} />
-                ) : (
-                  <div className="grid h-full place-items-center text-center">
-                    <span className="text-slate-400">
-                      <ImagePlus size={24} className="mx-auto mb-1.5 text-slate-300" />
-                      <span className="text-xs">Click or drag & drop</span>
-                    </span>
-                  </div>
+                </div>
+                {imageInfo && (
+                  <p className={`mt-1 text-[10px] font-semibold ${imageInfo.startsWith("✓") ? "text-green-600" : imageInfo.startsWith("❌") ? "text-red-500" : "text-amber-600"}`}>
+                    {imageInfo}
+                  </p>
                 )}
               </div>
-              <p className="mt-2 flex items-center justify-center gap-1.5 text-xs text-slate-400">
-                <UploadCloud size={12} /> Any image — auto-compressed before upload
-              </p>
+
+              {/* Extra slots */}
+              {extraSlots.map((slot, i) => (
+                <div key={i} className="relative">
+                  <div className="mb-1 flex items-center justify-between">
+                    <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Photo {i + 2}</p>
+                    <button
+                      type="button"
+                      onClick={() => removeExtraSlot(i)}
+                      className="text-[10px] font-semibold text-slate-400 hover:text-red-500 transition-colors"
+                      aria-label="Remove"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => extraInputRefs.current[i]?.click()}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") extraInputRefs.current[i]?.click(); }}
+                    className="cursor-pointer rounded-lg border border-dashed border-slate-300 p-1.5 transition-colors hover:border-green-500"
+                  >
+                    <div className="relative aspect-square overflow-hidden rounded border border-slate-200 bg-white">
+                      {slot.compressing ? (
+                        <div className="absolute inset-0 flex items-center justify-center bg-white/80">
+                          <Loader2 size={16} className="animate-spin text-green-600" />
+                        </div>
+                      ) : slot.previewUrl ? (
+                        <img alt={`photo ${i + 2}`} className="h-full w-full object-contain" src={slot.previewUrl} />
+                      ) : (
+                        <div className="grid h-full place-items-center">
+                          <ImagePlus size={20} className="text-slate-300" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {slot.info && (
+                    <p className={`mt-1 text-[10px] font-semibold ${slot.info.startsWith("✓") ? "text-green-600" : slot.info.startsWith("❌") ? "text-red-500" : "text-amber-600"}`}>
+                      {slot.info}
+                    </p>
+                  )}
+                </div>
+              ))}
+
+              {/* Add more button */}
+              {extraSlots.length < 9 && (
+                <div>
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-slate-400 invisible">Add</p>
+                  <button
+                    type="button"
+                    onClick={addExtraSlot}
+                    className="flex aspect-square w-full items-center justify-center rounded-lg border-2 border-dashed border-slate-200 text-slate-300 transition-colors hover:border-green-500 hover:text-green-500"
+                  >
+                    <span className="text-2xl leading-none">+</span>
+                  </button>
+                </div>
+              )}
             </div>
-            {imageInfo && (
-              <p className={`mt-2 text-xs font-semibold ${imageInfo.startsWith("✓") ? "text-green-600" : imageInfo.startsWith("❌") ? "text-red-500" : "text-amber-600"}`}>
-                {imageInfo}
-              </p>
-            )}
+
+            <p className="mt-2 flex items-center gap-1.5 text-xs text-slate-400">
+              <UploadCloud size={12} /> Auto-compressed before upload
+            </p>
           </div>
 
           {/* Visibility */}
