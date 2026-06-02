@@ -49,6 +49,7 @@ export type Product = {
   case_price?: number | null;
   case_qty?: number | null;
   image_url?: string | null;
+  additional_images?: string[] | null;
   category: string;
   availability_status: AvailabilityStatus;
   is_bulk_available: boolean;

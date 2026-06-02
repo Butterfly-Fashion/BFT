@@ -794,7 +794,24 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
       uploadedImageUrl = await saveProductImage(imageFile, slug);
     } catch (err) {
       console.error("[product image upload failed]", err);
-      // Continue saving product without image rather than crashing
+    }
+  }
+
+  // Additional images: up to 9 extra slots
+  const additionalImages: string[] = [];
+  for (let i = 0; i < 9; i++) {
+    const extraFile = formData.get(`image_file_extra_${i}`);
+    const existingUrl = String(formData.get(`image_url_extra_${i}`) || "").trim();
+    if (extraFile instanceof File && extraFile.size > 0) {
+      try {
+        const url = await saveProductImage(extraFile, `${slug}-extra-${i}`);
+        if (url) additionalImages.push(url);
+      } catch (err) {
+        console.error(`[extra image ${i} upload failed]`, err);
+        if (existingUrl) additionalImages.push(existingUrl);
+      }
+    } else if (existingUrl) {
+      additionalImages.push(existingUrl);
     }
   }
 
@@ -823,6 +840,7 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     case_price: rawCasePrice ? Number(rawCasePrice) : null,
     case_qty: rawCaseQty ? Number(rawCaseQty) : null,
     image_url: uploadedImageUrl || String(formData.get("image_url") || "") || null,
+    additional_images: additionalImages,
     category,
     availability_status: String(formData.get("availability_status") || "Manual Confirm"),
     is_bulk_available: formData.get("is_bulk_available") === "on",

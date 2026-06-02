@@ -113,28 +113,22 @@ export default async function AdminProductsPage({
         {/* Table */}
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div className="overflow-auto">
-            <table className="w-full min-w-[1300px] table-fixed text-sm">
+            <table className="w-full min-w-175 table-fixed text-sm">
               <colgroup>
-                <col className="w-[330px]" />
-                <col className="w-[120px]" />
-                <col className="w-[220px]" />
-                <col className="w-[100px]" />
-                <col className="w-[130px]" />
-                <col className="w-[135px]" />
-                <col className="w-[105px]" />
-                <col className="w-[120px]" />
-                <col className="w-[105px]" />
+                <col className="w-80" />
+                <col className="w-32" />
+                <col className="w-27.5" />
+                <col className="w-37.5" />
+                <col className="w-30" />
+                <col className="w-25" />
               </colgroup>
               <thead>
                 <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Product</th>
                   <th className="px-5 py-3">Category</th>
-                  <th className="px-5 py-3">SKU</th>
                   <th className="px-5 py-3">Unit price</th>
                   <th className="px-5 py-3">Availability</th>
-                  <th className="px-5 py-3">Channels</th>
                   <th className="px-5 py-3">Visibility</th>
-                  <th className="px-5 py-3">Stripe</th>
                   <th className="px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -161,37 +155,13 @@ export default async function AdminProductsPage({
                         {product.category}
                       </span>
                     </td>
-                    <td className="px-5 py-3">
-                      <span className="block max-w-full truncate font-mono text-[11px] font-semibold text-slate-600" title={product.sku}>
-                        {product.sku}
-                      </span>
-                    </td>
                     <td className="px-5 py-3 whitespace-nowrap font-black">{formatMoney(product.unit_price)}</td>
                     <td className="px-5 py-3"><span className="badge max-w-full justify-center text-center">{product.availability_status}</span></td>
-                    <td className="px-5 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {((product.sales_channels || ["b2b"]) as string[]).includes("b2c") && (
-                          <span className="badge border-blue-200 bg-blue-50 text-blue-700">B2C</span>
-                        )}
-                        {((product.sales_channels || ["b2b"]) as string[]).includes("b2b") && (
-                          <span className="badge border-green-200 bg-green-50 text-green-800">B2B</span>
-                        )}
-                      </div>
-                    </td>
                     <td className="px-5 py-3">
                       {product.is_hidden ? (
                         <span className="badge justify-center border-slate-300 bg-slate-100 text-slate-600">Hidden</span>
                       ) : (
                         <span className="badge justify-center border-emerald-200 bg-emerald-50 text-emerald-800">Visible</span>
-                      )}
-                    </td>
-                    <td className="px-5 py-3">
-                      {product.stripe_sync_status === "synced" ? (
-                        <span className="badge justify-center border-emerald-200 bg-emerald-50 text-emerald-800">Synced</span>
-                      ) : product.stripe_sync_status === "failed" ? (
-                        <span className="badge justify-center border-red-200 bg-red-50 text-red-700">Failed</span>
-                      ) : (
-                        <span className="badge justify-center border-amber-200 bg-amber-50 text-amber-800">Pending</span>
                       )}
                     </td>
                     <td className="px-5 py-3 text-right">
