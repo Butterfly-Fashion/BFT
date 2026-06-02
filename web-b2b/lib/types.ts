@@ -62,6 +62,7 @@ export type Product = {
   additional_images?: string[] | null;
   options?: ProductOption[] | null;
   variants?: ProductVariant[] | null;
+  internal_notes?: string | null;
   category: string;
   availability_status: AvailabilityStatus;
   is_bulk_available: boolean;

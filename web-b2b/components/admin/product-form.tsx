@@ -71,6 +71,7 @@ type ProductFormProps = {
     additional_images?: string[] | null;
     options?: ProductOption[] | null;
     variants?: ProductVariant[] | null;
+    internal_notes?: string | null;
   };
 };
 
@@ -535,6 +536,24 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
               <label className="label">Barcode<input className="field" name="barcode" defaultValue={product?.barcode || ""} placeholder="—" /></label>
             </div>
           </CollapsibleSection>
+
+          {/* Internal staff notes */}
+          <div className="card p-5">
+            <div className="mb-3 flex items-center gap-2">
+              <p className="text-sm font-bold text-slate-700">직원 메모</p>
+              <span className="rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">직원 전용</span>
+            </div>
+            <textarea
+              className="field min-h-24 resize-y text-sm"
+              name="internal_notes"
+              defaultValue={product?.internal_notes || ""}
+              placeholder="공급처 정보, 특이사항, 주의사항 등 내부 메모. 고객에게 표시되지 않습니다."
+            />
+            <p className="mt-2 flex items-center gap-1 text-xs text-amber-700">
+              <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 shrink-0 fill-current"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12.5A5.5 5.5 0 118 2.5a5.5 5.5 0 010 11zM7.25 5.5h1.5v1.5h-1.5zm0 3h1.5v4h-1.5z"/></svg>
+              고객 및 B2B 구매자에게는 표시되지 않는 내부 전용 필드입니다.
+            </p>
+          </div>
         </div>
 
         {/* ── Right: image + visibility ── */}
