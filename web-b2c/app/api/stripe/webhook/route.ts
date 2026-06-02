@@ -108,6 +108,8 @@ async function saveOrderToSupabase(
         channel: "b2c",
         delivery_method: meta.delivery_method ?? "shipping",
         status: "paid",
+        payment_status: "paid",
+        paid_at: new Date().toISOString(),
         customer_email: session.customer_email,
         customer_name: meta.shipping_name ?? null,
         shipping_address: meta.shipping_address
