@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useEffect, useRef, useState } from "react";
-import { ImagePlus, UploadCloud, ChevronDown, ChevronRight, AlertCircle, Loader2, X, Plus } from "lucide-react";
+import { ImagePlus, UploadCloud, ChevronDown, ChevronRight, AlertCircle, Loader2, X, Plus, Pencil } from "lucide-react";
 import type { ProductOption, ProductVariant } from "@/lib/types";
 import { upsertProductAction } from "@/app/actions";
 import type { Category } from "@/lib/category-utils";
@@ -121,18 +121,50 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
     (product?.variants as ProductVariant[]) ?? []
   );
   const [showOptionModal, setShowOptionModal] = useState(false);
+  const [editingOptionIndex, setEditingOptionIndex] = useState<number | null>(null);
   const [modalName, setModalName] = useState("");
   const [modalValues, setModalValues] = useState("");
 
-  function handleAddOption() {
+  function openAddOption() {
+    setEditingOptionIndex(null);
+    setModalName("");
+    setModalValues("");
+    setShowOptionModal(true);
+  }
+
+  function openEditOption(index: number) {
+    setEditingOptionIndex(index);
+    setModalName(options[index].name);
+    setModalValues(options[index].values.join(", "));
+    setShowOptionModal(true);
+  }
+
+  function handleSaveOption() {
     const values = modalValues.split(",").map((v) => v.trim()).filter(Boolean);
     if (!modalName.trim() || !values.length) return;
-    setOptions((prev) => [...prev, { name: modalName.trim(), values }]);
-    const existing = new Set(variants.map((v) => v.label));
-    setVariants((prev) => [
-      ...prev,
-      ...values.filter((v) => !existing.has(v)).map((v) => ({ label: v, barcode: "" })),
-    ]);
+
+    if (editingOptionIndex !== null) {
+      // Edit mode: replace the option and reconcile variants
+      const oldValues = new Set(options[editingOptionIndex].values);
+      const newValues = new Set(values);
+      setOptions((prev) => prev.map((opt, i) => i === editingOptionIndex ? { name: modalName.trim(), values } : opt));
+      // Remove variants that no longer exist, add new ones
+      setVariants((prev) => {
+        const kept = prev.filter((v) => !oldValues.has(v.label) || newValues.has(v.label));
+        const existing = new Set(kept.map((v) => v.label));
+        const added = values.filter((v) => !existing.has(v)).map((v) => ({ label: v, barcode: "" }));
+        return [...kept, ...added];
+      });
+    } else {
+      // Add mode
+      setOptions((prev) => [...prev, { name: modalName.trim(), values }]);
+      const existing = new Set(variants.map((v) => v.label));
+      setVariants((prev) => [
+        ...prev,
+        ...values.filter((v) => !existing.has(v)).map((v) => ({ label: v, barcode: "" })),
+      ]);
+    }
+
     setModalName("");
     setModalValues("");
     setShowOptionModal(false);
@@ -437,21 +469,31 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 <div key={i} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
                   <span className="font-semibold text-slate-700">{opt.name}:</span>
                   <span className="text-slate-500">{opt.values.join(", ")}</span>
-                  <button
-                    type="button"
-                    onClick={() => removeOption(i)}
-                    className="ml-auto text-slate-300 hover:text-red-500 transition-colors"
-                    aria-label="Remove option"
-                  >
-                    <X size={14} />
-                  </button>
+                  <div className="ml-auto flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => openEditOption(i)}
+                      className="text-slate-300 hover:text-blue-500 transition-colors"
+                      aria-label="Edit option"
+                    >
+                      <Pencil size={13} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeOption(i)}
+                      className="text-slate-300 hover:text-red-500 transition-colors"
+                      aria-label="Remove option"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
                 </div>
               ))}
 
               {/* Add option button */}
               <button
                 type="button"
-                onClick={() => setShowOptionModal(true)}
+                onClick={() => openAddOption()}
                 className="flex items-center gap-1.5 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-sm font-semibold text-slate-500 hover:border-green-500 hover:text-green-600 transition-colors"
               >
                 <Plus size={14} /> 옵션 추가
@@ -757,7 +799,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-base font-bold text-slate-900">제품 옵션 추가</h2>
+              <h2 className="text-base font-bold text-slate-900">{editingOptionIndex !== null ? "제품 옵션 수정" : "제품 옵션 추가"}</h2>
               <button type="button" onClick={() => setShowOptionModal(false)} className="text-slate-400 hover:text-slate-700">
                 <X size={18} />
               </button>
@@ -782,7 +824,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                   placeholder="쉼표로 구분 (예: ARMY, BLACK, RED)"
                   value={modalValues}
                   onChange={(e) => setModalValues(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddOption(); } }}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleSaveOption(); } }}
                 />
                 <span className="mt-1 block text-xs text-slate-400">쉼표(,)로 구분하거나 Enter로 추가</span>
               </label>
@@ -791,18 +833,18 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
             <div className="mt-5 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => { setShowOptionModal(false); setModalName(""); setModalValues(""); }}
+                onClick={() => { setShowOptionModal(false); setEditingOptionIndex(null); setModalName(""); setModalValues(""); }}
                 className="btn-secondary"
               >
                 취소
               </button>
               <button
                 type="button"
-                onClick={handleAddOption}
+                onClick={handleSaveOption}
                 disabled={!modalName.trim() || !modalValues.trim()}
                 className="btn-primary disabled:opacity-40"
               >
-                추가
+                {editingOptionIndex !== null ? "저장" : "추가"}
               </button>
             </div>
           </div>
