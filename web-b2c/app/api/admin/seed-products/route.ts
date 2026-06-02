@@ -57,6 +57,17 @@ const EXTRA_PRODUCTS = [
     player_cards: null,
   },
   {
+    slug: "panini-fifa-world-cup-2026-official-sticker-album-hard-cover",
+    name: "Panini FIFA World Cup 2026 Official Sticker Album – Hard Cover",
+    category: "Sticker Packs",
+    base_price: 29.99,
+    description: "The premium hardcover edition of the official Panini FIFA World Cup 2026 sticker album. 112 pages with dedicated pages for all 48 national teams, stadiums, and tournament highlights. Built to last — hard cover protects your collection for years.",
+    image_source_url: "/asset/stickers/fwc26_stickerbook_cover.png",
+    badge: "Hard Cover",
+    weight_kg: 0.4,
+    player_cards: null,
+  },
+  {
     slug: "panini-fifa-world-cup-2026-bundle-album-sticker-box",
     name: "Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box",
     category: "Sticker Packs",
