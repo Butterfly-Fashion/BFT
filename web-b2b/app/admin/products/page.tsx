@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Download, Plus } from "lucide-react";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -52,6 +52,12 @@ export default async function AdminProductsPage({
           </div>
           <div className="flex gap-2">
             <Link className="btn-secondary text-xs" href="/products">View storefront</Link>
+            <Link
+              className="btn-secondary gap-1.5 text-xs"
+              href={`/api/admin/products/export?q=${encodeURIComponent(params.q || "")}&category=${encodeURIComponent(params.category || "")}&visibility=${params.visibility || ""}&channel=${params.channel || ""}`}
+            >
+              <Download size={13} /> Export CSV
+            </Link>
             <Link className="btn-primary gap-1.5 text-xs" href="/admin/products/new">
               <Plus size={13} /> Create product
             </Link>

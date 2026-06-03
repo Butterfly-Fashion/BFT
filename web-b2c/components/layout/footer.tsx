@@ -20,7 +20,7 @@ const popularSearches = [
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 mt-24">
+    <footer className="bg-gray-900 text-gray-300 mt-24">
       {/* Newsletter section */}
       <div className="border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
@@ -53,12 +53,12 @@ export function Footer() {
           <p className="text-sm leading-relaxed">
             {AEO_STORE_DESCRIPTION}
           </p>
-          <p className="mt-3 text-xs leading-5 text-gray-500">
+          <p className="mt-3 text-xs leading-5 text-gray-400">
             {BUSINESS_NAME}
             <br />
             {BUSINESS_STREET_ADDRESS}, {BUSINESS_LOCALITY}, {BUSINESS_REGION} {BUSINESS_POSTAL_CODE}
           </p>
-          <p className="text-xs mt-4 text-gray-500">
+          <p className="text-xs mt-4 text-gray-400">
             Not affiliated with FIFA or any official organizing body.
           </p>
         </div>
@@ -110,7 +110,7 @@ export function Footer() {
             </li>
             <li>
               <Link href="/about" className="hover:text-white transition-colors">
-                About World Fan Gear
+                About Butterfly Fashion Trading
               </Link>
             </li>
           </ul>
@@ -160,7 +160,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-500">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-400">
           <p>© {new Date().getFullYear()} Butterfly Fashion Trading. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-gray-300 transition-colors">

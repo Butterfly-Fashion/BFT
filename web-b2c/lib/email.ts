@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import type Stripe from "stripe";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "jameskimkim1@gmail.com";
-const FROM = process.env.EMAIL_FROM ?? "World Fan Gear <jameskimkim1@gmail.com>";
+const FROM = process.env.EMAIL_FROM ?? "Butterfly Fashion Trading <jameskimkim1@gmail.com>";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
 
 function isSmtpConfigured(): boolean {
@@ -63,7 +63,7 @@ export async function sendAdminOrderEmail(
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 
     <div style="background:#C41E3A;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">New Order Received</h1>
     </div>
 
@@ -115,7 +115,7 @@ export async function sendAdminOrderEmail(
     </div>
 
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
-      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+      <p style="font-size:11px;color:#aaa;margin:0;">Butterfly Fashion Trading · ${SITE}</p>
     </div>
   </div>
 </body>
@@ -125,7 +125,7 @@ export async function sendAdminOrderEmail(
   await transport.sendMail({
     from: FROM,
     to: ADMIN_EMAIL,
-    subject: `New Order #${orderId} — $${total} CAD | World Fan Gear`,
+    subject: `New Order #${orderId} — $${total} CAD | Butterfly Fashion Trading`,
     html,
   });
 
@@ -170,7 +170,7 @@ export async function sendCustomerConfirmationEmail(
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 
     <div style="background:#C41E3A;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Order Confirmed!</h1>
     </div>
 
@@ -241,7 +241,7 @@ export async function sendCustomerConfirmationEmail(
 
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
       <p style="font-size:11px;color:#aaa;margin:0;">
-        World Fan Gear · Ships from North York, Canada<br>
+        Butterfly Fashion Trading · Ships from North York, Canada<br>
         <a href="${SITE}/returns" style="color:#aaa;">Returns Policy</a> ·
         <a href="${SITE}/shipping" style="color:#aaa;">Shipping Info</a>
       </p>
@@ -254,7 +254,7 @@ export async function sendCustomerConfirmationEmail(
   await transport.sendMail({
     from: FROM,
     to: customerEmail,
-    subject: `Your World Fan Gear order #${orderId} is confirmed!`,
+    subject: `Your Butterfly Fashion Trading order #${orderId} is confirmed!`,
     html,
   });
 
@@ -299,7 +299,7 @@ export async function sendTrackingEmail(params: {
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 
     <div style="background:#C41E3A;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Your Order Has Shipped!</h1>
     </div>
 
@@ -344,7 +344,7 @@ export async function sendTrackingEmail(params: {
     </div>
 
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
-      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · Ships from North York, Canada</p>
+      <p style="font-size:11px;color:#aaa;margin:0;">Butterfly Fashion Trading · Ships from North York, Canada</p>
     </div>
   </div>
 </body>
@@ -383,7 +383,7 @@ export async function sendContactNotificationEmail(params: {
 <body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
     <div style="background:#C41E3A;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">New Customer Message</h1>
     </div>
     <div style="padding:28px;">
@@ -409,7 +409,7 @@ export async function sendContactNotificationEmail(params: {
       </div>
     </div>
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
-      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+      <p style="font-size:11px;color:#aaa;margin:0;">Butterfly Fashion Trading · ${SITE}</p>
     </div>
   </div>
 </body>
@@ -419,7 +419,7 @@ export async function sendContactNotificationEmail(params: {
   await transport.sendMail({
     from: FROM,
     to: ADMIN_EMAIL,
-    subject: `New message from ${name} | World Fan Gear`,
+    subject: `New message from ${name} | Butterfly Fashion Trading`,
     html,
   });
 
@@ -448,7 +448,7 @@ export async function sendAdminReplyEmail(params: {
 <body style="font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding:0;">
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
     <div style="background:#C41E3A;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">We've Replied to Your Message</h1>
     </div>
     <div style="padding:28px;">
@@ -466,7 +466,7 @@ export async function sendAdminReplyEmail(params: {
       </div>
     </div>
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
-      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · ${SITE}</p>
+      <p style="font-size:11px;color:#aaa;margin:0;">Butterfly Fashion Trading · ${SITE}</p>
     </div>
   </div>
 </body>
@@ -477,7 +477,7 @@ export async function sendAdminReplyEmail(params: {
     from: FROM,
     to: customerEmail,
     replyTo: ADMIN_EMAIL,
-    subject: `Re: Your message to World Fan Gear`,
+    subject: `Re: Your message to Butterfly Fashion Trading`,
     html,
   });
 
@@ -519,7 +519,7 @@ export async function sendPickupReadyEmail(params: {
   <div style="max-width:600px;margin:32px auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e5e5;">
 
     <div style="background:#16a34a;padding:20px 28px;">
-      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">World Fan Gear</p>
+      <p style="color:#fff;font-size:12px;margin:0;letter-spacing:2px;text-transform:uppercase;">Butterfly Fashion Trading</p>
       <h1 style="color:#fff;font-size:22px;margin:6px 0 0;">Your Order Is Ready for Pickup!</h1>
     </div>
 
@@ -559,7 +559,7 @@ export async function sendPickupReadyEmail(params: {
     </div>
 
     <div style="padding:16px 28px;background:#f9f9f9;border-top:1px solid #e5e5e5;text-align:center;">
-      <p style="font-size:11px;color:#aaa;margin:0;">World Fan Gear · 178 Bentworth Ave, North York, Canada</p>
+      <p style="font-size:11px;color:#aaa;margin:0;">Butterfly Fashion Trading · 178 Bentworth Ave, North York, Canada</p>
     </div>
   </div>
 </body>

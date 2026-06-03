@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { ProductDetailActions } from "@/components/store/product-detail-actions";
 import { ProductImageGallery } from "@/components/store/product-image-gallery";
@@ -35,6 +35,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     <>
       <Header profile={profile} />
       <main className="container-shell py-4 sm:py-6">
+        {/* Back button */}
+        <Link
+          href={`/products?category=${encodeURIComponent(product.category)}`}
+          className="mb-3 inline-flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-900"
+        >
+          <ChevronLeft size={13} />
+          Back to {product.category}
+        </Link>
+
         {/* Breadcrumb */}
         <nav className="mb-4 flex items-center gap-1.5 overflow-x-auto whitespace-nowrap text-xs font-semibold text-slate-500 sm:mb-5">
           <Link className="shrink-0 transition-colors hover:text-slate-900" href="/">Home</Link>
@@ -97,48 +106,47 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   {product.has_customer_price ? "Your B2B price" : "Wholesale pricing"}
                 </p>
               </div>
-              {profile && isApproved ? (
-                <div className="divide-y divide-slate-100">
-                  <div className="flex items-center justify-between px-4 py-3">
-                    <div>
-                      <p className="text-xs font-semibold text-slate-500">Unit price / ea (낱개)</p>
-                    </div>
-                    <strong className="text-2xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
+              <div className="divide-y divide-slate-100">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <div>
+                    <p className="text-xs font-semibold text-slate-500">Unit price / ea (낱개)</p>
                   </div>
-                  {product.display_case_price && product.case_qty && (
-                    <div className="flex items-center justify-between bg-slate-50 px-4 py-3">
-                      <div>
-                        <p className="text-xs font-semibold text-slate-500">Case price (케이스)</p>
-                        <p className="text-xs text-slate-400">{product.case_qty} units/case</p>
-                      </div>
-                      <div className="text-right">
-                        <strong className="block text-xl font-black text-slate-900">{formatMoney(product.display_case_price)}</strong>
-                        <span className="text-[11px] text-slate-500">
-                          {formatMoney(product.display_case_price / product.case_qty)}/ea
-                        </span>
-                      </div>
+                  <strong className="text-2xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
+                </div>
+                {isApproved && product.display_case_price && product.case_qty && (
+                  <div className="flex items-center justify-between bg-slate-50 px-4 py-3">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500">Case price (케이스)</p>
+                      <p className="text-xs text-slate-400">{product.case_qty} units/case</p>
                     </div>
-                  )}
-                  {product.case_qty && (
-                    <div className="flex items-center justify-between px-4 py-2.5">
-                      <p className="text-xs font-semibold text-slate-500">MOQ (minimum order)</p>
-                      <span className="rounded border border-(--primary-border) bg-(--primary-light) px-2.5 py-1 text-sm font-black" style={{ color: "var(--primary)" }}>
-                        {product.case_qty} units / 1 case
+                    <div className="text-right">
+                      <strong className="block text-xl font-black text-slate-900">{formatMoney(product.display_case_price)}</strong>
+                      <span className="text-[11px] text-slate-500">
+                        {formatMoney(product.display_case_price / product.case_qty)}/ea
                       </span>
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 px-4 py-4">
-                  <Lock size={14} className="shrink-0 text-slate-400" />
-                  <p className="text-sm font-semibold text-slate-500">
-                    {profile
-                      ? "Pricing visible after B2B approval"
-                      : <><Link href="/login" className="underline" style={{ color: "var(--primary)" }}>Sign in</Link> or <Link href="/register" className="underline" style={{ color: "var(--primary)" }}>register</Link> to see wholesale pricing</>
-                    }
-                  </p>
-                </div>
-              )}
+                  </div>
+                )}
+                {isApproved && product.case_qty && (
+                  <div className="flex items-center justify-between px-4 py-2.5">
+                    <p className="text-xs font-semibold text-slate-500">MOQ (minimum order)</p>
+                    <span className="rounded border border-(--primary-border) bg-(--primary-light) px-2.5 py-1 text-sm font-black" style={{ color: "var(--primary)" }}>
+                      {product.case_qty} units / 1 case
+                    </span>
+                  </div>
+                )}
+                {!isApproved && (
+                  <div className="flex items-center gap-3 bg-slate-50 px-4 py-3">
+                    <Lock size={14} className="shrink-0 text-slate-400" />
+                    <p className="text-sm font-semibold text-slate-500">
+                      {profile
+                        ? "Case pricing & ordering available after B2B approval"
+                        : <><Link href="/login" className="underline" style={{ color: "var(--primary)" }}>Sign in</Link> or <Link href="/register" className="underline" style={{ color: "var(--primary)" }}>register</Link> to order</>
+                      }
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Lead time / origin */}
