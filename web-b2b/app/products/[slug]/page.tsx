@@ -38,9 +38,9 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         {/* Back button */}
         <Link
           href={`/products?category=${encodeURIComponent(product.category)}`}
-          className="mb-3 inline-flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-900"
+          className="mb-4 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
         >
-          <ChevronLeft size={13} />
+          <ChevronLeft size={15} />
           Back to {product.category}
         </Link>
 
