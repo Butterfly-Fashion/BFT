@@ -49,7 +49,7 @@ export function AdminProductsFilter({
           <input
             className="field"
             value={values.q}
-            placeholder="Product name, SKU, or category"
+            placeholder="Product name, Item Code, or category"
             onChange={handleText}
           />
         </label>

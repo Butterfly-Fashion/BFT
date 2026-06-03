@@ -27,7 +27,7 @@ export default async function AdminProductEditPage({ params }: { params: Promise
         {/* Danger zone — above form */}
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3">
           <p className="text-xs font-semibold text-slate-500">
-            SKU: <span className="font-mono text-slate-700">{product.sku}</span>
+            Item Code: <span className="font-mono text-slate-700">{product.sku}</span>
           </p>
           <div className="flex gap-2">
             <form action={duplicateProductAction.bind(null, product.id)}>

@@ -14,7 +14,7 @@ function escape(v: unknown): string {
 }
 
 function downloadCsv(products: Product[]) {
-  const headers = ["SKU", "Name", "Category", "Unit Price", "Case Price", "Case Qty", "Availability", "Visibility", "Sales Channels", "Weight (kg)", "Description"];
+  const headers = ["Item Code", "Name", "Category", "Unit Price", "Case Price", "Case Qty", "Availability", "Visibility", "Sales Channels", "Weight (kg)", "Description"];
   const lines = [
     headers.join(","),
     ...products.map((p) =>

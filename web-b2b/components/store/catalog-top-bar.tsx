@@ -44,7 +44,7 @@ export function CatalogTopBar({ initialQ, initialSort, category, stock, productC
               className="field pl-9"
               name="q"
               defaultValue={initialQ || ""}
-              placeholder="Search product, SKU, country…"
+              placeholder="Search product, Item Code, country…"
             />
           </div>
           <button className="btn-secondary shrink-0" type="submit">Search</button>

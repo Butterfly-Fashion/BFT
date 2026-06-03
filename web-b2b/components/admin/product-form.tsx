@@ -574,7 +574,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
           <CollapsibleSection title="System IDs" description="Auto-generated from name — only fill if you need specific values" defaultOpen={hasIds}>
             <div className="grid gap-4 sm:grid-cols-3">
               <label className="label">Slug<input className="field" name="slug" defaultValue={product?.slug || ""} placeholder="auto-generate" /></label>
-              <label className="label">SKU<input className="field" name="sku" defaultValue={product?.sku || ""} placeholder="auto-generate" /></label>
+              <label className="label">Item Code<input className="field" name="sku" defaultValue={product?.sku || ""} placeholder="auto-generate" /></label>
               <label className="label">Barcode<input className="field" name="barcode" defaultValue={product?.barcode || ""} placeholder="—" /></label>
             </div>
           </CollapsibleSection>

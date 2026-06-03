@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   const { data: products } = await query;
   const rows = products || [];
 
-  const headers = ["SKU", "Name", "Category", "Unit Price", "Case Price", "Case Qty", "Availability", "Visibility", "Sales Channels", "Weight (kg)", "Description"];
+  const headers = ["Item Code", "Name", "Category", "Unit Price", "Case Price", "Case Qty", "Availability", "Visibility", "Sales Channels", "Weight (kg)", "Description"];
   const escape = (v: unknown) => {
     const s = v == null ? "" : String(v);
     return s.includes(",") || s.includes('"') || s.includes("\n") ? `"${s.replace(/"/g, '""')}"` : s;

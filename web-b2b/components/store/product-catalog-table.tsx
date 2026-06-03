@@ -111,7 +111,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
           <thead>
             <tr>
               <th style={{ width: 320 }}>Product</th>
-              <th style={{ width: 120 }} className="hidden md:table-cell">SKU</th>
+              <th style={{ width: 120 }} className="hidden md:table-cell">Item Code</th>
               <th style={{ width: 120 }} className="hidden lg:table-cell">Category</th>
               <th style={{ width: 100 }}>MOQ</th>
               <th style={{ width: 110 }}>Price / ea</th>

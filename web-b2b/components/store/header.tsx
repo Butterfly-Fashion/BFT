@@ -157,7 +157,7 @@ export function Header({ profile }: { profile: Profile | null }) {
           <input
             className="min-w-0 flex-1 bg-transparent px-2.5 py-2 text-sm text-gray-900 placeholder-gray-400 outline-none"
             name="q"
-            placeholder="Search products, SKU, country…"
+            placeholder="Search products, Item Code, country…"
             type="text"
             autoComplete="off"
           />

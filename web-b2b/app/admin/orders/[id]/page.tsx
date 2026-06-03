@@ -175,7 +175,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <thead>
                   <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                     <th className="px-5 py-3">Product</th>
-                    <th className="px-5 py-3">SKU</th>
+                    <th className="px-5 py-3">Item Code</th>
                     <th className="px-5 py-3">Qty</th>
                     <th className="px-5 py-3">Unit price</th>
                     <th className="px-5 py-3 text-right">Line total</th>

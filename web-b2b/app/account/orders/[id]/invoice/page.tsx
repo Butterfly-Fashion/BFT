@@ -111,7 +111,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
                 <tr key={item.id} className="border-b border-slate-100 last:border-b-0">
                   <td className="px-8 py-3">
                     <p className="font-semibold text-slate-900">{item.product_name_snapshot}</p>
-                    {item.sku_snapshot && <p className="text-xs text-slate-400">SKU: {item.sku_snapshot}</p>}
+                    {item.sku_snapshot && <p className="text-xs text-slate-400">Item Code: {item.sku_snapshot}</p>}
                   </td>
                   <td className="px-4 py-3 text-right text-slate-700">{item.quantity}</td>
                   <td className="px-4 py-3 text-right text-slate-700">{formatMoney(item.unit_price_snapshot)}</td>

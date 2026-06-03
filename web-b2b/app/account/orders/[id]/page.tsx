@@ -186,7 +186,7 @@ export default async function AccountOrderDetailPage({
                               <span className="font-bold text-slate-900">{item.product_name_snapshot}</span>
                             )}
                             {item.sku_snapshot && (
-                              <p className="text-[10px] text-slate-400">SKU: {item.sku_snapshot}</p>
+                              <p className="text-[10px] text-slate-400">Item Code: {item.sku_snapshot}</p>
                             )}
                           </div>
                         </div>

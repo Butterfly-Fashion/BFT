@@ -143,7 +143,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
               <div className="border-b border-slate-200 bg-[#fafafa] p-4"><h2 className="text-xl font-black">Purchase history and previous prices</h2></div>
               <div className="overflow-auto">
                 <table className="w-full min-w-[760px] text-sm">
-                  <thead><tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500"><th className="p-3">Product</th><th>SKU</th><th>Qty</th><th>Last price</th><th>Total bought</th><th>Last order</th></tr></thead>
+                  <thead><tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500"><th className="p-3">Product</th><th>Item Code</th><th>Qty</th><th>Last price</th><th>Total bought</th><th>Last order</th></tr></thead>
                   <tbody>
                     {[...purchasedProducts.values()].map((item) => (
                       <tr className="border-b last:border-b-0" key={item.sku}>
@@ -171,7 +171,7 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
                   <thead>
                     <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                       <th className="px-4 py-3">Product</th>
-                      <th className="px-4 py-3">SKU</th>
+                      <th className="px-4 py-3">Item Code</th>
                       <th className="px-4 py-3">Standard</th>
                       <th className="px-4 py-3">Custom unit</th>
                       <th className="px-4 py-3">Custom case</th>

@@ -53,7 +53,7 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
               )}
               <div className="mt-4 grid gap-2 rounded-xl bg-slate-50 p-4 text-sm">
                 <div className="flex justify-between"><span className="font-semibold text-slate-500">Product</span><span className="font-black">{product?.name}</span></div>
-                <div className="flex justify-between"><span className="font-semibold text-slate-500">SKU</span><span className="font-mono text-xs font-semibold">{product?.sku}</span></div>
+                <div className="flex justify-between"><span className="font-semibold text-slate-500">Item Code</span><span className="font-mono text-xs font-semibold">{product?.sku}</span></div>
                 <div className="flex justify-between"><span className="font-semibold text-slate-500">Unit price</span><span className="font-black">{formatMoney(campaign.unit_price)}</span></div>
                 {campaign.case_price != null && (
                   <div className="flex justify-between"><span className="font-semibold text-slate-500">Case price ({campaign.case_qty}개)</span><span className="font-black">{formatMoney(campaign.case_price)}</span></div>

@@ -19,7 +19,7 @@ const WHY_BUY = [
   { icon: Package2, title: "MOQ from 1 case", desc: "No massive minimums. Order by the case — most items start at 12–50 units." },
   { icon: ShieldCheck, title: "B2B pricing", desc: "Approved accounts see wholesale pricing. Register and get approved in 24 hrs." },
   { icon: FileText, title: "Invoice & NET terms", desc: "Professional invoicing. NET 30 available for established accounts." },
-  { icon: Tag, title: "SKU-level traceability", desc: "Every product has a unique SKU. Reorder exact styles fast." },
+  { icon: Tag, title: "Item Code traceability", desc: "Every product has a unique Item Code. Reorder exact styles fast." },
 ];
 
 export default async function HomePage() {
@@ -75,6 +75,65 @@ export default async function HomePage() {
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--primary)" }} />
                   {fact}
                 </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── How it works ── */}
+        <section className="border-b border-gray-200 bg-gray-50">
+          <div className="container-shell py-10">
+            <div className="mb-6">
+              <span className="section-label">Getting started</span>
+              <h2 className="mt-1 text-lg font-bold text-gray-900">How to order wholesale</h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  step: "01",
+                  title: "Create an account",
+                  desc: "Register with your business name and contact info. Takes under 2 minutes.",
+                  href: "/register",
+                  cta: "Register →",
+                },
+                {
+                  step: "02",
+                  title: "Get approved",
+                  desc: "We review your application and approve B2B accounts within 24 hours.",
+                  href: null,
+                  cta: null,
+                },
+                {
+                  step: "03",
+                  title: "Browse & add to cart",
+                  desc: "See wholesale pricing, add products by Item Code or category, set quantities.",
+                  href: "/products",
+                  cta: "Browse catalog →",
+                },
+                {
+                  step: "04",
+                  title: "We confirm & invoice",
+                  desc: "We review your order, confirm availability, then send a payment link. No charge until approved.",
+                  href: null,
+                  cta: null,
+                },
+              ].map(({ step, title, desc, href, cta }) => (
+                <div key={step} className="relative rounded-xl border border-gray-200 bg-white p-5">
+                  <span className="mb-3 inline-block text-3xl font-black leading-none" style={{ color: "var(--primary)", opacity: 0.15 }}>
+                    {step}
+                  </span>
+                  <p className="text-sm font-bold text-gray-900">{title}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-gray-500">{desc}</p>
+                  {href && cta && (
+                    <Link
+                      href={href}
+                      className="mt-3 inline-flex text-xs font-semibold transition-colors"
+                      style={{ color: "var(--primary)" }}
+                    >
+                      {cta}
+                    </Link>
+                  )}
+                </div>
               ))}
             </div>
           </div>
