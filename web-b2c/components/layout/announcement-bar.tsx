@@ -79,6 +79,8 @@ export function AnnouncementBar() {
           <span>Ships from Toronto</span>
           <span className="text-white/40">·</span>
           <span>Canada-wide delivery</span>
+          <span className="text-white/40">·</span>
+          <span className="text-yellow-300 font-black">Est. 1987 · Toronto</span>
         </div>
       </div>
     </div>

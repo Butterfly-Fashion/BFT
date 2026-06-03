@@ -53,7 +53,7 @@ export function Footer() {
           <p className="text-sm leading-relaxed">
             {AEO_STORE_DESCRIPTION}
           </p>
-          <p className="mt-3 text-xs leading-5 text-gray-400">
+          <p className="mt-3 text-xs leading-5 text-gray-200">
             {BUSINESS_NAME}
             <br />
             {BUSINESS_STREET_ADDRESS}, {BUSINESS_LOCALITY}, {BUSINESS_REGION} {BUSINESS_POSTAL_CODE}
