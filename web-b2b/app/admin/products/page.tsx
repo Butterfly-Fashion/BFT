@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { AdminProductsFilter } from "@/components/admin/products-filter";
 import { AdminProductsTable } from "@/components/admin/products-table";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -78,38 +79,15 @@ export default async function AdminProductsPage({
         </section>
 
         {/* Filters */}
-        <form className="mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_170px_170px_auto] lg:items-end">
-            <label className="label">
-              Search products
-              <input className="field" defaultValue={params.q || ""} name="q" placeholder="Product name, SKU, or category" />
-            </label>
-            <label className="label">
-              Category
-              <select className="field" defaultValue={params.category || ""} name="category">
-                <option value="">All categories</option>
-                {categories.map((c) => <option key={c}>{c}</option>)}
-              </select>
-            </label>
-            <label className="label">
-              Visibility
-              <select className="field" defaultValue={params.visibility || ""} name="visibility">
-                <option value="">All</option>
-                <option value="visible">Visible</option>
-                <option value="hidden">Hidden</option>
-              </select>
-            </label>
-            <label className="label">
-              Channel
-              <select className="field" defaultValue={params.channel || ""} name="channel">
-                <option value="">All channels</option>
-                <option value="b2c">B2C Store</option>
-                <option value="b2b">B2B Wholesale</option>
-              </select>
-            </label>
-            <button className="btn-primary" type="submit">Filter</button>
-          </div>
-        </form>
+        <AdminProductsFilter
+          categories={categories}
+          initial={{
+            q: params.q || "",
+            category: params.category || "",
+            visibility: params.visibility || "",
+            channel: params.channel || "",
+          }}
+        />
 
         {/* Table */}
         <AdminProductsTable products={productList as any} />

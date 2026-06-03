@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Download } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/types";
@@ -37,8 +37,25 @@ function downloadCsv(products: Product[]) {
   URL.revokeObjectURL(url);
 }
 
+const STORAGE_KEY = "admin-products-selected";
+
 export function AdminProductsTable({ products }: { products: Product[] }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
+
+  // Restore from sessionStorage on mount
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      if (stored) setSelected(new Set(JSON.parse(stored) as string[]));
+    } catch {}
+  }, []);
+
+  // Persist to sessionStorage on every change
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify([...selected]));
+    } catch {}
+  }, [selected]);
 
   const allSelected = products.length > 0 && selected.size === products.length;
   const someSelected = selected.size > 0;
