@@ -151,6 +151,9 @@ export function Header() {
           <Link href="/about" className="px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150">
             About Us
           </Link>
+          <Link href="/location" className="px-3.5 py-2 rounded-lg hover:text-gray-900 hover:bg-gray-50 transition-colors duration-150">
+            Visit Us
+          </Link>
         </nav>
 
         {/* Right side */}
@@ -250,8 +253,11 @@ export function Header() {
           <Link href="/blog" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors">
             Guides
           </Link>
-          <Link href="/about" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors">
+          <Link href="/about" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 border-b border-gray-50 transition-colors">
             About Us
+          </Link>
+          <Link href="/location" onClick={() => setMenuOpen(false)} className="px-2 py-3 text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors">
+            Visit Us
           </Link>
         </nav>
       </div>

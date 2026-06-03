@@ -4,53 +4,71 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 // June 12, 2026 7:00 PM ET — first match at BMO Field
-const KICKOFF = new Date("2026-06-12T23:00:00.000Z"); // 7 PM ET = 23:00 UTC
-// Order cutoff: June 9 (3 days before for Canada Post to deliver)
+const KICKOFF = new Date("2026-06-12T23:00:00.000Z");
 const ORDER_CUTOFF = new Date("2026-06-09T23:59:59.000Z");
 
 function getTimeLeft() {
-  const now = Date.now();
-  const diff = KICKOFF.getTime() - now;
+  const diff = KICKOFF.getTime() - Date.now();
   if (diff <= 0) return null;
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  return { days, hours, mins };
-}
-
-function isBeforeOrderCutoff() {
-  return Date.now() < ORDER_CUTOFF.getTime();
+  return {
+    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+  };
 }
 
 export function AnnouncementBar() {
-  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; mins: number } | null>(null);
+  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number } | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setMounted(true);
     setTimeLeft(getTimeLeft());
-    const id = setInterval(() => setTimeLeft(getTimeLeft()), 60_000);
-    return () => clearInterval(id);
+    const clock = setInterval(() => setTimeLeft(getTimeLeft()), 60_000);
+    return () => clearInterval(clock);
   }, []);
 
-  const showCutoffWarning = mounted && isBeforeOrderCutoff();
+  const showCutoff = mounted && Date.now() < ORDER_CUTOFF.getTime();
+
+  const items: { text: string; yellow?: boolean; href?: string }[] = [
+    ...(mounted && timeLeft
+      ? [{ text: `⏱ ${timeLeft.days} days ${timeLeft.hours}h to kickoff`, yellow: true }]
+      : [{ text: "World Cup 2026 · June 12" }]),
+    ...(showCutoff
+      ? [{ text: "Order by June 9 for delivery before opening day", href: "/products" }]
+      : []),
+    { text: "Ships from Toronto · Canada-wide delivery" },
+    { text: "Est. 1987 · Trusted Toronto retailer", yellow: true },
+    { text: "Local pickup available · North York, ON", href: "/location" },
+  ];
+
+  // Auto-rotate with fade
+  useEffect(() => {
+    if (items.length <= 1) return;
+    const id = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIdx((i) => (i + 1) % items.length);
+        setVisible(true);
+      }, 300);
+    }, 3500);
+    return () => clearInterval(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length]);
+
+  const current = items[idx] ?? items[0];
 
   return (
     <div className="bg-[#003876] text-white">
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center gap-0">
 
-        {/* Mobile: single focused line */}
+        {/* Mobile */}
         <div className="sm:hidden flex items-center justify-between w-full gap-3">
-          {mounted && timeLeft ? (
-            <span className="text-xs font-black uppercase tracking-wide">
-              ⏱ {timeLeft.days}d {timeLeft.hours}h to kickoff
-            </span>
-          ) : (
-            <span className="text-xs font-black uppercase tracking-wide">
-              World Cup 2026 · June 12
-            </span>
-          )}
-          {showCutoffWarning && (
+          <span className="text-xs font-black uppercase tracking-wide">
+            {mounted && timeLeft ? `⏱ ${timeLeft.days}d ${timeLeft.hours}h to kickoff` : "World Cup 2026 · June 12"}
+          </span>
+          {showCutoff && (
             <Link
               href="/products"
               className="shrink-0 rounded-full bg-[#C41E3A] px-3 py-1 text-[10px] font-black uppercase tracking-wide hover:bg-[#A01830] transition-colors"
@@ -60,28 +78,35 @@ export function AnnouncementBar() {
           )}
         </div>
 
-        {/* Desktop: full info strip */}
-        <div className="hidden sm:flex items-center gap-4 text-xs font-semibold uppercase tracking-widest">
-          {mounted && timeLeft ? (
-            <span className="font-black text-yellow-300">
-              ⏱ {timeLeft.days} days {timeLeft.hours}h to kickoff
-            </span>
-          ) : (
-            <span>World Cup 2026 · June 12</span>
-          )}
-          <span className="text-white/40">·</span>
-          {showCutoffWarning && (
-            <>
-              <span className="text-white/80">Order by June 9 for delivery before opening day</span>
-              <span className="text-white/40">·</span>
-            </>
-          )}
-          <span>Ships from Toronto</span>
-          <span className="text-white/40">·</span>
-          <span>Canada-wide delivery</span>
-          <span className="text-white/40">·</span>
-          <span className="text-yellow-300 font-black">Est. 1987 · Toronto</span>
+        {/* Desktop: single rotating item */}
+        <div className="hidden sm:flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-wide min-h-5">
+          <div
+            className="transition-opacity duration-300"
+            style={{ opacity: visible ? 1 : 0 }}
+          >
+            {current.href ? (
+              <Link href={current.href} className={`hover:underline ${current.yellow ? "text-yellow-300 font-black" : "text-white/90"}`}>
+                {current.text}
+              </Link>
+            ) : (
+              <span className={current.yellow ? "text-yellow-300 font-black" : "text-white/90"}>
+                {current.text}
+              </span>
+            )}
+          </div>
+
+          {/* Dot indicators */}
+          <div className="flex items-center gap-1 ml-2">
+            {items.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => { setVisible(false); setTimeout(() => { setIdx(i); setVisible(true); }, 200); }}
+                className={`rounded-full transition-all ${i === idx ? "w-3 h-1.5 bg-white" : "w-1.5 h-1.5 bg-white/30 hover:bg-white/60"}`}
+              />
+            ))}
+          </div>
         </div>
+
       </div>
     </div>
   );
