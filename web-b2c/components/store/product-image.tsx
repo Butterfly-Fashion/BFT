@@ -34,6 +34,8 @@ export function ProductImage({
     );
   }
 
+  const isLocal = src.startsWith("/");
+
   return (
     <Image
       src={src}
@@ -42,6 +44,7 @@ export function ProductImage({
       sizes={sizes}
       className={className}
       priority={priority}
+      unoptimized={isLocal}
       onError={() => setErrored(true)}
     />
   );
