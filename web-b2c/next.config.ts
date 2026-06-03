@@ -16,19 +16,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
-    formats: ["image/avif", "image/webp"],
+    formats: ["image/webp"],
     remotePatterns: [
-      // Wixstatic — Boxing Gloves and Caps product images
-      {
-        protocol: "https",
-        hostname: "static.wixstatic.com",
-      },
-      // Shopify CDN — Bucket Hat and Reversible Hat product images
-      {
-        protocol: "https",
-        hostname: "cdn.shopify.com",
-      },
-      // B2C Supabase storage (for when real product images are uploaded)
+      // Supabase storage (future uploaded product images)
       {
         protocol: "https",
         hostname: "*.supabase.co",
