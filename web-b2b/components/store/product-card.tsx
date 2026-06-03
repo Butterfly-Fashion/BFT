@@ -76,9 +76,18 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
         {/* Price */}
         <div className="mt-auto pt-1">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-            {product.has_customer_price ? "Your B2B price" : "Starting from"}
+            {product.has_customer_price ? "Your B2B price" : "Unit price / ea"}
           </p>
           <strong className="text-xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
+          {product.display_case_price && product.case_qty && (
+            <div className="mt-1.5 rounded border border-slate-100 bg-slate-50 px-2.5 py-1.5">
+              <p className="text-[10px] font-semibold text-slate-400">Case price ({product.case_qty} units)</p>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-sm font-black text-slate-700">{formatMoney(product.display_case_price)}</span>
+                <span className="text-[10px] text-slate-400">{formatMoney(product.display_case_price / product.case_qty)}/ea</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Qty input */}
