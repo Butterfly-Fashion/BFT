@@ -53,7 +53,7 @@ export default async function OrderTrackingPage({ params }: Props) {
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-12">
-      <OrderAutoRefresh status={order.status} />
+      <OrderAutoRefresh orderId={order.id} status={order.status} />
       <Link href="/products" className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
         ← Continue Shopping
       </Link>

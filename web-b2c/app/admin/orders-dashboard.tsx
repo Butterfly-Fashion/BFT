@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import type { DbOrder, DbOrderItem, OrderStatus, ORDER_STATUS_LABELS } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
+import { supabaseBrowser } from "@/lib/supabase";
 
 type StatusLabel = typeof ORDER_STATUS_LABELS;
 
@@ -121,10 +122,38 @@ export default function OrdersDashboard() {
     }
   }, []);
 
+  // Supabase Realtime subscription — push changes instantly without polling
+  const realtimeReady = useRef(false);
   useEffect(() => {
     fetchOrders();
-    const id = setInterval(() => fetchOrders(true), 30_000);
-    return () => clearInterval(id);
+
+    const supabase = supabaseBrowser();
+    const channel = supabase
+      .channel("admin-orders-watch")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "orders", filter: "channel=eq.b2c" },
+        (payload) => {
+          if (payload.eventType === "INSERT") {
+            // New order — prepend to list (full refetch to get order_items too)
+            fetchOrders(true);
+          } else if (payload.eventType === "UPDATE") {
+            const updated = payload.new as DbOrder;
+            setOrders((prev) =>
+              prev.map((o) => (o.id === updated.id ? { ...o, ...updated } : o))
+            );
+            // Also update the open side-panel if it's this order
+            setSelected((prev) =>
+              prev && prev.id === updated.id ? { ...prev, ...updated } : prev
+            );
+          }
+        }
+      )
+      .subscribe((status) => {
+        realtimeReady.current = status === "SUBSCRIBED";
+      });
+
+    return () => { supabase.removeChannel(channel); };
   }, [fetchOrders]);
 
   async function openPanel(order: DbOrder) {
@@ -847,7 +876,15 @@ export default function OrdersDashboard() {
                 <div className="border-b border-gray-100 px-5 py-4">
                   <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Shipping Label</p>
 
-                  {selected.shippo_label_url ? (
+                  {selected.shippo_label_url === "__pending__" ? (
+                    <div className="flex items-center gap-2 rounded-xl bg-blue-50 border border-blue-200 px-3 py-2">
+                      <svg className="animate-spin w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+                      </svg>
+                      <span className="text-xs font-semibold text-blue-700">Creating label… will update automatically</span>
+                    </div>
+                  ) : selected.shippo_label_url ? (
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 rounded-xl bg-green-50 border border-green-200 px-3 py-2">
                         <span className="text-green-600 text-sm">✓</span>

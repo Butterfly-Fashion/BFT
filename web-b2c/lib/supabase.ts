@@ -6,3 +6,14 @@ export function supabaseAdmin() {
   if (!url || !key) throw new Error("Supabase service role env vars missing");
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+// Browser-safe client using the public anon key (for Realtime subscriptions)
+export function supabaseBrowser() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
+  if (!url || !key) throw new Error("Supabase public env vars missing");
+  return createClient(url, key, {
+    auth: { persistSession: false },
+    realtime: { params: { eventsPerSecond: 10 } },
+  });
+}
