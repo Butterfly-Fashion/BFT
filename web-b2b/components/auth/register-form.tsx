@@ -60,7 +60,12 @@ export function RegisterForm() {
           </label>
           <label className="label">
             Business type <Required />
-            <input className="field" name="business_type" placeholder="Retailer, wholesaler, event organizer…" required defaultValue={v.business_type} />
+            <select className="field" name="business_type" required defaultValue={v.business_type || ""}>
+              <option value="">Select…</option>
+              <option>Retailer</option>
+              <option>Wholesaler</option>
+              <option>Distributor</option>
+            </select>
           </label>
           <label className="label">
             Tax number <span className="normal-case font-semibold">(optional)</span>
