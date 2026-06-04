@@ -822,8 +822,8 @@ export const blogPosts: BlogPost[] = [
   // ── May 24 ──────────────────────────────────────────────────────────────
   {
     slug: "panini-sticker-album-complete-guide",
-    title: "Panini World Cup 2026 Sticker Album — Complete Collector Guide for Canada",
-    description: "Inside the Panini FIFA World Cup 2026 Official Sticker Album — all 48 nations, 600+ sticker spots, and the only organizing system that actually works for serious collecting.",
+    title: "Panini FIFA World Cup 2026 Official Sticker Album — Buy in Canada",
+    description: "The Panini FIFA World Cup 2026 Official Sticker Album covers all 48 nations and 600+ sticker spots. Buy online, ships from Toronto. The essential first purchase for any collector.",
     publishedAt: "2026-05-25",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
@@ -898,8 +898,8 @@ export const blogPosts: BlogPost[] = [
   // ── May 27 ──────────────────────────────────────────────────────────────
   {
     slug: "best-world-cup-souvenirs-canada",
-    title: "Best World Cup 2026 Souvenirs to Buy in Canada — FIFA 2026 Keepsakes",
-    description: "The best FIFA 2026 Canada souvenirs are the ones still on your shelf in 2027. Mini boxing gloves, Panini albums, caps, and car flags — ranked by value and staying power.",
+    title: "World Cup 2026 Souvenirs in Canada — Buy Online, Ships from Toronto",
+    description: "The best FIFA World Cup 2026 souvenirs for Canadian fans — mini boxing gloves, Panini albums, caps, and car flags. In stock, ships from Toronto. No sizing, easy gifts.",
     publishedAt: "2026-06-04",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",

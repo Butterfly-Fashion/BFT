@@ -198,7 +198,7 @@ export const teamPages: TeamPage[] = [
     team: "Argentina",
     title: "Argentina World Cup 2026 Fan Gear",
     description:
-      "Shop Argentina fan gear for Canada 2026, including caps, bucket hats, car flags, and soccer souvenirs.",
+      "Shop Argentina FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Bring Argentina colours to match day with fan gear made for watch parties, road trips, and tournament celebrations.",
     terms: ["argentina"],
@@ -258,7 +258,7 @@ export const teamPages: TeamPage[] = [
     team: "Spain",
     title: "Spain World Cup 2026 Fan Gear",
     description:
-      "Shop Spain soccer fan gear for Canada 2026, including caps, car flags, bucket hats, and souvenirs.",
+      "Shop Spain FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Browse Spain fan gear made for tournament season, from car flags to match-day accessories.",
     terms: ["spain"],
@@ -278,7 +278,7 @@ export const teamPages: TeamPage[] = [
     team: "England",
     title: "England World Cup 2026 Fan Gear",
     description:
-      "Shop England soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop England soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Back England through every match day with fan gear made for watch parties, car parades, and tournament celebrations in Canada.",
     terms: ["england"],
@@ -288,7 +288,7 @@ export const teamPages: TeamPage[] = [
     team: "Italy",
     title: "Italy World Cup 2026 Fan Gear",
     description:
-      "Shop Italy soccer fan gear for World Cup 2026, including caps, bucket hats, car flags, and souvenirs for Canadian fans.",
+      "Shop Italy FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Bring the azzurri energy to every match day. Italy fan gear ships from Toronto to Little Italy communities and soccer fans across Canada.",
     terms: ["italy", "italia"],
@@ -308,7 +308,7 @@ export const teamPages: TeamPage[] = [
     team: "Japan",
     title: "Japan World Cup 2026 Fan Gear",
     description:
-      "Shop Japan soccer fan gear for World Cup 2026, including embroidered caps, car flags, and souvenirs for Canadian fans.",
+      "Shop Japan FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Support Japan's World Cup campaign with fan gear for watch parties, outdoor screenings, and match-day outfits across Canada.",
     terms: ["japan"],
@@ -318,7 +318,7 @@ export const teamPages: TeamPage[] = [
     team: "South Korea",
     title: "South Korea World Cup 2026 Fan Gear",
     description:
-      "Shop South Korea soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop South Korea soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "South Korea fans bring serious tournament energy. Find fan gear for Vancouver, Toronto, and Canadian cities with strong Korean-Canadian communities.",
     terms: ["south korea", "korea"],
@@ -328,7 +328,7 @@ export const teamPages: TeamPage[] = [
     team: "Nigeria",
     title: "Nigeria World Cup 2026 Fan Gear",
     description:
-      "Shop Nigeria soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Nigeria soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Nigeria brings one of the most electric atmospheres to any World Cup. Find fan gear for Toronto, Calgary, and Canadian cities with strong Nigerian-Canadian communities.",
     terms: ["nigeria"],
@@ -336,9 +336,9 @@ export const teamPages: TeamPage[] = [
   {
     slug: "senegal",
     team: "Senegal",
-    title: "Senegal World Cup 2026 Fan Gear",
+    title: "Senegal FIFA World Cup 2026 Caps & Hats — In Stock, Ships Canada",
     description:
-      "Shop Senegal soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Senegal FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Senegal fans are passionate and vocal. Browse fan gear for match days, watch parties, and car parades across Canada.",
     terms: ["senegal"],
@@ -358,7 +358,7 @@ export const teamPages: TeamPage[] = [
     team: "Colombia",
     title: "Colombia World Cup 2026 Fan Gear",
     description:
-      "Shop Colombia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada. Great for Toronto's large Colombian community.",
+      "Shop Colombia soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto. Great for Toronto's large Colombian community.",
     intro:
       "Colombia brings electric energy to every World Cup. Toronto has one of Canada's largest Colombian communities — find fan gear for match days, car parades, and watch parties.",
     terms: ["colombia"],
@@ -368,7 +368,7 @@ export const teamPages: TeamPage[] = [
     team: "Jamaica",
     title: "Jamaica World Cup 2026 Fan Gear",
     description:
-      "Shop Jamaica soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Jamaica soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Jamaica's return to the World Cup is a massive moment for fans across Toronto and Canada. Find fan gear built for match-day celebrations, car parades, and community watch parties.",
     terms: ["jamaica"],
@@ -378,7 +378,7 @@ export const teamPages: TeamPage[] = [
     team: "Croatia",
     title: "Croatia World Cup 2026 Fan Gear",
     description:
-      "Shop Croatia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Croatia soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Croatia punches above its weight every tournament. Toronto has a strong Croatian-Canadian community — find fan gear for match days, watch parties, and car parades.",
     terms: ["croatia"],
@@ -386,9 +386,9 @@ export const teamPages: TeamPage[] = [
   {
     slug: "poland",
     team: "Poland",
-    title: "Poland World Cup 2026 Fan Gear",
+    title: "Poland FIFA World Cup 2026 Caps & Hats — In Stock, Ships Canada",
     description:
-      "Shop Poland soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Poland FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Poland fans in Toronto and across Canada come out loud for every tournament. Find fan gear for match days, watch parties, and community celebrations.",
     terms: ["poland"],
@@ -398,7 +398,7 @@ export const teamPages: TeamPage[] = [
     team: "Australia",
     title: "Australia World Cup 2026 Fan Gear",
     description:
-      "Shop Australia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Australia soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "The Socceroos have a passionate fanbase across Canada. Find Australia fan gear for match days, watch parties, and tournament celebrations.",
     terms: ["australia", "socceroos"],
@@ -408,7 +408,7 @@ export const teamPages: TeamPage[] = [
     team: "Belgium",
     title: "Belgium World Cup 2026 Fan Gear",
     description:
-      "Shop Belgium soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Belgium soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Belgium's Golden Generation still has plenty left. Find fan gear for Canadian match days, watch parties, and car parades in Belgium colours.",
     terms: ["belgium"],
@@ -418,7 +418,7 @@ export const teamPages: TeamPage[] = [
     team: "Ecuador",
     title: "Ecuador World Cup 2026 Fan Gear",
     description:
-      "Shop Ecuador soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Ecuador soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Ecuador's growing fanbase is well-represented across Canada. Find fan gear for match days, community watch parties, and car parades.",
     terms: ["ecuador"],
@@ -428,7 +428,7 @@ export const teamPages: TeamPage[] = [
     team: "Uruguay",
     title: "Uruguay World Cup 2026 Fan Gear",
     description:
-      "Shop Uruguay soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Uruguay soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Uruguay always shows up at the World Cup. Find fan gear for match days, watch parties, and celebrations across Canada.",
     terms: ["uruguay"],
@@ -438,7 +438,7 @@ export const teamPages: TeamPage[] = [
     team: "Saudi Arabia",
     title: "Saudi Arabia World Cup 2026 Fan Gear",
     description:
-      "Shop Saudi Arabia soccer fan gear for World Cup 2026, including caps, car flags, and souvenirs shipping across Canada.",
+      "Shop Saudi Arabia soccer fan gear for World Cup 2026, including embroidered caps, bucket hats, car flags, and souvenirs. Ships across Canada from Toronto.",
     intro:
       "Saudi Arabia made headlines at the last World Cup and brings passionate supporters. Find fan gear for match days and community celebrations across Canada.",
     terms: ["saudi arabia", "saudi"],
