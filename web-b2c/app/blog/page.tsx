@@ -1,4 +1,4 @@
-import { getPublishedPosts } from "@/lib/blog-posts";
+import { getPublishedPosts, getPostListImage } from "@/lib/blog-posts";
 import { absoluteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -49,7 +49,7 @@ export default function BlogIndexPage() {
           >
             <div className="relative aspect-[16/10] bg-gray-100">
               <Image
-                src={post.heroImage}
+                src={getPostListImage(post)}
                 alt={post.heroAlt}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

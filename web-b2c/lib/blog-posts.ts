@@ -3899,6 +3899,19 @@ export function getPostProducts(post: BlogPost) {
     .slice(0, 4);
 }
 
+// Hero images that are reused across many posts — swap for a product image in listings
+const GENERIC_HERO_IMAGES = new Set([
+  "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
+  "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
+  "/asset/blog/generated/morocco-car-flag-highway.png",
+]);
+
+export function getPostListImage(post: BlogPost): string {
+  if (!GENERIC_HERO_IMAGES.has(post.heroImage)) return post.heroImage;
+  const product = products.find((p) => post.productSlugs.includes(p.slug));
+  return product?.imageUrl || post.heroImage;
+}
+
 export function getRelatedGuidesForProduct(product: Product, limit = 3): BlogPost[] {
   const name = product.name.toLowerCase();
   const category = product.category.toLowerCase();
