@@ -5,9 +5,10 @@ import { ProductImage } from "./product-image";
 
 interface Props {
   product: Product;
+  priority?: boolean;
 }
 
-export function ProductCard({ product }: Props) {
+export function ProductCard({ product, priority = false }: Props) {
   return (
     <Link href={`/products/${product.slug}`} className="group block">
       {/* Image */}
@@ -21,6 +22,7 @@ export function ProductCard({ product }: Props) {
           placeholderGradient={product.placeholderGradient}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
+          priority={priority}
         />
         {product.badge && (
           <div className="absolute top-3 left-3 z-10">

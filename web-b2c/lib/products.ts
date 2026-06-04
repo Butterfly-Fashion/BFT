@@ -221,7 +221,7 @@ async function getB2CDbProducts(): Promise<Product[]> {
     const supabase = supabaseAdmin();
     const { data, error } = await supabase
       .from("b2c_products")
-      .select("id,slug,name,category,price,compare_at_price,description,images,badge,in_stock,stock_qty,weight_kg,player_cards")
+      .select("id,slug,name,category,price,compare_at_price,description,image_url,images,badge,in_stock,stock_qty,weight_kg,player_cards")
       .eq("status", "active")
       .order("updated_at", { ascending: false });
     if (error || !data?.length) return [];

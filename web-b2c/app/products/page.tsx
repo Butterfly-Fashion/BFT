@@ -146,8 +146,8 @@ export default async function ProductsPage({ searchParams }: Props) {
       {/* Product grid */}
       {filtered.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {filtered.map((product, i) => (
+            <ProductCard key={product.id} product={product} priority={i < 8} />
           ))}
         </div>
       ) : (
