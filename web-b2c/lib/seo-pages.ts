@@ -35,22 +35,22 @@ export interface SeoLandingFaq {
 export const collectionPages: CollectionPage[] = [
   {
     slug: "world-cup-caps",
-    title: "World Cup 2026 Caps in Canada",
+    title: "Canada World Cup 2026 Caps & Hats — Embroidered, Ships from Toronto",
     description:
-      "Shop Canada 2026-inspired soccer fan caps shipping across Canada from Toronto.",
-    h1: "World Cup 2026 Caps",
+      "Shop FIFA World Cup 2026 embroidered caps and hats for every nation — Canada, Brazil, Senegal, Poland and more. In stock, ships across Canada from Toronto.",
+    h1: "World Cup 2026 Caps & Hats",
     intro:
-      "Find embroidered soccer fan caps made for match days, watch parties, and everyday team pride. These Canada 2026-inspired caps are easy gifts for fans gearing up before the tournament.",
+      "Embroidered fan caps and hats for every nation at FIFA 2026. Canada, Brazil, Senegal, Poland, and more — in stock now, ships from Toronto. Easy gifts with no sizing required.",
     category: "Caps",
   },
   {
     slug: "world-cup-bucket-hats",
-    title: "World Cup 2026 Bucket Hats",
+    title: "Canada World Cup 2026 Bucket Hats — Team Colours, Ships from Toronto",
     description:
-      "Shop soccer fan bucket hats for Canada 2026 match days, outdoor watch parties, and summer fan events.",
+      "Shop FIFA World Cup 2026 bucket hats for Canada, Brazil, and more. Sun protection for fan zones and outdoor match days. In stock, ships across Canada from Toronto.",
     h1: "World Cup 2026 Bucket Hats",
     intro:
-      "Bucket hats are a natural fit for sunny match days, fan zones, and outdoor screenings. Browse bold country styles for Canada 2026-inspired outfits.",
+      "Bucket hats for every outdoor match day and fan zone. Bold country colours, sun protection for Canadian summer. In stock, ships from Toronto.",
     category: "Bucket Hats",
   },
   {
@@ -186,11 +186,11 @@ export const teamPages: TeamPage[] = [
   {
     slug: "canada",
     team: "Canada",
-    title: "Canada World Cup 2026 Fan Gear",
+    title: "Team Canada FIFA World Cup 2026 Hats, Caps & Car Flags — In Stock",
     description:
-      "Shop Canada fan gear for World Cup 2026, including car flags, caps, bucket hats, and souvenirs shipping across Canada.",
+      "Team Canada FIFA World Cup 2026 fan gear — embroidered caps, bucket hats, car flags, and souvenirs. In stock, ships from Toronto across Canada.",
     intro:
-      "Show Canada pride before the tournament kicks off. Browse Canada fan gear for match days, car parades, watch parties, and everyday soccer pride.",
+      "Team Canada fan gear for match days, watch parties, and car parades. Embroidered caps, bucket hats, car flags, and souvenirs — all in stock and shipping from Toronto.",
     terms: ["canada"],
   },
   {
@@ -206,11 +206,11 @@ export const teamPages: TeamPage[] = [
   {
     slug: "brazil",
     team: "Brazil",
-    title: "Brazil World Cup 2026 Fan Gear",
+    title: "Brazil FIFA World Cup 2026 Hats, Car Flags & Fan Gear — Canada",
     description:
-      "Shop Brazil soccer fan gear for Canada 2026, including flags, caps, bucket hats, and souvenirs.",
+      "Shop Brazil FIFA World Cup 2026 fan gear — caps, bucket hats, car flags, and mini boxing gloves. In stock, ships from Toronto across Canada.",
     intro:
-      "Brazil fan gear brings bright colour and instant match-day energy. Find pieces for your car, your outfit, and your watch party setup.",
+      "Brazil fan gear in bold yellow and green — caps, bucket hats, car flags, and mini boxing gloves. In stock now, ships from Toronto.",
     terms: ["brazil", "brasil"],
   },
   {
