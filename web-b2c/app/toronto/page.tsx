@@ -258,7 +258,7 @@ export default async function TorontoPage() {
           </div>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/blog/world-cup-watch-parties-toronto" className="text-xs font-semibold text-[#C41E3A] hover:underline">
+          <Link href="/blog/toronto-world-cup-2026-watch-party-venues" className="text-xs font-semibold text-[#C41E3A] hover:underline">
             → Where to watch in Toronto
           </Link>
           <Link href="/blog/where-to-buy-world-cup-2026-merchandise-toronto" className="text-xs font-semibold text-[#C41E3A] hover:underline">

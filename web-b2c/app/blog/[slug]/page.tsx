@@ -37,13 +37,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt ?? post.publishedAt,
-      images: [{ url: absoluteUrl(post.heroImage) }],
+      images: [{ url: absoluteUrl(getPostListImage(post)) }],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
-      images: [absoluteUrl(post.heroImage)],
+      images: [absoluteUrl(getPostListImage(post))],
     },
   };
 }

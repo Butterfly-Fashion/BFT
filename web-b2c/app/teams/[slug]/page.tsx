@@ -8,7 +8,7 @@ import {
   getTeamSeoSections,
   teamPages,
 } from "@/lib/seo-pages";
-import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, itemListJsonLd, jsonLd } from "@/lib/seo";
 import { getBlogPostsBySlugs } from "@/lib/blog-posts";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -52,7 +52,7 @@ export default async function TeamLandingPage({ params }: Props) {
   const sections = getTeamSeoSections(page);
   const faqs = getTeamFaqs(page);
   const guides = getBlogPostsBySlugs([
-    "world-cup-watch-parties-toronto",
+    "toronto-world-cup-2026-watch-party-venues",
     "world-cup-2026-fan-zones-canada-outdoor-screenings",
     "backyard-world-cup-2026-watch-party-ideas",
   ]);
@@ -71,6 +71,14 @@ export default async function TeamLandingPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(faqPageJsonLd(faqs)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            itemListJsonLd(`${page.team} World Cup 2026 Fan Gear`, `/teams/${page.slug}`, teamProducts)
+          ),
+        }}
       />
 
       <nav className="mb-5 text-xs text-gray-400">
