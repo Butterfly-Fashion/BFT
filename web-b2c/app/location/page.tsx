@@ -5,13 +5,13 @@ import { MapPin, Clock, Phone, Mail, Package, Car } from "lucide-react";
 export const metadata: Metadata = {
   title: "Visit Our Store · Pickup Location | Butterfly Fashion Trading",
   description:
-    "Visit Butterfly Fashion Trading in North York, Toronto. Local pickup available at 178 Bentworth Ave. Est. 1987. Mon–Sat 9 AM–7 PM.",
+    "Visit Butterfly Fashion Trading in North York, Toronto. Local pickup available at 178 Bentworth Ave. Est. 1987. Mon–Sat 9 AM–7 PM · Sun 11 AM–4:30 PM.",
 };
 
 const HOURS = [
-  { day: "Monday – Friday", hours: "9:00 AM – 7:00 PM" },
-  { day: "Saturday", hours: "9:00 AM – 6:00 PM" },
-  { day: "Sunday", hours: "Closed" },
+  { day: "Monday – Friday", hours: "9:00 AM – 7:00 PM", bold: false },
+  { day: "Saturday", hours: "9:00 AM – 6:00 PM", bold: true },
+  { day: "Sunday", hours: "11:00 AM – 4:30 PM", bold: true },
 ];
 
 export default function LocationPage() {
@@ -92,10 +92,10 @@ export default function LocationPage() {
           </div>
 
           <div className="divide-y divide-gray-100">
-            {HOURS.map(({ day, hours }) => (
+            {HOURS.map(({ day, hours, bold }) => (
               <div key={day} className="flex items-center justify-between py-2.5">
-                <span className="text-sm font-medium text-gray-700">{day}</span>
-                <span className={`text-sm font-semibold ${hours === "Closed" ? "text-gray-400" : "text-gray-900"}`}>
+                <span className={`text-sm ${bold ? "font-bold text-gray-900" : "font-medium text-gray-700"}`}>{day}</span>
+                <span className="text-sm font-semibold text-gray-900">
                   {hours}
                 </span>
               </div>

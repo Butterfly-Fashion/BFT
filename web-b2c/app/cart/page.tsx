@@ -215,7 +215,7 @@ export default function CartPage() {
               >
                 <p className="text-xs font-bold text-green-900">📍 Free Local Pickup Available</p>
                 <p className="text-xs text-green-800 mt-0.5 font-medium">178 Bentworth Ave, North York, ON</p>
-                <p className="text-[11px] text-green-700 mt-0.5">Mon–Sat · 9 AM – 7 PM ET — Select at checkout</p>
+                <p className="text-[11px] text-green-700 mt-0.5">Mon–Sat 9 AM–7 PM · <strong>Sun</strong> 11 AM–4:30 PM ET — Select at checkout</p>
               </Link>
 
               <div className="border-t border-gray-100 mt-5 pt-4 flex justify-between text-gray-900">

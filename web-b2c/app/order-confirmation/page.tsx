@@ -223,7 +223,7 @@ function OrderConfirmationInner() {
                 <p className="text-sm font-bold text-green-900">📍 Pickup Reminder</p>
                 <p className="text-sm font-semibold text-green-800">178 Bentworth Ave, North York, ON M6A 1P7</p>
                 <p className="text-xs text-green-700 leading-5">
-                  Mon–Sat · 9 AM – 7 PM ET<br />
+                  Mon–Sat 9 AM–7 PM · <strong>Sun</strong> 11 AM–4:30 PM ET<br />
                   Please wait for your confirmation email before coming to pick up.
                 </p>
                 <a

@@ -35,7 +35,7 @@ export default function ContactPage() {
             <a href={`tel:${BUSINESS_PHONE}`} className="text-[#C41E3A] hover:underline font-semibold">
               {BUSINESS_PHONE}
             </a>
-            <p className="text-gray-400 text-xs mt-1">Mon–Sat · 9 AM – 7 PM ET</p>
+            <p className="text-gray-400 text-xs mt-1">Mon–Sat 9 AM–7 PM · <strong>Sun</strong> 11 AM–4:30 PM ET</p>
           </div>
 
           <div>
@@ -49,7 +49,7 @@ export default function ContactPage() {
           <div>
             <p className="font-semibold text-gray-900 mb-1">Business Hours</p>
             <p>Monday – Saturday: 9 AM – 7 PM EST</p>
-            <p>Sunday: Closed</p>
+            <p><strong>Sunday: 11 AM – 4:30 PM EST</strong></p>
           </div>
 
           <div>

@@ -342,7 +342,7 @@ export default function CheckoutPage() {
               <p className="text-sm font-bold text-green-900">📍 Pickup Location</p>
               <p className="text-sm text-green-800 font-semibold">178 Bentworth Ave, North York, ON M6A 1P7</p>
               <p className="text-xs text-green-700 leading-5">
-                Mon–Sat · 9 AM – 7 PM ET · Please wait for a confirmation email before coming to pick up.
+                Mon–Sat 9 AM–7 PM · <strong>Sun</strong> 11 AM–4:30 PM ET · Please wait for a confirmation email before coming to pick up.
               </p>
               <a
                 href="https://maps.google.com/?q=178+Bentworth+Ave+North+York+ON"
