@@ -220,17 +220,17 @@ export async function POST(
 
   let transaction = await shippoRes.json();
 
-  // UPS "Modifier is not applied" 에러 → Canada Post로 자동 재조회 후 재시도
+  // Rate 만료, UPS modifier 오류 등 어떤 이유로든 실패 시 Canada Post로 자동 재조회
   const isModifierError = (transaction.messages ?? []).some(
     (m: { text?: string }) => m.text?.toLowerCase().includes("modifier is not applied")
   );
 
   if (
     (!shippoRes.ok || transaction.object_status !== "SUCCESS") &&
-    isModifierError &&
     order.shipping_address
   ) {
-    console.log("[create-label] UPS modifier error — re-quoting with Canada Post");
+    const reason = isModifierError ? "UPS modifier error" : "primary rate failed (possibly expired)";
+    console.log(`[create-label] ${reason} — re-quoting with Canada Post`);
 
     // 주문 상품 무게 계산
     let totalWeight = 0.5;

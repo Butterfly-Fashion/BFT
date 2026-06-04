@@ -5,6 +5,7 @@ import type { OrderStatus } from "@/lib/types";
 import { ORDER_STATUS_LABELS } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 import { supabaseAdmin } from "@/lib/supabase";
+import { OrderAutoRefresh } from "./order-auto-refresh";
 
 export const dynamic = "force-dynamic";
 
@@ -52,6 +53,7 @@ export default async function OrderTrackingPage({ params }: Props) {
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-12">
+      <OrderAutoRefresh status={order.status} />
       <Link href="/products" className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
         ← Continue Shopping
       </Link>

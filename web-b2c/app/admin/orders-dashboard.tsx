@@ -106,8 +106,8 @@ export default function OrdersDashboard() {
   const [editTrackingUrl, setEditTrackingUrl] = useState("");
   const [editNote, setEditNote] = useState("");
 
-  const fetchOrders = useCallback(async () => {
-    setLoading(true);
+  const fetchOrders = useCallback(async (silent = false) => {
+    if (!silent) setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/admin/orders");
@@ -115,13 +115,17 @@ export default function OrdersDashboard() {
       const data: OrdersResponse = await res.json();
       setOrders(data.orders);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load orders");
+      if (!silent) setError(e instanceof Error ? e.message : "Failed to load orders");
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchOrders(); }, [fetchOrders]);
+  useEffect(() => {
+    fetchOrders();
+    const id = setInterval(() => fetchOrders(true), 30_000);
+    return () => clearInterval(id);
+  }, [fetchOrders]);
 
   async function openPanel(order: DbOrder) {
     setSelected(order);
@@ -567,7 +571,7 @@ export default function OrdersDashboard() {
           <h2 className="text-2xl font-black text-gray-900">Orders</h2>
           <div className="flex items-center gap-4">
             <button
-              onClick={fetchOrders}
+              onClick={() => fetchOrders()}
               disabled={loading}
               className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-500 hover:bg-gray-50 transition-colors disabled:opacity-50"
             >
