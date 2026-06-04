@@ -23,7 +23,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "World Fan Gear | Canada 2026",
+    default: "World Cup 2026 Fan Gear Canada — Caps, Hats & Car Flags | World Fan Gear",
     template: "%s | World Fan Gear",
   },
   description: AEO_STORE_DESCRIPTION,

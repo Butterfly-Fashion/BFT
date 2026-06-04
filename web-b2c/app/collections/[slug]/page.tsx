@@ -8,7 +8,7 @@ import {
   getProductsForCollection,
   teamPages,
 } from "@/lib/seo-pages";
-import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
+import { absoluteUrl, breadcrumbJsonLd, itemListJsonLd, jsonLd } from "@/lib/seo";
 import { getBlogPostsBySlugs } from "@/lib/blog-posts";
 import { HomeSearchBar } from "@/components/store/home-search-bar";
 import type { Metadata } from "next";
@@ -54,7 +54,7 @@ export default async function CollectionLandingPage({ params }: Props) {
   const sections = getCollectionSeoSections(page);
   const faqs = getCollectionFaqs(page);
   const guides = getBlogPostsBySlugs([
-    "world-cup-watch-parties-toronto",
+    "toronto-world-cup-2026-watch-party-venues",
     "world-cup-2026-fan-zones-canada-outdoor-screenings",
     "best-fifa-2026-fan-gear-panini-collection",
   ]);
@@ -73,6 +73,14 @@ export default async function CollectionLandingPage({ params }: Props) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(faqPageJsonLd(faqs)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            itemListJsonLd(page.h1, `/collections/${page.slug}`, collectionProducts)
+          ),
+        }}
       />
 
       <nav className="mb-5 text-xs text-gray-400">

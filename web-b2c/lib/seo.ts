@@ -148,6 +148,26 @@ export function productJsonLd(product: Product, reviews: ProductReviewJsonLdInpu
   return productJson;
 }
 
+export function itemListJsonLd(
+  name: string,
+  url: string,
+  items: Array<{ slug: string; name: string }>
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    url: absoluteUrl(url),
+    numberOfItems: items.length,
+    itemListElement: items.slice(0, 20).map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: absoluteUrl(`/products/${item.slug}`),
+      name: item.name,
+    })),
+  };
+}
+
 export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>) {
   return {
     "@context": "https://schema.org",

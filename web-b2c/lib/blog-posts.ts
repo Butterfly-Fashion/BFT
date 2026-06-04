@@ -123,7 +123,7 @@ export const blogPosts: BlogPost[] = [
     slug: "world-cup-car-flags-canada",
     title: "Where to Buy World Cup Car Flags in Canada",
     description:
-      "Car flags are how Toronto neighborhoods show up during a World Cup. A guide to choosing the right country style, buying before the rush, and keeping your flag flying all tournament long.",
+      "World Cup 2026 car flags for Canadian fans — which country styles move fastest, how to attach them, and where to buy before the rush. All nations available, ships from Toronto.",
     publishedAt: "2026-05-12",
     category: "Car Flags",
     heroImage: "/asset/blog/generated/morocco-car-flag-highway.png",
@@ -825,6 +825,7 @@ export const blogPosts: BlogPost[] = [
     title: "Panini FIFA World Cup 2026 Official Sticker Album — Buy in Canada",
     description: "The Panini FIFA World Cup 2026 Official Sticker Album covers all 48 nations and 600+ sticker spots. Buy online, ships from Toronto. The essential first purchase for any collector.",
     publishedAt: "2026-05-25",
+    updatedAt: "2026-06-04",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/fwc26_stickerbook_cover.png",
     heroAlt: "Panini FIFA World Cup 2026 Official Sticker Album guide",
@@ -901,6 +902,7 @@ export const blogPosts: BlogPost[] = [
     title: "World Cup 2026 Souvenirs in Canada — Buy Online, Ships from Toronto",
     description: "The best FIFA World Cup 2026 souvenirs for Canadian fans — mini boxing gloves, Panini albums, caps, and car flags. In stock, ships from Toronto. No sizing, easy gifts.",
     publishedAt: "2026-06-04",
+    updatedAt: "2026-06-04",
     category: "Souvenirs",
     heroImage: "/asset/blog/generated/world-cup-mini-boxing-gloves-collection.png",
     heroAlt: "Best World Cup 2026 souvenirs for Canadian fans",
@@ -2196,6 +2198,7 @@ export const blogPosts: BlogPost[] = [
     description:
       "Panini FIFA World Cup 2026 stickers are worth collecting. Here's the practical case for Canadian fans — nostalgia, family trading sessions, and the satisfaction of a complete album.",
     publishedAt: "2026-05-28",
+    updatedAt: "2026-06-04",
     category: "Sticker Collecting",
     heroImage: "/asset/blog/panini/generated/are-panini-world-cup-stickers-worth-collecting-2026.jpg",
     heroAlt: "Panini FIFA World Cup 2026 sticker box with organized sticker stacks",
