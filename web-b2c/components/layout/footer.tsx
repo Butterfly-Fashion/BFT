@@ -5,6 +5,7 @@ import {
   BUSINESS_EMAIL,
   BUSINESS_LOCALITY,
   BUSINESS_NAME,
+  BUSINESS_PHONE,
   BUSINESS_POSTAL_CODE,
   BUSINESS_REGION,
   BUSINESS_STREET_ADDRESS,
@@ -57,6 +58,8 @@ export function Footer() {
             {BUSINESS_NAME}
             <br />
             {BUSINESS_STREET_ADDRESS}, {BUSINESS_LOCALITY}, {BUSINESS_REGION} {BUSINESS_POSTAL_CODE}
+            <br />
+            <a href={`tel:${BUSINESS_PHONE}`} className="hover:text-white transition-colors">{BUSINESS_PHONE}</a>
           </p>
           <p className="text-xs mt-4 text-gray-400">
             Not affiliated with FIFA or any official organizing body.
