@@ -4,11 +4,12 @@ import { SITE_URL } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 
 const GOOGLE_CATEGORY: Record<string, string> = {
-  "Boxing Gloves": "Sporting Goods > Boxing & Martial Arts > Boxing Equipment > Boxing Gloves",
-  "Caps": "Apparel & Accessories > Clothing Accessories > Hats",
-  "Bucket Hats": "Apparel & Accessories > Clothing Accessories > Hats",
-  "Car Flags": "Vehicles & Parts > Vehicle Accessories > Vehicle Decor > Vehicle Flags & Pennants",
-  "Sticker Packs": "Arts & Entertainment > Hobbies & Creative Arts > Arts & Crafts > Stickers",
+  "Boxing Gloves": "Sporting Goods > Combat Sports > Boxing & Martial Arts",
+  "Caps":          "Apparel & Accessories > Clothing Accessories > Hats",
+  "Bucket Hats":   "Apparel & Accessories > Clothing Accessories > Hats",
+  "Car Flags":     "Home & Garden > Decor > Flags & Pennants",
+  "Sticker Packs": "Toys & Games > Toys > Collectible Toys",
+  "Collectibles":  "Toys & Games > Toys > Collectible Toys",
 };
 
 function escapeXml(str: string): string {
@@ -54,6 +55,11 @@ export async function GET() {
       <g:google_product_category>${escapeXml(googleCat)}</g:google_product_category>
       <g:product_type>${escapeXml(p.category)}</g:product_type>
       <g:identifier_exists>no</g:identifier_exists>
+      <g:shipping>
+        <g:country>CA</g:country>
+        <g:service>Standard</g:service>
+        <g:price>9.99 CAD</g:price>
+      </g:shipping>
     </item>`;
     })
     .join("");

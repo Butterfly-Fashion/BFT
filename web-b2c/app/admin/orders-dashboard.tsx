@@ -327,6 +327,31 @@ export default function OrdersDashboard() {
       setEditCarrier(data.carrier ?? "");
       setSaveMsg({ type: "ok", text: "Label created! Print it below." });
     } catch (e) {
+      // Before re-enabling the button, check actual DB state.
+      // The label may have been created server-side even if the response was lost.
+      try {
+        const checkRes = await fetch(`/api/admin/orders/${selected.id}`);
+        if (checkRes.ok) {
+          const { order: dbOrder } = await checkRes.json();
+          if (dbOrder?.shippo_label_url) {
+            const refreshed: DbOrder = { ...selected, ...dbOrder, _source: "supabase" as const };
+            setOrders((prev) => prev.map((o) => (o.id === selected.id ? refreshed : o)));
+            setSelected(refreshed);
+            if (dbOrder.shippo_label_url !== "__pending__") {
+              setEditStatus(dbOrder.status ?? "packing");
+              setEditTracking(dbOrder.tracking_number ?? "");
+              setEditTrackingUrl(dbOrder.tracking_url ?? "");
+              setEditCarrier(dbOrder.carrier ?? "");
+              setSaveMsg({ type: "ok", text: "Label was created — linked!" });
+            } else {
+              setSaveMsg({ type: "ok", text: "Label is processing — please wait, it will appear automatically." });
+            }
+            return;
+          }
+        }
+      } catch {
+        // ignore check failure
+      }
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Label creation failed" });
     } finally {
       setCreatingLabel(false);

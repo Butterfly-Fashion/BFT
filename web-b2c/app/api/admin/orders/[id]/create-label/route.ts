@@ -94,7 +94,7 @@ export async function POST(
 
   const { data: order, error: fetchError } = await supabase
     .from("orders")
-    .select("id, order_number, shippo_rate_id, shippo_label_url, delivery_method, customer_name, customer_email, shipping_address, total")
+    .select("id, order_number, shippo_rate_id, shippo_label_url, tracking_number, tracking_url, carrier, delivery_method, customer_name, customer_email, shipping_address, total")
     .eq("id", id)
     .single();
 
@@ -114,9 +114,11 @@ export async function POST(
 
   if (order.shippo_label_url && order.shippo_label_url !== "__pending__") {
     return NextResponse.json({
-      error: "Label already created for this order.",
       label_url: order.shippo_label_url,
-    }, { status: 409 });
+      tracking_number: order.tracking_number ?? "",
+      tracking_url: order.tracking_url ?? "",
+      carrier: order.carrier ?? "",
+    });
   }
 
   // Atomic DB lock: only one request can proceed at a time.

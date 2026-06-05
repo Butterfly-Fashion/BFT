@@ -53,7 +53,7 @@ export async function sendAdminOrderEmail(
   const meta = session.metadata ?? {};
   const orderId = meta.order_id ?? session.id;
   const total = ((session.amount_total ?? 0) / 100).toFixed(2);
-  const stripeUrl = `https://dashboard.stripe.com/payments/${session.payment_intent}`;
+  const adminUrl = `${SITE}/admin`;
 
   const html = `
 <!DOCTYPE html>
@@ -107,9 +107,9 @@ export async function sendAdminOrderEmail(
       </div>
 
       <div style="margin-top:24px;text-align:center;">
-        <a href="${stripeUrl}"
+        <a href="${adminUrl}"
           style="display:inline-block;padding:12px 28px;background:#C41E3A;color:#fff;text-decoration:none;border-radius:24px;font-size:13px;font-weight:bold;">
-          View in Stripe Dashboard →
+          View Order in Admin →
         </a>
       </div>
     </div>
