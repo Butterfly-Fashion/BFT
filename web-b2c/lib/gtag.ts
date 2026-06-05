@@ -86,6 +86,18 @@ export function trackBeginCheckout(params: {
   });
 }
 
+// Fire Google Ads conversion on purchase (conversion_event_purchase_1)
+export function trackGoogleAdsConversion(order: {
+  id: string;
+  total: number;
+}) {
+  send("conversion_event_purchase_1", {
+    value: order.total,
+    currency: "CAD",
+    transaction_id: order.id,
+  });
+}
+
 // Fire after payment verified on order-confirmation
 export function trackPurchase(order: {
   id: string;

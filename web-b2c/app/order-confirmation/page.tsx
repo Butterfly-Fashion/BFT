@@ -8,7 +8,7 @@ import { ProductImage } from "@/components/store/product-image";
 import { useCart } from "@/components/store/cart-provider";
 import { getProvinceName } from "@/lib/types";
 import Link from "next/link";
-import { trackPurchase } from "@/lib/gtag";
+import { trackPurchase, trackGoogleAdsConversion } from "@/lib/gtag";
 
 type Status = "loading" | "success" | "failed" | "no-order";
 
@@ -73,7 +73,7 @@ function OrderConfirmationInner() {
         // 결제 확인 후 장바구니 비우기 (checkout에서 미리 지우지 않음)
         clearCart();
 
-        // GA4 purchase event
+        // GA4 purchase event + Google Ads conversion
         if (confirmedOrder) {
           trackPurchase({
             id: confirmedOrder.id,
@@ -81,6 +81,10 @@ function OrderConfirmationInner() {
             shipping: confirmedOrder.shipping,
             tax: confirmedOrder.tax,
             items: confirmedOrder.items,
+          });
+          trackGoogleAdsConversion({
+            id: confirmedOrder.id,
+            total: confirmedOrder.total,
           });
         }
 
