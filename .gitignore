@@ -18,6 +18,11 @@ worldcup-figure/
 web-b2b/test-results/
 web-b2b/tests/*-state.json
 
+# Outreach data files (contact info — not tracked)
+scripts/outreach/*.csv
+scripts/outreach/*.json
+scripts/outreach/*.xlsx
+
 # Spreadsheets & temp files
 *.xlsx
 *.xls
