@@ -104,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${GA_ID}', { send_page_view: true });
+              gtag('config', 'AW-8260201564');
             `,
           }}
         />
