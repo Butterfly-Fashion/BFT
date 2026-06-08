@@ -28,7 +28,7 @@ export function NewsletterForm({ source = "footer", variant = "dark" }: Props) {
 
   if (status === "success") {
     return (
-      <p className={`text-sm font-semibold ${variant === "dark" ? "text-[#FFD700]" : "text-[#C41E3A]"}`}>
+      <p className={`text-sm font-semibold ${variant === "dark" ? "text-[#FFD700]" : "text-brand"}`}>
         You&apos;re in! We&apos;ll send you the best 2026 fan deals.
       </p>
     );
@@ -46,13 +46,13 @@ export function NewsletterForm({ source = "footer", variant = "dark" }: Props) {
         className={`flex-1 px-4 py-2.5 rounded-full text-sm border outline-none transition-colors ${
           variant === "dark"
             ? "bg-white/10 border-white/20 text-white placeholder-white/40 focus:border-white/60"
-            : "bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-[#C41E3A]"
+            : "bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-brand"
         }`}
       />
       <button
         type="submit"
         disabled={status === "loading"}
-        className="px-5 py-2.5 rounded-full font-semibold text-sm bg-[#C41E3A] text-white hover:bg-[#A01830] transition-colors disabled:opacity-60 whitespace-nowrap"
+        className="px-5 py-2.5 rounded-full font-semibold text-sm bg-brand text-white hover:bg-brand-hover transition-colors disabled:opacity-60 whitespace-nowrap"
       >
         {status === "loading" ? "Joining…" : "Join the 2026 Fan List"}
       </button>

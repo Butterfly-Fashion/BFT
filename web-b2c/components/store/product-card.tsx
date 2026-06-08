@@ -26,7 +26,7 @@ export function ProductCard({ product, priority = false }: Props) {
         />
         {product.badge && (
           <div className="absolute top-3 left-3 z-10">
-            <span className="bg-[#C41E3A] text-white text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-md">
+            <span className="bg-brand text-white text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-md">
               {product.badge}
             </span>
           </div>
@@ -43,7 +43,7 @@ export function ProductCard({ product, priority = false }: Props) {
         <p className="text-[11px] text-gray-400 uppercase tracking-wide mb-0.5">
           {product.category}
         </p>
-        <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#C41E3A] transition-colors duration-150 leading-snug line-clamp-2">
+        <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand transition-colors duration-150 leading-snug line-clamp-2">
           {product.name}
         </h3>
         <div className="flex items-baseline gap-2 mt-1">

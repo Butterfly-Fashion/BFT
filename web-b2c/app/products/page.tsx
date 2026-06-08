@@ -91,7 +91,7 @@ export default async function ProductsPage({ searchParams }: Props) {
               href={`/products?category=${encodeURIComponent(cat)}`}
               className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-colors duration-150 ${
                 isSelected
-                  ? "bg-[#C41E3A] text-white border-[#C41E3A]"
+                  ? "bg-brand text-white border-brand"
                   : "bg-white text-gray-600 border-gray-200 hover:border-gray-400"
               }`}
             >

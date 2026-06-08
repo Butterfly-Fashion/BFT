@@ -15,10 +15,10 @@ export function CategoryStrip() {
           <Link
             key={cat.name}
             href={cat.href}
-            className="group shrink-0 flex items-center gap-2.5 px-6 py-3 rounded-full border border-gray-200 bg-white hover:border-[#C41E3A] hover:bg-[#C41E3A]/5 transition-all duration-150 shadow-sm"
+            className="group shrink-0 flex items-center gap-2.5 px-6 py-3 rounded-full border border-gray-200 bg-white hover:border-brand hover:bg-brand/5 transition-all duration-150 shadow-sm"
           >
             <span className="text-lg leading-none">{cat.emoji}</span>
-            <span className="text-sm font-semibold text-gray-700 group-hover:text-[#C41E3A] transition-colors">
+            <span className="text-sm font-semibold text-gray-700 group-hover:text-brand transition-colors">
               {cat.name}
             </span>
           </Link>

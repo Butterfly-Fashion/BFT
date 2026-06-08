@@ -14,7 +14,7 @@ interface ContactMessage {
 }
 
 const STATUS_BADGE: Record<ContactMessage["status"], string> = {
-  new: "bg-[#C41E3A]/10 text-[#C41E3A] border-[#C41E3A]/20",
+  new: "bg-brand/10 text-brand border-brand/20",
   read: "bg-gray-100 text-gray-600 border-gray-200",
   replied: "bg-green-50 text-green-700 border-green-200",
 };
@@ -102,7 +102,7 @@ export default function MessagesDashboard() {
     return (
       <div className="flex h-full items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
           <p className="text-sm font-semibold text-gray-400">Loading messages…</p>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function MessagesDashboard() {
           <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
             Customer Messages
             {newCount > 0 && (
-              <span className="ml-2 rounded-full bg-[#C41E3A] px-1.5 py-0.5 text-[10px] font-bold text-white">
+              <span className="ml-2 rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white">
                 {newCount}
               </span>
             )}
@@ -183,7 +183,7 @@ export default function MessagesDashboard() {
                   <p className="text-base font-bold text-gray-900">{selected.name}</p>
                   <a
                     href={`mailto:${selected.email}`}
-                    className="text-sm text-[#C41E3A] hover:underline"
+                    className="text-sm text-brand hover:underline"
                   >
                     {selected.email}
                   </a>
@@ -229,7 +229,7 @@ export default function MessagesDashboard() {
                         minute: "2-digit",
                       })}
                   </p>
-                  <div className="rounded-xl bg-[#C41E3A]/5 border border-[#C41E3A]/15 p-4">
+                  <div className="rounded-xl bg-brand/5 border border-brand/15 p-4">
                     <p className="whitespace-pre-wrap text-sm text-gray-800 leading-relaxed">
                       {selected.admin_reply}
                     </p>
@@ -247,7 +247,7 @@ export default function MessagesDashboard() {
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 rows={4}
-                className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+                className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
                 placeholder={`Reply to ${selected.name}…`}
               />
               {replyMsg && (
@@ -263,7 +263,7 @@ export default function MessagesDashboard() {
                 <button
                   onClick={sendReply}
                   disabled={replying || !replyText.trim()}
-                  className="rounded-full bg-[#C41E3A] px-6 py-2 text-sm font-bold text-white transition-colors hover:bg-[#A01830] disabled:opacity-50"
+                  className="rounded-full bg-brand px-6 py-2 text-sm font-bold text-white transition-colors hover:bg-brand-hover disabled:opacity-50"
                 >
                   {replying ? "Sending…" : "Send Reply"}
                 </button>

@@ -47,7 +47,7 @@ export function BlogUrgencyBanner({ category, productSlug }: Props) {
       </div>
       <Link
         href={ctaHref}
-        className="shrink-0 rounded-full bg-[#C41E3A] px-4 py-2 text-xs font-black text-white hover:bg-[#A01830] transition-colors uppercase tracking-wide"
+        className="shrink-0 rounded-full bg-brand px-4 py-2 text-xs font-black text-white hover:bg-brand-hover transition-colors uppercase tracking-wide"
       >
         {ctaLabel}
       </Link>

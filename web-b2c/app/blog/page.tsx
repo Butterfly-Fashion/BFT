@@ -28,7 +28,7 @@ export default function BlogIndexPage() {
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <section className="max-w-3xl">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
           Guides
         </p>
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900">
@@ -57,10 +57,10 @@ export default function BlogIndexPage() {
               />
             </div>
             <div className="p-5">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-[#C41E3A]">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-brand">
                 {post.category}
               </p>
-              <h2 className="mt-2 text-lg font-black leading-snug text-gray-900 group-hover:text-[#C41E3A]">
+              <h2 className="mt-2 text-lg font-black leading-snug text-gray-900 group-hover:text-brand">
                 {post.title}
               </h2>
               <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-600">

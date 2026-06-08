@@ -136,7 +136,7 @@ export function ProductActions({ product }: Props) {
         <button
           onClick={handleBuyNow}
           disabled={!product.inStock || !CHECKOUT_ENABLED}
-          className="w-full py-3.5 rounded-full font-semibold text-sm bg-[#C41E3A] text-white hover:bg-[#A01830] transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+          className="w-full py-3.5 rounded-full font-semibold text-sm bg-brand text-white hover:bg-brand-hover transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
         >
           {CHECKOUT_ENABLED ? "Buy Now" : "Checkout Paused"}
         </button>
@@ -158,15 +158,15 @@ export function ProductActions({ product }: Props) {
 
       <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
         <div className="flex flex-col items-center gap-1">
-          <Truck className="h-5 w-5 text-[#C41E3A]" />
+          <Truck className="h-5 w-5 text-brand" />
           <span className="text-[11px] font-semibold text-gray-600">Ships from Toronto</span>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <RotateCcw className="h-5 w-5 text-[#C41E3A]" />
+          <RotateCcw className="h-5 w-5 text-brand" />
           <span className="text-[11px] font-semibold text-gray-600">30-day returns</span>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <Lock className="h-5 w-5 text-[#C41E3A]" />
+          <Lock className="h-5 w-5 text-brand" />
           <span className="text-[11px] font-semibold text-gray-600">Secure payments</span>
         </div>
       </div>

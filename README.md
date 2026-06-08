@@ -72,14 +72,14 @@
     │           Supabase (PostgreSQL + Auth)        │
     │  - products, orders, order_items              │
     │  - profiles, quotes, customer_prices          │
-    │  - Row Level Security 정책                     │
+    │  - Row Level Security policy                  │
     └───────────────────────────────────────────────┘
              │
     ┌────────▼────────────────────────────────────────────┐
-    │                  외부 API                            │
+    │                  External API                       │
     │  ┌──────────────┐  ┌──────────┐  ┌───────────────┐  │
     │  │ Stripe       │  │ Shippo   │  │ Gmail SMTP    │  │
-    │  │ (결제)        │  │ (배송)    │  │ (이메일)       │ │
+    │  │ (pay)        │  │ (ship)   │  │ (email)       │  │
     │  └──────────────┘  └──────────┘  └───────────────┘  │
     └─────────────────────────────────────────────────────┘
 ```
@@ -420,11 +420,11 @@ B2B 고객 → 장바구니 → Order Request Form 제출
 
 ```
 ┌─ Shipping ────────────────────────────────────────────────────┐
-│ 포장 포함 실제 무게와 박스 크기를 입력하세요.                     │
-│ 부정확한 값은 배송비 손실의 원인이 됩니다.                       │
-│                                                                │
+│ Input the real weight and the size of package                 │
+│ Incorrect value might be the cause of additional shipping     │
+│ fee charge                                                    │
 │  Weight (kg): [____]                                          │
-│  Box Dimensions (cm):  L: [__] × W: [__] × H: [__]           │
+│  Box Dimensions (cm):  L: [__] × W: [__] × H: [__]            │
 └───────────────────────────────────────────────────────────────┘
 ```
 

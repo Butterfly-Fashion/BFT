@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function TermsOfUsePage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
         Customer Care
       </p>
       <h1 className="text-3xl font-black text-gray-900">Terms of Use</h1>

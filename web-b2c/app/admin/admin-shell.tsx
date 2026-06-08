@@ -33,7 +33,7 @@ function AdminSectionLoader({ label }: { label: string }) {
   return (
     <div className="flex h-full items-center justify-center bg-gray-50">
       <div className="text-center">
-        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
         <p className="text-sm font-semibold text-gray-400">{label}</p>
       </div>
     </div>
@@ -69,7 +69,7 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
       {/* Top navigation */}
       <nav className="shrink-0 border-b border-gray-200 bg-white px-6 py-0 flex items-center justify-between">
         <div className="flex items-center gap-1">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#C41E3A] mr-4 py-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-brand mr-4 py-4">
             World Fan Gear
           </span>
           {SECTIONS.map((s) => (
@@ -78,7 +78,7 @@ export default function AdminShell({ logoutAction }: { logoutAction: () => Promi
               onClick={() => navigate(s)}
               className={`px-4 py-4 text-sm font-semibold border-b-2 transition-colors ${
                 section === s
-                  ? "border-[#C41E3A] text-[#C41E3A]"
+                  ? "border-brand text-brand"
                   : "border-transparent text-gray-500 hover:text-gray-800"
               }`}
             >

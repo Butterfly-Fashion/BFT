@@ -92,7 +92,7 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={80}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C41E3A]/30"
+          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30"
         />
       </div>
       <div>
@@ -102,14 +102,14 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
           onChange={(e) => setBody(e.target.value)}
           maxLength={1000}
           rows={3}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#C41E3A]/30 resize-none"
+          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 resize-none"
         />
       </div>
       {error && <p className="text-xs text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="rounded-lg bg-[#C41E3A] px-5 py-2 text-sm font-semibold text-white hover:bg-[#a31830] disabled:opacity-50"
+        className="rounded-lg bg-brand px-5 py-2 text-sm font-semibold text-white hover:bg-[#a31830] disabled:opacity-50"
       >
         {loading ? "Submitting…" : "Submit Review"}
       </button>

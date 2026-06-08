@@ -39,12 +39,12 @@ export function HomeSearchBar() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder="Search stickers, flags, caps, teams..."
-          className="w-full rounded-2xl border-2 border-gray-200 bg-white pl-12 pr-28 py-4 text-base text-gray-900 placeholder-gray-400 outline-none focus:border-[#C41E3A] focus:ring-4 focus:ring-[#C41E3A]/10 transition-all"
+          className="w-full rounded-2xl border-2 border-gray-200 bg-white pl-12 pr-28 py-4 text-base text-gray-900 placeholder-gray-400 outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all"
           autoComplete="off"
         />
         <button
           type="submit"
-          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl bg-[#C41E3A] px-5 py-2.5 text-sm font-black text-white hover:bg-[#A01830] transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-xl bg-brand px-5 py-2.5 text-sm font-black text-white hover:bg-brand-hover transition-colors"
         >
           Search
         </button>
@@ -56,7 +56,7 @@ export function HomeSearchBar() {
           <button
             key={item.label}
             onClick={() => router.push(`/products?search=${encodeURIComponent(item.label)}`)}
-            className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:border-[#C41E3A] hover:text-[#C41E3A] transition-colors"
+            className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:border-brand hover:text-brand transition-colors"
           >
             {item.label}
           </button>

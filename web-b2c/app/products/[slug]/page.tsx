@@ -231,7 +231,7 @@ function ProductSeoContent({ product }: { product: Product }) {
     <section className="mt-16 border-t border-gray-100 pt-10">
       <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand">
             Buying Guide
           </p>
           <h2 className="mt-2 text-xl font-black text-gray-900">
@@ -272,7 +272,7 @@ function ProductSeoContent({ product }: { product: Product }) {
                 <div className="space-y-5">
                   {guides.map((guide) => (
                     <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
-                      <p className="text-sm font-semibold leading-snug text-gray-900 group-hover:text-[#C41E3A] transition-colors">
+                      <p className="text-sm font-semibold leading-snug text-gray-900 group-hover:text-brand transition-colors">
                         {guide.title}
                       </p>
                       <p className="mt-1 text-xs leading-5 text-gray-400">{guide.description}</p>
@@ -308,7 +308,7 @@ function PlayerCardsSection({ cards }: { cards: PlayerCard[] }) {
   return (
     <div className="mt-16">
       <div className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-1">
           Could your box have one of these?
         </p>
         <h2 className="text-xl font-bold text-gray-900">
@@ -350,7 +350,7 @@ const PARALLELS = [
 function RaritySection() {
   return (
     <div className="mt-16">
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
+      <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-1">
         Parallel Rarity System
       </p>
       <h2 className="text-xl font-bold text-gray-900 mb-1">

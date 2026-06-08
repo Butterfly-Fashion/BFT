@@ -232,7 +232,7 @@ export default function CheckoutPage() {
   if (!CHECKOUT_ENABLED) {
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-3">
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">
           Checkout Paused
         </p>
         <h1 className="text-2xl font-bold text-gray-900 mb-4">
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Nothing to check out</h1>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm"
         >
           Shop Products
         </Link>
@@ -275,7 +275,7 @@ export default function CheckoutPage() {
                 className={[
                   "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold",
                   i === 1
-                    ? "bg-[#C41E3A] text-white"
+                    ? "bg-brand text-white"
                     : i < 1
                       ? "bg-gray-900 text-white"
                       : "bg-gray-200 text-gray-400",
@@ -311,7 +311,7 @@ export default function CheckoutPage() {
                 onClick={() => setDeliveryMethod("shipping")}
                 className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
                   deliveryMethod === "shipping"
-                    ? "border-[#C41E3A] bg-red-50"
+                    ? "border-brand bg-red-50"
                     : "border-gray-200 bg-white hover:border-gray-400"
                 }`}
               >
@@ -324,7 +324,7 @@ export default function CheckoutPage() {
                 onClick={() => setDeliveryMethod("pickup")}
                 className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
                   deliveryMethod === "pickup"
-                    ? "border-[#C41E3A] bg-red-50"
+                    ? "border-brand bg-red-50"
                     : "border-gray-200 bg-white hover:border-gray-400"
                 }`}
               >
@@ -370,7 +370,7 @@ export default function CheckoutPage() {
                 placeholder="Email address"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
               />
               <div className="grid grid-cols-2 gap-3">
                 <input
@@ -380,7 +380,7 @@ export default function CheckoutPage() {
                   placeholder="First name"
                   value={form.firstName}
                   onChange={handleChange}
-                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                 />
                 <input
                   type="text"
@@ -389,7 +389,7 @@ export default function CheckoutPage() {
                   placeholder="Last name"
                   value={form.lastName}
                   onChange={handleChange}
-                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                 />
               </div>
             </div>
@@ -411,7 +411,7 @@ export default function CheckoutPage() {
                       onClick={() => handleCountryChange(opt)}
                       className={`h-12 rounded-xl border-2 text-sm font-semibold transition-colors ${
                         countryCode === opt.code
-                          ? "border-[#C41E3A] bg-red-50 text-gray-900"
+                          ? "border-brand bg-red-50 text-gray-900"
                           : "border-gray-200 bg-white text-gray-500 hover:border-gray-400"
                       }`}
                     >
@@ -427,7 +427,7 @@ export default function CheckoutPage() {
                   placeholder="Street address"
                   value={form.address}
                   onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                 />
                 <input
                   type="text"
@@ -435,7 +435,7 @@ export default function CheckoutPage() {
                   placeholder="Apartment, suite, unit (optional)"
                   value={form.apartment}
                   onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                 />
                 <input
                   type="text"
@@ -444,7 +444,7 @@ export default function CheckoutPage() {
                   placeholder="City"
                   value={form.city}
                   onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                  className="w-full h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                 />
                 <div className="grid grid-cols-2 gap-3">
                   <select
@@ -452,7 +452,7 @@ export default function CheckoutPage() {
                     required
                     value={form.province}
                     onChange={handleChange}
-                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors"
+                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors"
                   >
                     {countryCode === "CA"
                       ? CANADIAN_PROVINCES.map((p) => (
@@ -477,7 +477,7 @@ export default function CheckoutPage() {
                       ? "Enter a valid Canadian postal code (e.g. M5V 3L9)"
                       : "Enter a valid US ZIP code (e.g. 10001)"}
                     maxLength={countryCode === "CA" ? 7 : 10}
-                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A] bg-white transition-colors uppercase"
+                    className="h-12 px-4 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand bg-white transition-colors uppercase"
                   />
                 </div>
 
@@ -507,7 +507,7 @@ export default function CheckoutPage() {
               {/* spinner */}
               {fetchingRates && (
                 <div className="flex items-center gap-2 text-sm text-gray-500 py-3 px-3 bg-gray-50 rounded-lg">
-                  <svg className="animate-spin w-4 h-4 text-[#C41E3A] shrink-0" viewBox="0 0 24 24" fill="none">
+                  <svg className="animate-spin w-4 h-4 text-brand shrink-0" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
                   </svg>
@@ -527,15 +527,15 @@ export default function CheckoutPage() {
                         onClick={() => setSelectedRate(rate)}
                         className={`w-full flex items-center gap-3 rounded-xl border-2 px-4 py-3 text-left transition-all ${
                           selected
-                            ? "border-[#C41E3A] bg-red-50 shadow-sm"
+                            ? "border-brand bg-red-50 shadow-sm"
                             : "border-gray-200 bg-white hover:border-gray-400"
                         }`}
                       >
                         {/* radio dot */}
                         <span className={`w-4 h-4 rounded-full border-2 shrink-0 flex items-center justify-center ${
-                          selected ? "border-[#C41E3A]" : "border-gray-300"
+                          selected ? "border-brand" : "border-gray-300"
                         }`}>
-                          {selected && <span className="w-2 h-2 rounded-full bg-[#C41E3A]" />}
+                          {selected && <span className="w-2 h-2 rounded-full bg-brand" />}
                         </span>
 
                         {/* carrier badge */}
@@ -554,7 +554,7 @@ export default function CheckoutPage() {
                         </div>
 
                         {/* price */}
-                        <span className={`text-sm font-bold shrink-0 ${selected ? "text-[#C41E3A]" : "text-gray-900"}`}>
+                        <span className={`text-sm font-bold shrink-0 ${selected ? "text-brand" : "text-gray-900"}`}>
                           {formatCAD(rate.amount)}
                         </span>
                       </button>
@@ -666,7 +666,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting || (deliveryMethod === "shipping" && !selectedRate)}
-              className="mt-6 w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+              className="mt-6 w-full py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {submitting ? "Redirecting to payment…" : isShippingUnavailable ? "Shipping unavailable — use Pickup" : `Pay ${formatCAD(total)}`}
             </button>

@@ -126,7 +126,7 @@ export function Header() {
                         <Link
                           key={child.id}
                           href={`/products?category=${encodeURIComponent(child.name)}`}
-                          className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-[#C41E3A] hover:bg-gray-50 transition-colors"
+                          className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:text-brand hover:bg-gray-50 transition-colors"
                         >
                           {child.name}
                         </Link>
@@ -161,7 +161,7 @@ export function Header() {
           <button
             onClick={() => setSearchOpen((v) => !v)}
             aria-label="Search"
-            className="p-1 text-gray-700 hover:text-[#C41E3A] transition-colors"
+            className="p-1 text-gray-700 hover:text-brand transition-colors"
           >
             <Search className="w-5 h-5" />
           </button>
@@ -169,11 +169,11 @@ export function Header() {
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label="Cart"
-            className="relative flex items-center gap-1.5 text-gray-900 hover:text-[#C41E3A] transition-colors duration-150"
+            className="relative flex items-center gap-1.5 text-gray-900 hover:text-brand transition-colors duration-150"
           >
             <ShoppingBag className="w-5 h-5" />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2.5 bg-[#C41E3A] text-white text-[10px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1 leading-none">
+              <span className="absolute -top-2 -right-2.5 bg-brand text-white text-[10px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1 leading-none">
                 {itemCount > 99 ? "99+" : itemCount}
               </span>
             )}
@@ -208,7 +208,7 @@ export function Header() {
             className="flex-1 text-sm outline-none bg-transparent text-gray-900 placeholder-gray-400"
             autoFocus={searchOpen}
           />
-          <button type="submit" className="text-xs font-semibold text-[#C41E3A] hover:underline">
+          <button type="submit" className="text-xs font-semibold text-brand hover:underline">
             Go
           </button>
         </form>

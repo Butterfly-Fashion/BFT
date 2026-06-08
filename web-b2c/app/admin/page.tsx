@@ -20,7 +20,7 @@ export default async function AdminPage({
   if (!isAuthenticated) {
     return (
       <main className="max-w-md mx-auto px-4 py-24">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand">
           World Fan Gear
         </p>
         <h1 className="mt-3 text-3xl font-black text-gray-900">Admin — Orders</h1>
@@ -40,13 +40,13 @@ export default async function AdminPage({
             <input
               type="password"
               name="password"
-              className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+              className="mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
               autoComplete="current-password"
             />
           </label>
           <button
             type="submit"
-            className="w-full rounded-full bg-[#C41E3A] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#A01830]"
+            className="w-full rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-brand-hover"
           >
             View Orders
           </button>

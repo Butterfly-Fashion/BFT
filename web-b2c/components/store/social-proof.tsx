@@ -21,7 +21,7 @@ export function SocialProof() {
     <section className="bg-gray-50 py-14">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="mb-8">
-          <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A] mb-1">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-1">
             Fan Reviews
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -35,7 +35,7 @@ export function SocialProof() {
               key={review.name}
               className="shrink-0 w-72 sm:w-auto bg-white rounded-2xl p-6 shadow-sm border border-gray-100"
             >
-              <p className="text-[#C41E3A] text-sm font-bold tracking-wide">★★★★★</p>
+              <p className="text-brand text-sm font-bold tracking-wide">★★★★★</p>
               <p className="mt-4 text-sm leading-6 text-gray-700">&quot;{review.quote}&quot;</p>
               <p className="mt-5 text-sm font-bold text-gray-900">{review.name}</p>
               <p className="mt-1 text-xs font-medium text-gray-400">{review.product}</p>

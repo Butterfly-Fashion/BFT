@@ -27,7 +27,7 @@ function HeroSlide() {
       <button
         onClick={() => router.push("/products")}
         aria-label="Shop Now"
-        className="absolute bg-[#C41E3A] hover:bg-[#A01830] active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
+        className="absolute bg-brand hover:bg-brand-hover active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
         style={{
           left: "3.8%",
           bottom: "14%",
@@ -84,7 +84,7 @@ function BundleSlide() {
       <Link
         href="/products/panini-fifa-world-cup-2026-bundle-album-sticker-box"
         aria-label="Shop the Bundle"
-        className="absolute bg-[#C41E3A] hover:bg-[#A01830] active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
+        className="absolute bg-brand hover:bg-brand-hover active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
         style={{
           right: "4%",
           bottom: "14%",

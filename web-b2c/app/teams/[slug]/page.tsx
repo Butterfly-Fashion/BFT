@@ -10,6 +10,7 @@ import {
 } from "@/lib/seo-pages";
 import { absoluteUrl, breadcrumbJsonLd, itemListJsonLd, jsonLd } from "@/lib/seo";
 import { getBlogPostsBySlugs } from "@/lib/blog-posts";
+import { getFeaturedProducts } from "@/lib/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,6 +50,7 @@ export default async function TeamLandingPage({ params }: Props) {
   if (!page) notFound();
 
   const teamProducts = getProductsForTeam(page);
+  const fallbackProducts = teamProducts.length > 0 ? [] : await getFeaturedProducts();
   const sections = getTeamSeoSections(page);
   const faqs = getTeamFaqs(page);
   const guides = getBlogPostsBySlugs([
@@ -76,7 +78,11 @@ export default async function TeamLandingPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: jsonLd(
-            itemListJsonLd(`${page.team} World Cup 2026 Fan Gear`, `/teams/${page.slug}`, teamProducts)
+            itemListJsonLd(
+              `${page.team} World Cup 2026 Fan Gear`,
+              `/teams/${page.slug}`,
+              teamProducts.length > 0 ? teamProducts : fallbackProducts
+            )
           ),
         }}
       />
@@ -90,7 +96,7 @@ export default async function TeamLandingPage({ params }: Props) {
       </nav>
 
       <section className="max-w-3xl">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
           Shop by Team
         </p>
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900">{page.title}</h1>
@@ -99,13 +105,20 @@ export default async function TeamLandingPage({ params }: Props) {
 
       {teamProducts.length > 0 ? (
         <section className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {teamProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {teamProducts.map((product, i) => (
+            <ProductCard key={product.id} product={product} priority={i < 4} />
           ))}
         </section>
       ) : (
-        <section className="mt-10 rounded-xl border border-gray-100 bg-white p-8 text-sm text-gray-500">
-          More {page.team} products are coming soon. Browse all fan gear while we update this collection.
+        <section className="mt-10">
+          <p className="rounded-xl border border-gray-100 bg-white p-5 text-sm text-gray-500">
+            More {page.team}-specific gear is coming soon. In the meantime, here&apos;s our most popular World Cup 2026 fan gear — ships from Toronto across Canada.
+          </p>
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {fallbackProducts.map((product, i) => (
+              <ProductCard key={product.id} product={product} priority={i < 4} />
+            ))}
+          </div>
         </section>
       )}
 
@@ -137,7 +150,7 @@ export default async function TeamLandingPage({ params }: Props) {
           <div className="mt-4 space-y-4">
             {guides.map((guide) => (
               <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
-                <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-[#C41E3A]">
+                <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-brand">
                   {guide.title}
                 </p>
                 <p className="mt-1 text-xs leading-5 text-gray-500">{guide.description}</p>

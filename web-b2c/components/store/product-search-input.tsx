@@ -46,7 +46,7 @@ export function ProductSearchInput({ defaultValue = "" }: { defaultValue?: strin
         defaultValue={defaultValue}
         onChange={handleChange}
         placeholder="Search products…"
-        className="w-full rounded-full border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 sm:w-72"
+        className="w-full rounded-full border border-gray-200 bg-white py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus:border-brand focus:ring-2 focus:ring-brand/15 sm:w-72"
       />
     </div>
   );

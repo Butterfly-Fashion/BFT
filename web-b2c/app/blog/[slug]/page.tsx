@@ -119,7 +119,7 @@ export default async function BlogPostPage({ params }: Props) {
           <span className="text-gray-600">{post.category}</span>
         </nav>
 
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
           {post.category}
         </p>
         <h1 className="text-3xl font-black leading-tight text-gray-900 sm:text-5xl">
@@ -180,7 +180,7 @@ export default async function BlogPostPage({ params }: Props) {
         <section className="mt-10 border-t border-gray-100 pt-10">
           <div className="mb-6 flex items-end justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+              <p className="text-xs font-semibold uppercase tracking-widest text-brand">
                 In Stock Now
               </p>
               <h2 className="mt-2 text-2xl font-black text-gray-900">Shop the guide</h2>
@@ -198,7 +198,7 @@ export default async function BlogPostPage({ params }: Props) {
       )}
 
       {/* CTA banner */}
-      <div className="mt-10 rounded-2xl bg-[#C41E3A] px-6 py-8 text-center sm:px-10">
+      <div className="mt-10 rounded-2xl bg-brand px-6 py-8 text-center sm:px-10">
         <p className="text-xs font-bold uppercase tracking-widest text-red-200">
           World Fan Gear
         </p>
@@ -210,7 +210,7 @@ export default async function BlogPostPage({ params }: Props) {
         </p>
         <Link
           href="/products"
-          className="mt-5 inline-block rounded-full bg-white px-7 py-3 text-sm font-black text-[#C41E3A] transition-opacity hover:opacity-90"
+          className="mt-5 inline-block rounded-full bg-white px-7 py-3 text-sm font-black text-brand transition-opacity hover:opacity-90"
         >
           Shop Fan Gear →
         </Link>

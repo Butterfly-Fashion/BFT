@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import type { DbProduct, DbProductImage, ProductStatus } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
+import { slugify } from "@/lib/slug";
 
 const PAGE_SIZE = 25;
 
@@ -21,10 +22,6 @@ const STATUS_COLORS: Record<ProductStatus, string> = {
   draft: "bg-gray-100 text-gray-500 border-gray-300",
   archived: "bg-red-50 text-red-500 border-red-200",
 };
-
-function slugify(t: string) {
-  return t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
 
 function StatusBadge({ status }: { status: ProductStatus }) {
   return (
@@ -239,7 +236,7 @@ export default function ProductsDashboard() {
               {loading ? "Loading..." : "Refresh"}
             </button>
             <button onClick={openNew}
-              className="rounded-full bg-[#C41E3A] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#A01830] transition-colors">
+              className="rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white hover:bg-brand-hover transition-colors">
               + New Product
             </button>
           </div>
@@ -247,15 +244,15 @@ export default function ProductsDashboard() {
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <input type="search" placeholder="Search by name or slug..." value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15" />
+            className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15" />
           <div className="flex gap-2">
             <select value={catFilter} onChange={(e) => setCatFilter(e.target.value)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#C41E3A]">
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-brand">
               <option value="all">All categories</option>
               {categories.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as "all" | ProductStatus)}
-              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-[#C41E3A]">
+              className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-brand">
               <option value="all">All status</option>
               <option value="active">Active</option>
               <option value="draft">Draft</option>
@@ -273,7 +270,7 @@ export default function ProductsDashboard() {
             <div className="p-6"><p className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p></div>
           ) : loading ? (
             <div className="flex items-center justify-center py-24">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-24 text-center">
@@ -367,19 +364,19 @@ export default function ProductsDashboard() {
                   <input type="text" value={form.name}
                     onChange={(e) => setForm((p) => ({ ...p, name: e.target.value, slug: isNew ? slugify(e.target.value) : p.slug }))}
                     placeholder="e.g. Canada Flag Car Flag"
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15" />
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Slug (URL) *</label>
                   <input type="text" value={form.slug} onChange={(e) => setForm((p) => ({ ...p, slug: e.target.value }))}
                     placeholder="canada-flag-car-flag"
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-[#C41E3A]" />
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-brand" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Category *</label>
                     <select value={form.category} onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
-                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]">
+                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand">
                       <option value="">Select category…</option>
                       {categories.map((c) => <option key={c} value={c}>{c}</option>)}
                     </select>
@@ -387,7 +384,7 @@ export default function ProductsDashboard() {
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Status</label>
                     <select value={form.status} onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as ProductStatus }))}
-                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]">
+                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand">
                       <option value="active">Active</option>
                       <option value="draft">Draft</option>
                       <option value="archived">Archived</option>
@@ -398,24 +395,24 @@ export default function ProductsDashboard() {
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Price (CAD) *</label>
                     <input type="number" step="0.01" value={form.price} onChange={(e) => setForm((p) => ({ ...p, price: e.target.value }))}
-                      placeholder="14.99" className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]" />
+                      placeholder="14.99" className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Compare At</label>
                     <input type="number" step="0.01" value={form.compare_at_price} onChange={(e) => setForm((p) => ({ ...p, compare_at_price: e.target.value }))}
-                      placeholder="19.99" className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]" />
+                      placeholder="19.99" className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Weight (kg)</label>
                     <input type="number" step="0.01" value={form.weight_kg} onChange={(e) => setForm((p) => ({ ...p, weight_kg: e.target.value }))}
-                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]" />
+                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1">Badge</label>
                     <input type="text" value={form.badge} onChange={(e) => setForm((p) => ({ ...p, badge: e.target.value }))}
-                      placeholder="New, Bundle..." className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]" />
+                      placeholder="New, Bundle..." className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand" />
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -424,13 +421,13 @@ export default function ProductsDashboard() {
                     <span className="text-sm font-semibold text-gray-700">In Stock</span>
                   </label>
                   <input type="number" value={form.stock_qty} onChange={(e) => setForm((p) => ({ ...p, stock_qty: e.target.value }))}
-                    placeholder="Qty (optional)" className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#C41E3A]" />
+                    placeholder="Qty (optional)" className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-brand" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Description</label>
                   <textarea value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                     rows={3} placeholder="Product description shown on the store..."
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] resize-none" />
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand resize-none" />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-2">Images</label>
@@ -495,7 +492,7 @@ export default function ProductsDashboard() {
                   </div>
                 )}
                 <button onClick={handleSave} disabled={saving || detailLoading}
-                  className="w-full rounded-full bg-[#C41E3A] py-2.5 text-sm font-bold text-white hover:bg-[#A01830] transition-colors disabled:opacity-60">
+                  className="w-full rounded-full bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-hover transition-colors disabled:opacity-60">
                   {saving ? "Saving..." : isNew ? "Create Product" : "Save Changes"}
                 </button>
                 {!isNew && selected && selected.status !== "archived" && (
@@ -556,7 +553,7 @@ function Pagination({ page, totalPages, totalItems, pageSize, onPage }: {
               onClick={() => onPage(p)}
               className={`min-w-7.5 px-2 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 p === page
-                  ? "bg-[#C41E3A] text-white"
+                  ? "bg-brand text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >

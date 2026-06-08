@@ -23,7 +23,7 @@ export function ProductSortSelect({ value }: { value: string }) {
     <select
       value={value}
       onChange={(event) => handleChange(event.target.value)}
-      className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+      className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
       aria-label="Sort products"
     >
       <option value="default">Default</option>

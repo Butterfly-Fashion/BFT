@@ -74,7 +74,7 @@ export default function ChatWidget() {
       {/* Floating button */}
       <button
         onClick={toggle}
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#C41E3A] shadow-lg transition-colors hover:bg-[#A01830]"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-brand shadow-lg transition-colors hover:bg-brand-hover"
         aria-label={open ? "Close support chat" : "Contact support"}
       >
         {open ? (
@@ -134,7 +134,7 @@ function ChatPanel({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
         <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-[#C41E3A]">
+          <p className="text-xs font-bold uppercase tracking-widest text-brand">
             World Fan Gear
           </p>
           <p className="text-sm font-semibold text-gray-900">Contact Us</p>
@@ -195,7 +195,7 @@ function ChatPanel({
                 type="text"
                 required
                 autoComplete="name"
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A]/20"
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand/20"
                 placeholder="Your name"
               />
             </label>
@@ -206,7 +206,7 @@ function ChatPanel({
                 type="email"
                 required
                 autoComplete="email"
-                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A]/20"
+                className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand/20"
                 placeholder="you@example.com"
               />
             </label>
@@ -216,7 +216,7 @@ function ChatPanel({
                 name="message"
                 required
                 rows={3}
-                className="mt-1 w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-[#C41E3A] focus:ring-1 focus:ring-[#C41E3A]/20"
+                className="mt-1 w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-1 focus:ring-brand/20"
                 placeholder="How can we help?"
               />
             </label>
@@ -224,7 +224,7 @@ function ChatPanel({
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-full bg-[#C41E3A] py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#A01830] disabled:opacity-60"
+              className="w-full rounded-full bg-brand py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-hover disabled:opacity-60"
             >
               {loading ? "Sending…" : "Send Message"}
             </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { slugify } from "@/lib/slug";
 
 interface Category {
   id: string;
@@ -8,10 +9,6 @@ interface Category {
   slug: string;
   parent_id: string | null;
   sort_order: number;
-}
-
-function slugify(t: string) {
-  return t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
 const EMPTY_FORM = { name: "", slug: "", parent_id: "", sort_order: "0" };
@@ -116,7 +113,7 @@ export default function CategoriesDashboard() {
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center bg-gray-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
       </div>
     );
   }
@@ -141,7 +138,7 @@ export default function CategoriesDashboard() {
         </div>
         <button
           onClick={() => openNew()}
-          className="rounded-full bg-[#C41E3A] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#A01830] transition-colors"
+          className="rounded-full bg-brand px-4 py-1.5 text-xs font-bold text-white hover:bg-brand-hover transition-colors"
         >
           + New Category
         </button>
@@ -154,7 +151,7 @@ export default function CategoriesDashboard() {
           {parents.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <p className="text-sm text-gray-400 mb-4">No categories yet.</p>
-              <button onClick={() => openNew()} className="text-sm font-semibold text-[#C41E3A] hover:underline">
+              <button onClick={() => openNew()} className="text-sm font-semibold text-brand hover:underline">
                 Create your first category →
               </button>
             </div>
@@ -209,7 +206,7 @@ export default function CategoriesDashboard() {
                     <div className="border-t border-dashed border-gray-100 px-5 py-2">
                       <button
                         onClick={() => openNew(parent.id)}
-                        className="text-xs font-semibold text-gray-400 hover:text-[#C41E3A] transition-colors"
+                        className="text-xs font-semibold text-gray-400 hover:text-brand transition-colors"
                       >
                         + Add sub-category
                       </button>
@@ -241,7 +238,7 @@ export default function CategoriesDashboard() {
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value, slug: isNew ? slugify(e.target.value) : f.slug }))}
                   placeholder="e.g. Bucket Hats"
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
                 />
               </div>
 
@@ -252,7 +249,7 @@ export default function CategoriesDashboard() {
                   value={form.slug}
                   onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
                   placeholder="bucket-hats"
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-[#C41E3A]"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-brand"
                 />
               </div>
 
@@ -261,7 +258,7 @@ export default function CategoriesDashboard() {
                 <select
                   value={form.parent_id}
                   onChange={(e) => setForm((f) => ({ ...f, parent_id: e.target.value }))}
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand"
                 >
                   <option value="">— Top level —</option>
                   {parents
@@ -278,7 +275,7 @@ export default function CategoriesDashboard() {
                   type="number"
                   value={form.sort_order}
                   onChange={(e) => setForm((f) => ({ ...f, sort_order: e.target.value }))}
-                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A]"
+                  className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand"
                 />
               </div>
 
@@ -291,7 +288,7 @@ export default function CategoriesDashboard() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="w-full rounded-full bg-[#C41E3A] py-2.5 text-sm font-bold text-white hover:bg-[#A01830] transition-colors disabled:opacity-60"
+                className="w-full rounded-full bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-hover transition-colors disabled:opacity-60"
               >
                 {saving ? "Saving..." : isNew ? "Create Category" : "Save Changes"}
               </button>

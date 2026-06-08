@@ -49,7 +49,7 @@ export default function NewsletterDashboard() {
     return (
       <div className="flex h-full items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
           <p className="text-sm font-semibold text-gray-400">Loading subscribers…</p>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function NewsletterDashboard() {
             placeholder="Search by email…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full max-w-sm rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+            className="w-full max-w-sm rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
           />
         </div>
       </div>

@@ -92,7 +92,7 @@ export default async function CollectionLandingPage({ params }: Props) {
       </nav>
 
       <section className="max-w-3xl">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
           Canada 2026 Fan Gear
         </p>
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900">{page.h1}</h1>
@@ -102,8 +102,8 @@ export default async function CollectionLandingPage({ params }: Props) {
       <HomeSearchBar />
 
       <section className="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-        {collectionProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {collectionProducts.map((product, i) => (
+          <ProductCard key={product.id} product={product} priority={i < 4} />
         ))}
       </section>
 
@@ -135,7 +135,7 @@ export default async function CollectionLandingPage({ params }: Props) {
           <div className="mt-4 space-y-4">
             {guides.map((guide) => (
               <Link key={guide.slug} href={`/blog/${guide.slug}`} className="block group">
-                <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-[#C41E3A]">
+                <p className="text-sm font-bold leading-snug text-gray-900 group-hover:text-brand">
                   {guide.title}
                 </p>
                 <p className="mt-1 text-xs leading-5 text-gray-500">{guide.description}</p>
