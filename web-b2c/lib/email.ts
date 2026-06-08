@@ -1,9 +1,11 @@
 import nodemailer from "nodemailer";
 import type Stripe from "stripe";
+import { BUSINESS_EMAIL, BUSINESS_NAME, SITE_URL } from "@/lib/seo";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "jameskimkim1@gmail.com";
-const FROM = process.env.EMAIL_FROM ?? "Butterfly Fashion Trading <jameskimkim1@gmail.com>";
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifa2026.ca";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? BUSINESS_EMAIL;
+const FROM = process.env.EMAIL_FROM ?? `${BUSINESS_NAME} <${BUSINESS_EMAIL}>`;
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL;
 
 function isSmtpConfigured(): boolean {
   return Boolean(
@@ -154,13 +156,9 @@ export async function sendCustomerConfirmationEmail(
   const firstName = (meta.shipping_name ?? "").split(" ")[0] || "there";
 
   // Filter out Shipping and Tax lines — only show actual products
-  const productItems = lineItems.filter(
-    (item) =>
-      item.description !== "Shipping" &&
-      item.description !== "Tax (HST 13%)"
-  );
-  const shippingItem = lineItems.find((item) => item.description === "Shipping");
-  const taxItem = lineItems.find((item) => item.description === "Tax (HST 13%)");
+  const productItems = lineItems.filter((item) => !isShippingOrTaxLineItem(item.description));
+  const shippingItem = lineItems.find((item) => item.description === SHIPPING_LINE_ITEM_NAME);
+  const taxItem = lineItems.find((item) => item.description === TAX_LINE_ITEM_NAME);
 
   const html = `
 <!DOCTYPE html>

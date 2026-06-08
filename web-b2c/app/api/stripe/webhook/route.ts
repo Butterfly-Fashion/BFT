@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
 import { sendAdminOrderEmail, sendCustomerConfirmationEmail } from "@/lib/email";
 import { supabaseAdmin } from "@/lib/supabase";
 import type Stripe from "stripe";
@@ -86,11 +87,9 @@ async function saveOrderToSupabase(
   const supabase = supabaseAdmin();
   const meta = session.metadata ?? {};
 
-  const productItems = lineItems.filter(
-    (i) => i.description !== "Shipping" && i.description !== "Tax (HST 13%)"
-  );
-  const shippingItem = lineItems.find((i) => i.description === "Shipping");
-  const taxItem = lineItems.find((i) => i.description === "Tax (HST 13%)");
+  const productItems = lineItems.filter((i) => !isShippingOrTaxLineItem(i.description));
+  const shippingItem = lineItems.find((i) => i.description === SHIPPING_LINE_ITEM_NAME);
+  const taxItem = lineItems.find((i) => i.description === TAX_LINE_ITEM_NAME);
 
   const subtotal = productItems.reduce((sum, i) => sum + (i.amount_total ?? 0) / 100, 0);
   const shippingCost = (shippingItem?.amount_total ?? 0) / 100;

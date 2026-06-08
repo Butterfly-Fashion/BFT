@@ -8,6 +8,7 @@ import { ProductImage } from "@/components/store/product-image";
 import { calculateShipping, calculateTax, formatCAD } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
+import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 
 const ALBUM_SLUG  = "panini-fifa-world-cup-2026-official-sticker-album";
 const BOX_SLUG    = "panini-fifa-world-cup-2026-sticker-box-50-packs";
@@ -50,7 +51,7 @@ function StickerUpsell() {
   if (!upsell) return null;
 
   return (
-    <div className="rounded-xl border-2 border-[#C41E3A]/30 bg-red-50 p-4 flex items-center gap-4">
+    <div className="rounded-xl border-2 border-brand/30 bg-red-50 p-4 flex items-center gap-4">
       <div
         className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden"
         style={{ background: upsell.gradient }}
@@ -72,7 +73,7 @@ function StickerUpsell() {
           placeholderGradient: upsell!.gradient,
           weightKg: upsell!.slug === BOX_SLUG ? 1.5 : 0.3,
         })}
-        className="shrink-0 px-4 py-2 bg-[#C41E3A] text-white text-xs font-bold rounded-full hover:bg-[#A01830] transition-colors whitespace-nowrap"
+        className="shrink-0 px-4 py-2 bg-brand text-white text-xs font-bold rounded-full hover:bg-brand-hover transition-colors whitespace-nowrap"
       >
         Add {formatCAD(upsell.price)}
       </button>
@@ -96,7 +97,7 @@ export default function CartPage() {
         </p>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm"
         >
           Browse Products
         </Link>
@@ -204,7 +205,7 @@ export default function CartPage() {
                   Ships from Toronto · 4–7 business days
                 </div>
                 <div className="flex justify-between text-gray-600">
-                  <span>Tax (HST 13%)</span>
+                  <span>{TAX_LINE_ITEM_NAME}</span>
                   <span className="font-medium text-gray-900">{formatCAD(tax)}</span>
                 </div>
               </div>
@@ -220,7 +221,7 @@ export default function CartPage() {
 
               <div className="border-t border-gray-100 mt-5 pt-4 flex justify-between text-gray-900">
                 <span className="font-bold text-lg">Estimated Total</span>
-                <span className="font-black text-xl text-[#C41E3A]">
+                <span className="font-black text-xl text-brand">
                   {formatCAD(estimatedTotal)}
                 </span>
               </div>
@@ -240,7 +241,7 @@ export default function CartPage() {
                     })),
                   });
                 }}
-                className="mt-5 block w-full py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full text-center hover:bg-[#A01830] transition-colors text-sm shadow-sm"
+                className="mt-5 block w-full py-3.5 bg-brand text-white font-semibold rounded-full text-center hover:bg-brand-hover transition-colors text-sm shadow-sm"
               >
                 {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(estimatedTotal)}` : "Checkout Paused"}
               </Link>
@@ -258,15 +259,15 @@ export default function CartPage() {
 
               <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
                 <div className="flex flex-col items-center gap-1">
-                  <Truck className="h-4 w-4 text-[#C41E3A]" />
+                  <Truck className="h-4 w-4 text-brand" />
                   <span className="text-[10px] font-semibold text-gray-500 leading-tight">Ships from<br/>Toronto</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <RotateCcw className="h-4 w-4 text-[#C41E3A]" />
+                  <RotateCcw className="h-4 w-4 text-brand" />
                   <span className="text-[10px] font-semibold text-gray-500 leading-tight">30-day<br/>returns</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
-                  <Lock className="h-4 w-4 text-[#C41E3A]" />
+                  <Lock className="h-4 w-4 text-brand" />
                   <span className="text-[10px] font-semibold text-gray-500 leading-tight">Secure<br/>payments</span>
                 </div>
               </div>
@@ -297,7 +298,7 @@ export default function CartPage() {
               })),
             });
           }}
-          className="shrink-0 px-6 py-2.5 bg-[#C41E3A] text-white font-semibold rounded-full text-sm hover:bg-[#A01830] transition-colors"
+          className="shrink-0 px-6 py-2.5 bg-brand text-white font-semibold rounded-full text-sm hover:bg-brand-hover transition-colors"
         >
           {CHECKOUT_ENABLED ? "Checkout" : "Paused"}
         </Link>

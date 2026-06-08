@@ -24,7 +24,6 @@ const QUICK_CATEGORIES = [
   { label: "Car Flags", href: "/collections/world-cup-car-flags" },
   { label: "Boxing Gloves", href: "/collections/souvenir-boxing-gloves" },
   { label: "Sticker Packs", href: "/collections/panini-stickers" },
-  { label: "Scarves", href: "/collections/world-cup-scarves" },
   { label: "Shop All", href: "/products" },
 ];
 
@@ -48,8 +47,8 @@ async function ProductGrid() {
   const products = await getFeaturedProducts();
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {products.map((product, i) => (
+        <ProductCard key={product.id} product={product} priority={i < 4} />
       ))}
     </div>
   );
@@ -98,7 +97,7 @@ export default function HomePage() {
         <div className="mt-8 text-center">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#C41E3A] px-8 py-3 text-sm font-bold text-white hover:bg-[#A01830] transition-colors"
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3 text-sm font-bold text-white hover:bg-brand-hover transition-colors"
           >
             Browse all products →
           </Link>

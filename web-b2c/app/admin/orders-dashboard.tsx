@@ -1,21 +1,12 @@
 "use client";
 
 import { useEffect, useState, useMemo, useCallback, useRef } from "react";
-import type { DbOrder, DbOrderItem, OrderStatus, ORDER_STATUS_LABELS } from "@/lib/types";
+import type { DbOrder, DbOrderItem, OrderStatus } from "@/lib/types";
+import { ORDER_STATUS_LABELS } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 import { supabaseBrowser } from "@/lib/supabase";
 
-type StatusLabel = typeof ORDER_STATUS_LABELS;
-
-const STATUS_LABELS: StatusLabel = {
-  paid: "New",
-  packing: "Packing",
-  shipped: "Shipped",
-  ready_for_pickup: "Pickup Ready",
-  completed: "Completed",
-  cancelled: "Cancelled",
-  refunded: "Refunded",
-};
+const STATUS_LABELS = ORDER_STATUS_LABELS;
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
   paid: "bg-white text-gray-500 border-gray-200",
@@ -610,7 +601,7 @@ export default function OrdersDashboard() {
             placeholder="Search by order #, name, email, tracking…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+            className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
           />
           <div className="flex gap-2">
             {(["all", "shipping", "pickup"] as const).map((d) => (
@@ -637,7 +628,7 @@ export default function OrdersDashboard() {
               onClick={() => setActiveTab(tab.key)}
               className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors ${
                 activeTab === tab.key
-                  ? "bg-[#C41E3A] text-white"
+                  ? "bg-brand text-white"
                   : "text-gray-500 hover:bg-gray-100"
               }`}
             >
@@ -666,7 +657,7 @@ export default function OrdersDashboard() {
             </div>
           ) : loading ? (
             <div className="flex items-center justify-center py-24">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-24 text-center text-gray-400 text-sm">
@@ -691,7 +682,7 @@ export default function OrdersDashboard() {
                     onClick={() => openPanel(order)}
                     className={`cursor-pointer border-l-4 transition-all duration-100 ${ROW_ACCENT[order.status]} ${
                       selected?.id === order.id
-                        ? `${ROW_BG[order.status].split(" ")[0]} ring-1 ring-inset ring-[#C41E3A]/20 shadow-sm`
+                        ? `${ROW_BG[order.status].split(" ")[0]} ring-1 ring-inset ring-brand/20 shadow-sm`
                         : `${ROW_BG[order.status]} hover:shadow-sm`
                     }`}
                   >
@@ -745,7 +736,7 @@ export default function OrdersDashboard() {
                         <p className="text-xs text-gray-400 mt-0.5 font-mono">{order.tracking_number}</p>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-[#C41E3A]">
+                    <td className="px-4 py-3 text-right font-bold text-brand">
                       {order.total != null ? formatCAD(order.total) : "—"}
                     </td>
                   </tr>
@@ -860,7 +851,7 @@ export default function OrdersDashboard() {
                   )}
                   <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-1 mt-1">
                     <span>Total</span>
-                    <span className="text-[#C41E3A]">{selected.total != null ? formatCAD(selected.total) : "—"}</span>
+                    <span className="text-brand">{selected.total != null ? formatCAD(selected.total) : "—"}</span>
                   </div>
                 </div>
               </div>
@@ -1026,7 +1017,7 @@ export default function OrdersDashboard() {
                           value={linkTrackingInput}
                           onChange={(e) => setLinkTrackingInput(e.target.value)}
                           placeholder="e.g. 1Z2KW3552036265629"
-                          className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs font-mono outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15"
+                          className="w-full rounded-xl border border-gray-200 px-3 py-2 text-xs font-mono outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
                         />
                         <button
                           onClick={handleLinkLabel}
@@ -1057,7 +1048,7 @@ export default function OrdersDashboard() {
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as OrderStatus)}
                     disabled={!isEditable}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
                   >
                     {(Object.entries(STATUS_LABELS) as [OrderStatus, string][])
                       .filter(([val]) => val !== "cancelled" && val !== "refunded")
@@ -1075,7 +1066,7 @@ export default function OrdersDashboard() {
                         value={editCarrier}
                         onChange={(e) => setEditCarrier(e.target.value)}
                         disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400"
+                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
                       >
                         <option value="">— Select carrier —</option>
                         {CARRIERS.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -1090,7 +1081,7 @@ export default function OrdersDashboard() {
                         onChange={(e) => setEditTracking(e.target.value)}
                         placeholder="e.g. 1234 5678 9012"
                         disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400"
+                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
                       />
                     </div>
 
@@ -1102,7 +1093,7 @@ export default function OrdersDashboard() {
                         onChange={(e) => setEditTrackingUrl(e.target.value)}
                         placeholder="https://..."
                         disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400"
+                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
                       />
                     </div>
                   </>
@@ -1116,7 +1107,7 @@ export default function OrdersDashboard() {
                     rows={2}
                     placeholder="Internal notes…"
                     disabled={!isEditable}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-[#C41E3A] focus:ring-2 focus:ring-[#C41E3A]/15 disabled:bg-gray-50 disabled:text-gray-400 resize-none"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400 resize-none"
                   />
                 </div>
 
@@ -1134,7 +1125,7 @@ export default function OrdersDashboard() {
                   <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="w-full rounded-full bg-[#C41E3A] py-2.5 text-sm font-bold text-white hover:bg-[#A01830] transition-colors disabled:opacity-60"
+                    className="w-full rounded-full bg-brand py-2.5 text-sm font-bold text-white hover:bg-brand-hover transition-colors disabled:opacity-60"
                   >
                     {saving ? "Saving…" : "Save Changes"}
                   </button>

@@ -5,6 +5,9 @@ import Link from "next/link";
 
 const KICKOFF = new Date("2026-06-12T23:00:00.000Z");
 const ORDER_CUTOFF = new Date("2026-06-09T23:59:59.000Z");
+// World Cup 2026 final — July 19, 2026, MetLife Stadium, NJ. Hide the
+// kickoff-countdown banner entirely once the tournament has wrapped up.
+const TOURNAMENT_END = new Date("2026-07-19T23:59:59.000Z");
 
 function getDaysLeft() {
   const diff = KICKOFF.getTime() - Date.now();
@@ -19,34 +22,40 @@ export function MobileUrgencyBanner() {
     setDays(getDaysLeft());
   }, []);
 
+  const now = Date.now();
   // Hide on desktop (sm and above)
-  // Hide after kickoff
-  if (days === 0) return null;
+  // Hide once the tournament is over — countdown messaging no longer applies
+  if (now > TOURNAMENT_END.getTime()) return null;
 
-  const pastCutoff = Date.now() > ORDER_CUTOFF.getTime();
+  const live = now >= KICKOFF.getTime();
+  const pastCutoff = now > ORDER_CUTOFF.getTime();
 
   return (
     <div className="sm:hidden">
       {/* Top urgency strip */}
-      <div className="bg-[#C41E3A] px-4 py-3">
+      <div className="bg-brand px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-white font-black text-sm leading-tight">
-              {days !== null ? (
+              {live ? (
+                <>🔥 World Cup 2026 is live!</>
+              ) : days !== null ? (
                 <>⚡ {days} days to kickoff</>
               ) : (
                 <>⚡ World Cup starts June 12</>
               )}
             </p>
             <p className="text-white/80 text-[11px] mt-0.5">
-              {pastCutoff
+              {live
+                ? "Shop fan gear · Ships from Toronto"
+                : pastCutoff
                 ? "Order now · Ships from Toronto"
                 : "Order by June 9 · Arrive before opening day"}
             </p>
           </div>
           <Link
             href="/products"
-            className="shrink-0 rounded-full bg-white text-[#C41E3A] px-4 py-2 text-xs font-black uppercase tracking-wide hover:bg-gray-100 transition-colors"
+            className="shrink-0 rounded-full bg-white text-brand px-4 py-2 text-xs font-black uppercase tracking-wide hover:bg-gray-100 transition-colors"
           >
             Shop Now
           </Link>

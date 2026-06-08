@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BUSINESS_EMAIL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Shipping Policy",
@@ -39,8 +40,8 @@ export default function ShippingPage() {
           <h2 className="text-base font-semibold text-gray-900 mb-3">Questions?</h2>
           <p>
             Contact us at{" "}
-            <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">
-              jameskimkim1@gmail.com
+            <a href={`mailto:${BUSINESS_EMAIL}`} className="text-brand hover:underline">
+              {BUSINESS_EMAIL}
             </a>
           </p>
         </section>

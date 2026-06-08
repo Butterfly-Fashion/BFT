@@ -9,6 +9,7 @@ import { useCart } from "@/components/store/cart-provider";
 import { getProvinceName } from "@/lib/types";
 import Link from "next/link";
 import { trackPurchase, trackGoogleAdsConversion } from "@/lib/gtag";
+import { BUSINESS_EMAIL } from "@/lib/seo";
 
 type Status = "loading" | "success" | "failed" | "no-order";
 
@@ -23,17 +24,9 @@ function OrderConfirmationInner() {
   useEffect(() => {
     async function verify() {
       if (!sessionId) {
-        const stored = localStorage.getItem("b2c-last-order");
-        if (stored) {
-          try {
-            setOrder(JSON.parse(stored));
-            setStatus("success");
-          } catch {
-            setStatus("no-order");
-          }
-        } else {
-          setStatus("no-order");
-        }
+        // Stripe always redirects here with ?session_id=... on a real checkout.
+        // Without it we can't verify payment, so don't show a stale cached order as "confirmed".
+        setStatus("no-order");
         return;
       }
 
@@ -54,7 +47,6 @@ function OrderConfirmationInner() {
           if (raw) {
             try {
               const pending: Order = JSON.parse(raw);
-              localStorage.setItem("b2c-last-order", raw);
               localStorage.removeItem(`b2c-pending-${orderId}`);
               setOrder(pending);
               confirmedOrder = pending;
@@ -64,7 +56,6 @@ function OrderConfirmationInner() {
             }
           } else if (fallbackOrder) {
             // Different device / cleared localStorage — use Stripe data
-            localStorage.setItem("b2c-last-order", JSON.stringify(fallbackOrder));
             setOrder(fallbackOrder);
             confirmedOrder = fallbackOrder;
           }
@@ -101,7 +92,7 @@ function OrderConfirmationInner() {
   if (status === "loading") {
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
-        <div className="w-10 h-10 border-4 border-gray-200 border-t-[#C41E3A] rounded-full animate-spin mx-auto mb-6" />
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-brand rounded-full animate-spin mx-auto mb-6" />
         <p className="text-gray-500 text-sm">Confirming your payment…</p>
       </div>
     );
@@ -116,7 +107,7 @@ function OrderConfirmationInner() {
         </p>
         <Link
           href="/checkout"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm"
         >
           Return to Checkout
         </Link>
@@ -130,7 +121,7 @@ function OrderConfirmationInner() {
         <h1 className="text-2xl font-bold text-gray-900 mb-4">No order found</h1>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm"
         >
           Shop Now
         </Link>
@@ -290,12 +281,12 @@ function OrderConfirmationInner() {
       <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
         <Link
           href="/products"
-          className="inline-flex items-center justify-center px-8 py-3.5 bg-[#C41E3A] text-white font-semibold rounded-full hover:bg-[#A01830] transition-colors text-sm"
+          className="inline-flex items-center justify-center px-8 py-3.5 bg-brand text-white font-semibold rounded-full hover:bg-brand-hover transition-colors text-sm"
         >
           Continue Shopping
         </Link>
         <a
-          href="mailto:jameskimkim1@gmail.com"
+          href={`mailto:${BUSINESS_EMAIL}`}
           className="inline-flex items-center justify-center px-8 py-3.5 border border-gray-200 text-gray-600 font-semibold rounded-full hover:border-gray-400 transition-colors text-sm"
         >
           Contact Support
@@ -310,7 +301,7 @@ export default function OrderConfirmationPage() {
     <Suspense
       fallback={
         <div className="max-w-2xl mx-auto px-4 sm:px-6 py-24 text-center">
-          <div className="w-10 h-10 border-4 border-gray-200 border-t-[#C41E3A] rounded-full animate-spin mx-auto mb-6" />
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-brand rounded-full animate-spin mx-auto mb-6" />
           <p className="text-gray-500 text-sm">Loading…</p>
         </div>
       }

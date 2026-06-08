@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { stripeClient, siteUrl } from "@/lib/stripe";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import type { CartItem } from "@/lib/types";
 
 interface CheckoutBody {
@@ -91,7 +92,7 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "cad",
             unit_amount: Math.round(shipping * 100),
-            product_data: { name: "Shipping" },
+            product_data: { name: SHIPPING_LINE_ITEM_NAME },
           },
         });
       }
@@ -102,7 +103,7 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "cad",
             unit_amount: Math.round(tax * 100),
-            product_data: { name: "Tax (HST 13%)" },
+            product_data: { name: TAX_LINE_ITEM_NAME },
           },
         });
       }

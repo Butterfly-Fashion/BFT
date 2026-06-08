@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
 import type { Order } from "@/lib/types";
 
 export async function GET(req: NextRequest) {
@@ -24,11 +25,9 @@ export async function GET(req: NextRequest) {
 
     // Reconstruct order from Stripe data (used when localStorage is unavailable)
     const lineItems = lineItemsPage.data;
-    const shippingItem = lineItems.find((i) => i.description === "Shipping");
-    const taxItem = lineItems.find((i) => i.description === "Tax (HST 13%)");
-    const productItems = lineItems.filter(
-      (i) => i.description !== "Shipping" && i.description !== "Tax (HST 13%)"
-    );
+    const shippingItem = lineItems.find((i) => i.description === SHIPPING_LINE_ITEM_NAME);
+    const taxItem = lineItems.find((i) => i.description === TAX_LINE_ITEM_NAME);
+    const productItems = lineItems.filter((i) => !isShippingOrTaxLineItem(i.description));
 
     const shipping = (shippingItem?.amount_total ?? 0) / 100;
     const tax = (taxItem?.amount_total ?? 0) / 100;

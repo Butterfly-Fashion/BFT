@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AEO_STORE_DESCRIPTION, absoluteUrl, jsonLd } from "@/lib/seo";
+import { AEO_STORE_DESCRIPTION, BUSINESS_EMAIL, absoluteUrl, jsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "FAQ",
@@ -61,7 +61,7 @@ const faqs = [
   },
   {
     q: "Can I change or cancel my order?",
-    a: "Orders can be changed or cancelled within 1 hour of placement. Please contact us immediately at jameskimkim1@gmail.com.",
+    a: `Orders can be changed or cancelled within 1 hour of placement. Please contact us immediately at ${BUSINESS_EMAIL}.`,
   },
   {
     q: "Are your products officially licensed?",

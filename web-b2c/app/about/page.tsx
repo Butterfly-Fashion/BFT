@@ -66,7 +66,7 @@ export default function AboutPage() {
 
       <section className="border-b border-gray-100 bg-white px-4 py-12 sm:px-6">
         <div className="mx-auto max-w-3xl">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand">
             Toronto World Cup Store
           </p>
           <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">
@@ -83,7 +83,7 @@ export default function AboutPage() {
 
       {/* ── 3. ORIGIN STORY ── */}
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
-        <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">The Beginning</p>
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-brand">The Beginning</p>
         <h2 className="text-3xl font-black leading-snug text-gray-900 sm:text-4xl">
           Started from nothing.<br />Built through persistence.
         </h2>
@@ -103,7 +103,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── 4. PULL QUOTE ── */}
-      <section className="bg-[#C41E3A] px-4 py-16 sm:py-20">
+      <section className="bg-brand px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-6xl font-black leading-none text-white/20 mb-2">&ldquo;</p>
           <p className="text-2xl font-black leading-snug text-white sm:text-3xl lg:text-4xl">
@@ -118,7 +118,7 @@ export default function AboutPage() {
       <section className="border-b border-gray-100">
         <div className="mx-auto grid max-w-5xl items-center sm:grid-cols-2">
           <div className="px-6 py-16 sm:px-12 sm:py-20 order-2 sm:order-1">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">Resilience</p>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-brand">Resilience</p>
             <h2 className="text-3xl font-black leading-snug text-gray-900 sm:text-4xl">
               COVID didn&apos;t stop us.<br />It reminded us<br />who we are.
             </h2>
@@ -158,7 +158,7 @@ export default function AboutPage() {
             />
           </div>
           <div className="px-8 py-12 sm:px-12">
-            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-brand">
               Our Store
             </p>
             <h2 className="text-2xl font-black text-gray-900 sm:text-3xl">
@@ -170,7 +170,7 @@ export default function AboutPage() {
               all still here. Just easier to find.
             </p>
             <div className="mt-6 flex items-start gap-3">
-              <MapPin size={16} className="mt-0.5 shrink-0 text-[#C41E3A]" />
+              <MapPin size={16} className="mt-0.5 shrink-0 text-brand" />
               <div>
                 <p className="text-sm font-bold text-gray-900">178 Bentworth Ave, North York, ON M6A 1P7</p>
                 <p className="mt-0.5 text-xs text-gray-500">Local pickup available — contact us after ordering</p>
@@ -183,7 +183,7 @@ export default function AboutPage() {
       {/* ── 7. WHY US ── */}
       <section className="px-4 py-16 sm:py-20">
         <div className="mx-auto max-w-5xl">
-          <p className="mb-3 text-center text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">
+          <p className="mb-3 text-center text-xs font-bold uppercase tracking-[0.2em] text-brand">
             Why World Fan Gear
           </p>
           <h2 className="mb-12 text-center text-2xl font-black text-gray-900 sm:text-3xl">
@@ -197,8 +197,8 @@ export default function AboutPage() {
               { icon: MapPin, title: "Local Toronto roots", body: "A real store, a real team. Not a faceless dropshipping operation." },
             ].map(({ icon: Icon, title, body }) => (
               <div key={title} className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#C41E3A]/10">
-                  <Icon size={20} className="text-[#C41E3A]" />
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-brand/10">
+                  <Icon size={20} className="text-brand" />
                 </div>
                 <p className="font-black text-gray-900">{title}</p>
                 <p className="mt-2 text-sm leading-6 text-gray-500">{body}</p>
@@ -211,7 +211,7 @@ export default function AboutPage() {
       {/* ── 8. NEXT CHAPTER ── */}
       <section className="border-t border-gray-100 bg-gray-50 px-4 py-20 sm:px-6">
         <div className="mx-auto max-w-3xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">The Next Chapter</p>
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-brand">The Next Chapter</p>
           <h2 className="text-3xl font-black leading-snug text-gray-900 sm:text-4xl">
             30 years of experience.<br />A new generation of ideas.
           </h2>
@@ -235,7 +235,7 @@ export default function AboutPage() {
       {/* ── 9. FOUNDER ── */}
       <section className="mx-auto max-w-3xl px-4 py-20 sm:px-6">
         <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm sm:p-12">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-[#C41E3A]">From the Founder</p>
+          <p className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-brand">From the Founder</p>
           <blockquote className="text-lg font-medium leading-8 text-gray-700 sm:text-xl">
             &ldquo;We&apos;ve spent 30 years supplying retailers across Canada with quality products.
             When the World Cup came to Canada, it felt like the right moment to give fans
@@ -243,7 +243,7 @@ export default function AboutPage() {
             Every item we carry is something we&apos;d personally stand behind.&rdquo;
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#C41E3A] text-lg font-black text-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand text-lg font-black text-white">
               J
             </div>
             <div>
@@ -265,7 +265,7 @@ export default function AboutPage() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link
             href="/products"
-            className="rounded-full bg-[#C41E3A] px-8 py-3.5 text-sm font-bold text-white hover:bg-[#A01830] transition-colors"
+            className="rounded-full bg-brand px-8 py-3.5 text-sm font-bold text-white hover:bg-brand-hover transition-colors"
           >
             Shop fan gear
           </Link>

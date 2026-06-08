@@ -6,6 +6,7 @@ import { ORDER_STATUS_LABELS } from "@/lib/types";
 import { formatCAD } from "@/lib/money";
 import { supabaseAdmin } from "@/lib/supabase";
 import { OrderAutoRefresh } from "./order-auto-refresh";
+import { BUSINESS_EMAIL } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ export default async function OrderTrackingPage({ params }: Props) {
       </Link>
 
       <div className="mt-6">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand">
           World Fan Gear
         </p>
         <h1 className="mt-1 text-2xl font-black text-gray-900">Order Tracking</h1>
@@ -79,9 +80,9 @@ export default async function OrderTrackingPage({ params }: Props) {
                     <div
                       className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
                         done
-                          ? "bg-[#C41E3A] text-white"
+                          ? "bg-brand text-white"
                           : "bg-gray-100 text-gray-400"
-                      } ${active ? "ring-4 ring-[#C41E3A]/20" : ""}`}
+                      } ${active ? "ring-4 ring-brand/20" : ""}`}
                     >
                       {done && !active ? (
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +97,7 @@ export default async function OrderTrackingPage({ params }: Props) {
                     </p>
                   </div>
                   {i < steps.length - 1 && (
-                    <div className={`flex-1 h-0.5 mx-1 mb-5 ${currentStepIndex > i ? "bg-[#C41E3A]" : "bg-gray-200"}`} />
+                    <div className={`flex-1 h-0.5 mx-1 mb-5 ${currentStepIndex > i ? "bg-brand" : "bg-gray-200"}`} />
                   )}
                 </div>
               );
@@ -185,7 +186,7 @@ export default async function OrderTrackingPage({ params }: Props) {
               {order.total != null && (
                 <div className="flex justify-between font-bold text-gray-900 border-t border-gray-200 pt-1 mt-1">
                   <span>Total</span>
-                  <span className="text-[#C41E3A]">{formatCAD(order.total)}</span>
+                  <span className="text-brand">{formatCAD(order.total)}</span>
                 </div>
               )}
             </div>
@@ -209,8 +210,8 @@ export default async function OrderTrackingPage({ params }: Props) {
 
       <p className="mt-8 text-center text-xs text-gray-400">
         Need help?{" "}
-        <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">
-          jameskimkim1@gmail.com
+        <a href={`mailto:${BUSINESS_EMAIL}`} className="text-brand hover:underline">
+          {BUSINESS_EMAIL}
         </a>
       </p>
     </main>

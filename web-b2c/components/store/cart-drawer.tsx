@@ -7,6 +7,7 @@ import { ProductImage } from "@/components/store/product-image";
 import { formatCAD, calculateShipping, calculateTax } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
+import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 
 interface Props {
   open: boolean;
@@ -69,7 +70,7 @@ export function CartDrawer({ open, onClose }: Props) {
             <Link
               href="/products"
               onClick={onClose}
-              className="px-8 py-3 bg-[#C41E3A] text-white text-sm font-semibold rounded-full hover:bg-[#A01830] transition-colors"
+              className="px-8 py-3 bg-brand text-white text-sm font-semibold rounded-full hover:bg-brand-hover transition-colors"
             >
               Browse Products
             </Link>
@@ -158,12 +159,12 @@ export function CartDrawer({ open, onClose }: Props) {
                 </span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Tax (HST 13%)</span>
+                <span className="text-sm text-gray-500">{TAX_LINE_ITEM_NAME}</span>
                 <span className="text-sm font-semibold text-gray-900">{formatCAD(tax)}</span>
               </div>
               <div className="flex justify-between items-center border-t border-gray-100 pt-2">
                 <span className="font-bold text-gray-900">Estimated Total</span>
-                <span className="font-black text-lg text-[#C41E3A]">{formatCAD(subtotal + shipping + tax)}</span>
+                <span className="font-black text-lg text-brand">{formatCAD(subtotal + shipping + tax)}</span>
               </div>
 
               {/* CTAs */}
@@ -186,7 +187,7 @@ export function CartDrawer({ open, onClose }: Props) {
                     })),
                   });
                 }}
-                className="block w-full py-3 bg-[#C41E3A] text-white font-bold rounded-full text-center text-sm hover:bg-[#A01830] transition-colors shadow-sm"
+                className="block w-full py-3 bg-brand text-white font-bold rounded-full text-center text-sm hover:bg-brand-hover transition-colors shadow-sm"
               >
                 {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(subtotal + shipping + tax)}` : "Checkout Paused"}
               </Link>

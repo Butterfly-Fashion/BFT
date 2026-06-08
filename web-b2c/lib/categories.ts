@@ -48,18 +48,3 @@ export function buildStoreCategoryChildMap(
   }
   return map;
 }
-
-/** All leaf category names (children, or parents with no children). */
-export function getLeafCategoryNames(categories: StoreCategory[] = storeCategories): string[] {
-  return categories
-    .filter((c) => {
-      if (c.parent_id !== null) return true; // it is a child
-      return !categories.some((ch) => ch.parent_id === c.id); // parent with no children
-    })
-    .map((c) => c.name);
-}
-
-/** Parent categories sorted by sort_order. */
-export function getParentCategories(categories: StoreCategory[] = storeCategories): StoreCategory[] {
-  return categories.filter((c) => c.parent_id === null).sort((a, b) => a.sort_order - b.sort_order);
-}

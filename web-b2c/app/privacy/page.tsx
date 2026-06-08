@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BUSINESS_EMAIL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-[#C41E3A]">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-brand">
         Customer Care
       </p>
       <h1 className="text-3xl font-black text-gray-900">Privacy Policy</h1>
@@ -50,7 +51,7 @@ export default function PrivacyPolicyPage() {
         <div>
           <h2 className="text-lg font-bold text-gray-900">Contact</h2>
           <p className="mt-2">
-            For privacy questions or data requests, contact jameskimkim1@gmail.com.
+            For privacy questions or data requests, contact {BUSINESS_EMAIL}.
           </p>
         </div>
       </section>

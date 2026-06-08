@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BUSINESS_EMAIL } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Returns & Exchanges",
@@ -23,7 +24,7 @@ export default function ReturnsPage() {
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-3">How to Return</h2>
           <ol className="list-decimal list-inside space-y-2">
-            <li>Email us at <a href="mailto:jameskimkim1@gmail.com" className="text-[#C41E3A] hover:underline">jameskimkim1@gmail.com</a> with your order number and reason for return.</li>
+            <li>Email us at <a href={`mailto:${BUSINESS_EMAIL}`} className="text-brand hover:underline">{BUSINESS_EMAIL}</a> with your order number and reason for return.</li>
             <li>We will send you a return shipping label within 2 business days.</li>
             <li>Pack your item securely and drop it off at any Canada Post location.</li>
             <li>Refunds are processed within 5–7 business days of receiving the return.</li>

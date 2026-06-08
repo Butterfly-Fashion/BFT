@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatCAD } from "@/lib/money";
+import { ORDER_STATUS_LABELS } from "@/lib/types";
 
 interface DailyRevenue {
   date: string;
@@ -24,16 +25,6 @@ interface RevenueData {
   top_products: TopProduct[];
 }
 
-const STATUS_LABELS: Record<string, string> = {
-  paid: "New",
-  packing: "Packing",
-  shipped: "Shipped",
-  ready_for_pickup: "Pickup Ready",
-  completed: "Completed",
-  cancelled: "Cancelled",
-  refunded: "Refunded",
-};
-
 function StatCard({ label, revenue, orders }: { label: string; revenue: number; orders: number }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white px-6 py-5">
@@ -51,7 +42,7 @@ function MiniBar({ value, max, date }: { value: number; max: number; date: strin
     <div className="flex flex-col items-center gap-1" title={`${date}: ${formatCAD(value)}`}>
       <div className="w-4 flex flex-col justify-end" style={{ height: 80 }}>
         <div
-          className="w-full rounded-t bg-[#C41E3A] transition-all"
+          className="w-full rounded-t bg-brand transition-all"
           style={{ height: `${pct}%`, minHeight: value > 0 ? 4 : 0 }}
         />
       </div>
@@ -83,7 +74,7 @@ export default function RevenueDashboard() {
   if (loading) {
     return (
       <div className="flex h-full items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-[#C41E3A]" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-brand" />
       </div>
     );
   }
@@ -138,10 +129,10 @@ export default function RevenueDashboard() {
               const pct = total === 0 ? 0 : Math.round((cnt / total) * 100);
               return (
                 <div key={s} className="flex items-center gap-3">
-                  <span className="w-28 shrink-0 text-sm text-gray-600">{STATUS_LABELS[s] ?? s}</span>
+                  <span className="w-28 shrink-0 text-sm text-gray-600">{(ORDER_STATUS_LABELS as Record<string, string>)[s] ?? s}</span>
                   <div className="flex-1 rounded-full bg-gray-100 h-2">
                     <div
-                      className="h-2 rounded-full bg-[#C41E3A]"
+                      className="h-2 rounded-full bg-brand"
                       style={{ width: `${pct}%` }}
                     />
                   </div>

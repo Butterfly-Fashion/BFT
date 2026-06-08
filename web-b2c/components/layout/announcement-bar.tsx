@@ -6,6 +6,9 @@ import Link from "next/link";
 // June 12, 2026 7:00 PM ET — first match at BMO Field
 const KICKOFF = new Date("2026-06-12T23:00:00.000Z");
 const ORDER_CUTOFF = new Date("2026-06-09T23:59:59.000Z");
+// World Cup 2026 final — July 19, 2026, MetLife Stadium, NJ. Once this passes,
+// drop all "kickoff is coming" copy so the bar doesn't reference a finished event.
+const TOURNAMENT_END = new Date("2026-07-19T23:59:59.000Z");
 
 function getTimeLeft() {
   const diff = KICKOFF.getTime() - Date.now();
@@ -29,17 +32,24 @@ export function AnnouncementBar() {
     return () => clearInterval(clock);
   }, []);
 
-  const showCutoff = mounted && Date.now() < ORDER_CUTOFF.getTime();
+  const now = Date.now();
+  const live = now >= KICKOFF.getTime() && now < TOURNAMENT_END.getTime();
+  const ended = now >= TOURNAMENT_END.getTime();
+  const showCutoff = mounted && now < ORDER_CUTOFF.getTime();
 
   const items: { text: string; yellow?: boolean; href?: string }[] = [
-    ...(mounted && timeLeft
+    ...(ended
+      ? [{ text: "World Cup 2026 Fan Gear · Ships from Toronto" }]
+      : live
+      ? [{ text: "🔥 World Cup 2026 is live — shop fan gear", yellow: true, href: "/products" }]
+      : mounted && timeLeft
       ? [{ text: `⏱ ${timeLeft.days} days ${timeLeft.hours}h to kickoff`, yellow: true }]
       : [{ text: "World Cup 2026 · June 12" }]),
     ...(showCutoff
       ? [{ text: "Order by June 9 for delivery before opening day", href: "/products" }]
       : []),
     { text: "Ships from Toronto · Canada-wide delivery" },
-    { text: "Est. 1987 · Trusted Toronto retailer", yellow: true },
+    { text: "Est. 1996 · Trusted Toronto retailer", yellow: true },
     { text: "Local pickup available · North York, ON", href: "/location" },
   ];
 
@@ -66,12 +76,18 @@ export function AnnouncementBar() {
         {/* Mobile */}
         <div className="sm:hidden flex items-center justify-between w-full gap-3">
           <span className="text-xs font-black uppercase tracking-wide">
-            {mounted && timeLeft ? `⏱ ${timeLeft.days}d ${timeLeft.hours}h to kickoff` : "World Cup 2026 · June 12"}
+            {ended
+              ? "World Cup 2026 Fan Gear"
+              : live
+              ? "🔥 World Cup 2026 is live"
+              : mounted && timeLeft
+              ? `⏱ ${timeLeft.days}d ${timeLeft.hours}h to kickoff`
+              : "World Cup 2026 · June 12"}
           </span>
           {showCutoff && (
             <Link
               href="/products"
-              className="shrink-0 rounded-full bg-[#C41E3A] px-3 py-1 text-[10px] font-black uppercase tracking-wide hover:bg-[#A01830] transition-colors"
+              className="shrink-0 rounded-full bg-brand px-3 py-1 text-[10px] font-black uppercase tracking-wide hover:bg-brand-hover transition-colors"
             >
               Order Now →
             </Link>
