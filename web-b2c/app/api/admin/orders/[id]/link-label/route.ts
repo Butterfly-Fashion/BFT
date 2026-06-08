@@ -62,7 +62,7 @@ export async function POST(
 
   type ShippoTx = {
     object_id: string;
-    object_status: string;
+    status: string;
     label_url: string;
     tracking_number: string;
     tracking_url_provider: string;

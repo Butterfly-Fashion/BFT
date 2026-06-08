@@ -106,6 +106,8 @@ export default function CheckoutPage() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+          name: `${form.firstName} ${form.lastName}`.trim(),
+          street: form.address,
           postal: form.postalCode,
           province: form.province,
           city: form.city,
@@ -137,7 +139,7 @@ export default function CheckoutPage() {
       })
       .finally(() => { if (!cancelled) setFetchingRates(false); });
     return () => { cancelled = true; };
-  }, [form.postalCode, form.province, form.city, form.country, deliveryMethod, items, countryCode]);
+  }, [form.firstName, form.lastName, form.address, form.postalCode, form.province, form.city, form.country, deliveryMethod, items, countryCode]);
 
   const taxProvince = deliveryMethod === "pickup" ? "ON" : form.province;
   const shipping =

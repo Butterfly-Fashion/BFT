@@ -46,7 +46,7 @@ export async function POST(
 
   type ShippoTx = {
     object_id: string;
-    object_status: string;
+    status: string;
     label_url: string;
     tracking_number: string;
     tracking_url_provider: string;
@@ -65,7 +65,7 @@ export async function POST(
 
   const data = await res.json();
   const successTx = (data.results ?? []).find(
-    (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
+    (t: ShippoTx) => t.status === "SUCCESS" && t.label_url
   );
 
   if (!successTx) {

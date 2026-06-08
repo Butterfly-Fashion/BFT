@@ -94,7 +94,7 @@ export async function POST(
 
   const { data: order, error: fetchError } = await supabase
     .from("orders")
-    .select("id, order_number, shippo_rate_id, shippo_label_url, tracking_number, tracking_url, carrier, delivery_method, customer_name, customer_email, shipping_address, total")
+    .select("id, order_number, shippo_rate_id, shippo_label_url, tracking_number, tracking_url, carrier, delivery_method, customer_name, customer_email, shipping_address, total, updated_at")
     .eq("id", id)
     .single();
 
@@ -124,16 +124,41 @@ export async function POST(
   // Atomic DB lock: only one request can proceed at a time.
   // Update sets shippo_label_url = '__pending__' only if it's currently NULL.
   // If 0 rows updated, another request already claimed this order.
+  //
+  // A '__pending__' value can also mean a *previous* request crashed/timed out
+  // mid-purchase and never released the lock. We treat locks older than
+  // STALE_LOCK_MS as abandoned and reclaim them — otherwise the order would be
+  // stuck forever, and admins retrying would fall through both checks below
+  // and risk purchasing a second label (double charge).
+  const STALE_LOCK_MS = 2 * 60 * 1000;
+  const nowIso = new Date().toISOString();
+
   if (!order.shippo_label_url) {
     const { data: claimed } = await supabase
       .from("orders")
-      .update({ shippo_label_url: "__pending__" })
+      .update({ shippo_label_url: "__pending__", updated_at: nowIso })
       .eq("id", id)
       .is("shippo_label_url", null)
       .select("id");
     if (!claimed?.length) {
       return NextResponse.json({ error: "Label creation already in progress for this order." }, { status: 409 });
     }
+  } else if (order.shippo_label_url === "__pending__") {
+    const lockAgeMs = Date.now() - new Date(order.updated_at).getTime();
+    if (lockAgeMs < STALE_LOCK_MS) {
+      return NextResponse.json({ error: "Label creation already in progress for this order. Please wait a moment and try again." }, { status: 409 });
+    }
+    const { data: reclaimed } = await supabase
+      .from("orders")
+      .update({ shippo_label_url: "__pending__", updated_at: nowIso })
+      .eq("id", id)
+      .eq("shippo_label_url", "__pending__")
+      .lt("updated_at", new Date(Date.now() - STALE_LOCK_MS).toISOString())
+      .select("id");
+    if (!reclaimed?.length) {
+      return NextResponse.json({ error: "Label creation already in progress for this order." }, { status: 409 });
+    }
+    console.log(`[create-label] Reclaimed stale __pending__ lock for order ${order.order_number} (age ${Math.round(lockAgeMs / 1000)}s)`);
   }
 
   // Shippo에 이미 성공한 트랜잭션이 있으면 새로 결제하지 않고 재사용
@@ -144,8 +169,8 @@ export async function POST(
   if (existingTxRes.ok) {
     const existingTxData = await existingTxRes.json();
     const existingSuccess = (existingTxData.results ?? []).find(
-      (t: { object_status: string; label_url: string }) =>
-        t.object_status === "SUCCESS" && t.label_url
+      (t: { status: string; label_url: string }) =>
+        t.status === "SUCCESS" && t.label_url
     );
     if (existingSuccess) {
       console.log(`[create-label] Found existing Shippo transaction — reusing label for order ${order.order_number}`);
@@ -228,7 +253,7 @@ export async function POST(
   );
 
   if (
-    (!shippoRes.ok || transaction.object_status !== "SUCCESS") &&
+    (!shippoRes.ok || transaction.status !== "SUCCESS") &&
     order.shipping_address
   ) {
     const reason = isModifierError ? "UPS modifier error" : "primary rate failed (possibly expired)";
@@ -259,6 +284,13 @@ export async function POST(
     const fallbackRateId = await getCanadaPostRateId(apiKey, order, totalWeight);
 
     if (fallbackRateId) {
+      // Persist the fallback rate_id BEFORE purchasing from it. If the purchase
+      // below succeeds but this request crashes before the final DB update,
+      // order.shippo_rate_id will still point at the rate that was actually
+      // charged — so the existing-transaction check above (and Sync/Recover)
+      // can find it on retry instead of buying a second label.
+      await supabase.from("orders").update({ shippo_rate_id: fallbackRateId }).eq("id", id);
+
       try {
         const retryRes = await fetch("https://api.goshippo.com/transactions/", {
           method: "POST",
@@ -269,7 +301,7 @@ export async function POST(
           body: JSON.stringify({ rate: fallbackRateId, label_file_type: "PDF_4X6", async: false }),
         });
         const retryTx = await retryRes.json();
-        if (retryRes.ok && retryTx.object_status === "SUCCESS") {
+        if (retryRes.ok && retryTx.status === "SUCCESS") {
           console.log("[create-label] Canada Post fallback succeeded");
           transaction = retryTx;
           shippoRes = retryRes;
@@ -284,12 +316,12 @@ export async function POST(
     }
   }
 
-  if (!shippoRes.ok || transaction.object_status !== "SUCCESS") {
+  if (!shippoRes.ok || transaction.status !== "SUCCESS") {
     console.error("[create-label] Shippo error:", JSON.stringify(transaction));
     await releaseLock();
     const msg =
       transaction.messages?.[0]?.text ??
-      transaction.object_status ??
+      transaction.status ??
       "Shippo returned an error";
     return NextResponse.json({ error: `Shippo: ${msg}` }, { status: 400 });
   }

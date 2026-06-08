@@ -4,7 +4,7 @@ import { verifyAdminCookie } from "@/lib/admin-auth";
 
 type ShippoTx = {
   object_id: string;
-  object_status: string;
+  status: string;
   label_url: string;
   tracking_number: string;
   tracking_url_provider: string;
@@ -23,7 +23,7 @@ async function findShippoTransaction(
     });
     if (res.ok) {
       const tx: ShippoTx = await res.json();
-      if (tx.object_status === "SUCCESS" && tx.label_url) return tx;
+      if (tx.status === "SUCCESS" && tx.label_url) return tx;
     }
     return null;
   }
@@ -37,7 +37,7 @@ async function findShippoTransaction(
     if (res.ok) {
       const data = await res.json();
       const match = (data.results ?? []).find(
-        (t: ShippoTx) => t.object_status === "SUCCESS" && t.label_url
+        (t: ShippoTx) => t.status === "SUCCESS" && t.label_url
       );
       if (match) return match;
     }

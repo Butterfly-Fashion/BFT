@@ -24,7 +24,7 @@ async function createLabelForRate(
   if (existingRes.ok) {
     const existingData = await existingRes.json();
     const existing = (existingData.results ?? []).find(
-      (t: { object_status: string; label_url: string }) => t.object_status === "SUCCESS" && t.label_url
+      (t: { status: string; label_url: string }) => t.status === "SUCCESS" && t.label_url
     );
     if (existing) {
       console.log(`[reship] Reusing existing SUCCESS transaction for rate ${rateId}`);
@@ -45,7 +45,7 @@ async function createLabelForRate(
   });
   const tx = await txRes.json();
 
-  if (txRes.ok && tx.object_status === "SUCCESS" && tx.label_url) {
+  if (txRes.ok && tx.status === "SUCCESS" && tx.label_url) {
     return {
       label_url: tx.label_url,
       tracking_number: tx.tracking_number ?? "",
@@ -54,7 +54,7 @@ async function createLabelForRate(
     };
   }
 
-  const msg = tx.messages?.[0]?.text ?? tx.object_status ?? "unknown error";
+  const msg = tx.messages?.[0]?.text ?? tx.status ?? "unknown error";
   console.error(`[reship] Transaction failed for ${providerName}:`, JSON.stringify(tx));
   return { error: `${providerName}: ${msg}` };
 }
