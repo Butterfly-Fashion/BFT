@@ -85,7 +85,6 @@ export default function OrdersDashboard() {
   const [saving, setSaving] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [creatingLabel, setCreatingLabel] = useState(false);
-  const [recoveringLabel, setRecoveringLabel] = useState(false);
   const [linkingLabel, setLinkingLabel] = useState(false);
   const [reshiping, setReshiping] = useState(false);
   const [reshipeRates, setReshipeRates] = useState<Array<{ rate_id: string; provider: string; service: string; amount: number; estimated_days: number | null }> | null>(null);
@@ -434,36 +433,6 @@ export default function OrdersDashboard() {
     }
   }
 
-  async function handleRecoverLabel() {
-    if (!selected || selected._source !== "supabase") return;
-    setRecoveringLabel(true);
-    setSaveMsg(null);
-    try {
-      const res = await fetch(`/api/admin/orders/${selected.id}/recover-label`, { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Recovery failed");
-      const updated: DbOrder = {
-        ...selected,
-        shippo_label_url: data.label_url,
-        tracking_number: data.tracking_number ?? selected.tracking_number,
-        tracking_url: data.tracking_url ?? selected.tracking_url,
-        carrier: data.carrier ?? selected.carrier,
-        status: "packing",
-      };
-      setOrders((prev) => prev.map((o) => (o.id === selected.id ? updated : o)));
-      setSelected(updated);
-      setEditStatus("packing");
-      setEditTracking(data.tracking_number ?? "");
-      setEditTrackingUrl(data.tracking_url ?? "");
-      setEditCarrier(data.carrier ?? "");
-      setSaveMsg({ type: "ok", text: "Label recovered from Shippo!" });
-    } catch (e) {
-      setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Recovery failed" });
-    } finally {
-      setRecoveringLabel(false);
-    }
-  }
-
   async function openReshipeRates() {
     if (!selected || selected._source !== "supabase") return;
     setReshipeRatesLoading(true);
@@ -486,7 +455,7 @@ export default function OrdersDashboard() {
     if (!selected || selected._source !== "supabase") return;
     const rate = reshipeRates?.find((r) => r.rate_id === selectedRateId);
     if (!rate) return;
-    if (!confirm(`Re-ship with ${rate.provider} — ${rate.service} ($${rate.amount.toFixed(2)} CAD)?\nA new label will be created and a tracking email sent to the customer.`)) return;
+    if (!confirm(`⚠️ This purchases a BRAND NEW label with ${rate.provider} — ${rate.service} for an ADDITIONAL $${rate.amount.toFixed(2)} CAD charge (on top of the existing label).\nUse this only for lost/damaged replacement shipments — not to fix or re-sync an existing label.\nA tracking email will be sent to the customer. Continue?`)) return;
     setReshiping(true);
     setSaveMsg(null);
     try {
@@ -1002,31 +971,6 @@ export default function OrdersDashboard() {
                           {reshipeRatesLoading ? "Loading rates…" : "↩ Reship (New Label)"}
                         </button>
                       )}
-                      {syncOpen ? (
-                        <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 space-y-2">
-                          <p className="text-xs font-bold text-blue-800">Sync from Shippo</p>
-                          <p className="text-[11px] text-blue-600">Leave blank to auto-search, or paste a tracking number / Shippo transaction ID.</p>
-                          <input
-                            type="text"
-                            value={syncInput}
-                            onChange={(e) => setSyncInput(e.target.value)}
-                            placeholder="Tracking no. or transaction ID (optional)"
-                            className="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-xs font-mono outline-none focus:border-blue-400"
-                          />
-                          <div className="flex gap-2">
-                            <button onClick={handleSync} disabled={syncing} className="flex-1 rounded-full bg-blue-600 py-2 text-xs font-bold text-white hover:bg-blue-700 transition-colors disabled:opacity-50">
-                              {syncing ? "Syncing…" : "⟳ Sync"}
-                            </button>
-                            <button onClick={() => { setSyncOpen(false); setSyncInput(""); }} disabled={syncing} className="rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 transition-colors disabled:opacity-50">
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <button onClick={() => setSyncOpen(true)} className="w-full rounded-full border border-gray-200 py-2 text-xs font-semibold text-gray-400 hover:border-gray-400 hover:text-gray-600 transition-colors">
-                          ⟳ Re-sync label from Shippo
-                        </button>
-                      )}
                     </div>
                   ) : (
                     <div className="space-y-2">
@@ -1039,17 +983,10 @@ export default function OrdersDashboard() {
                         <div className="space-y-2">
                           <button
                             onClick={handleCreateLabel}
-                            disabled={creatingLabel || recoveringLabel || linkingLabel || syncing}
+                            disabled={creatingLabel || linkingLabel || syncing}
                             className="w-full rounded-full bg-[#003876] py-2.5 text-sm font-bold text-white hover:bg-[#002a5a] transition-colors disabled:opacity-60"
                           >
                             {creatingLabel ? "Purchasing label…" : "🏷️ Create Shipping Label"}
-                          </button>
-                          <button
-                            onClick={handleRecoverLabel}
-                            disabled={creatingLabel || recoveringLabel || linkingLabel || syncing}
-                            className="w-full rounded-full border border-gray-300 py-2 text-xs font-semibold text-gray-600 hover:border-gray-500 hover:text-gray-900 transition-colors disabled:opacity-60"
-                          >
-                            {recoveringLabel ? "Searching Shippo…" : "🔍 Recover Existing Label"}
                           </button>
                         </div>
                       )}
@@ -1076,7 +1013,7 @@ export default function OrdersDashboard() {
                           </div>
                         </div>
                       ) : (
-                        <button onClick={() => setSyncOpen(true)} disabled={creatingLabel || recoveringLabel || linkingLabel} className="w-full rounded-full border border-blue-200 py-2 text-xs font-semibold text-blue-500 hover:bg-blue-50 transition-colors disabled:opacity-50">
+                        <button onClick={() => setSyncOpen(true)} disabled={creatingLabel || linkingLabel} className="w-full rounded-full border border-blue-200 py-2 text-xs font-semibold text-blue-500 hover:bg-blue-50 transition-colors disabled:opacity-50">
                           ⟳ Sync from Shippo
                         </button>
                       )}
@@ -1093,7 +1030,7 @@ export default function OrdersDashboard() {
                         />
                         <button
                           onClick={handleLinkLabel}
-                          disabled={!linkTrackingInput.trim() || linkingLabel || creatingLabel || recoveringLabel}
+                          disabled={!linkTrackingInput.trim() || linkingLabel || creatingLabel}
                           className="w-full rounded-full border border-[#003876] py-2 text-xs font-semibold text-[#003876] hover:bg-[#003876] hover:text-white transition-colors disabled:opacity-50"
                         >
                           {linkingLabel ? "Linking…" : "🔗 Link Label"}

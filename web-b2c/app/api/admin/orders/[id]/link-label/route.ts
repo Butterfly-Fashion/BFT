@@ -66,8 +66,19 @@ export async function POST(
     label_url: string;
     tracking_number: string;
     tracking_url_provider: string;
-    provider: string;
+    rate: string;
   };
+
+  // Shippo transaction objects don't include a `provider` field — the carrier
+  // name lives on the referenced rate object, so it must be fetched separately.
+  async function fetchRateProvider(rateId: string): Promise<string> {
+    const res = await fetch(`https://api.goshippo.com/rates/${rateId}`, {
+      headers: { Authorization: `ShippoToken ${apiKey}` },
+    });
+    if (!res.ok) return "";
+    const rate = await res.json();
+    return rate.provider ?? "";
+  }
 
   let matchedTx: ShippoTx | undefined;
   let page = 1;
@@ -94,13 +105,15 @@ export async function POST(
     );
   }
 
+  const carrier = await fetchRateProvider(matchedTx.rate);
+
   const { error: updateError } = await supabase
     .from("orders")
     .update({
       shippo_label_url: matchedTx.label_url,
       tracking_number: matchedTx.tracking_number,
       tracking_url: matchedTx.tracking_url_provider || null,
-      carrier: matchedTx.provider || null,
+      carrier: carrier || null,
       status: "packing",
       updated_at: new Date().toISOString(),
     })
@@ -121,7 +134,7 @@ export async function POST(
     "purolator": "purolator",
     "usps": "usps",
   };
-  const carrierCode = CARRIER_CODES[(matchedTx.provider ?? "").toLowerCase()] ?? "canada_post";
+  const carrierCode = CARRIER_CODES[carrier.toLowerCase()] ?? "canada_post";
   fetch("https://api.goshippo.com/tracks/", {
     method: "POST",
     headers: {
@@ -141,7 +154,7 @@ export async function POST(
         orderNumber: order.order_number,
         customerEmail: order.customer_email!,
         customerName: order.customer_name ?? null,
-        carrier: matchedTx!.provider ?? "",
+        carrier,
         trackingNumber: matchedTx!.tracking_number,
         trackingUrl: matchedTx!.tracking_url_provider || null,
         items: (items ?? []).map((i: { name: string; quantity: number; unit_price: number }) => ({
@@ -159,6 +172,6 @@ export async function POST(
     label_url: matchedTx.label_url,
     tracking_number: matchedTx.tracking_number,
     tracking_url: matchedTx.tracking_url_provider,
-    carrier: matchedTx.provider,
+    carrier,
   });
 }

@@ -8,8 +8,19 @@ type ShippoTx = {
   label_url: string;
   tracking_number: string;
   tracking_url_provider: string;
-  provider: string;
+  rate: string;
 };
+
+// Shippo transaction objects don't include a `provider` field — the carrier
+// name lives on the referenced rate object, so it must be fetched separately.
+async function fetchRateProvider(apiKey: string, rateId: string): Promise<string> {
+  const res = await fetch(`https://api.goshippo.com/rates/${rateId}`, {
+    headers: { Authorization: `ShippoToken ${apiKey}` },
+  });
+  if (!res.ok) return "";
+  const rate = await res.json();
+  return rate.provider ?? "";
+}
 
 // Search Shippo for a matching SUCCESS transaction
 async function findShippoTransaction(
@@ -106,6 +117,8 @@ export async function POST(
     }, { status: 404 });
   }
 
+  const carrier = await fetchRateProvider(apiKey, tx.rate);
+
   // Check this label isn't already linked to a different order
   const { data: duplicate } = await supabase
     .from("orders")
@@ -127,7 +140,7 @@ export async function POST(
       shippo_label_url: tx.label_url,
       tracking_number: tx.tracking_number || null,
       tracking_url: tx.tracking_url_provider || null,
-      carrier: tx.provider || null,
+      carrier: carrier || null,
       status: "packing",
       updated_at: new Date().toISOString(),
     })
@@ -144,6 +157,6 @@ export async function POST(
     label_url: tx.label_url,
     tracking_number: tx.tracking_number,
     tracking_url: tx.tracking_url_provider,
-    carrier: tx.provider,
+    carrier,
   });
 }

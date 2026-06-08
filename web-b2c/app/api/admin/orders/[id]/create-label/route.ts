@@ -11,6 +11,17 @@ function selectBox(weightKg: number): { length: string; width: string; height: s
   return { length: "50", width: "40", height: "22" };
 }
 
+// Shippo transaction objects don't include a `provider` field — the carrier
+// name lives on the referenced rate object, so it must be fetched separately.
+async function fetchRateProvider(apiKey: string, rateId: string): Promise<string> {
+  const res = await fetch(`https://api.goshippo.com/rates/${rateId}`, {
+    headers: { Authorization: `ShippoToken ${apiKey}` },
+  });
+  if (!res.ok) return "";
+  const rate = await res.json();
+  return rate.provider ?? "";
+}
+
 // UPS modifier 에러 시 Canada Post로 재조회해서 rate_id 반환
 async function getCanadaPostRateId(
   apiKey: string,
@@ -174,11 +185,12 @@ export async function POST(
     );
     if (existingSuccess) {
       console.log(`[create-label] Found existing Shippo transaction — reusing label for order ${order.order_number}`);
+      const reuseCarrier = await fetchRateProvider(apiKey, existingSuccess.rate);
       await supabase.from("orders").update({
         shippo_label_url: existingSuccess.label_url,
         tracking_number: existingSuccess.tracking_number || null,
         tracking_url: existingSuccess.tracking_url_provider || null,
-        carrier: existingSuccess.provider || null,
+        carrier: reuseCarrier || null,
         status: "packing",
         updated_at: new Date().toISOString(),
       }).eq("id", id);
@@ -193,7 +205,7 @@ export async function POST(
             orderNumber: order.order_number,
             customerEmail: order.customer_email!,
             customerName: order.customer_name ?? null,
-            carrier: existingSuccess.provider ?? "",
+            carrier: reuseCarrier,
             trackingNumber: existingSuccess.tracking_number,
             trackingUrl: existingSuccess.tracking_url_provider || null,
             items: (items ?? []).map((i: { name: string; quantity: number; unit_price: number }) => ({
@@ -329,7 +341,7 @@ export async function POST(
   const labelUrl: string = transaction.label_url;
   const trackingNumber: string = transaction.tracking_number ?? "";
   const trackingUrl: string = transaction.tracking_url_provider ?? "";
-  const carrier: string = transaction.provider ?? "";
+  const carrier: string = await fetchRateProvider(apiKey, transaction.rate);
 
   const { error: updateError } = await supabase
     .from("orders")
