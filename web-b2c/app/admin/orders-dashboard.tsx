@@ -96,6 +96,7 @@ export default function OrdersDashboard() {
   const [editTracking, setEditTracking] = useState("");
   const [editTrackingUrl, setEditTrackingUrl] = useState("");
   const [editNote, setEditNote] = useState("");
+  const [editingOrder, setEditingOrder] = useState(false);
 
   const fetchOrders = useCallback(async (silent = false) => {
     if (!silent) setLoading(true);
@@ -157,6 +158,7 @@ export default function OrdersDashboard() {
     setEditTrackingUrl(order.tracking_url ?? "");
     setEditNote(order.admin_note ?? "");
     setSaveMsg(null);
+    setEditingOrder(false);
 
     try {
       const res = await fetch(`/api/admin/orders/${order.id}`);
@@ -206,6 +208,7 @@ export default function OrdersDashboard() {
       setOrders((prev) => prev.map((o) => (o.id === selected.id ? { ...data.order, _source: "supabase" } : o)));
       setSelected({ ...data.order, _source: "supabase" as const });
       setSaveMsg({ type: "ok", text: "Saved!" });
+      setEditingOrder(false);
     } catch (e) {
       setSaveMsg({ type: "err", text: e instanceof Error ? e.message : "Save failed" });
     } finally {
@@ -1032,9 +1035,34 @@ export default function OrdersDashboard() {
                 </div>
               )}
 
-              {/* Edit form */}
+              {/* Order Management */}
               <div className="px-5 py-4 space-y-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Order Management</p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Order Management</p>
+                  {isEditable && (
+                    editingOrder ? (
+                      <button
+                        onClick={() => {
+                          setEditingOrder(false);
+                          setEditStatus(selected.status);
+                          setEditCarrier(selected.carrier ?? "");
+                          setEditTracking(selected.tracking_number ?? "");
+                          setEditTrackingUrl(selected.tracking_url ?? "");
+                        }}
+                        className="text-xs font-semibold text-gray-400 hover:text-gray-700 transition-colors"
+                      >
+                        ↩ Cancel
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setEditingOrder(true)}
+                        className="flex items-center gap-1 rounded-lg border border-gray-200 px-2.5 py-1 text-xs font-semibold text-gray-500 hover:border-gray-400 hover:text-gray-800 transition-colors"
+                      >
+                        ✏️ Edit
+                      </button>
+                    )
+                  )}
+                </div>
 
                 {!isEditable && (
                   <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-xs text-amber-700 font-semibold">
@@ -1044,57 +1072,84 @@ export default function OrdersDashboard() {
 
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Status</label>
-                  <select
-                    value={editStatus}
-                    onChange={(e) => setEditStatus(e.target.value as OrderStatus)}
-                    disabled={!isEditable}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
-                  >
-                    {(Object.entries(STATUS_LABELS) as [OrderStatus, string][])
-                      .filter(([val]) => val !== "cancelled" && val !== "refunded")
-                      .map(([val, label]) => (
-                        <option key={val} value={val}>{label}</option>
-                      ))}
-                  </select>
+                  {editingOrder ? (
+                    <select
+                      value={editStatus}
+                      onChange={(e) => setEditStatus(e.target.value as OrderStatus)}
+                      className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                    >
+                      {(Object.entries(STATUS_LABELS) as [OrderStatus, string][])
+                        .filter(([val]) => val !== "cancelled" && val !== "refunded")
+                        .map(([val, label]) => (
+                          <option key={val} value={val}>{label}</option>
+                        ))}
+                    </select>
+                  ) : (
+                    <div className="px-1 py-0.5">
+                      <StatusBadge status={editStatus} />
+                    </div>
+                  )}
                 </div>
 
                 {selected.delivery_method !== "pickup" && (
                   <>
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Carrier</label>
-                      <select
-                        value={editCarrier}
-                        onChange={(e) => setEditCarrier(e.target.value)}
-                        disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
-                      >
-                        <option value="">— Select carrier —</option>
-                        {CARRIERS.map((c) => <option key={c} value={c}>{c}</option>)}
-                      </select>
+                      {editingOrder ? (
+                        <select
+                          value={editCarrier}
+                          onChange={(e) => setEditCarrier(e.target.value)}
+                          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                        >
+                          <option value="">— Select carrier —</option>
+                          {CARRIERS.map((c) => <option key={c} value={c}>{c}</option>)}
+                        </select>
+                      ) : (
+                        <p className="px-1 text-sm font-medium text-gray-800">
+                          {editCarrier || <span className="text-gray-400">—</span>}
+                        </p>
+                      )}
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Tracking Number</label>
-                      <input
-                        type="text"
-                        value={editTracking}
-                        onChange={(e) => setEditTracking(e.target.value)}
-                        placeholder="e.g. 1234 5678 9012"
-                        disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
-                      />
+                      {editingOrder ? (
+                        <input
+                          type="text"
+                          value={editTracking}
+                          onChange={(e) => setEditTracking(e.target.value)}
+                          placeholder="e.g. 1234 5678 9012"
+                          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm font-mono outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                        />
+                      ) : (
+                        <p className="px-1 text-sm font-mono text-gray-800">
+                          {editTracking || <span className="text-gray-400 font-sans">—</span>}
+                        </p>
+                      )}
                     </div>
 
                     <div>
                       <label className="block text-xs font-semibold text-gray-600 mb-1">Tracking URL</label>
-                      <input
-                        type="url"
-                        value={editTrackingUrl}
-                        onChange={(e) => setEditTrackingUrl(e.target.value)}
-                        placeholder="https://..."
-                        disabled={!isEditable}
-                        className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15 disabled:bg-gray-50 disabled:text-gray-400"
-                      />
+                      {editingOrder ? (
+                        <input
+                          type="url"
+                          value={editTrackingUrl}
+                          onChange={(e) => setEditTrackingUrl(e.target.value)}
+                          placeholder="https://..."
+                          className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                        />
+                      ) : editTrackingUrl ? (
+                        <a
+                          href={editTrackingUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-1 text-sm text-brand hover:underline break-all"
+                        >
+                          {editTrackingUrl}
+                        </a>
+                      ) : (
+                        <p className="px-1 text-sm text-gray-400">—</p>
+                      )}
                     </div>
                   </>
                 )}
