@@ -4,41 +4,38 @@ import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake } 
 import { Header } from "@/components/store/header";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-const WHAT_WE_CARRY = [
+const CATEGORY_GROUPS = [
   {
     icon: Tag,
     title: "Caps & Hats",
     desc: "3D embroidered caps and reversible bucket hats — 100+ nations and styles. MOQ from 1 case, built for retailers and gift shops.",
     categories: ["Caps", "Bucket Hats"],
-    image: "/asset/images/Caps/canada-black-flag-3d-embroidered-cap.jpg",
-    imageAlt: "Canada embroidered cap wholesale",
+    queryCategories: ["Caps", "Bucket Hats"],
   },
   {
     icon: Leaf,
     title: "Vape & Smoke Shop",
     desc: "Rolling papers, glass pipes, bongs, and lighters wholesale. Competitive pricing for variety stores, convenience chains, and specialty retailers.",
     categories: ["Rolling Papers", "Bongs & Pipes", "Lighters"],
-    image: null,
-    imageAlt: "",
+    queryCategories: ["Rolling Papers", "Bongs & Pipes", "Lighters", "Vape"],
   },
   {
     icon: Snowflake,
     title: "Seasonal & Winter",
     desc: "Winter gloves, toques, scarves, and cold-weather accessories. Strong demand every fall season — stock early, sell through winter.",
     categories: ["Winter Items"],
-    image: "/asset/images/Caps/canada-reversible-bucket-hat.jpg",
-    imageAlt: "Canada reversible bucket hat wholesale",
+    queryCategories: ["Winter Items", "Winter", "Seasonal"],
   },
   {
     icon: Package2,
     title: "Boxing Gloves & Souvenirs",
     desc: "Mini souvenir boxing gloves in 50+ flag styles. Fast-moving impulse buys for sports shops, gift stores, and event resellers.",
     categories: ["Boxing Gloves", "Accessories"],
-    image: "/asset/images/boxing-gloves/canada-boxing-glove.jpg",
-    imageAlt: "Canada boxing glove souvenir wholesale",
+    queryCategories: ["Boxing Gloves", "Accessories"],
   },
 ];
 
@@ -51,8 +48,33 @@ const WHY_B2B = [
   { icon: Tag, title: "30+ years sourcing", desc: "We've been doing this since 1996. We know which products sell and which don't." },
 ];
 
+async function fetchCategoryImage(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>, categories: string[]) {
+  const { data } = await supabase
+    .from("products")
+    .select("image_url, name")
+    .in("category", categories)
+    .eq("is_hidden", false)
+    .not("image_url", "is", null)
+    .limit(1)
+    .single();
+  return data ? { url: data.image_url as string, alt: data.name as string } : null;
+}
+
 export default async function AboutPage() {
-  const profile = await getCurrentProfile();
+  const [profile, supabase] = await Promise.all([
+    getCurrentProfile(),
+    createSupabaseServerClient(),
+  ]);
+
+  const categoryImages = await Promise.all(
+    CATEGORY_GROUPS.map((g) => fetchCategoryImage(supabase, g.queryCategories))
+  );
+
+  const WHAT_WE_CARRY = CATEGORY_GROUPS.map((g, i) => ({
+    ...g,
+    image: categoryImages[i]?.url ?? null,
+    imageAlt: categoryImages[i]?.alt ?? g.title,
+  }));
 
   return (
     <>
