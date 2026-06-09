@@ -32,6 +32,6 @@ export function navCategories(categories: Category[]) {
   const display = roots.length > 0 ? roots : categories;
   return display.map((c) => ({
     label: c.name,
-    href: `/products?category=${encodeURIComponent(c.name)}`,
+    href: c.slug ? `/collections/${c.slug}` : `/products?category=${encodeURIComponent(c.name)}`,
   }));
 }

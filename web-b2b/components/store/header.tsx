@@ -25,10 +25,13 @@ function CategoryNavLinks() {
   return (
     <>
       {items.map((item) => {
+        const isCollectionHref = item.href.startsWith("/collections/");
         const itemCategory = item.href.includes("?")
           ? new URLSearchParams(item.href.split("?")[1]).get("category")
           : null;
-        const isActive = itemCategory
+        const isActive = isCollectionHref
+          ? pathname === item.href
+          : itemCategory
           ? currentCategory === itemCategory
           : pathname === "/products" && !currentCategory;
 
@@ -49,6 +52,20 @@ function CategoryNavLinks() {
         style={pathname === "/preorders" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
       >
         Pre-orders
+      </Link>
+      <Link
+        href="/lookbook"
+        className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
+        style={pathname === "/lookbook" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
+      >
+        Lookbook
+      </Link>
+      <Link
+        href="/faq"
+        className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
+        style={pathname === "/faq" ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
+      >
+        FAQ
       </Link>
       <Link
         href="/about"

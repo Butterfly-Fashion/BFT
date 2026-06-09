@@ -159,3 +159,15 @@ export type PreorderCommitment = {
   created_at: string;
   updated_at: string;
 };
+
+export type LookbookItem = {
+  id: string;
+  title: string;
+  description: string | null;
+  image_url: string;
+  season: string | null;
+  linked_product_slug: string | null;
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+};

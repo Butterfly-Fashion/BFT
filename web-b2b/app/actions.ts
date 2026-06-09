@@ -1163,6 +1163,103 @@ export async function deleteQuoteAction(quoteId: string) {
   revalidatePath("/admin/quotes");
 }
 
+// ── Lookbook ────────────────────────────────────────────────────────────────
+
+async function saveLookbookImage(file: File, itemId: string) {
+  if (!file.size) return null;
+  if (!file.type.startsWith("image/")) throw new Error("Please upload a valid image file.");
+  if (file.size > 5 * 1024 * 1024) throw new Error("Image must be under 5 MB.");
+  const ext = (file.name.split(".").pop()?.toLowerCase() || "jpg").replace(/[^a-z0-9]/g, "");
+  const safeName = `${itemId}-${Date.now()}.${ext}`;
+  const admin = createSupabaseAdminClient();
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const { error } = await admin.storage.from("lookbook-images").upload(safeName, bytes, { contentType: file.type, upsert: false });
+  if (error) throw new Error(`Image upload failed: ${error.message}`);
+  const { data: { publicUrl } } = admin.storage.from("lookbook-images").getPublicUrl(safeName);
+  return publicUrl;
+}
+
+export async function createLookbookItemAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const title = String(formData.get("title") || "").trim();
+  const description = String(formData.get("description") || "").trim() || null;
+  const season = String(formData.get("season") || "").trim() || null;
+  const linkedProductSlug = String(formData.get("linked_product_slug") || "").trim() || null;
+  const sortOrder = Number(formData.get("sort_order") || 0);
+  const isPublished = formData.get("is_published") === "true";
+  if (!title) return { error: "Title is required." };
+
+  const itemId = crypto.randomUUID();
+  const imageFile = formData.get("image") as File | null;
+  let imageUrl: string | null = null;
+  if (imageFile && imageFile.size > 0) {
+    try {
+      imageUrl = await saveLookbookImage(imageFile, itemId);
+    } catch (err) {
+      return { error: errorMessage(err) };
+    }
+  }
+  if (!imageUrl) return { error: "An image is required." };
+
+  const { error } = await admin.from("lookbook_items").insert({
+    id: itemId, title, description, image_url: imageUrl,
+    season, linked_product_slug: linkedProductSlug,
+    sort_order: sortOrder, is_published: isPublished,
+  });
+  if (error) return { error: `Failed to save: ${error.message}` };
+  revalidatePath("/admin/lookbook");
+  revalidatePath("/lookbook");
+  redirect("/admin/lookbook");
+}
+
+export async function updateLookbookItemAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const itemId = String(formData.get("item_id") || "");
+  const title = String(formData.get("title") || "").trim();
+  const description = String(formData.get("description") || "").trim() || null;
+  const season = String(formData.get("season") || "").trim() || null;
+  const linkedProductSlug = String(formData.get("linked_product_slug") || "").trim() || null;
+  const sortOrder = Number(formData.get("sort_order") || 0);
+  const isPublished = formData.get("is_published") === "true";
+  if (!itemId || !title) return;
+
+  const imageFile = formData.get("image") as File | null;
+  let imageUrl: string | null = null;
+  if (imageFile && imageFile.size > 0) {
+    try {
+      imageUrl = await saveLookbookImage(imageFile, itemId);
+    } catch (err) {
+      return { error: errorMessage(err) };
+    }
+  }
+
+  const payload: Record<string, unknown> = { title, description, season, linked_product_slug: linkedProductSlug, sort_order: sortOrder, is_published: isPublished };
+  if (imageUrl) payload.image_url = imageUrl;
+
+  await admin.from("lookbook_items").update(payload).eq("id", itemId);
+  revalidatePath("/admin/lookbook");
+  revalidatePath("/lookbook");
+  redirect("/admin/lookbook");
+}
+
+export async function deleteLookbookItemAction(itemId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("lookbook_items").delete().eq("id", itemId);
+  revalidatePath("/admin/lookbook");
+  revalidatePath("/lookbook");
+}
+
+export async function toggleLookbookPublishedAction(itemId: string, isPublished: boolean) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("lookbook_items").update({ is_published: isPublished }).eq("id", itemId);
+  revalidatePath("/admin/lookbook");
+  revalidatePath("/lookbook");
+}
+
 // ── Category CRUD ──────────────────────────────────────────────────────────────
 
 function slugifyCategory(name: string) {

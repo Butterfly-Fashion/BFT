@@ -147,7 +147,7 @@ export default async function HomePage() {
               {categories.map((cat) => (
                 <Link
                   key={cat.name}
-                  href={`/products?category=${encodeURIComponent(cat.name)}`}
+                  href={cat.slug ? `/collections/${cat.slug}` : `/products?category=${encodeURIComponent(cat.name)}`}
                   className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
                 >
                   {cat.name}
