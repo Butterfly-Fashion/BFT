@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, TrendingUp } from "lucide-react";
+import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
@@ -10,11 +10,11 @@ export const dynamic = "force-dynamic";
 const WHAT_WE_CARRY = [
   {
     icon: Tag,
-    title: "World Cup & Fan Gear",
-    desc: "Car flags, embroidered caps, bucket hats, and mini boxing gloves for every football nation. MOQ from 12 — built for retailers and event resellers.",
-    categories: ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves"],
-    image: "/asset/images/car-flags/canada-car-flag.jpg",
-    imageAlt: "Canada car flag wholesale",
+    title: "Caps & Hats",
+    desc: "3D embroidered caps and reversible bucket hats — 100+ nations and styles. MOQ from 1 case, built for retailers and gift shops.",
+    categories: ["Caps", "Bucket Hats"],
+    image: "/asset/images/Caps/canada-black-flag-3d-embroidered-cap.jpg",
+    imageAlt: "Canada embroidered cap wholesale",
   },
   {
     icon: Leaf,
@@ -29,16 +29,16 @@ const WHAT_WE_CARRY = [
     title: "Seasonal & Winter",
     desc: "Winter gloves, toques, scarves, and cold-weather accessories. Strong demand every fall season — stock early, sell through winter.",
     categories: ["Winter Items"],
-    image: "/asset/images/bucket-hats/canada-reversible-bucket-hat.jpg",
+    image: "/asset/images/Caps/canada-reversible-bucket-hat.jpg",
     imageAlt: "Canada reversible bucket hat wholesale",
   },
   {
-    icon: TrendingUp,
-    title: "Trending Products",
-    desc: "Fast-moving impulse buys and seasonal trends we source specifically for small and mid-size retail. We spot what moves before the big chains catch up.",
-    categories: ["Accessories"],
-    image: "/asset/images/Caps/canada-black-flag-3d-embroidered-cap.jpg",
-    imageAlt: "Canada embroidered cap wholesale",
+    icon: Package2,
+    title: "Boxing Gloves & Souvenirs",
+    desc: "Mini souvenir boxing gloves in 50+ flag styles. Fast-moving impulse buys for sports shops, gift stores, and event resellers.",
+    categories: ["Boxing Gloves", "Accessories"],
+    image: "/asset/images/boxing-gloves/canada-boxing-glove.jpg",
+    imageAlt: "Canada boxing glove souvenir wholesale",
   },
 ];
 
@@ -123,8 +123,8 @@ export default async function AboutPage() {
               </p>
               <p>
                 We've adapted through every market shift. When demand for mask supplies surged during COVID,
-                we moved fast while larger distributors were still catching up. When the World Cup came to Canada,
-                we were already stocked with car flags and fan gear. We know how to read what's next.
+                we moved fast while larger distributors were still catching up. We know how to read what's next
+                and stock ahead of the curve.
               </p>
               <p>
                 Today, we operate a <strong className="text-gray-900">B2B wholesale portal</strong> out of our
@@ -147,38 +147,6 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* ── Product showcase banner ── */}
-        <section className="overflow-hidden border-b border-gray-100">
-          <div className="relative">
-            <Image
-              src="/asset/hero-banner.jpg"
-              alt="FIFA World Cup 2026 wholesale fan gear — caps, car flags, boxing gloves"
-              width={1400}
-              height={560}
-              className="w-full object-cover"
-              style={{ maxHeight: "420px", objectPosition: "center" }}
-            />
-            <div className="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent" />
-            <div className="absolute inset-0 flex items-center">
-              <div className="container-shell">
-                <p className="text-xs font-bold uppercase tracking-widest text-white/60">Featured range</p>
-                <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">
-                  World Cup 2026<br />Fan Gear
-                </h2>
-                <p className="mt-2 max-w-xs text-sm text-white/75">
-                  Caps, car flags, bucket hats, boxing gloves — all nations, wholesale pricing.
-                </p>
-                <Link
-                  href="/products?category=Car+Flags"
-                  className="mt-4 inline-flex rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-gray-900 transition-opacity hover:opacity-90"
-                >
-                  Shop fan gear →
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ── What we carry ── */}
         <section className="border-b border-gray-100 bg-white px-4 py-16 sm:py-20">
           <div className="container-shell">
@@ -193,7 +161,7 @@ export default async function AboutPage() {
               {WHAT_WE_CARRY.map(({ icon: Icon, title, desc, categories: cats, image, imageAlt }) => (
                 <div key={title} className="overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
                   {image ? (
-                    <div className="relative h-40 w-full overflow-hidden bg-white">
+                    <div className="relative h-44 w-full overflow-hidden bg-white">
                       <Image
                         src={image}
                         alt={imageAlt}
@@ -202,8 +170,8 @@ export default async function AboutPage() {
                       />
                     </div>
                   ) : (
-                    <div className="flex h-40 items-center justify-center" style={{ background: "var(--primary-light)" }}>
-                      <Icon size={40} style={{ color: "var(--primary)", opacity: 0.4 }} />
+                    <div className="flex h-44 items-center justify-center" style={{ background: "var(--primary-light)" }}>
+                      <Icon size={40} style={{ color: "var(--primary)", opacity: 0.35 }} />
                     </div>
                   )}
                   <div className="p-6">
@@ -277,8 +245,8 @@ export default async function AboutPage() {
               <p className="section-label mb-6" style={{ color: "var(--primary)" }}>From the founder</p>
               <blockquote className="text-lg font-medium leading-8 text-gray-700 sm:text-xl">
                 &ldquo;We&apos;ve spent 30 years supplying retailers across Canada with quality products.
-                Whether it&apos;s fan gear for the World Cup, rolling papers for convenience stores,
-                or winter items before the season — we know what retailers need and how fast they need it.
+                Whether it&apos;s seasonal accessories, rolling papers for convenience stores,
+                or novelty items before the season — we know what retailers need and how fast they need it.
                 Every product we carry is something we&apos;d personally stand behind.&rdquo;
               </blockquote>
               <div className="mt-8 flex items-center gap-4">
