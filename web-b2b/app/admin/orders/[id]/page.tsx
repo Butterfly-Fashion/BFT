@@ -19,6 +19,8 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
   const { data: items } = await admin.from("order_items").select("*").eq("order_id", id);
   if (!order) return null;
 
+  const customer = Array.isArray(order.profiles) ? order.profiles[0] : order.profiles;
+
   const isPaid = order.status === "Paid" || order.payment_status === "Paid";
   const isCancelled = order.status === "Cancelled";
   const canApprove = order.status === "Pending Review";
@@ -91,10 +93,19 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             {/* Customer info */}
             <section className="card p-5">
               <h2 className="mb-3 text-base font-bold text-slate-900">Customer</h2>
-              <p className="font-black text-slate-900">{order.profiles.business_name}</p>
-              <p className="mt-0.5 text-sm text-slate-600">{order.profiles.contact_name}</p>
-              <p className="text-sm text-slate-500">{order.profiles.email}</p>
-              {order.profiles.phone && <p className="text-sm text-slate-500">{order.profiles.phone}</p>}
+              {customer ? (
+                <>
+                  <p className="font-black text-slate-900">{customer.business_name}</p>
+                  <p className="mt-0.5 text-sm text-slate-600">{customer.contact_name}</p>
+                  <p className="text-sm text-slate-500">{customer.email}</p>
+                  {customer.phone && <p className="text-sm text-slate-500">{customer.phone}</p>}
+                  <Link href={`/admin/customers/${order.customer_id}`} className="mt-2 inline-block text-xs font-semibold" style={{ color: "var(--primary)" }}>
+                    View customer →
+                  </Link>
+                </>
+              ) : (
+                <p className="text-sm text-slate-400 italic">Customer profile not found (ID: {order.customer_id?.slice(0, 8)})</p>
+              )}
               {order.customer_notes && (
                 <div className="mt-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">
                   <p className="mb-1 text-xs font-bold text-slate-400">Customer notes</p>

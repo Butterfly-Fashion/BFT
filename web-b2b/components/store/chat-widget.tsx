@@ -114,7 +114,7 @@ export function ChatWidget() {
     <>
       {/* Popup panel */}
       {open && (
-        <div className="fixed bottom-20 right-6 z-50 flex w-80 sm:w-96 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
+        <div className="fixed bottom-18 right-4 z-50 flex w-80 sm:right-6 sm:w-96 xl:bottom-20 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3" style={{ background: "var(--primary)" }}>
             <div className="flex items-center gap-2">
@@ -224,7 +224,7 @@ export function ChatWidget() {
       {/* Floating button */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-sm font-bold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+        className="fixed bottom-18 right-4 z-50 flex items-center gap-2 rounded-full px-4 py-3 text-sm font-bold text-white shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 sm:right-6 xl:bottom-6"
         style={{ background: "var(--primary)" }}
         aria-label="Open support chat"
       >
