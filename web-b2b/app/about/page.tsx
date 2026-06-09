@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Flame, Leaf, Snowflake, TrendingUp } from "lucide-react";
+import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, TrendingUp } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -11,24 +13,32 @@ const WHAT_WE_CARRY = [
     title: "World Cup & Fan Gear",
     desc: "Car flags, embroidered caps, bucket hats, and mini boxing gloves for every football nation. MOQ from 12 — built for retailers and event resellers.",
     categories: ["Car Flags", "Caps", "Bucket Hats", "Boxing Gloves"],
+    image: "/asset/images/car-flags/canada-car-flag.jpg",
+    imageAlt: "Canada car flag wholesale",
   },
   {
     icon: Leaf,
     title: "Vape & Smoke Shop",
     desc: "Rolling papers, glass pipes, bongs, and lighters wholesale. Competitive pricing for variety stores, convenience chains, and specialty retailers.",
     categories: ["Rolling Papers", "Bongs & Pipes", "Lighters"],
+    image: null,
+    imageAlt: "",
   },
   {
     icon: Snowflake,
     title: "Seasonal & Winter",
     desc: "Winter gloves, toques, scarves, and cold-weather accessories. Strong demand every fall season — stock early, sell through winter.",
     categories: ["Winter Items"],
+    image: "/asset/images/bucket-hats/canada-reversible-bucket-hat.jpg",
+    imageAlt: "Canada reversible bucket hat wholesale",
   },
   {
     icon: TrendingUp,
     title: "Trending Products",
     desc: "Fast-moving impulse buys and seasonal trends we source specifically for small and mid-size retail. We spot what moves before the big chains catch up.",
     categories: ["Accessories"],
+    image: "/asset/images/Caps/canada-black-flag-3d-embroidered-cap.jpg",
+    imageAlt: "Canada embroidered cap wholesale",
   },
 ];
 
@@ -49,24 +59,31 @@ export default async function AboutPage() {
       <Header profile={profile} />
       <main>
 
-        {/* ── Hero ── */}
-        <section style={{ background: "var(--primary)" }} className="px-4 py-20 sm:py-28">
-          <div className="container-shell max-w-3xl">
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-green-300">
+        {/* ── Hero — store photo ── */}
+        <section className="relative h-[60vh] min-h-105 w-full overflow-hidden">
+          <Image
+            src="/asset/about-store.png"
+            alt="Butterfly Fashion Trading store — North York, Toronto"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-black/10" />
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.25em] text-white/60">
               Toronto Wholesale · Est. 1996
             </p>
-            <h1 className="text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
               30 years supplying<br />Canadian retailers.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-green-100">
+            <p className="mt-5 max-w-lg text-base text-white/75">
               From a small North York storefront to a wholesale B2B operation shipping across Canada and the USA.
-              We carry fan gear, vape supplies, seasonal products, and trending items — all from our Toronto warehouse.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link className="rounded-lg bg-white px-6 py-3 text-sm font-bold text-green-900 transition-opacity hover:opacity-90" href="/products">
                 Browse catalog
               </Link>
-              <Link className="rounded-lg border border-green-400 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-green-700" href="/register">
+              <Link className="rounded-lg border border-white/40 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10" href="/register">
                 Create B2B account
               </Link>
             </div>
@@ -130,6 +147,38 @@ export default async function AboutPage() {
           </div>
         </section>
 
+        {/* ── Product showcase banner ── */}
+        <section className="overflow-hidden border-b border-gray-100">
+          <div className="relative">
+            <Image
+              src="/asset/hero-banner.jpg"
+              alt="FIFA World Cup 2026 wholesale fan gear — caps, car flags, boxing gloves"
+              width={1400}
+              height={560}
+              className="w-full object-cover"
+              style={{ maxHeight: "420px", objectPosition: "center" }}
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-black/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 flex items-center">
+              <div className="container-shell">
+                <p className="text-xs font-bold uppercase tracking-widest text-white/60">Featured range</p>
+                <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">
+                  World Cup 2026<br />Fan Gear
+                </h2>
+                <p className="mt-2 max-w-xs text-sm text-white/75">
+                  Caps, car flags, bucket hats, boxing gloves — all nations, wholesale pricing.
+                </p>
+                <Link
+                  href="/products?category=Car+Flags"
+                  className="mt-4 inline-flex rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-gray-900 transition-opacity hover:opacity-90"
+                >
+                  Shop fan gear →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── What we carry ── */}
         <section className="border-b border-gray-100 bg-white px-4 py-16 sm:py-20">
           <div className="container-shell">
@@ -141,26 +190,36 @@ export default async function AboutPage() {
               </p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              {WHAT_WE_CARRY.map(({ icon: Icon, title, desc, categories: cats }) => (
-                <div key={title} className="rounded-xl border border-gray-100 bg-gray-50 p-6">
-                  <div
-                    className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg"
-                    style={{ background: "var(--primary-light)" }}
-                  >
-                    <Icon size={18} style={{ color: "var(--primary)" }} />
-                  </div>
-                  <h3 className="text-base font-black text-gray-900">{title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-500">{desc}</p>
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {cats.map((cat) => (
-                      <Link
-                        key={cat}
-                        href={`/products?category=${encodeURIComponent(cat)}`}
-                        className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
-                      >
-                        {cat}
-                      </Link>
-                    ))}
+              {WHAT_WE_CARRY.map(({ icon: Icon, title, desc, categories: cats, image, imageAlt }) => (
+                <div key={title} className="overflow-hidden rounded-xl border border-gray-100 bg-gray-50">
+                  {image ? (
+                    <div className="relative h-40 w-full overflow-hidden bg-white">
+                      <Image
+                        src={image}
+                        alt={imageAlt}
+                        fill
+                        className="object-contain p-4"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex h-40 items-center justify-center" style={{ background: "var(--primary-light)" }}>
+                      <Icon size={40} style={{ color: "var(--primary)", opacity: 0.4 }} />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-base font-black text-gray-900">{title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-500">{desc}</p>
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {cats.map((cat) => (
+                        <Link
+                          key={cat}
+                          href={`/products?category=${encodeURIComponent(cat)}`}
+                          className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
+                        >
+                          {cat}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -262,6 +321,7 @@ export default async function AboutPage() {
         </section>
 
       </main>
+      <BackToTop />
     </>
   );
 }
