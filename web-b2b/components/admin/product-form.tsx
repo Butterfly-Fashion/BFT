@@ -496,19 +496,19 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 onClick={() => openAddOption()}
                 className="flex items-center gap-1.5 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-sm font-semibold text-slate-500 hover:border-green-500 hover:text-green-600 transition-colors"
               >
-                <Plus size={14} /> 옵션 추가
+                <Plus size={14} /> Add option
               </button>
 
               {/* Variants table */}
               {variants.length > 0 && (
                 <div>
-                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">변형별 바코드 (UPC)</p>
+                  <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Variant barcodes (UPC)</p>
                   <div className="overflow-hidden rounded-lg border border-slate-200">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b border-slate-100 bg-slate-50 text-left text-xs font-semibold text-slate-500">
-                          <th className="px-3 py-2">변형</th>
-                          <th className="px-3 py-2">바코드 (UPC)</th>
+                          <th className="px-3 py-2">Variant</th>
+                          <th className="px-3 py-2">Barcode (UPC)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -518,7 +518,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                             <td className="px-3 py-2">
                               <input
                                 className="field h-8 text-sm font-mono"
-                                placeholder="예: 693454880634"
+                                placeholder="e.g. 693454880634"
                                 value={v.barcode}
                                 onChange={(e) => updateVariantBarcode(v.label, e.target.value)}
                               />
@@ -582,18 +582,18 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
           {/* Internal staff notes */}
           <div className="card p-5">
             <div className="mb-3 flex items-center gap-2">
-              <p className="text-sm font-bold text-slate-700">직원 메모</p>
-              <span className="rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">직원 전용</span>
+              <p className="text-sm font-bold text-slate-700">Internal notes</p>
+              <span className="rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">Staff only</span>
             </div>
             <textarea
               className="field min-h-24 resize-y text-sm"
               name="internal_notes"
               defaultValue={product?.internal_notes || ""}
-              placeholder="공급처 정보, 특이사항, 주의사항 등 내부 메모. 고객에게 표시되지 않습니다."
+              placeholder="Supplier info, special notes, cautions, etc. Not visible to customers."
             />
             <p className="mt-2 flex items-center gap-1 text-xs text-amber-700">
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 shrink-0 fill-current"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12.5A5.5 5.5 0 118 2.5a5.5 5.5 0 010 11zM7.25 5.5h1.5v1.5h-1.5zm0 3h1.5v4h-1.5z"/></svg>
-              고객 및 B2B 구매자에게는 표시되지 않는 내부 전용 필드입니다.
+              This is an internal-only field — not visible to customers or B2B buyers.
             </p>
           </div>
         </div>
@@ -799,34 +799,34 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-base font-bold text-slate-900">{editingOptionIndex !== null ? "제품 옵션 수정" : "제품 옵션 추가"}</h2>
+              <h2 className="text-base font-bold text-slate-900">{editingOptionIndex !== null ? "Edit option" : "Add option"}</h2>
               <button type="button" onClick={() => setShowOptionModal(false)} className="text-slate-400 hover:text-slate-700">
                 <X size={18} />
               </button>
             </div>
-            <p className="mb-4 text-xs text-slate-500">나중에 제품 옵션의 가격 및 재고 목록을 관리할 수 있습니다.</p>
+            <p className="mb-4 text-xs text-slate-500">You can manage pricing and inventory per variant later.</p>
 
             <div className="space-y-3">
               <label className="label">
-                옵션 이름
+                Option name
                 <input
                   className="field"
-                  placeholder="예: 색상, 사이즈"
+                  placeholder="e.g. Color, Size"
                   value={modalName}
                   onChange={(e) => setModalName(e.target.value)}
                   autoFocus
                 />
               </label>
               <label className="label">
-                선택 옵션 값
+                Option values
                 <input
                   className="field"
-                  placeholder="쉼표로 구분 (예: ARMY, BLACK, RED)"
+                  placeholder="Comma-separated (e.g. ARMY, BLACK, RED)"
                   value={modalValues}
                   onChange={(e) => setModalValues(e.target.value)}
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleSaveOption(); } }}
                 />
-                <span className="mt-1 block text-xs text-slate-400">쉼표(,)로 구분하거나 Enter로 추가</span>
+                <span className="mt-1 block text-xs text-slate-400">Separate with commas or press Enter</span>
               </label>
             </div>
 
@@ -836,7 +836,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 onClick={() => { setShowOptionModal(false); setEditingOptionIndex(null); setModalName(""); setModalValues(""); }}
                 className="btn-secondary"
               >
-                취소
+                Cancel
               </button>
               <button
                 type="button"
@@ -844,7 +844,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                 disabled={!modalName.trim() || !modalValues.trim()}
                 className="btn-primary disabled:opacity-40"
               >
-                {editingOptionIndex !== null ? "저장" : "추가"}
+                {editingOptionIndex !== null ? "Save" : "Add"}
               </button>
             </div>
           </div>

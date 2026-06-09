@@ -137,20 +137,20 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
                             className="rounded-full px-1.5 py-0.5 text-[9px] font-black text-white"
                             style={{ background: "var(--primary)" }}
                           >
-                            내 가격
+                            My price
                           </span>
                         )}
                       </div>
                       {product.display_case_price != null && product.case_qty && (
                         <p className="mt-0.5 text-xs font-semibold text-gray-400">
-                          케이스 ({product.case_qty}개) {formatMoney(product.display_case_price)}
+                          Case ({product.case_qty} pcs) {formatMoney(product.display_case_price)}
                         </p>
                       )}
                     </div>
                   ) : (
                     <div className="flex items-center gap-1.5 text-gray-400">
                       <Lock size={11} className="shrink-0" />
-                      <span className="text-xs font-semibold">승인 후 가격 확인</span>
+                      <span className="text-xs font-semibold">Price visible after approval</span>
                     </div>
                   )}
                 </div>
@@ -160,7 +160,7 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
               {isApproved && (
                 <div className="border-t border-gray-100 px-3.5 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-gray-400">수량</span>
+                    <span className="shrink-0 text-[10px] font-bold uppercase tracking-wide text-gray-400">Qty</span>
                     <input
                       aria-label={`Quantity for ${product.name}`}
                       className={`field quantity-input min-h-0 h-8 py-0 text-center text-sm font-bold ${
@@ -313,7 +313,7 @@ export function WholesaleProductBrowser({ products, profile }: WholesaleProductB
                 onClick={addSelectedToCart}
               >
                 <ShoppingCart size={14} />
-                {cart.orderPadCount > 0 ? `${cart.orderPadCount}개 항목 추가` : "선택 항목 추가"}
+                {cart.orderPadCount > 0 ? `Add ${cart.orderPadCount} item${cart.orderPadCount !== 1 ? "s" : ""}` : "Add selected"}
               </button>
               <Link className="btn-secondary mt-2 w-full text-sm" href="/cart">
                 Open request cart

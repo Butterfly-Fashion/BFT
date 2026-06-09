@@ -174,7 +174,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                         <span className="font-bold text-gray-900">{formatMoney(product.display_price)}</span>
                         {product.has_customer_price && (
                           <span className="ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] font-bold text-white" style={{ background: "var(--primary)" }}>
-                            내 가격
+                            My price
                           </span>
                         )}
                         {product.display_case_price && product.case_qty && (

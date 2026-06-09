@@ -76,7 +76,7 @@ export default async function AdminPreordersPage() {
                       <td className="px-5 py-3 font-black">{formatMoney(campaign.unit_price)}</td>
                       <td className="px-5 py-3 font-semibold text-slate-600">
                         {campaign.case_price != null ? formatMoney(campaign.case_price) : "—"}
-                        {campaign.case_qty ? <span className="ml-1 text-xs text-slate-400">/{campaign.case_qty}개</span> : ""}
+                        {campaign.case_qty ? <span className="ml-1 text-xs text-slate-400">/{campaign.case_qty} pcs</span> : ""}
                       </td>
                       <td className="px-5 py-3">
                         <strong className="text-base">{total}</strong>

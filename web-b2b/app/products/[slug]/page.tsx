@@ -109,14 +109,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
               <div className="divide-y divide-slate-100">
                 <div className="flex items-center justify-between px-4 py-3">
                   <div>
-                    <p className="text-xs font-semibold text-slate-500">Unit price / ea (낱개)</p>
+                    <p className="text-xs font-semibold text-slate-500">Unit price / ea</p>
                   </div>
                   <strong className="text-2xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
                 </div>
                 {isApproved && product.display_case_price && product.case_qty && (
                   <div className="flex items-center justify-between bg-slate-50 px-4 py-3">
                     <div>
-                      <p className="text-xs font-semibold text-slate-500">Case price (케이스)</p>
+                      <p className="text-xs font-semibold text-slate-500">Case price</p>
                       <p className="text-xs text-slate-400">{product.case_qty} units/case</p>
                     </div>
                     <div className="text-right">

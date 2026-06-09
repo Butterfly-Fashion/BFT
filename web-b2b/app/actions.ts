@@ -988,16 +988,19 @@ export async function submitPreorderCommitmentAction(formData: FormData) {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
   const campaignId = String(formData.get("campaign_id") || "");
-  const quantity = Math.max(1, Number(formData.get("quantity") || 1));
+  const cases = Math.max(1, Number(formData.get("cases") || 1));
   const notes = String(formData.get("notes") || "") || null;
 
   const { data: campaign } = await supabase
     .from("preorder_campaigns")
-    .select("id, status")
+    .select("id, status, case_qty")
     .eq("id", campaignId)
     .single();
 
   if (!campaign || campaign.status !== "open") return;
+
+  const caseQty = campaign.case_qty ?? 12;
+  const quantity = cases * caseQty;
 
   await supabase.from("preorder_commitments").upsert({
     campaign_id: campaignId,

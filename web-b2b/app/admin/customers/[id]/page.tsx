@@ -127,10 +127,10 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
                     </option>
                   ))}
                 </select>
-                <label className="label">Unit price (낱개)
+                <label className="label">Unit price (per pc)
                   <input className="field" name="unit_price" placeholder="e.g. 4.50" step="0.01" min="0" type="number" />
                 </label>
-                <label className="label">Case price (케이스, optional)
+                <label className="label">Case price (optional)
                   <input className="field" name="case_price" placeholder="e.g. 45.00" step="0.01" min="0" type="number" />
                 </label>
                 <button className="btn-primary" type="submit">Set prices</button>

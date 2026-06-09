@@ -25,7 +25,7 @@ export default async function NewPreorderCampaignPage() {
               <p className="text-xs font-black uppercase tracking-widest text-(--primary)">Pre-order management</p>
               <h1 className="mt-1 text-2xl font-black text-slate-900">New Pre-order Campaign</h1>
               <p className="mt-1 text-sm text-slate-500">
-                재고 없는 상품에 대해 캠페인을 만들어 고객들의 수요를 미리 파악하세요.
+                Create a campaign for out-of-stock products to gauge customer demand before placing your wholesale order.
               </p>
             </div>
 
@@ -33,10 +33,10 @@ export default async function NewPreorderCampaignPage() {
               <label className="label">
                 Product
                 <select className="field" name="product_id" required>
-                  <option value="">상품 선택…</option>
+                  <option value="">Select a product…</option>
                   {(products || []).map((p) => (
                     <option key={p.id} value={p.id}>
-                      {p.name} ({p.sku}) — 기본가 {formatMoney(p.unit_price)}
+                      {p.name} ({p.sku}) — {formatMoney(p.unit_price)}/pc
                     </option>
                   ))}
                 </select>
@@ -49,22 +49,22 @@ export default async function NewPreorderCampaignPage() {
 
               <label className="label">
                 Description (optional)
-                <textarea className="field min-h-24" name="description" placeholder="상품 설명, 예상 입고 시기 등" />
+                <textarea className="field min-h-24" name="description" placeholder="Product details, expected arrival date, etc." />
               </label>
 
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <p className="mb-3 text-xs font-black uppercase tracking-wide text-slate-500">Pre-order pricing</p>
                 <div className="grid gap-4 md:grid-cols-3">
                   <label className="label">
-                    Unit price (낱개) *
+                    Unit price (per pc) *
                     <input className="field" name="unit_price" type="number" step="0.01" min="0" required placeholder="e.g. 5.99" />
                   </label>
                   <label className="label">
-                    Case price (케이스)
+                    Case price (total)
                     <input className="field" name="case_price" type="number" step="0.01" min="0" placeholder="e.g. 59.99" />
                   </label>
                   <label className="label">
-                    Case qty (개/케이스)
+                    Case qty (pcs/case)
                     <input className="field" name="case_qty" type="number" step="1" min="1" placeholder="e.g. 12" />
                   </label>
                 </div>

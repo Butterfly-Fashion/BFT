@@ -56,7 +56,7 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                 <div className="flex justify-between"><span className="font-semibold text-slate-500">Item Code</span><span className="font-mono text-xs font-semibold">{product?.sku}</span></div>
                 <div className="flex justify-between"><span className="font-semibold text-slate-500">Unit price</span><span className="font-black">{formatMoney(campaign.unit_price)}</span></div>
                 {campaign.case_price != null && (
-                  <div className="flex justify-between"><span className="font-semibold text-slate-500">Case price ({campaign.case_qty}개)</span><span className="font-black">{formatMoney(campaign.case_price)}</span></div>
+                  <div className="flex justify-between"><span className="font-semibold text-slate-500">Case price ({campaign.case_qty} pcs)</span><span className="font-black">{formatMoney(campaign.case_price)}</span></div>
                 )}
                 {campaign.closes_at && (
                   <div className="flex justify-between"><span className="font-semibold text-slate-500">Closes at</span><span className="font-black">{new Date(campaign.closes_at).toLocaleDateString("en-CA")}</span></div>
@@ -100,7 +100,7 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                 </table>
               </div>
               {!commitments?.length && (
-                <div className="p-8 text-center text-sm font-bold text-slate-500">아직 참여한 고객이 없습니다.</div>
+                <div className="p-8 text-center text-sm font-bold text-slate-500">No commitments yet.</div>
               )}
             </section>
           </div>
@@ -108,24 +108,24 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
           {/* Sidebar */}
           <aside className="grid gap-4 xl:h-fit xl:sticky xl:top-20">
             <section className="card p-4">
-              <h2 className="mb-3 text-base font-black">수요 집계</h2>
+              <h2 className="mb-3 text-base font-black">Demand summary</h2>
               <div className="grid gap-2 text-sm">
                 <div className="flex justify-between rounded-lg bg-slate-50 px-3 py-2">
-                  <span className="font-semibold text-slate-500">참여 업체</span>
-                  <span className="font-black">{commitments?.length || 0}곳</span>
+                  <span className="font-semibold text-slate-500">Buyers</span>
+                  <span className="font-black">{commitments?.length || 0}</span>
                 </div>
                 <div className="flex justify-between rounded-lg bg-blue-50 px-3 py-2">
-                  <span className="font-semibold text-blue-600">총 수량</span>
-                  <span className="font-black text-blue-900">{totalUnits}개</span>
+                  <span className="font-semibold text-blue-600">Total units</span>
+                  <span className="font-black text-blue-900">{totalUnits} pcs</span>
                 </div>
                 {caseCount != null && (
                   <div className="flex justify-between rounded-lg bg-blue-50 px-3 py-2">
-                    <span className="font-semibold text-blue-600">케이스 환산</span>
+                    <span className="font-semibold text-blue-600">Cases</span>
                     <span className="font-black text-blue-900">{caseCount} cases</span>
                   </div>
                 )}
                 <div className="flex justify-between rounded-lg bg-slate-50 px-3 py-2">
-                  <span className="font-semibold text-slate-500">예상 매출</span>
+                  <span className="font-semibold text-slate-500">Est. revenue</span>
                   <span className="font-black">{formatMoney(totalUnits * campaign.unit_price)}</span>
                 </div>
               </div>
