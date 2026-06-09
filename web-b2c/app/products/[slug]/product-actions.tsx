@@ -52,6 +52,7 @@ export function ProductActions({ product }: Props) {
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
     showToast("Added to cart ✓");
+    window.dispatchEvent(new Event("cart:open"));
     trackAddToCart({
       id: product.id,
       name: product.name,
@@ -159,7 +160,7 @@ export function ProductActions({ product }: Props) {
       <div className="mt-5 pt-5 border-t border-gray-100 grid grid-cols-3 gap-3 text-center">
         <div className="flex flex-col items-center gap-1">
           <Truck className="h-5 w-5 text-brand" />
-          <span className="text-[11px] font-semibold text-gray-600">Ships from Toronto</span>
+          <span className="text-[11px] font-semibold text-gray-600">Pickup or ships from Toronto</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <RotateCcw className="h-5 w-5 text-brand" />

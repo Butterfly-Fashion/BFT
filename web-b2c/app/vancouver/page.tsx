@@ -45,7 +45,7 @@ const config: CityPageConfig = {
     {
       icon: "🚀",
       title: "Ships to BC in 3–5 days",
-      body: "We ship from North York, Toronto. Vancouver orders arrive via Canada Post Expedited in 3–5 business days. Order by June 7 for pre-tournament delivery.",
+      body: "We ship from North York, Toronto. Vancouver delivery timing is shown at checkout, and local Toronto pickup is available for anyone in the GTA.",
     },
     {
       icon: "✅",
@@ -71,7 +71,7 @@ const config: CityPageConfig = {
       { date: "June–July 2026", teams: "Multiple rounds", venue: "BC Place, Vancouver" },
       { date: "July 2026", teams: "Knockout stage", venue: "BC Place, Vancouver" },
     ],
-    note: "Order by June 7 to guarantee delivery before the opening whistle.",
+    note: "Shipping is available from Toronto, with delivery timing shown at checkout.",
   },
   narrative: {
     eyebrow: "One of the most diverse fan cities in North America",
@@ -103,7 +103,7 @@ const config: CityPageConfig = {
   faqs: [
     {
       q: "Where can I buy World Cup 2026 merchandise in Vancouver?",
-      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse to Vancouver in 3–5 business days via Canada Post Expedited. Order by June 7 to receive before opening day.",
+      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse to Vancouver, with delivery timing shown at checkout.",
     },
     {
       q: "Is World Cup 2026 fan gear available in Vancouver right now?",

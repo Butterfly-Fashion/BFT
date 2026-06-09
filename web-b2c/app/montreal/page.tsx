@@ -45,7 +45,7 @@ const config: CityPageConfig = {
     {
       icon: "🚀",
       title: "Ships in 2–3 days",
-      body: "Toronto to Montreal is our fastest route outside Ontario. Orders arrive in 2–3 business days via Canada Post Expedited. Order by June 9 for pre-kickoff delivery.",
+      body: "Toronto to Montreal is our fastest route outside Ontario. Shipping timing is shown at checkout, and Toronto-area local pickup is available.",
     },
     {
       icon: "✅",
@@ -94,7 +94,7 @@ const config: CityPageConfig = {
   faqs: [
     {
       q: "Where can I buy World Cup 2026 merchandise in Montreal?",
-      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse to Montreal in 2–3 business days via Canada Post Expedited. Order by June 9 to receive before opening day.",
+      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse to Montreal, with delivery timing shown at checkout.",
     },
     {
       q: "Is World Cup 2026 fan gear available for Montreal fans right now?",

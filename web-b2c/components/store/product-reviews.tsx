@@ -10,7 +10,11 @@ interface Review {
   created_at: string;
 }
 
-function Stars({ rating, interactive = false, onSelect }: {
+function Stars({
+  rating,
+  interactive = false,
+  onSelect,
+}: {
   rating: number;
   interactive?: boolean;
   onSelect?: (r: number) => void;
@@ -29,7 +33,7 @@ function Stars({ rating, interactive = false, onSelect }: {
           aria-label={interactive ? `Rate ${star} out of 5` : undefined}
         >
           <svg
-            className={`w-4 h-4 ${(hovered || rating) >= star ? "text-yellow-400" : "text-gray-200"}`}
+            className={`h-4 w-4 ${(hovered || rating) >= star ? "text-yellow-400" : "text-gray-200"}`}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -51,8 +55,14 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!rating) { setError("Please select a star rating."); return; }
-    if (!name.trim()) { setError("Please enter your name."); return; }
+    if (!rating) {
+      setError("Please select a star rating.");
+      return;
+    }
+    if (!name.trim()) {
+      setError("Please enter your name.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -74,7 +84,7 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
   if (done) {
     return (
       <div className="rounded-xl border border-green-100 bg-green-50 p-5 text-sm text-green-700">
-        Thank you for your review!
+        Thank you for your review.
       </div>
     );
   }
@@ -82,36 +92,32 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">Your rating</p>
+        <p className="mb-2 text-sm font-semibold text-gray-700">Your rating</p>
         <Stars rating={rating} interactive onSelect={setRating} />
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          maxLength={80}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30"
-        />
-      </div>
-      <div>
-        <textarea
-          placeholder="Share your experience (optional)"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          maxLength={1000}
-          rows={3}
-          className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 resize-none"
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        maxLength={80}
+        className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30"
+      />
+      <textarea
+        placeholder="Share your experience (optional)"
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        maxLength={1000}
+        rows={3}
+        className="w-full resize-none rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand/30"
+      />
       {error && <p className="text-xs text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={loading}
         className="rounded-lg bg-brand px-5 py-2 text-sm font-semibold text-white hover:bg-[#a31830] disabled:opacity-50"
       >
-        {loading ? "Submitting…" : "Submit Review"}
+        {loading ? "Submitting..." : "Submit Review"}
       </button>
     </form>
   );
@@ -119,21 +125,45 @@ function ReviewForm({ productSlug, onSubmitted }: { productSlug: string; onSubmi
 
 function ReviewItem({ review }: { review: Review }) {
   const date = new Date(review.created_at).toLocaleDateString("en-CA", {
-    year: "numeric", month: "short", day: "numeric",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   });
   return (
     <div className="border-b border-gray-100 pb-5 last:border-0">
-      <div className="flex items-center gap-3 mb-2">
+      <div className="mb-2 flex items-center gap-3">
         <Stars rating={review.rating} />
         <span className="text-sm font-semibold text-gray-800">{review.author_name}</span>
         <span className="text-xs text-gray-400">{date}</span>
       </div>
-      {review.body && <p className="text-sm text-gray-600 leading-relaxed">{review.body}</p>}
+      {review.body && <p className="text-sm leading-relaxed text-gray-600">{review.body}</p>}
     </div>
   );
 }
 
-export function ProductReviews({ productSlug, initialReviews }: {
+function EmptyReviewConfidence() {
+  return (
+    <div className="grid gap-3 rounded-xl border border-gray-100 bg-gray-50 p-5 text-sm text-gray-600 sm:grid-cols-3">
+      <div>
+        <p className="font-bold text-gray-900">In stock locally</p>
+        <p className="mt-1 text-xs leading-5">Pickup is available at 178 Bentworth Ave in North York.</p>
+      </div>
+      <div>
+        <p className="font-bold text-gray-900">Clear item count</p>
+        <p className="mt-1 text-xs leading-5">Panini 50-pack boxes include 350 stickers total.</p>
+      </div>
+      <div>
+        <p className="font-bold text-gray-900">Secure payment</p>
+        <p className="mt-1 text-xs leading-5">Checkout runs through Stripe with email confirmation.</p>
+      </div>
+    </div>
+  );
+}
+
+export function ProductReviews({
+  productSlug,
+  initialReviews,
+}: {
   productSlug: string;
   initialReviews: Review[];
 }) {
@@ -144,7 +174,9 @@ export function ProductReviews({ productSlug, initialReviews }: {
     try {
       const res = await fetch(`/api/reviews?slug=${productSlug}`);
       if (res.ok) setReviews(await res.json());
-    } catch { /* silent */ }
+    } catch {
+      // Silent refresh failure keeps the submitted thank-you state visible.
+    }
     setShowForm(false);
   }
 
@@ -154,16 +186,20 @@ export function ProductReviews({ productSlug, initialReviews }: {
 
   return (
     <section className="mt-16 border-t border-gray-100 pt-10">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-black text-gray-900">Customer Reviews</h2>
           {avg ? (
-            <div className="flex items-center gap-2 mt-1">
+            <div className="mt-1 flex items-center gap-2">
               <Stars rating={Math.round(Number(avg))} />
-              <span className="text-sm text-gray-500">{avg} out of 5 ({reviews.length} review{reviews.length !== 1 ? "s" : ""})</span>
+              <span className="text-sm text-gray-500">
+                {avg} out of 5 ({reviews.length} review{reviews.length !== 1 ? "s" : ""})
+              </span>
             </div>
           ) : (
-            <p className="text-sm text-gray-400 mt-1">No reviews yet — be the first!</p>
+            <p className="mt-1 text-sm text-gray-500">
+              Verified buyer reviews are collected after purchase.
+            </p>
           )}
         </div>
         {!showForm && (
@@ -178,14 +214,18 @@ export function ProductReviews({ productSlug, initialReviews }: {
 
       {showForm && (
         <div className="mb-8 rounded-xl border border-gray-100 bg-white p-6">
-          <h3 className="text-base font-bold text-gray-900 mb-4">Write a Review</h3>
+          <h3 className="mb-4 text-base font-bold text-gray-900">Write a Review</h3>
           <ReviewForm productSlug={productSlug} onSubmitted={refreshReviews} />
         </div>
       )}
 
-      {reviews.length > 0 && (
+      {reviews.length === 0 ? (
+        <EmptyReviewConfidence />
+      ) : (
         <div className="space-y-5 rounded-xl border border-gray-100 bg-white p-6">
-          {reviews.map((r) => <ReviewItem key={r.id} review={r} />)}
+          {reviews.map((r) => (
+            <ReviewItem key={r.id} review={r} />
+          ))}
         </div>
       )}
     </section>

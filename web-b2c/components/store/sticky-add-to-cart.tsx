@@ -35,7 +35,7 @@ export function StickyAddToCart({ price, inStock, added, onAddToCart, onBuyNow, 
       }`}
     >
       <p className="text-center text-[10px] font-semibold text-brand bg-red-50 py-1.5 border-b border-red-100">
-        ⚡ Order by June 9 · Arrive before World Cup opening day
+        In stock in Toronto · Pickup available today
       </p>
       <div className="px-4 py-3 flex gap-3">
         <button

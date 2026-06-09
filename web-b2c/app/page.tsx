@@ -147,7 +147,7 @@ export default function HomePage() {
               <div className="text-xs font-bold uppercase tracking-widest text-blue-300">Step 2 · Fill it up</div>
               <div className="font-bold text-white text-lg leading-snug">50-Pack Sticker Box</div>
               <div className="text-3xl font-black text-white">$125</div>
-              <div className="text-xs text-blue-200">250+ stickers · All 48 teams</div>
+              <div className="text-xs text-blue-200">350 stickers · All 48 teams</div>
               <div className="mt-auto pt-3 text-sm font-semibold text-white group-hover:underline">Shop the box →</div>
             </Link>
             <Link
@@ -160,7 +160,7 @@ export default function HomePage() {
                 <div className="text-3xl font-black text-white">$129.99</div>
                 <div className="text-sm text-blue-300 line-through">$133.99</div>
               </div>
-              <div className="text-xs text-blue-200">One order · One shipment · Pay shipping once</div>
+              <div className="text-xs text-blue-200">Pickup today · Shipping available</div>
               <div className="mt-auto pt-3 text-sm font-semibold text-yellow-300 group-hover:underline">Get the bundle →</div>
             </Link>
           </div>

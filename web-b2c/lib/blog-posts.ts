@@ -359,7 +359,7 @@ export const blogPosts: BlogPost[] = [
     slug: "why-buy-world-cup-sticker-box-50-packs",
     title: "Panini FIFA World Cup 2026 Sticker Box — Why Buy 50 Packs in Canada",
     description:
-      "One pack at a time is slow. The Panini FIFA World Cup 2026 sticker box — 50 packs, 250+ stickers — is how Canadian collectors actually make progress. Ships from Toronto.",
+      "One pack at a time is slow. The Panini FIFA World Cup 2026 sticker box — 50 packs, 350 stickers — is how Canadian collectors actually make progress. Ships from Toronto.",
     publishedAt: "2026-05-14",
     category: "Sticker Packs",
     heroImage: "/asset/stickers/world_cup_sticker_box_50.png",
@@ -395,7 +395,7 @@ export const blogPosts: BlogPost[] = [
     faqs: [
       {
         q: "How many stickers are in the Panini FIFA World Cup 2026 sticker box?",
-        a: "50 packs at five stickers each — 250+ stickers per box.",
+        a: "50 packs at seven stickers each — 350 stickers per box.",
       },
       {
         q: "Should I buy the Panini sticker box or the bundle in Canada?",
@@ -756,10 +756,10 @@ export const blogPosts: BlogPost[] = [
     productSlugs: ["panini-fifa-world-cup-2026-sticker-box-50-packs", "panini-fifa-world-cup-2026-official-sticker-album", "panini-fifa-world-cup-2026-bundle-album-sticker-box"],
     sections: [
       {
-        heading: "Five stickers per pack. All 48 nations.",
+        heading: "Seven stickers per pack. All 48 nations.",
         body: [
-          "Each pack pulls five stickers from across the full 48-team field — top stars alongside squad depth you won't recognize until they score in the 88th minute. That unpredictability is the whole point.",
-          "A 50-pack box gets you 250+ stickers. Enough to fill real pages, build a decent duplicate pile, and start trading before the group stage is done.",
+          "Each pack pulls seven stickers from across the full 48-team field — top stars alongside squad depth you won't recognize until they score in the 88th minute. That unpredictability is the whole point.",
+          "A 50-pack box gets you 350 stickers. Enough to fill real pages, build a decent duplicate pile, and start trading before the group stage is done.",
         ],
       },
       {
@@ -778,7 +778,7 @@ export const blogPosts: BlogPost[] = [
       },
     ],
     faqs: [
-      { q: "How many stickers are in a Panini World Cup 2026 pack?", a: "Five stickers per pack." },
+      { q: "How many stickers are in a Panini World Cup 2026 pack?", a: "Seven stickers per pack." },
       { q: "Do I need the official album to collect stickers?", a: "Yes. The album shows you what you have, what you need, and where everything belongs." },
     ],
   },
@@ -3462,7 +3462,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "You still have time — but order this week",
         body: [
-          "With 18 days to opening day, standard shipping from Toronto still gets your order to most Canadian addresses before June 12. Order by June 7 for reliable delivery before the first whistle.",
+          "In the final pre-kickoff window, local pickup is the safest option for Toronto-area fans. Canada-wide shipping is still available from Toronto, with delivery timing shown at checkout.",
           "These are the items that arrive quickly, look like a real gift, and actually get used on match day.",
         ],
       },

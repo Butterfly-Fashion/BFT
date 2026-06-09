@@ -65,6 +65,12 @@ export function Header() {
     fetchCategories().then(setCategories);
   }, []);
 
+  useEffect(() => {
+    const openCart = () => setDrawerOpen(true);
+    window.addEventListener("cart:open", openCart);
+    return () => window.removeEventListener("cart:open", openCart);
+  }, []);
+
   const topLevel = TOP_LEVEL_SLUGS
     .map((slug) => categories.find((c) => c.slug === slug))
     .filter(Boolean) as Category[];

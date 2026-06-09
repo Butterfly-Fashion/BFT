@@ -5,7 +5,7 @@ import { Lock, RotateCcw, Truck } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { calculateShipping, calculateTax, formatCAD } from "@/lib/money";
+import { calculateTax, formatCAD } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
@@ -22,7 +22,7 @@ const UPSELL_DATA = {
     image: "/asset/stickers/world_cup_sticker_box_50.png",
     gradient: "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
     message: "You have the album — now fill it.",
-    sub: "250+ stickers · All 48 nations · Rare parallels inside",
+    sub: "350 stickers · All 48 nations · Rare parallels inside",
   },
   box: {
     name: "Panini FIFA World Cup 2026 Official Sticker Album",
@@ -83,9 +83,8 @@ function StickerUpsell() {
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
-  const shipping = calculateShipping(subtotal);
-  const tax = calculateTax(subtotal);
-  const estimatedTotal = subtotal + shipping + tax;
+  const pickupTax = calculateTax(subtotal, "ON");
+  const estimatedTotal = subtotal + pickupTax;
   const checkoutHref = CHECKOUT_ENABLED ? "/checkout" : "/cart";
   if (items.length === 0) {
     return (
@@ -190,23 +189,15 @@ export default function CartPage() {
                   <span className="font-medium text-gray-900">{formatCAD(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-gray-600">
-                  <span>Shipping</span>
-                  <span
-                    className={
-                      shipping === 0
-                        ? "text-green-600 font-semibold"
-                        : "font-medium text-gray-900"
-                    }
-                  >
-                    {shipping === 0 ? "Free" : formatCAD(shipping)}
-                  </span>
+                  <span>Pickup</span>
+                  <span className="text-green-600 font-semibold">Free</span>
                 </div>
                 <div className="text-xs text-gray-400 -mt-1">
-                  Ships from Toronto · 4–7 business days
+                  Shipping is available and calculated at checkout
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>{TAX_LINE_ITEM_NAME}</span>
-                  <span className="font-medium text-gray-900">{formatCAD(tax)}</span>
+                  <span className="font-medium text-gray-900">{formatCAD(pickupTax)}</span>
                 </div>
               </div>
 
@@ -220,7 +211,7 @@ export default function CartPage() {
               </Link>
 
               <div className="border-t border-gray-100 mt-5 pt-4 flex justify-between text-gray-900">
-                <span className="font-bold text-lg">Estimated Total</span>
+                <span className="font-bold text-lg">Pickup Total</span>
                 <span className="font-black text-xl text-brand">
                   {formatCAD(estimatedTotal)}
                 </span>
@@ -279,9 +270,7 @@ export default function CartPage() {
       <div className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
         <div className="text-sm">
           <span className="font-bold text-gray-900">{formatCAD(estimatedTotal)}</span>
-          <span className="text-gray-400 text-xs ml-1">
-            {shipping === 0 ? "- Pickup available" : `- +${formatCAD(shipping)} shipping`}
-          </span>
+          <span className="text-gray-400 text-xs ml-1">- pickup available</span>
         </div>
         <Link
           href={checkoutHref}

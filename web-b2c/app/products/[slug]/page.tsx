@@ -145,7 +145,7 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.inStock ? (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                In Stock · Ships from Toronto
+                In Stock · Pickup today or ships from Toronto
               </span>
             ) : (
               <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-500">
@@ -172,12 +172,12 @@ export default async function ProductDetailPage({ params }: Props) {
                 <div>
                   <p className="text-xs font-bold text-amber-900">
                     {isPastCutoff
-                      ? "Ships from Toronto within 1–2 business days"
+                      ? "Pickup available today in North York"
                       : "Order by June 9 — arrive before kickoff"}
                   </p>
                   <p className="text-xs text-amber-700 mt-0.5">
                     {isPastCutoff
-                      ? "World Cup is on — order now while stock lasts"
+                      ? "Shipping is also available from Toronto within 1-2 business days"
                       : "World Cup opens June 12 · Ships from Toronto within 1–2 business days"}
                   </p>
                 </div>

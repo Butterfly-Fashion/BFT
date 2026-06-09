@@ -62,7 +62,7 @@ function generateOrderId(): string {
 export default function CheckoutPage() {
   const { items, subtotal } = useCart();
   const [form, setForm] = useState<CheckoutAddress>(EMPTY_ADDRESS);
-  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("shipping");
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("pickup");
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
   const [selectedRate, setSelectedRate] = useState<ShippingRate | null>(null);
   const [fetchingRates, setFetchingRates] = useState(false);
@@ -308,19 +308,6 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setDeliveryMethod("shipping")}
-                className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
-                  deliveryMethod === "shipping"
-                    ? "border-brand bg-red-50"
-                    : "border-gray-200 bg-white hover:border-gray-400"
-                }`}
-              >
-                <span className="text-xl">🚚</span>
-                <span className="text-sm font-bold text-gray-900">Shipping</span>
-                <span className="text-xs text-gray-500">Carrier rates apply</span>
-              </button>
-              <button
-                type="button"
                 onClick={() => setDeliveryMethod("pickup")}
                 className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
                   deliveryMethod === "pickup"
@@ -328,12 +315,23 @@ export default function CheckoutPage() {
                     : "border-gray-200 bg-white hover:border-gray-400"
                 }`}
               >
-                <span className="text-xl">🏪</span>
                 <span className="text-sm font-bold text-gray-900">Pickup</span>
-                <span className="text-xs text-green-600 font-semibold">Free</span>
+                <span className="text-xs text-green-600 font-semibold">Free - fastest option</span>
                 <span className="text-[11px] text-gray-500 leading-snug mt-0.5">
                   178 Bentworth Ave<br />North York · M6A 1P7
                 </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDeliveryMethod("shipping")}
+                className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
+                  deliveryMethod === "shipping"
+                    ? "border-brand bg-red-50"
+                    : "border-gray-200 bg-white hover:border-gray-400"
+                }`}
+              >
+                <span className="text-sm font-bold text-gray-900">Shipping</span>
+                <span className="text-xs text-gray-500">Carrier rates calculated by address</span>
               </button>
             </div>
           </fieldset>

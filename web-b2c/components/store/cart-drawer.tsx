@@ -4,7 +4,7 @@ import Link from "next/link";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
-import { formatCAD, calculateShipping, calculateTax } from "@/lib/money";
+import { formatCAD, calculateTax } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
@@ -16,8 +16,8 @@ interface Props {
 
 export function CartDrawer({ open, onClose }: Props) {
   const { items, removeItem, updateQuantity, subtotal } = useCart();
-  const shipping = calculateShipping(subtotal);
-  const tax = calculateTax(subtotal);
+  const pickupTax = calculateTax(subtotal, "ON");
+  const pickupTotal = subtotal + pickupTax;
 
   if (!open) return null;
 
@@ -152,19 +152,22 @@ export function CartDrawer({ open, onClose }: Props) {
                 <span className="text-sm text-gray-500">Subtotal</span>
                 <span className="text-sm font-semibold text-gray-900">{formatCAD(subtotal)}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-500">Shipping</span>
-                <span className={`text-sm font-semibold ${shipping === 0 ? "text-green-600" : "text-gray-900"}`}>
-                  {shipping === 0 ? "Free 🎉" : formatCAD(shipping)}
-                </span>
+              <div className="rounded-xl border border-green-200 bg-green-50 px-3 py-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-semibold text-green-900">Pickup today</span>
+                  <span className="text-sm font-bold text-green-700">Free</span>
+                </div>
+                <p className="mt-0.5 text-[11px] leading-4 text-green-700">
+                  178 Bentworth Ave, North York. Shipping is also available and calculated at checkout.
+                </p>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">{TAX_LINE_ITEM_NAME}</span>
-                <span className="text-sm font-semibold text-gray-900">{formatCAD(tax)}</span>
+                <span className="text-sm font-semibold text-gray-900">{formatCAD(pickupTax)}</span>
               </div>
               <div className="flex justify-between items-center border-t border-gray-100 pt-2">
-                <span className="font-bold text-gray-900">Estimated Total</span>
-                <span className="font-black text-lg text-brand">{formatCAD(subtotal + shipping + tax)}</span>
+                <span className="font-bold text-gray-900">Pickup Total</span>
+                <span className="font-black text-lg text-brand">{formatCAD(pickupTotal)}</span>
               </div>
 
               {/* CTAs */}
@@ -177,7 +180,7 @@ export function CartDrawer({ open, onClose }: Props) {
                   }
                   onClose();
                   trackBeginCheckout({
-                    value: subtotal + shipping + tax,
+                    value: pickupTotal,
                     items: items.map((i) => ({
                       id: i.id,
                       name: i.name,
@@ -189,7 +192,7 @@ export function CartDrawer({ open, onClose }: Props) {
                 }}
                 className="block w-full py-3 bg-brand text-white font-bold rounded-full text-center text-sm hover:bg-brand-hover transition-colors shadow-sm"
               >
-                {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(subtotal + shipping + tax)}` : "Checkout Paused"}
+                {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(pickupTotal)}` : "Checkout Paused"}
               </Link>
               {!CHECKOUT_ENABLED && (
                 <p className="rounded-xl bg-amber-50 px-4 py-3 text-center text-xs font-medium leading-5 text-amber-900">
