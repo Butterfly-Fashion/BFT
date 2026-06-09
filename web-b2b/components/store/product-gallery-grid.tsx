@@ -17,14 +17,14 @@ type Props = {
 const STOCK_COLOR: Record<string, string> = {
   Available:        "#16A34A",
   Limited:          "#D97706",
-  "Manual Confirm": "#2563EB",
+  "Manual Confirm": "#7C3AED",
   Hidden:           "#9CA3AF",
 };
 
 const STOCK_LABEL: Record<string, string> = {
   Available:        "In stock",
   Limited:          "Limited",
-  "Manual Confirm": "Available",
+  "Manual Confirm": "Pre-order",
   Hidden:           "—",
 };
 

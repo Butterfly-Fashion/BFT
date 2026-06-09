@@ -17,6 +17,7 @@ type WholesaleProductBrowserProps = {
 const STATUS_DOT: Record<string, string> = {
   Available: "bg-emerald-400",
   Limited: "bg-amber-400",
+  "Manual Confirm": "bg-violet-500",
   "Out of Stock": "bg-gray-300",
 };
 

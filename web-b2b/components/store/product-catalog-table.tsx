@@ -18,21 +18,29 @@ type Props = {
 const STOCK_DOT: Record<string, string> = {
   Available:        "#16A34A",
   Limited:          "#D97706",
-  "Manual Confirm": "#2563EB",
+  "Manual Confirm": "#7C3AED",
+  Hidden:           "#9CA3AF",
+};
+
+const STOCK_TEXT_COLOR: Record<string, string> = {
+  Available:        "#166534",
+  Limited:          "#D97706",
+  "Manual Confirm": "#6D28D9",
   Hidden:           "#9CA3AF",
 };
 
 function StockCell({ status, qty }: { status: string; qty?: number | null }) {
   const color = STOCK_DOT[status] ?? "#9CA3AF";
+  const textColor = STOCK_TEXT_COLOR[status] ?? "#9CA3AF";
   const label =
     status === "Available" ? "In stock"
     : status === "Limited" ? "Limited"
-    : status === "Manual Confirm" ? "Available"
+    : status === "Manual Confirm" ? "Pre-order"
     : "—";
   return (
     <span className="flex items-center gap-1.5 whitespace-nowrap">
       <span className="stock-dot" style={{ background: color }} />
-      <span className="text-sm" style={{ color: status === "Available" ? "#166534" : status === "Limited" ? "#D97706" : "#9CA3AF" }}>
+      <span className="text-sm" style={{ color: textColor }}>
         {qty != null ? `${qty} left` : label}
       </span>
     </span>
