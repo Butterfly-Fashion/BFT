@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
-import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem } from "@/lib/stripe-line-items";
 import { sendAdminOrderEmail, sendCustomerConfirmationEmail } from "@/lib/email";
 import { supabaseAdmin } from "@/lib/supabase";
 import type Stripe from "stripe";
@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
       let lineItems: Stripe.LineItem[] = [];
       try {
         const stripe = stripeClient();
-        const result = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+        const result = await stripe.checkout.sessions.listLineItems(session.id, {
+          limit: 100,
+          expand: ["data.price.product"],
+        });
         lineItems = result.data;
         await Promise.all([
           sendAdminOrderEmail(session, lineItems),
@@ -141,6 +144,7 @@ async function saveOrderToSupabase(
       productItems.map((item) => ({
         order_id: order.id,
         name: item.description ?? "Unknown",
+        size: sizeFromLineItem(item),
         quantity: item.quantity ?? 1,
         unit_price:
           Math.round((item.amount_total ?? 0) / (item.quantity ?? 1)) / 100,

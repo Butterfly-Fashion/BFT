@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
-import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem } from "@/lib/stripe-line-items";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
 
@@ -26,7 +26,10 @@ export async function POST() {
 
     for (const session of paid) {
       try {
-        const lineItemsResult = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 });
+        const lineItemsResult = await stripe.checkout.sessions.listLineItems(session.id, {
+          limit: 100,
+          expand: ["data.price.product"],
+        });
         const lineItems = lineItemsResult.data;
 
         const productItems = lineItems.filter((i) => !isShippingOrTaxLineItem(i.description));
@@ -79,6 +82,7 @@ export async function POST() {
             productItems.map((item) => ({
               order_id: order.id,
               name: item.description ?? "Unknown",
+              size: sizeFromLineItem(item),
               quantity: item.quantity ?? 1,
               unit_price: Math.round((item.amount_total ?? 0) / (item.quantity ?? 1)) / 100,
             }))

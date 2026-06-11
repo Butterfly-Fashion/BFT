@@ -2,9 +2,14 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import type { CartItem } from "@/lib/types";
+import { applyJerseyTiers } from "@/lib/jersey-pricing";
+import { isSoldOut } from "@/lib/sold-out";
 
 interface CartContextType {
+  /** Raw items as added (base prices). Use pricedItems for display/checkout. */
   items: CartItem[];
+  /** Items with jersey volume pricing applied — what the customer actually pays. */
+  pricedItems: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string, size?: string) => void;
   updateQuantity: (id: string, size: string | undefined, qty: number) => void;
@@ -27,7 +32,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setMounted(true);
     try {
       const stored = localStorage.getItem("b2c-cart");
-      if (stored) setItems(JSON.parse(stored));
+      if (stored) {
+        // Drop anything that has sold out since it was added
+        const parsed = (JSON.parse(stored) as CartItem[]).filter((i) => !isSoldOut(i.slug));
+        setItems(parsed);
+      }
     } catch {}
   }, []);
 
@@ -38,6 +47,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, mounted]);
 
   const addItem = (item: CartItem) => {
+    if (isSoldOut(item.slug)) return; // sold-out products can never enter the cart
     setItems((prev) => {
       const key = cartKey(item.id, item.size);
       const existing = prev.find((i) => cartKey(i.id, i.size) === key);
@@ -71,11 +81,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const clearCart = () => setItems([]);
 
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  const pricedItems = applyJerseyTiers(items);
+  const subtotal = pricedItems.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal }}
+      value={{ items, pricedItems, addItem, removeItem, updateQuantity, clearCart, itemCount, subtotal }}
     >
       {children}
     </CartContext.Provider>

@@ -8,6 +8,7 @@ import { formatCAD, calculateTax } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
+import { countJerseyKits, jerseyTierFor, nextJerseyTier } from "@/lib/jersey-pricing";
 
 interface Props {
   open: boolean;
@@ -15,9 +16,11 @@ interface Props {
 }
 
 export function CartDrawer({ open, onClose }: Props) {
-  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  const { items, pricedItems, removeItem, updateQuantity, subtotal } = useCart();
   const pickupTax = calculateTax(subtotal, "ON");
   const pickupTotal = subtotal + pickupTax;
+  const kitQty = countJerseyKits(items);
+  const kitTierUp = nextJerseyTier(kitQty);
 
   if (!open) return null;
 
@@ -79,7 +82,28 @@ export function CartDrawer({ open, onClose }: Props) {
           <>
             {/* Items */}
             <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-2">
-              {items.map((item) => {
+              {kitQty > 0 && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-[12px] leading-5 text-red-900">
+                  {kitTierUp ? (
+                    <>
+                      🍁 Jersey sets are <b>{formatCAD(jerseyTierFor(kitQty).adult)} adult
+                      / {formatCAD(jerseyTierFor(kitQty).kids)} kids</b> right now. Add{" "}
+                      {kitTierUp.minQty - kitQty} more to drop every set to{" "}
+                      <b>
+                        {kitTierUp.minQty >= 8
+                          ? "the team rate — $199 per 8 sets"
+                          : `${formatCAD(kitTierUp.adult)} adult / ${formatCAD(kitTierUp.kids)} kids`}
+                      </b>.
+                    </>
+                  ) : (
+                    <>
+                      🍁 Team rate unlocked — <b>$199 per 8 sets</b>, every set{" "}
+                      <b>{formatCAD(jerseyTierFor(kitQty).adult)} each</b>.
+                    </>
+                  )}
+                </div>
+              )}
+              {pricedItems.map((item) => {
                 const key = `${item.id}::${item.size ?? ""}`;
                 return (
                   <div key={key} className="flex items-start gap-2.5 bg-gray-50 rounded-xl p-2.5">
@@ -181,7 +205,7 @@ export function CartDrawer({ open, onClose }: Props) {
                   onClose();
                   trackBeginCheckout({
                     value: pickupTotal,
-                    items: items.map((i) => ({
+                    items: pricedItems.map((i) => ({
                       id: i.id,
                       name: i.name,
                       price: i.price,

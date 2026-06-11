@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import type Stripe from "stripe";
 import { BUSINESS_EMAIL, BUSINESS_NAME, SITE_URL } from "@/lib/seo";
-import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem } from "@/lib/stripe-line-items";
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? BUSINESS_EMAIL;
 const FROM = process.env.EMAIL_FROM ?? `${BUSINESS_NAME} <${BUSINESS_EMAIL}>`;
@@ -29,7 +29,9 @@ function createTransport() {
 
 function formatLineItemsHtml(lineItems: Stripe.LineItem[]): string {
   const rows = lineItems.map((item) => {
-    const name = (item.description ?? "Item").replace(/\n/g, " ");
+    const size = sizeFromLineItem(item);
+    const name =
+      (item.description ?? "Item").replace(/\n/g, " ") + (size ? ` (Size ${size})` : "");
     const qty = item.quantity ?? 1;
     const price = ((item.amount_total ?? 0) / 100).toFixed(2);
     return `

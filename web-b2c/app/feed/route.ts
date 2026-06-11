@@ -11,6 +11,7 @@ const CATEGORY_MAP: Record<string, string> = {
   Collectibles: "Toys & Games > Collectible Toys > Trading Cards",
   "Sticker Packs": "Toys & Games > Collectible Toys > Trading Cards",
   Fashion: "Apparel & Accessories > Clothing Accessories > Hats",
+  Jerseys: "Apparel & Accessories > Clothing > Shirts & Tops",
   Accessories: "Sporting Goods > Athletics > Sports Fan Accessories",
   Caps: "Apparel & Accessories > Clothing Accessories > Hats",
   "Bucket Hats": "Apparel & Accessories > Clothing Accessories > Hats",

@@ -1,4 +1,5 @@
 import { getPublishedPosts, getPostListImage } from "@/lib/blog-posts";
+import type { BlogPost } from "@/lib/blog-posts";
 import { absoluteUrl } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -22,8 +23,45 @@ export const metadata: Metadata = {
   },
 };
 
+const SHOPPER_CATEGORY_PRIORITY = new Map([
+  ["Sticker Packs", 0],
+  ["Sticker Guide", 0],
+  ["Sticker Collecting", 0],
+  ["Canada Fan Gear", 1],
+  ["Fan Gear Guide", 2],
+  ["Car Flags", 3],
+  ["Bucket Hats", 3],
+  ["Gift Guide", 4],
+  ["Gift Ideas", 4],
+  ["Watch Parties", 5],
+]);
+
+const FEATURED_BLOG_SLUGS = [
+  "where-to-buy-panini-fifa-2026-stickers-canada",
+  "panini-fifa-2026-box-opening-whats-inside",
+  "world-cup-2026-sticker-box-vs-bundle",
+  "why-buy-world-cup-sticker-box-50-packs",
+  "canada-soccer-fan-merchandise",
+  "canada-at-world-cup-2026",
+  "where-to-buy-world-cup-2026-merchandise-toronto",
+  "official-world-cup-2026-sticker-album-guide",
+  "world-cup-car-flag-buying-guide",
+  "world-cup-bucket-hats",
+  "best-last-minute-world-cup-2026-gifts-canada",
+];
+
+function shopperPriority(post: BlogPost): number {
+  const featuredIndex = FEATURED_BLOG_SLUGS.indexOf(post.slug);
+  if (featuredIndex >= 0) return featuredIndex - 20;
+  const base = SHOPPER_CATEGORY_PRIORITY.get(post.category) ?? 8;
+  const productBoost = post.productSlugs.length > 0 ? -1 : 0;
+  return base + productBoost;
+}
+
 export default function BlogIndexPage() {
-  const posts = getPublishedPosts();
+  const posts = [...getPublishedPosts()].sort(
+    (a, b) => shopperPriority(a) - shopperPriority(b) || b.publishedAt.localeCompare(a.publishedAt)
+  );
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12">

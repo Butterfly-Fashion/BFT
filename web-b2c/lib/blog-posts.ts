@@ -32,10 +32,10 @@ export const blogPosts: BlogPost[] = [
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Canada 2026 fan gear banner with soccer merchandise",
     productSlugs: [
-      "canada-boxing-glove",
+      "canada-soccer-jersey-shorts-set-2026",
+      "canada-away-jersey-shorts-set-2026",
       "canada-car-flag",
       "canada-black-flag-3d-embroidered-cap",
-      "canada-reversible-bucket-hat",
     ],
     sections: [
       {
@@ -1019,7 +1019,7 @@ export const blogPosts: BlogPost[] = [
     category: "Canada Fan Gear",
     heroImage: "/asset/blog/generated/canada-italy-jamaica-grenada-fans-stadium.png",
     heroAlt: "Canada soccer fan gear for World Cup 2026",
-    productSlugs: ["canada-car-flag", "canada-black-flag-3d-embroidered-cap", "canada-reversible-bucket-hat", "canada-boxing-glove"],
+    productSlugs: ["canada-soccer-jersey-shorts-set-2026", "canada-away-jersey-shorts-set-2026", "canada-home-kit-kids-2026", "canada-car-flag"],
     sections: [
       {
         heading: "The home World Cup is a different feeling",
@@ -3874,7 +3874,35 @@ export const blogPosts: BlogPost[] = [
   },
 ];
 
+// GSC-based pruning (2026-06-10): of ~80 posts, only these earned organic clicks
+// over the trailing 3 months (plus two strategic Canada pages that internally link
+// the jersey kits). Everything else stays in the file but is hidden from the blog
+// index, sitemap, related-guide modules, and direct URLs.
+const VISIBLE_BLOG_SLUGS = new Set([
+  "world-cup-car-flags-canada", // 59 clicks
+  "best-world-cup-souvenirs-canada", // 56 clicks via legacy-slug redirect
+  "panini-sticker-album-complete-guide", // 40
+  "how-to-decorate-car-world-cup", // 18
+  "are-panini-world-cup-stickers-worth-collecting-2026", // 11
+  "world-cup-sticker-trading-tips", // 11
+  "world-cup-2026-fan-gear-canada", // 9
+  "world-cup-2026-host-cities-canada", // 8
+  "world-cup-sticker-bundle-gift-idea", // 7 via legacy-slug redirect
+  "world-cup-bucket-hats", // 6
+  "official-world-cup-2026-sticker-album-guide", // 5
+  "canada-world-cup-2026-party-ideas", // 5
+  "fifa-2026-sticker-guide-for-beginners", // 3
+  "world-cup-2026-fan-gear-vancouver", // 3
+  "panini-rare-stickers-shiny-foil-2026-explained", // 1
+  "best-soccer-gifts-canada", // 1
+  "world-cup-2026-fan-gear-montreal", // 1
+  "what-to-bring-world-cup-watch-party", // 1
+  "nigeria-senegal-africa-fan-caps-world-cup-2026", // 0 clicks / 184 impressions
+  "canada-at-world-cup-2026", // strategic: Canada hub linking the jersey kits
+]);
+
 export function isPostPublished(post: BlogPost, now = new Date()): boolean {
+  if (!VISIBLE_BLOG_SLUGS.has(post.slug)) return false;
   return new Date(`${post.publishedAt}T00:00:00-04:00`) <= now;
 }
 

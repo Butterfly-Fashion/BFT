@@ -20,6 +20,7 @@ const ProductReviews = dynamic(
   () => import("@/components/store/product-reviews").then((m) => ({ default: m.ProductReviews }))
 );
 import Link from "next/link";
+import Image from "next/image";
 import { ProductImage } from "@/components/store/product-image";
 import type { PlayerCard, Product } from "@/lib/types";
 
@@ -188,8 +189,41 @@ export default async function ProductDetailPage({ params }: Props) {
           {/* Interactive: size + qty + cart — client component */}
           <ProductActions product={product} />
 
+          <div className="mt-5 grid grid-cols-1 gap-2 rounded-xl border border-gray-100 bg-gray-50 p-4 text-xs text-gray-600 sm:grid-cols-2">
+            <div className="flex items-center gap-2">
+              <span className="text-green-600">✓</span>
+              <span>Free pickup in North York</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-600">✓</span>
+              <span>Same-day pickup available</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-600">✓</span>
+              <span>Secure checkout with Stripe</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-green-600">✓</span>
+              <span>30-day returns on unused items</span>
+            </div>
+          </div>
+
         </div>
       </div>
+
+      {/* Lookbook-style detail image (jersey kits) */}
+      {product.detailImage && (
+        <section className="mt-14 max-w-3xl mx-auto">
+          <h2 className="text-lg font-bold text-gray-900 mb-4">Product details</h2>
+          <Image
+            src={product.detailImage}
+            alt={`${product.name} — detailed views`}
+            width={900}
+            height={1850}
+            className="w-full h-auto rounded-2xl border border-gray-100"
+          />
+        </section>
+      )}
 
       {/* Parallel rarity table — sticker box & bundle only */}
       {(product.slug === "panini-fifa-world-cup-2026-sticker-box-50-packs" ||

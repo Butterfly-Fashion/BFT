@@ -9,6 +9,7 @@ import { calculateTax, formatCAD } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
+import { isSoldOut } from "@/lib/sold-out";
 
 const ALBUM_SLUG  = "panini-fifa-world-cup-2026-official-sticker-album";
 const BOX_SLUG    = "panini-fifa-world-cup-2026-sticker-box-50-packs";
@@ -48,7 +49,8 @@ function StickerUpsell() {
   let upsell: typeof UPSELL_DATA.album | null = null;
   if (hasAlbum && !hasBox)  upsell = UPSELL_DATA.album;
   if (hasBox   && !hasAlbum) upsell = UPSELL_DATA.box;
-  if (!upsell) return null;
+  // Never pitch a sold-out product
+  if (!upsell || isSoldOut(upsell.slug)) return null;
 
   return (
     <div className="rounded-xl border-2 border-brand/30 bg-red-50 p-4 flex items-center gap-4">
@@ -82,7 +84,7 @@ function StickerUpsell() {
 }
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  const { items, pricedItems, removeItem, updateQuantity, subtotal } = useCart();
   const pickupTax = calculateTax(subtotal, "ON");
   const estimatedTotal = subtotal + pickupTax;
   const checkoutHref = CHECKOUT_ENABLED ? "/checkout" : "/cart";
@@ -111,7 +113,7 @@ export default function CartPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => {
+            {pricedItems.map((item) => {
               const key = `${item.id}::${item.size ?? ""}`;
 
               return (

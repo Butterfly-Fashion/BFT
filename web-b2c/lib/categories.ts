@@ -14,6 +14,7 @@ export const storeCategories: StoreCategory[] = [
   { id: "0b75721b-335e-4474-a7d2-56580ef24976",  name: "Accessories",  slug: "accessories",  parent_id: null,                                     sort_order: 3 },
 
   // ── Fashion children ──────────────────────────────────────────────────────
+  { id: "9af15f24-325e-4c35-a33c-d413190d6012",  name: "Jerseys",      slug: "jerseys",      parent_id: "7e427ee8-888d-4a9e-bae1-acdd6dacb16b",   sort_order: 0 },
   { id: "41f3acc2-a1bc-4edc-8e26-074270531fe1",  name: "Caps",         slug: "caps",         parent_id: "7e427ee8-888d-4a9e-bae1-acdd6dacb16b",   sort_order: 1 },
   { id: "a626e8f3-950d-4ee4-8915-ff57fcfcd443",  name: "Bucket Hats",  slug: "bucket-hats",  parent_id: "7e427ee8-888d-4a9e-bae1-acdd6dacb16b",   sort_order: 2 },
 

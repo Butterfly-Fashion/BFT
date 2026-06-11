@@ -31,7 +31,7 @@ export function MobileUrgencyBanner() {
   const pastCutoff = now > ORDER_CUTOFF.getTime();
 
   return (
-    <div className="sm:hidden">
+    <div className="max-w-full overflow-hidden sm:hidden">
       {/* Top urgency strip */}
       <div className="bg-brand px-4 py-3">
         <div className="flex items-center justify-between gap-3">
@@ -63,14 +63,15 @@ export function MobileUrgencyBanner() {
       </div>
 
       {/* Category quick-links */}
-      <div className="bg-gray-50 border-b border-gray-100 px-4 py-3 overflow-x-auto">
+      <div className="max-w-full overflow-x-auto bg-gray-50 border-b border-gray-100 px-4 py-3">
         <div className="flex gap-2 w-max">
           {[
+            { label: "🍁 Jerseys", href: "/products?category=Jerseys" },
+            { label: "🎴 Stickers", href: "/collections/panini-stickers" },
             { label: "🧢 Caps", href: "/collections/world-cup-caps" },
             { label: "🪣 Bucket Hats", href: "/collections/world-cup-bucket-hats" },
             { label: "🚗 Car Flags", href: "/collections/world-cup-car-flags" },
             { label: "🥊 Boxing Gloves", href: "/collections/souvenir-boxing-gloves" },
-            { label: "🎴 Stickers", href: "/collections/panini-stickers" },
           ].map((item) => (
             <Link
               key={item.href}

@@ -4,7 +4,7 @@ const signals = [
   {
     icon: Award,
     title: "Since 1996",
-    body: "Toronto's trusted fan gear retailer",
+    body: "30 years of Toronto wholesale trading",
   },
   {
     icon: Truck,
@@ -13,8 +13,8 @@ const signals = [
   },
   {
     icon: Zap,
-    title: "Same-Day Dispatch",
-    body: "Order before 2 PM ET",
+    title: "Same-Day Pickup",
+    body: "Order online, pick up today",
   },
   {
     icon: RotateCcw,

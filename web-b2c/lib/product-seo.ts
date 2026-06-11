@@ -99,6 +99,8 @@ function categoryUse(product: Product): string {
       return "a compact souvenir for car mirrors, desks, shelves, party prizes, and collector displays";
     case "Sticker Packs":
       return "a collector-first purchase for opening sessions, album progress, duplicate swaps, and tournament memories";
+    case "Jerseys":
+      return "a visible Canada match-day kit for watch parties, fan zones, pickup games, and tournament travel";
     default:
       return "a simple fan gear piece for World Cup 2026 celebrations";
   }
@@ -116,6 +118,8 @@ function categoryGift(product: Product): string {
       return "Mini souvenir gloves are a good add-on gift because they are small, affordable, and easy to display without taking up much space.";
     case "Sticker Packs":
       return "Sticker products make strong gifts for collectors because opening packs and filling the album becomes an activity, not just a product.";
+    case "Jerseys":
+      return "Jersey sets are strong gifts for Canada supporters because they feel match-ready right away and include the coordinated shorts without needing a separate outfit plan.";
     default:
       return "This product is a practical gift for fans getting ready for World Cup 2026.";
   }
@@ -167,6 +171,17 @@ function categoryBuyingGuide(product: Product, team: string): ProductSeoSection[
           body: "Open packs during halftime, keep duplicates in one pile, and trade after the final whistle. For Canada-based collectors, ordering early gives more time to complete the album before knockout-stage demand rises.",
         },
       ];
+    case "Jerseys":
+      return [
+        {
+          heading: `${team} jersey buying notes`,
+          body: `${product.name} is the full match-day look for supporters who want more than an accessory. The jersey and shorts set works for watch parties, local pickup games, fan zones, and Canada 2026 photos where the outfit should read clearly on camera.`,
+        },
+        {
+          heading: "Sizing and pairing",
+          body: "Choose your regular adult size for a casual fan fit, or size up if you prefer room over a hoodie or base layer. Pair it with a Canada cap, car flag, or sticker album bundle for a more complete tournament setup.",
+        },
+      ];
     default:
       return [
         {
@@ -212,7 +227,7 @@ export function productSeoLinks(product: Product): ProductSeoLink[] {
     links.unshift({ href: "/collections/world-cup-bucket-hats-toronto", label: "World Cup bucket hats Toronto" });
   }
 
-  if (product.category === "Caps" || product.category === "Car Flags" || product.category === "Bucket Hats") {
+  if (product.category === "Caps" || product.category === "Car Flags" || product.category === "Bucket Hats" || product.category === "Jerseys") {
     links.push({ href: "/collections/world-cup-fan-gear-toronto", label: "World Cup fan gear Toronto" });
   }
 

@@ -54,6 +54,11 @@ export function ProductCard({ product, priority = false }: Props) {
             </span>
           )}
         </div>
+        {product.inStock && (
+          <p className="mt-1 text-[11px] font-medium text-green-700">
+            Pickup today · ships from Toronto
+          </p>
+        )}
       </div>
     </Link>
   );

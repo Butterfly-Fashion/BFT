@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { stripeClient, siteUrl } from "@/lib/stripe";
 import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
+import { applyJerseyTiers, JERSEY_KIT_SLUGS } from "@/lib/jersey-pricing";
+import { SOLD_OUT_PRODUCT_SLUGS } from "@/lib/sold-out";
 import type { CartItem } from "@/lib/types";
 
 interface CheckoutBody {
@@ -42,11 +44,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { orderId, items, customerEmail, shipping, tax, address, deliveryMethod, shippoRateId, carrier } = body;
+  const { orderId, customerEmail, shipping, tax, address, deliveryMethod, shippoRateId, carrier } = body;
 
-  if (!orderId || !items?.length) {
+  if (!orderId || !body.items?.length) {
     return NextResponse.json({ error: "Missing orderId or items" }, { status: 400 });
   }
+
+  // Sold-out products can't be checked out even if they linger in an old cart.
+  const soldOut = body.items.find((item) => SOLD_OUT_PRODUCT_SLUGS.has(item.slug));
+  if (soldOut) {
+    return NextResponse.json(
+      { error: `"${soldOut.name}" is sold out. Please remove it from your cart to continue.` },
+      { status: 409 }
+    );
+  }
+
+  // Server-side authority on jersey volume pricing — never trust client prices for kits.
+  const items = applyJerseyTiers(body.items);
 
   try {
     const stripe = stripeClient();
@@ -66,7 +80,12 @@ export async function POST(req: NextRequest) {
 
     const buildProductLineItems = (useStoredPrices: boolean) =>
       items.map((item) => {
-        const stripePriceId = item.slug ? priceMap.get(item.slug) : undefined;
+        // Jersey kits always use the tier-priced inline amount, never a stored Stripe price.
+        // Sized items also stay inline so the "Size: X" description reaches Stripe.
+        const stripePriceId =
+          item.slug && !item.size && !JERSEY_KIT_SLUGS.has(item.slug)
+            ? priceMap.get(item.slug)
+            : undefined;
         if (useStoredPrices && stripePriceId) {
           return { quantity: item.quantity, price: stripePriceId };
         }

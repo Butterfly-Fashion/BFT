@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
-import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem } from "@/lib/stripe-line-items";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem } from "@/lib/stripe-line-items";
 import type { Order } from "@/lib/types";
 
 export async function GET(req: NextRequest) {
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const stripe = stripeClient();
     const [session, lineItemsPage] = await Promise.all([
       stripe.checkout.sessions.retrieve(sessionId),
-      stripe.checkout.sessions.listLineItems(sessionId, { limit: 20 }),
+      stripe.checkout.sessions.listLineItems(sessionId, { limit: 20, expand: ["data.price.product"] }),
     ]);
 
     const paid = session.payment_status === "paid";
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
         name: item.description ?? "Product",
         price: (item.amount_total ?? 0) / 100 / (item.quantity ?? 1),
         quantity: item.quantity ?? 1,
-        size: undefined,
+        size: sizeFromLineItem(item) ?? undefined,
         imageUrl: "",
         placeholderGradient: "linear-gradient(135deg, #f0f0f0, #e0e0e0)",
         weightKg: 0.5,

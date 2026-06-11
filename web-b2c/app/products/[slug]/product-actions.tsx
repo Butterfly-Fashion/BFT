@@ -9,6 +9,8 @@ import { Lock, RotateCcw, Truck } from "lucide-react";
 import { trackViewItem, trackAddToCart } from "@/lib/gtag";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
 import { StickyAddToCart } from "@/components/store/sticky-add-to-cart";
+import { JERSEY_KIT_SLUGS, JERSEY_TIERS, KIDS_KIT_SLUGS, jerseyUnitPrice } from "@/lib/jersey-pricing";
+import { formatCAD } from "@/lib/money";
 
 interface Props {
   product: Product;
@@ -72,8 +74,46 @@ export function ProductActions({ product }: Props) {
     router.push("/checkout");
   };
 
+  const isJerseyKit = JERSEY_KIT_SLUGS.has(product.slug);
+  const isKidsKit = KIDS_KIT_SLUGS.has(product.slug);
+  const jerseyUnit = isJerseyKit ? jerseyUnitPrice(quantity, isKidsKit) : product.price;
+
   return (
     <div className="space-y-5">
+      {/* Jersey volume pricing */}
+      {isJerseyKit && (
+        <div className="rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-gray-50 px-4 py-2.5 flex items-center justify-between">
+            <p className="text-sm font-bold text-gray-900">Buy more, pay less</p>
+            <p className="text-[11px] text-gray-500">mix home / away / kids sizes</p>
+          </div>
+          <div className="grid grid-cols-4 divide-x divide-gray-100 text-center">
+            {[...JERSEY_TIERS].reverse().map((tier) => {
+              const tierPrice = isKidsKit ? tier.kids : tier.adult;
+              const active = jerseyUnit === tierPrice;
+              return (
+                <div
+                  key={tier.minQty}
+                  className={`px-2 py-3 ${active ? "bg-red-50" : "bg-white"}`}
+                >
+                  <p className={`text-[11px] font-semibold ${active ? "text-brand" : "text-gray-400"}`}>
+                    {tier.label}
+                  </p>
+                  <p className={`mt-0.5 text-sm font-black ${active ? "text-brand" : "text-gray-900"}`}>
+                    {tier.minQty >= 8 ? "$199 / 8" : formatCAD(tierPrice)}
+                  </p>
+                  <p className="text-[10px] text-gray-400">{tier.minQty >= 8 ? "team rate" : "each"}</p>
+                </div>
+              );
+            })}
+          </div>
+          <p className="px-4 py-2 text-[11px] leading-4 text-gray-500 border-t border-gray-100">
+            Any 8 jersey sets = $199 — mix home, away, adult, and kids. The discount applies
+            automatically in the cart across all jersey sets.
+          </p>
+        </div>
+      )}
+
       {/* Size selector */}
       {product.sizes && product.sizes.length > 0 && (
         <div>
@@ -98,6 +138,11 @@ export function ProductActions({ product }: Props) {
               </button>
             ))}
           </div>
+          {isJerseyKit && (
+            <p className="mt-2 text-xs text-gray-500">
+              Athletic fit — between sizes? Size up. Kids kits use number sizes 12–30.
+            </p>
+          )}
         </div>
       )}
 
@@ -123,6 +168,11 @@ export function ProductActions({ product }: Props) {
             +
           </button>
         </div>
+        {isJerseyKit && quantity > 1 && (
+          <p className="mt-2 text-sm font-semibold text-brand">
+            {formatCAD(jerseyUnit)} each — {formatCAD(jerseyUnit * quantity)} total
+          </p>
+        )}
       </div>
 
       {/* CTAs */}

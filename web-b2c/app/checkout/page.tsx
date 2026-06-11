@@ -60,7 +60,7 @@ function generateOrderId(): string {
 }
 
 export default function CheckoutPage() {
-  const { items, subtotal } = useCart();
+  const { items, pricedItems, subtotal } = useCart();
   const [form, setForm] = useState<CheckoutAddress>(EMPTY_ADDRESS);
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("pickup");
   const [shippingRates, setShippingRates] = useState<ShippingRate[]>([]);
@@ -129,13 +129,13 @@ export default function CheckoutPage() {
         }
         setHasFetchedRates(true);
       })
-      .catch((e) => { 
-        if (!cancelled) { 
-            setShippingRates([]); 
-            setSelectedRate(null); 
-            setRateDebug(String(e)); 
+      .catch((e) => {
+        if (!cancelled) {
+            setShippingRates([]);
+            setSelectedRate(null);
+            setRateDebug(String(e));
             setHasFetchedRates(true);
-        } 
+        }
       })
       .finally(() => { if (!cancelled) setFetchingRates(false); });
     return () => { cancelled = true; };
@@ -178,7 +178,7 @@ export default function CheckoutPage() {
 
       const pendingOrder: Order = {
         id: orderId,
-        items,
+        items: pricedItems,
         address: form,
         subtotal,
         shipping,
@@ -194,7 +194,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderId,
-          items,
+          items: pricedItems,
           customerEmail: form.email,
           subtotal,
           shipping,
@@ -592,7 +592,7 @@ export default function CheckoutPage() {
             </h2>
 
             <div className="space-y-3 mb-5">
-              {items.map((item) => (
+              {pricedItems.map((item) => (
                 <div
                   key={`${item.id}::${item.size ?? ""}`}
                   className="flex items-start gap-3"

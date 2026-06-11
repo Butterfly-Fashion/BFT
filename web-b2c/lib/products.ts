@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "./supabase";
 import type { Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
+import { SOLD_OUT_PRODUCT_SLUGS } from "./sold-out";
 import sourceData from "./source-products.json";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
@@ -16,6 +17,12 @@ const CATEGORY_WEIGHTS: Record<string, number> = {
   "Fashion":      0.25,
   "Collectibles": 0.20,
   "Accessories":  0.15,
+  "Jerseys":       0.45,
+  "Caps":          0.25,
+  "Bucket Hats":   0.20,
+  "Car Flags":     0.15,
+  "Boxing Gloves": 0.15,
+  "Sticker Packs": 0.50,
 };
 
 // ─── Static B2C catalog ─────────────────────────────────────────────────────
@@ -31,7 +38,138 @@ interface RawProduct {
 
 const raw = sourceData as RawProduct[];
 
+const JERSEY_SIZES = ["S", "M", "L", "XL", "2XL"];
+// Kids kits use number sizing: 12, 14, … 30
+const KIDS_SIZES = ["12", "14", "16", "18", "20", "22", "24", "26", "28", "30"];
+
+const VOLUME_NOTE =
+  "Buy more, pay less — set prices drop at 2, 4, and 8 sets, and any 8 sets = $199 (mix home, away, adult, and kids). Pickup today in North York or ships from Toronto.";
+
+const FEATURED_PRODUCT_SLUGS = [
+  "canada-soccer-jersey-shorts-set-2026",
+  "canada-away-jersey-shorts-set-2026",
+  "canada-home-kit-kids-2026",
+  "canada-away-kit-kids-2026",
+  "canada-game-day-kit-jersey-cap-car-flag",
+  "canada-reversible-bucket-hat",
+  "canada-car-flag",
+  "canada-3d-embroidered-baseball-cap",
+];
+
+function withForcedStock(product: Product): Product {
+  if (!SOLD_OUT_PRODUCT_SLUGS.has(product.slug)) return product;
+  return { ...product, inStock: false, badge: product.badge ?? "Sold Out" };
+}
+
+function prioritizedProducts(all: Product[], slugs: string[]): Product[] {
+  const picked = slugs
+    .map((slug) => all.find((product) => product.slug === slug))
+    .filter((product): product is Product => Boolean(product));
+  const pickedSlugs = new Set(picked.map((product) => product.slug));
+  return [...picked, ...all.filter((product) => !pickedSlugs.has(product.slug))];
+}
+
+const jerseyProducts: Product[] = [
+  {
+    id: "jersey-1",
+    slug: "canada-soccer-jersey-shorts-set-2026",
+    name: "Canada Home Kit 2026 – Red Jersey + Shorts Set (Adult)",
+    category: "Jerseys",
+    price: 39.99,
+    description:
+      `The Canada home kit for World Cup 2026 — breathable red jersey with tonal maple leaf print and black trim, plus matching shorts. Lightweight quick-dry fabric made for match days, fan zones, and Toronto summer. Adult sizes S–2XL. ${VOLUME_NOTE}`,
+    imageUrl: "/asset/jersey/canada-home-kit-main.webp",
+    additionalImages: [
+      "/asset/jersey/canada-home-kit-detail.webp",
+      "/asset/jersey/canada-kit-model.webp",
+      "/asset/jersey/canada-kit-model-men.webp",
+      "/asset/jersey/canada-kit-fans.webp",
+    ],
+    detailImage: "/asset/jersey/canada-home-kit-page.webp",
+    placeholderGradient: CATEGORY_GRADIENTS["Fashion"],
+    inStock: true,
+    badge: "Home Kit",
+    sizes: JERSEY_SIZES,
+    weightKg: 0.45,
+  },
+  {
+    id: "jersey-3",
+    slug: "canada-away-jersey-shorts-set-2026",
+    name: "Canada Away Kit 2026 – Black Jersey + Shorts Set (Adult)",
+    category: "Jerseys",
+    price: 39.99,
+    description:
+      `The Canada away kit for World Cup 2026 — black jersey with starfield print, red piping, and #19 DAVIES print, plus matching shorts. Same quick-dry fabric as the home kit. Adult sizes S–2XL. ${VOLUME_NOTE}`,
+    imageUrl: "/asset/jersey/canada-away-kit-main.webp",
+    additionalImages: ["/asset/jersey/canada-away-kit-detail.webp"],
+    detailImage: "/asset/jersey/canada-away-kit-page.webp",
+    placeholderGradient: CATEGORY_GRADIENTS["Fashion"],
+    inStock: true,
+    badge: "Away Kit · #19",
+    sizes: JERSEY_SIZES,
+    weightKg: 0.45,
+  },
+  {
+    id: "jersey-4",
+    slug: "canada-home-kit-kids-2026",
+    name: "Canada Home Kit 2026 – Kids Red Jersey + Shorts Set",
+    category: "Jerseys",
+    price: 34.99,
+    description:
+      `The Canada home kit, sized for kids — same breathable red jersey with maple leaf print and matching shorts as the adult kit. Perfect for family match days. Kids number sizes 12–30. ${VOLUME_NOTE}`,
+    imageUrl: "/asset/jersey/canada-home-kit-main.webp",
+    additionalImages: [
+      "/asset/jersey/canada-home-kit-detail.webp",
+      "/asset/jersey/canada-kit-couple.webp",
+    ],
+    detailImage: "/asset/jersey/canada-home-kit-page.webp",
+    placeholderGradient: CATEGORY_GRADIENTS["Fashion"],
+    inStock: true,
+    badge: "Kids · Home",
+    sizes: KIDS_SIZES,
+    weightKg: 0.35,
+  },
+  {
+    id: "jersey-5",
+    slug: "canada-away-kit-kids-2026",
+    name: "Canada Away Kit 2026 – Kids Black Jersey + Shorts Set",
+    category: "Jerseys",
+    price: 34.99,
+    description:
+      `The Canada away kit, sized for kids — black starfield jersey with red piping and #19 DAVIES print, plus matching shorts. Kids number sizes 12–30. ${VOLUME_NOTE}`,
+    imageUrl: "/asset/jersey/canada-away-kit-main.webp",
+    additionalImages: ["/asset/jersey/canada-away-kit-detail.webp"],
+    detailImage: "/asset/jersey/canada-away-kit-page.webp",
+    placeholderGradient: CATEGORY_GRADIENTS["Fashion"],
+    inStock: true,
+    badge: "Kids · Away · #19",
+    sizes: KIDS_SIZES,
+    weightKg: 0.35,
+  },
+  {
+    id: "jersey-2",
+    slug: "canada-game-day-kit-jersey-cap-car-flag",
+    name: "Canada Game Day Kit – Jersey Set + Cap + Car Flag",
+    category: "Jerseys",
+    price: 57.99,
+    comparePrice: 64.97,
+    description:
+      "Everything you need for match day in one bundle: the Canada home jersey + shorts set, a Canada 3D embroidered cap, and a Canada car flag for the drive over. Save vs buying separately. Adult sizes S–2XL. Pickup today in North York or ships from Toronto.",
+    imageUrl: "/asset/jersey/canada-kit-fans.webp",
+    additionalImages: [
+      "/asset/jersey/canada-home-kit-main.webp",
+      "/asset/jersey/canada-kit-model.webp",
+    ],
+    placeholderGradient: CATEGORY_GRADIENTS["Fashion"],
+    inStock: true,
+    badge: "Bundle · Save $6.98",
+    sizes: JERSEY_SIZES,
+    weightKg: 0.75,
+  },
+];
+
 const staticProducts: Product[] = [
+  ...jerseyProducts,
   ...raw.map((p, i) => ({
     id: String(i + 1),
     slug: p.slug,
@@ -238,9 +376,10 @@ async function getB2CDbProducts(): Promise<Product[]> {
 
 export async function getAllProducts(): Promise<Product[]> {
   const dbProducts = await getB2CDbProducts();
-  if (!dbProducts.length) return staticProducts;
+  if (!dbProducts.length) return staticProducts.map(withForcedStock);
   const dbSlugs = new Set(dbProducts.map((product) => product.slug));
-  return [...dbProducts, ...staticProducts.filter((product) => !dbSlugs.has(product.slug))];
+  return [...dbProducts, ...staticProducts.filter((product) => !dbSlugs.has(product.slug))]
+    .map(withForcedStock);
 }
 
 export async function getProductBySlugFromDb(slug: string): Promise<Product | undefined> {
@@ -254,17 +393,17 @@ export async function getAllSlugs(): Promise<string[]> {
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {
-  const all = await getAllProducts();
-  const canadaFirst = all.filter((p) => p.name.toLowerCase().includes("canada"));
-  const rest = all.filter((p) => !p.name.toLowerCase().includes("canada"));
-  return [...canadaFirst, ...rest].slice(0, 8);
+  const all = (await getAllProducts()).filter((product) => product.inStock);
+  return prioritizedProducts(all, FEATURED_PRODUCT_SLUGS).slice(0, 8);
 }
 
 export async function getTrendingProducts(): Promise<Product[]> {
-  const all = await getAllProducts();
+  const all = (await getAllProducts()).filter((product) => product.inStock);
   const priority = [
-    "panini-fifa-world-cup-2026-bundle-album-sticker-box",
-    "panini-fifa-world-cup-2026-official-sticker-album",
+    "canada-soccer-jersey-shorts-set-2026",
+    "canada-away-jersey-shorts-set-2026",
+    "canada-home-kit-kids-2026",
+    "canada-away-kit-kids-2026",
   ]
     .map((slug) => all.find((p) => p.slug === slug))
     .filter((p): p is Product => Boolean(p));
@@ -281,4 +420,4 @@ export async function getTrendingProducts(): Promise<Product[]> {
 // These are kept only for SSG generateStaticParams which needs sync slugs at build time.
 // Pages should prefer the async functions above.
 
-export const products: Product[] = staticProducts;
+export const products: Product[] = staticProducts.map(withForcedStock);

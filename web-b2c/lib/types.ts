@@ -13,6 +13,8 @@ export interface Product {
   description: string;
   imageUrl: string;
   additionalImages?: string[];
+  /** Tall lookbook-style image rendered full-width on the product page */
+  detailImage?: string;
   placeholderGradient: string;
   inStock: boolean;
   badge?: string;

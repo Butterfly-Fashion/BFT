@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
 
 const INTERVAL_MS = 5000;
 
@@ -12,95 +11,60 @@ interface Slide {
   render: (active: boolean) => React.ReactNode;
 }
 
-function HeroSlide() {
-  const router = useRouter();
+function JerseySlide() {
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src="/asset/hero-banner.jpg"
-        alt="Canada Pride — FIFA World Cup 2026 fan gear"
-        fill
-        priority
-        className="object-cover object-center"
-        sizes="(max-width: 640px) 100vw, (max-width: 1280px) calc(100vw - 48px), 1152px"
-      />
-      <button
-        onClick={() => router.push("/products")}
-        aria-label="Shop Now"
-        className="absolute bg-brand hover:bg-brand-hover active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
-        style={{
-          left: "3.8%",
-          bottom: "14%",
-          fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
-          padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
-        }}
-      >
-        Shop Now
-        <span aria-hidden="true">›</span>
-      </button>
-    </div>
-  );
-}
-
-function StickerHeroSlide() {
-  const router = useRouter();
-  return (
-    <div className="relative w-full h-full">
-      <Image
-        src="/asset/sticker-hero.png"
-        alt="Panini FIFA World Cup 2026 Official Sticker Collection"
-        fill
-        priority
-        className="object-cover object-center"
-        sizes="(max-width: 640px) 100vw, (max-width: 1280px) calc(100vw - 48px), 1152px"
-      />
-      <button
-        onClick={() => router.push("/collections/panini-stickers")}
-        aria-label="Shop Stickers"
-        className="absolute bg-[#FFD700] hover:bg-yellow-400 active:scale-95 text-[#0d1b3e] font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
-        style={{
-          left: "3.8%",
-          bottom: "14%",
-          fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
-          padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
-        }}
-      >
-        Shop Stickers ›
-      </button>
-    </div>
-  );
-}
-
-function BundleSlide() {
-  return (
-    <div className="relative w-full h-full">
-      <Image
-        src="/asset/stickers/fwc26_bundle_main.png"
-        alt="Panini FIFA World Cup 2026 Bundle — Official Album + 50-Pack Box"
-        fill
-        className="object-contain object-center bg-[#0d1b3e] p-[5%]"
-        sizes="(max-width: 640px) 100vw, (max-width: 1280px) calc(100vw - 48px), 1152px"
-      />
-      <Link
-        href="/products/panini-fifa-world-cup-2026-bundle-album-sticker-box"
-        aria-label="Shop the Bundle"
-        className="absolute bg-brand hover:bg-brand-hover active:scale-95 text-white font-black uppercase tracking-widest rounded-full shadow-xl transition-all duration-150 flex items-center gap-1.5"
-        style={{
-          right: "4%",
-          bottom: "14%",
-          fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
-          padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
-        }}
-      >
-        Get the Bundle ›
-      </Link>
+    <div className="relative flex h-full w-full bg-linear-to-br from-[#b51224] to-[#7a0c19]">
+      <div className="relative z-10 flex w-[52%] flex-col justify-center pl-[5%] pr-[2%]">
+        <p
+          className="font-bold uppercase tracking-widest text-white/70"
+          style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.8rem)" }}
+        >
+          Canada Jersey + Shorts
+        </p>
+        <h2
+          className="mt-2 font-black leading-tight text-white"
+          style={{ fontSize: "clamp(1.1rem, 3.2vw, 2.6rem)" }}
+        >
+          Match-day kit.
+          <br />
+          Pickup today.
+        </h2>
+        <p
+          className="mt-2 text-white/80"
+          style={{ fontSize: "clamp(0.6rem, 1.3vw, 0.95rem)" }}
+        >
+          Home red & away black · adult $39.99, kids $34.99 · any 8 sets $199
+        </p>
+        <div className="mt-4 sm:mt-6">
+          <Link
+            href="/products?category=Jerseys"
+            aria-label="Shop Canada jersey and shorts"
+            className="inline-flex items-center gap-1.5 rounded-full bg-white font-black uppercase tracking-widest text-[#b51224] shadow-xl transition-all duration-150 hover:bg-gray-100 active:scale-95"
+            style={{
+              fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
+              padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
+            }}
+          >
+            Shop Jerseys ›
+          </Link>
+        </div>
+      </div>
+      <div className="relative w-[48%]">
+        <Image
+          src="/asset/jersey/canada-home-kit-main.webp"
+          alt="Canada soccer jersey and shorts set"
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="(max-width: 640px) 50vw, 560px"
+        />
+      </div>
     </div>
   );
 }
 
 const SLIDES: Slide[] = [
-  { id: "sticker-hero", render: () => <StickerHeroSlide /> },
-  { id: "hero",         render: () => <HeroSlide /> },
+  { id: "jersey-hero",  render: () => <JerseySlide /> },
 ];
 
 export function HeroCarousel() {
@@ -108,6 +72,7 @@ export function HeroCarousel() {
   const [paused, setPaused] = useState(false);
   const [loaded, setLoaded] = useState<Set<number>>(new Set([0]));
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasMultipleSlides = SLIDES.length > 1;
 
   const go = useCallback((index: number) => {
     const next = (index + SLIDES.length) % SLIDES.length;
@@ -120,10 +85,10 @@ export function HeroCarousel() {
 
   // auto-advance
   useEffect(() => {
-    if (paused) return;
+    if (!hasMultipleSlides || paused) return;
     timerRef.current = setTimeout(next, INTERVAL_MS);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [current, paused, next]);
+  }, [current, hasMultipleSlides, paused, next]);
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
@@ -144,32 +109,35 @@ export function HeroCarousel() {
           </div>
         ))}
 
-        {/* prev / next arrows */}
-        <button
-          onClick={prev}
-          aria-label="Previous slide"
-          className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/55 text-white backdrop-blur-sm transition-colors"
-          style={{ width: "clamp(28px, 4vw, 44px)", height: "clamp(28px, 4vw, 44px)" }}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-            style={{ width: "clamp(12px, 1.8vw, 20px)", height: "clamp(12px, 1.8vw, 20px)" }}>
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-        </button>
-        <button
-          onClick={next}
-          aria-label="Next slide"
-          className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/55 text-white backdrop-blur-sm transition-colors"
-          style={{ width: "clamp(28px, 4vw, 44px)", height: "clamp(28px, 4vw, 44px)" }}
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-            style={{ width: "clamp(12px, 1.8vw, 20px)", height: "clamp(12px, 1.8vw, 20px)" }}>
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
+        {hasMultipleSlides && (
+          <>
+            <button
+              onClick={prev}
+              aria-label="Previous slide"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/55 text-white backdrop-blur-sm transition-colors"
+              style={{ width: "clamp(28px, 4vw, 44px)", height: "clamp(28px, 4vw, 44px)" }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                style={{ width: "clamp(12px, 1.8vw, 20px)", height: "clamp(12px, 1.8vw, 20px)" }}>
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next slide"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center rounded-full bg-black/30 hover:bg-black/55 text-white backdrop-blur-sm transition-colors"
+              style={{ width: "clamp(28px, 4vw, 44px)", height: "clamp(28px, 4vw, 44px)" }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                style={{ width: "clamp(12px, 1.8vw, 20px)", height: "clamp(12px, 1.8vw, 20px)" }}>
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </>
+        )}
 
         {/* dot indicators */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {hasMultipleSlides && <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-2">
           {SLIDES.map((_, i) => (
             <button
               key={i}
@@ -183,10 +151,10 @@ export function HeroCarousel() {
               }}
             />
           ))}
-        </div>
+        </div>}
 
         {/* progress bar */}
-        {!paused && (
+        {hasMultipleSlides && !paused && (
           <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white/20 z-20">
             <div
               key={current}

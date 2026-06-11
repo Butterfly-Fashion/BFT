@@ -7,6 +7,7 @@ const GOOGLE_CATEGORY: Record<string, string> = {
   "Boxing Gloves": "Sporting Goods > Combat Sports > Boxing & Martial Arts",
   "Caps":          "Apparel & Accessories > Clothing Accessories > Hats",
   "Bucket Hats":   "Apparel & Accessories > Clothing Accessories > Hats",
+  "Jerseys":       "Apparel & Accessories > Clothing > Shirts & Tops",
   "Car Flags":     "Home & Garden > Decor > Flags & Pennants",
   "Sticker Packs": "Toys & Games > Toys > Collectible Toys",
   "Collectibles":  "Toys & Games > Toys > Collectible Toys",

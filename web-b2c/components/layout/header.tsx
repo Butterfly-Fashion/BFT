@@ -89,15 +89,15 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-4">
         {/* Logo */}
-        <Link href="/" className="group shrink-0 flex items-center gap-2.5">
+        <Link href="/" className="group flex min-w-0 flex-1 items-center gap-2.5 md:flex-none">
           <span className="grid h-9 w-9 shrink-0 place-items-center overflow-hidden rounded-sm border border-gray-200 bg-white">
             <ButterflyLogo size={36} />
           </span>
-          <div>
-            <span className="block text-sm font-black leading-tight tracking-tight text-gray-900">Butterfly Fashion</span>
-            <span className="block text-[10px] font-semibold uppercase tracking-widest text-gray-400">Trading · Toronto</span>
+          <div className="min-w-0">
+            <span className="block truncate text-sm font-black leading-tight tracking-tight text-gray-900">World Fan Gear</span>
+            <span className="block truncate text-[10px] font-semibold uppercase tracking-widest text-gray-400">by Butterfly Fashion Trading · Toronto</span>
           </div>
         </Link>
 
@@ -163,7 +163,7 @@ export function Header() {
         </nav>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <button
             onClick={() => setSearchOpen((v) => !v)}
             aria-label="Search"

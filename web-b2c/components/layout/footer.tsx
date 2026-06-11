@@ -47,8 +47,8 @@ export function Footer() {
           <div className="flex items-center gap-2 mb-4">
             <img src="/asset/logo.jpg" alt="Butterfly Fashion Trading" width={32} height={32} className="rounded-sm" />
             <div>
-              <p className="text-white font-semibold text-sm leading-tight">Butterfly Fashion</p>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">Trading · Toronto</p>
+              <p className="text-white font-semibold text-sm leading-tight">World Fan Gear</p>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500">by Butterfly Fashion Trading · Toronto</p>
             </div>
           </div>
           <p className="text-sm leading-relaxed">
