@@ -10,13 +10,6 @@ export const dynamic = "force-dynamic";
 
 const CATEGORY_GROUPS = [
   {
-    icon: Tag,
-    title: "Caps & Hats",
-    desc: "3D embroidered caps and reversible bucket hats — 100+ nations and styles. MOQ from 1 case, built for retailers and gift shops.",
-    categories: ["Caps", "Bucket Hats"],
-    queryCategories: ["Caps", "Bucket Hats"],
-  },
-  {
     icon: Leaf,
     title: "Vape & Smoke Shop",
     desc: "Rolling papers, glass pipes, bongs, and lighters wholesale. Competitive pricing for variety stores, convenience chains, and specialty retailers.",
@@ -29,13 +22,6 @@ const CATEGORY_GROUPS = [
     desc: "Winter gloves, toques, scarves, and cold-weather accessories. Strong demand every fall season — stock early, sell through winter.",
     categories: ["Winter Items"],
     queryCategories: ["Winter Items", "Winter", "Seasonal"],
-  },
-  {
-    icon: Package2,
-    title: "Boxing Gloves & Souvenirs",
-    desc: "Mini souvenir boxing gloves in 50+ flag styles. Fast-moving impulse buys for sports shops, gift stores, and event resellers.",
-    categories: ["Boxing Gloves", "Accessories"],
-    queryCategories: ["Boxing Gloves", "Accessories"],
   },
 ];
 
@@ -60,15 +46,27 @@ async function fetchCategoryImage(supabase: Awaited<ReturnType<typeof createSupa
   return data ? { url: data.image_url as string, alt: data.name as string } : null;
 }
 
+async function fetchTrendingProducts(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>) {
+  const { data } = await supabase
+    .from("products")
+    .select("name, slug, image_url, category")
+    .eq("is_hidden", false)
+    .not("image_url", "is", null)
+    .order("created_at", { ascending: false })
+    .limit(8);
+  return data ?? [];
+}
+
 export default async function AboutPage() {
   const [profile, supabase] = await Promise.all([
     getCurrentProfile(),
     createSupabaseServerClient(),
   ]);
 
-  const categoryImages = await Promise.all(
-    CATEGORY_GROUPS.map((g) => fetchCategoryImage(supabase, g.queryCategories))
-  );
+  const [categoryImages, trending] = await Promise.all([
+    Promise.all(CATEGORY_GROUPS.map((g) => fetchCategoryImage(supabase, g.queryCategories))),
+    fetchTrendingProducts(supabase),
+  ]);
 
   const WHAT_WE_CARRY = CATEGORY_GROUPS.map((g, i) => ({
     ...g,
@@ -176,7 +174,7 @@ export default async function AboutPage() {
               <p className="section-label mb-3" style={{ color: "var(--primary)" }}>Product range</p>
               <h2 className="text-3xl font-black text-gray-900">What we carry</h2>
               <p className="mt-3 text-base leading-relaxed text-gray-500">
-                Four core categories — all stocked in Toronto, all available for wholesale ordering through this portal.
+                Core wholesale categories — all stocked in Toronto, all available for wholesale ordering through this portal.
               </p>
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -216,6 +214,44 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
+
+        {/* ── Trending items ── */}
+        {trending.length > 0 && (
+          <section className="border-b border-gray-100 bg-white px-4 py-16 sm:py-20">
+            <div className="container-shell">
+              <div className="mb-10 max-w-2xl">
+                <p className="section-label mb-3" style={{ color: "var(--primary)" }}>Moving now</p>
+                <h2 className="text-3xl font-black text-gray-900">Trending items</h2>
+                <p className="mt-3 text-base leading-relaxed text-gray-500">
+                  A snapshot of what&apos;s selling through our Toronto warehouse right now.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {trending.map((p) => (
+                  <Link
+                    key={p.slug}
+                    href={`/products/${p.slug}`}
+                    className="group overflow-hidden rounded-xl border border-gray-100 bg-white transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative aspect-square w-full overflow-hidden bg-gray-50">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.image_url as string}
+                        alt={p.name as string}
+                        loading="lazy"
+                        className="h-full w-full object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-3">
+                      <p className="truncate text-sm font-bold text-gray-900">{p.name}</p>
+                      <p className="mt-0.5 text-xs text-gray-400">{p.category}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* ── Why wholesale buyers ── */}
         <section className="border-b border-gray-100 bg-gray-50 px-4 py-16 sm:py-20">
