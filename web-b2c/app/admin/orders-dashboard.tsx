@@ -9,30 +9,30 @@ import { supabaseBrowser } from "@/lib/supabase";
 const STATUS_LABELS = ORDER_STATUS_LABELS;
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
-  paid: "bg-white text-gray-500 border-gray-200",
+  paid: "bg-sky-50 text-sky-700 border-sky-200",
   packing: "bg-amber-50 text-amber-700 border-amber-200",
-  shipped: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  ready_for_pickup: "bg-yellow-50 text-yellow-700 border-yellow-200",
+  shipped: "bg-violet-50 text-violet-700 border-violet-200",
+  ready_for_pickup: "bg-teal-50 text-teal-700 border-teal-200",
   completed: "bg-green-50 text-green-600 border-green-200",
   cancelled: "bg-gray-100 text-gray-500 border-gray-300",
   refunded: "bg-gray-100 text-gray-500 border-gray-300",
 };
 
 const ROW_BG: Record<OrderStatus, string> = {
-  paid: "bg-white hover:bg-gray-100",
+  paid: "bg-sky-50 hover:bg-sky-100",
   packing: "bg-amber-50 hover:bg-amber-100",
-  shipped: "bg-yellow-50 hover:bg-yellow-100",
-  ready_for_pickup: "bg-yellow-50 hover:bg-yellow-100",
+  shipped: "bg-violet-50 hover:bg-violet-100",
+  ready_for_pickup: "bg-teal-50 hover:bg-teal-100",
   completed: "bg-green-50 hover:bg-green-100",
   cancelled: "bg-gray-100 hover:bg-gray-200",
   refunded: "bg-gray-100 hover:bg-gray-200",
 };
 
 const ROW_ACCENT: Record<OrderStatus, string> = {
-  paid: "border-l-gray-300",
+  paid: "border-l-sky-400",
   packing: "border-l-amber-400",
-  shipped: "border-l-yellow-400",
-  ready_for_pickup: "border-l-yellow-400",
+  shipped: "border-l-violet-400",
+  ready_for_pickup: "border-l-teal-400",
   completed: "border-l-green-400",
   cancelled: "border-l-gray-400",
   refunded: "border-l-gray-400",
@@ -572,7 +572,7 @@ export default function OrdersDashboard() {
     { key: "all", label: "All" },
     { key: "paid", label: "New" },
     { key: "packing", label: "Packing" },
-    { key: "shipped", label: "Shipped" },
+    { key: "shipped", label: "Dropped Off" },
     { key: "ready_for_pickup", label: "Pickup" },
     { key: "completed", label: "Done" },
     { key: "issues", label: "Issues" },
@@ -803,14 +803,28 @@ export default function OrdersDashboard() {
               ) : selected.items && selected.items.length > 0 && (
                 <div className="border-b border-gray-100 px-5 py-4">
                   <p className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Items</p>
-                  <ul className="space-y-1.5">
+                  <ul className="space-y-2.5">
                     {selected.items.map((item: DbOrderItem) => (
-                      <li key={item.id} className="flex justify-between text-sm">
-                        <span className="text-gray-700">
+                      <li key={item.id} className="flex items-center gap-3 text-sm">
+                        <div className="h-14 w-14 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
+                          {item.image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={item.image_url}
+                              alt={item.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-full w-full flex items-center justify-center text-gray-300 text-xs">
+                              —
+                            </div>
+                          )}
+                        </div>
+                        <span className="flex-1 min-w-0 text-gray-700">
                           <span className="font-semibold">{item.quantity}×</span> {item.name}
                           {item.size && <span className="text-gray-400"> ({item.size})</span>}
                         </span>
-                        <span className="text-gray-600 font-medium">
+                        <span className="text-gray-600 font-medium shrink-0">
                           {formatCAD(item.unit_price * item.quantity)}
                         </span>
                       </li>

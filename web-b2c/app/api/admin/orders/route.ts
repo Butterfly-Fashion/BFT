@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
-import type { DbOrder } from "@/lib/types";
+import { enrichOrderItemsWithImages } from "@/lib/order-item-images";
+import type { DbOrder, DbOrderItem } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -23,9 +24,20 @@ export async function GET() {
       throw error;
     }
 
+    // Enrich every item with its catalog image in a single lookup, then
+    // redistribute back to each order.
+    const allItems = (data ?? []).flatMap(
+      (row) => (row.items ?? []) as unknown as DbOrderItem[]
+    );
+    const enriched = await enrichOrderItemsWithImages(supabase, allItems);
+    const imageById = new Map(enriched.map((i) => [i.id, i.image_url]));
+
     const orders: DbOrder[] = (data ?? []).map((row) => ({
       ...row,
-      items: (row.items ?? []) as unknown as DbOrder["items"],
+      items: ((row.items ?? []) as unknown as DbOrderItem[]).map((i) => ({
+        ...i,
+        image_url: imageById.get(i.id) ?? i.image_url,
+      })),
       _source: "supabase" as const,
     }));
     return NextResponse.json({ orders, source: "supabase", limit: 50 });

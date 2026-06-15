@@ -2,6 +2,7 @@ import { supabaseAdmin } from "./supabase";
 import type { Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
 import { SOLD_OUT_PRODUCT_SLUGS } from "./sold-out";
+import { normalizeStockStatus } from "./stock-status";
 import sourceData from "./source-products.json";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
@@ -330,6 +331,7 @@ type DbStoreProduct = {
   badge?: string | null;
   in_stock?: boolean | null;
   stock_qty?: number | null;
+  stock_status?: string | null;
   weight_kg?: number | null;
   player_cards?: Product["playerCards"] | null;
 };
@@ -337,6 +339,8 @@ type DbStoreProduct = {
 function dbStoreProductToProduct(p: DbStoreProduct): Product {
   const imageUrl = p.images?.[0]?.url || p.image_url || "";
   const price = Number(p.price ?? p.unit_price ?? 0);
+  const stockStatus = normalizeStockStatus(p.stock_status);
+  const inStock = stockStatus === "sold_out" ? false : (p.in_stock ?? p.stock_qty !== 0);
   return {
     id: p.id,
     slug: p.slug,
@@ -348,7 +352,8 @@ function dbStoreProductToProduct(p: DbStoreProduct): Product {
     imageUrl,
     additionalImages: p.images?.slice(1).map((image) => image.url),
     placeholderGradient: CATEGORY_GRADIENTS[p.category] ?? "linear-gradient(145deg, #555 0%, #888 100%)",
-    inStock: p.in_stock ?? p.stock_qty !== 0,
+    inStock,
+    stockStatus,
     badge: p.badge ?? undefined,
     weightKg: p.weight_kg ?? CATEGORY_WEIGHTS[p.category] ?? 0.5,
     playerCards: p.player_cards ?? undefined,
@@ -360,7 +365,7 @@ async function getB2CDbProducts(): Promise<Product[]> {
     const supabase = supabaseAdmin();
     const { data, error } = await supabase
       .from("b2c_products")
-      .select("id,slug,name,category,price,compare_at_price,description,image_url,images,badge,in_stock,stock_qty,weight_kg,player_cards")
+      .select("id,slug,name,category,price,compare_at_price,description,image_url,images,badge,in_stock,stock_qty,stock_status,weight_kg,player_cards")
       .eq("status", "active")
       .order("updated_at", { ascending: false });
     if (error || !data?.length) return [];

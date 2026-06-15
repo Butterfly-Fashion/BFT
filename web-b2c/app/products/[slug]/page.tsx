@@ -15,6 +15,7 @@ import {
 } from "@/lib/seo";
 import { productFaqJsonLd, productSeoFaqs, productSeoLinks, productSeoSections } from "@/lib/product-seo";
 import { getRelatedGuidesForProduct } from "@/lib/blog-posts";
+import { normalizeStockStatus, stockStatusDisplay } from "@/lib/stock-status";
 import dynamic from "next/dynamic";
 const ProductReviews = dynamic(
   () => import("@/components/store/product-reviews").then((m) => ({ default: m.ProductReviews }))
@@ -143,17 +144,17 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
 
           <div className="flex items-center gap-2 mb-5">
-            {product.inStock ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-green-50 border border-green-200 px-3 py-1 text-xs font-semibold text-green-700">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                In Stock · Pickup today or ships from Toronto
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 border border-gray-200 px-3 py-1 text-xs font-semibold text-gray-500">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                Sold Out
-              </span>
-            )}
+            {(() => {
+              const stock = product.inStock
+                ? stockStatusDisplay(normalizeStockStatus(product.stockStatus))
+                : stockStatusDisplay("sold_out");
+              return (
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${stock.pillClass}`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${stock.dotClass}`} />
+                  {stock.label}
+                </span>
+              );
+            })()}
           </div>
 
           <p className="text-sm text-gray-600 leading-relaxed mb-6">

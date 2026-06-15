@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatCAD } from "@/lib/money";
 import type { Product } from "@/lib/types";
+import { normalizeStockStatus, stockStatusDisplay } from "@/lib/stock-status";
 import { ProductImage } from "./product-image";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function ProductCard({ product, priority = false }: Props) {
+  const stock = stockStatusDisplay(normalizeStockStatus(product.stockStatus));
   return (
     <Link href={`/products/${product.slug}`} className="group block">
       {/* Image */}
@@ -55,8 +57,8 @@ export function ProductCard({ product, priority = false }: Props) {
           )}
         </div>
         {product.inStock && (
-          <p className="mt-1 text-[11px] font-medium text-green-700">
-            Pickup today · ships from Toronto
+          <p className={`mt-1 text-[11px] font-medium ${stock.textClass}`}>
+            {stock.shortLabel}
           </p>
         )}
       </div>

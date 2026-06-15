@@ -17,6 +17,7 @@ export interface Product {
   detailImage?: string;
   placeholderGradient: string;
   inStock: boolean;
+  stockStatus?: import("./stock-status").StockStatus;
   badge?: string;
   sizes?: string[];
   playerCards?: PlayerCard[];
@@ -154,7 +155,7 @@ export type OrderStatus =
 export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   paid: "New",
   packing: "Packing",
-  shipped: "Shipped",
+  shipped: "Dropped Off",
   ready_for_pickup: "Pickup Ready",
   completed: "Completed",
   cancelled: "Cancelled",
@@ -230,6 +231,7 @@ export interface DbProduct {
   badge: string | null;
   in_stock: boolean;
   stock_qty: number | null;
+  stock_status: import("./stock-status").StockStatus;
   status: ProductStatus;
   images: DbProductImage[];
   image_url?: string | null;

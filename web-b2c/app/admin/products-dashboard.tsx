@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import type { DbProduct, DbProductImage, ProductStatus } from "@/lib/types";
+import { STOCK_STATUS_OPTIONS, type StockStatus } from "@/lib/stock-status";
 import { formatCAD } from "@/lib/money";
 import { slugify } from "@/lib/slug";
 
@@ -31,14 +32,11 @@ function StatusBadge({ status }: { status: ProductStatus }) {
   );
 }
 
-function shouldBypassImageOptimization(src: string): boolean {
-  return src.startsWith("blob:") || src.startsWith("data:");
-}
-
 const EMPTY = {
   name: "", slug: "", category: "", description: "",
   price: "", compare_at_price: "", weight_kg: "0.5", badge: "",
-  in_stock: true, stock_qty: "", status: "active" as ProductStatus,
+  in_stock: true, stock_qty: "", stock_status: "in_stock" as StockStatus,
+  status: "active" as ProductStatus,
 };
 
 export default function ProductsDashboard() {
@@ -115,6 +113,7 @@ export default function ProductsDashboard() {
       weight_kg: String(p.weight_kg), badge: p.badge ?? "",
       in_stock: p.in_stock,
       stock_qty: p.stock_qty != null ? String(p.stock_qty) : "",
+      stock_status: p.stock_status ?? "in_stock",
       status: p.status,
     });
     setImages(p.images ?? []); setPending([]); setSaveMsg(null);
@@ -132,6 +131,7 @@ export default function ProductsDashboard() {
         weight_kg: String(detail.weight_kg), badge: detail.badge ?? "",
         in_stock: detail.in_stock,
         stock_qty: detail.stock_qty != null ? String(detail.stock_qty) : "",
+        stock_status: detail.stock_status ?? "in_stock",
         status: detail.status,
       });
       setImages(detail.images ?? []);
@@ -185,6 +185,7 @@ export default function ProductsDashboard() {
         weight_kg: parseFloat(form.weight_kg) || 0.5,
         badge: form.badge || null, in_stock: form.in_stock,
         stock_qty: form.stock_qty ? parseInt(form.stock_qty) : null,
+        stock_status: form.stock_status,
         status: form.status, images: allImages,
       };
       const url = isNew ? "/api/admin/products" : "/api/admin/products/" + selected!.id;
@@ -301,7 +302,7 @@ export default function ProductsDashboard() {
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                               {imgUrl ? (
-                                <Image src={imgUrl} alt={p.name} width={40} height={40} sizes="40px" className="h-full w-full object-cover" />
+                                <Image src={imgUrl} alt={p.name} width={40} height={40} sizes="40px" className="h-full w-full object-cover" unoptimized />
                               ) : (
                                 <div className="h-full w-full flex items-center justify-center text-gray-300 text-xs">-</div>
                               )}
@@ -424,6 +425,14 @@ export default function ProductsDashboard() {
                     placeholder="Qty (optional)" className="flex-1 rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-brand" />
                 </div>
                 <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">Stock Status (shown to customers)</label>
+                  <select value={form.stock_status} onChange={(e) => setForm((p) => ({ ...p, stock_status: e.target.value as StockStatus }))}
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:border-brand">
+                    {STOCK_STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                  <p className="mt-1 text-[11px] text-gray-400">&quot;Sold Out&quot; blocks ordering. The others stay purchasable.</p>
+                </div>
+                <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1">Description</label>
                   <textarea value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
                     rows={3} placeholder="Product description shown on the store..."
@@ -443,7 +452,7 @@ export default function ProductsDashboard() {
                               height={64}
                               sizes="64px"
                               className="h-full w-full object-cover"
-                              unoptimized={shouldBypassImageOptimization(img.url)}
+                              unoptimized
                             />
                           </div>
                           {i === 0 && <span className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[9px] text-center py-0.5 rounded-b-lg">Main</span>}

@@ -18,3 +18,11 @@ export function sizeFromLineItem(item: Stripe.LineItem): string | null {
   const match = product.description?.match(/^Size:\s*(.+)$/);
   return match ? match[1].trim() : null;
 }
+
+// The catalog slug rides along in the Stripe product metadata (set on create).
+// Storing it on the order item lets admins look up the exact design ordered.
+export function slugFromLineItem(item: Stripe.LineItem): string | null {
+  const product = item.price?.product;
+  if (!product || typeof product === "string" || product.deleted) return null;
+  return product.metadata?.slug ?? null;
+}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyAdminCookie } from "@/lib/admin-auth";
+import { enrichOrderItemsWithImages } from "@/lib/order-item-images";
 import type { OrderStatus } from "@/lib/types";
 
 const ALLOWED_STATUSES: OrderStatus[] = [
@@ -37,7 +38,8 @@ export async function GET(
       throw error;
     }
 
-    return NextResponse.json({ order: { ...data, _source: "supabase" } });
+    const items = await enrichOrderItemsWithImages(supabase, data.items);
+    return NextResponse.json({ order: { ...data, items, _source: "supabase" } });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to load order";
     return NextResponse.json({ error: message }, { status: 500 });

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripeClient } from "@/lib/stripe";
-import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem } from "@/lib/stripe-line-items";
+import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME, isShippingOrTaxLineItem, sizeFromLineItem, slugFromLineItem } from "@/lib/stripe-line-items";
 import { sendAdminOrderEmail, sendCustomerConfirmationEmail } from "@/lib/email";
 import { supabaseAdmin } from "@/lib/supabase";
 import type Stripe from "stripe";
@@ -144,6 +144,7 @@ async function saveOrderToSupabase(
       productItems.map((item) => ({
         order_id: order.id,
         name: item.description ?? "Unknown",
+        slug: slugFromLineItem(item),
         size: sizeFromLineItem(item),
         quantity: item.quantity ?? 1,
         unit_price:

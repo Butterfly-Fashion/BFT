@@ -43,7 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const updates: Record<string, unknown> = {};
   const fields = ["name", "slug", "category", "description", "price", "compare_at_price",
-                  "weight_kg", "badge", "in_stock", "stock_qty", "status", "images", "player_cards"];
+                  "weight_kg", "badge", "in_stock", "stock_qty", "stock_status", "status", "images", "player_cards"];
   for (const f of fields) {
     if (f in body) updates[f] = body[f];
   }

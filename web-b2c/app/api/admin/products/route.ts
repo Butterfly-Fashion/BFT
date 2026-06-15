@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
   let query = supabase
     .from("b2c_products")
     .select(
-      "id,name,slug,category,price,compare_at_price,in_stock,stock_qty,status,images,stripe_product_id,stripe_price_id,created_at,updated_at",
+      "id,name,slug,category,price,compare_at_price,in_stock,stock_qty,stock_status,status,images,stripe_product_id,stripe_price_id,created_at,updated_at",
       { count: "exact" }
     );
 
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const { name, slug, category, description, price, compare_at_price, weight_kg,
-          badge, in_stock, stock_qty, status, images, player_cards } = body;
+          badge, in_stock, stock_qty, stock_status, status, images, player_cards } = body;
 
   if (!name || !slug || !category || price == null) {
     return NextResponse.json({ error: "name, slug, category, price are required" }, { status: 400 });
@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
       weight_kg: weight_kg ?? 0.5,
       badge: badge ?? null, in_stock: in_stock ?? true,
       stock_qty: stock_qty ?? null,
+      stock_status: stock_status ?? "in_stock",
       status: status ?? "active",
       images: images ?? [],
       player_cards: player_cards ?? null,
