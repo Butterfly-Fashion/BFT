@@ -41,13 +41,13 @@ const config: CityPageConfig = {
     </>
   ),
   heroSubtitle:
-    "Shop fan gear for all 48 nations — shipped from our Toronto warehouse in 1–2 business days. Caps, bucket hats, car flags, Panini sticker packs, and mini boxing gloves in stock now.",
+    "Shop fan gear for all 48 nations — packed and shipped same day from our Toronto warehouse. Caps, bucket hats, car flags, Panini sticker packs, and mini boxing gloves in stock now.",
   secondaryCta: { href: "/collections/world-cup-caps", label: "Browse Caps" },
   reasons: [
     {
       icon: "📦",
       title: "Ships from Toronto",
-      body: "Our warehouse is in North York. GTA orders arrive in 1–2 business days. No international shipping, no duty surprises.",
+      body: "Our warehouse is in North York — pick up today, or we ship Canada-wide on Canada Post's schedule (choose UPS at checkout for faster delivery). No international shipping, no duty surprises.",
     },
     {
       icon: "✅",
@@ -107,7 +107,7 @@ const config: CityPageConfig = {
   faqs: [
     {
       q: "Where can I buy World Cup 2026 merchandise in Toronto?",
-      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse. Order online and receive your gear in 1–3 business days across the GTA, or 3–7 days anywhere in Canada.",
+      a: "World Fan Gear ships World Cup 2026 merchandise from our Toronto-area warehouse. Order online — delivery follows Canada Post's schedule, or choose UPS at checkout for faster delivery. GTA shoppers can also pick up in North York today.",
     },
     {
       q: "Is World Cup 2026 merchandise available in Toronto right now?",
@@ -115,7 +115,7 @@ const config: CityPageConfig = {
     },
     {
       q: "Do you ship World Cup 2026 gear same day from Toronto?",
-      a: "Orders placed before 2 PM ET on business days are packed and dispatched same day. GTA customers typically receive within 1–2 business days.",
+      a: "Orders placed before 2 PM ET on business days are packed and dispatched same day. Delivery time then follows the carrier's schedule — Canada Post standard, or choose UPS at checkout for faster, tracked delivery. Pickup in North York is available today.",
     },
     {
       q: "What World Cup 2026 teams can I buy merchandise for in Toronto?",

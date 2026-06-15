@@ -5,7 +5,7 @@ import { CityLandingPage, type CityPageConfig } from "@/components/store/city-la
 export const metadata: Metadata = {
   title: "World Cup 2026 Fan Gear Montreal — Ships Across Quebec",
   description:
-    "Shop World Cup 2026 fan gear in Montreal. Caps, bucket hats, car flags, Panini sticker packs shipped from Toronto to Montreal in 2–3 business days. Morocco, Argentina, Italy and more in stock.",
+    "Shop World Cup 2026 fan gear in Montreal. Caps, bucket hats, car flags, Panini sticker packs shipped from Toronto to Montreal on Canada Post's schedule, with UPS available for faster delivery. Morocco, Argentina, Italy and more in stock.",
   keywords: [
     "World Cup 2026 Montreal fan gear",
     "World Cup 2026 merchandise Montreal Quebec",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "World Cup 2026 Fan Gear Montreal — In Stock",
     description:
-      "In-stock World Cup 2026 fan gear shipped to Montreal in 2–3 business days. Caps, car flags, bucket hats, Panini sticker packs. CAD pricing, no duties.",
+      "In-stock World Cup 2026 fan gear shipped to Montreal from Toronto, delivered on Canada Post's schedule (UPS available for faster delivery). Caps, car flags, bucket hats, Panini sticker packs. CAD pricing, no duties.",
     url: absoluteUrl("/montreal"),
     type: "website",
   },
@@ -39,13 +39,13 @@ const config: CityPageConfig = {
     </>
   ),
   heroSubtitle:
-    "Shop fan gear for all 48 nations — shipped from our Toronto warehouse to Montreal in 2–3 business days. Caps, bucket hats, car flags, Panini sticker packs in stock now.",
+    "Shop fan gear for all 48 nations — shipped from our Toronto warehouse to Montreal on Canada Post's schedule, with UPS available for faster delivery. Caps, bucket hats, car flags, Panini sticker packs in stock now.",
   secondaryCta: { href: "/collections/panini-stickers", label: "Shop Panini Stickers" },
   reasons: [
     {
       icon: "🚀",
-      title: "Ships in 2–3 days",
-      body: "Toronto to Montreal is our fastest route outside Ontario. Shipping timing is shown at checkout, and Toronto-area local pickup is available.",
+      title: "Ships from Toronto",
+      body: "Toronto to Montreal is one of our quicker routes outside Ontario. Delivery follows the carrier's schedule (Canada Post standard, or UPS at checkout for faster delivery), and Toronto-area local pickup is available.",
     },
     {
       icon: "✅",
@@ -83,7 +83,7 @@ const config: CityPageConfig = {
         every other team in the tournament. Gear that works for a Plateau terrace or a Saint-Denis watch
         party.
       </>,
-      <>Ships from Toronto. Arrives in Montreal in 2–3 business days. All prices in CAD.</>,
+      <>Ships from Toronto on Canada Post&apos;s schedule, with UPS available at checkout for faster delivery. All prices in CAD.</>,
     ],
     links: [
       { href: "/blog/world-cup-2026-fan-gear-montreal", label: "Montreal fan gear guide" },
@@ -106,7 +106,7 @@ const config: CityPageConfig = {
     },
     {
       q: "How long does shipping to Montreal take?",
-      a: "Orders from our North York warehouse typically arrive in 2–3 business days to Montreal via Canada Post Expedited. All prices are in CAD with no hidden duties.",
+      a: "Orders ship from our North York warehouse to Montreal via Canada Post, with delivery on Canada Post's standard schedule. Choose UPS at checkout if you need it faster. All prices are in CAD with no hidden duties.",
     },
     {
       q: "What World Cup teams are most popular in Montreal?",

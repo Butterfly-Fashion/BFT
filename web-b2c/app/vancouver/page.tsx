@@ -5,7 +5,7 @@ import { CityLandingPage, type CityPageConfig } from "@/components/store/city-la
 export const metadata: Metadata = {
   title: "World Cup 2026 Fan Gear Vancouver — In Stock, Ships to BC",
   description:
-    "Shop World Cup 2026 fan gear in Vancouver. Caps, bucket hats, car flags, Panini sticker packs shipped from Toronto to BC in 3–5 business days. BC Place host city — gear up now.",
+    "Shop World Cup 2026 fan gear in Vancouver. Caps, bucket hats, car flags, Panini sticker packs shipped from Toronto to BC on Canada Post's schedule, with UPS available for faster delivery. BC Place host city — gear up now.",
   keywords: [
     "World Cup 2026 Vancouver fan gear",
     "World Cup 2026 merchandise Vancouver BC",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "World Cup 2026 Fan Gear Vancouver — In Stock",
     description:
-      "In-stock World Cup 2026 fan gear shipped to Vancouver, BC in 3–5 business days. Caps, car flags, bucket hats, Panini sticker packs. CAD pricing, no duties.",
+      "In-stock World Cup 2026 fan gear shipped from Toronto to Vancouver, BC, delivered on Canada Post's schedule (UPS available for faster delivery). Caps, car flags, bucket hats, Panini sticker packs. CAD pricing, no duties.",
     url: absoluteUrl("/vancouver"),
     type: "website",
   },
@@ -39,13 +39,13 @@ const config: CityPageConfig = {
     </>
   ),
   heroSubtitle:
-    "Shop fan gear for all 48 nations — shipped from our Toronto warehouse to Vancouver in 3–5 business days. Caps, bucket hats, car flags, Panini sticker packs in stock now.",
+    "Shop fan gear for all 48 nations — shipped from our Toronto warehouse to Vancouver on Canada Post's schedule, with UPS available for faster delivery. Caps, bucket hats, car flags, Panini sticker packs in stock now.",
   secondaryCta: { href: "/collections/world-cup-car-flags", label: "Browse Car Flags" },
   reasons: [
     {
       icon: "🚀",
-      title: "Ships to BC in 3–5 days",
-      body: "We ship from North York, Toronto. Vancouver delivery timing is shown at checkout, and local Toronto pickup is available for anyone in the GTA.",
+      title: "Ships to BC from Toronto",
+      body: "We ship from North York, Toronto. Vancouver delivery timing is shown at checkout (Canada Post standard, or UPS for faster delivery), and local Toronto pickup is available for anyone in the GTA.",
     },
     {
       icon: "✅",
@@ -92,7 +92,7 @@ const config: CityPageConfig = {
         We stock gear for all 48 nations — South Korea, Japan, Mexico, Canada, Brazil, Portugal, and every
         other team in the tournament. Something for every community in Vancouver.
       </>,
-      <>Ships from Toronto. Arrives in Vancouver in 3–5 business days. All priced in CAD.</>,
+      <>Ships from Toronto on Canada Post&apos;s schedule, with UPS available at checkout for faster delivery. All priced in CAD.</>,
     ],
     links: [
       { href: "/blog/world-cup-2026-fan-gear-vancouver", label: "Vancouver fan gear guide" },
@@ -115,7 +115,7 @@ const config: CityPageConfig = {
     },
     {
       q: "How long does shipping to Vancouver take?",
-      a: "Orders from our North York warehouse typically arrive in 3–5 business days to Vancouver via Canada Post Expedited. All prices are in CAD with no hidden duties.",
+      a: "Orders ship from our North York warehouse to Vancouver via Canada Post, with delivery on Canada Post's standard schedule. Choose UPS at checkout if you need it faster. All prices are in CAD with no hidden duties.",
     },
     {
       q: "What teams are popular in Vancouver for World Cup 2026?",

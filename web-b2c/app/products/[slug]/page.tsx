@@ -179,8 +179,8 @@ export default async function ProductDetailPage({ params }: Props) {
                   </p>
                   <p className="text-xs text-amber-700 mt-0.5">
                     {isPastCutoff
-                      ? "Shipping is also available from Toronto within 1-2 business days"
-                      : "World Cup opens June 12 · Ships from Toronto within 1–2 business days"}
+                      ? "Shipping also available from Toronto — delivery on Canada Post's schedule, or choose UPS at checkout for faster delivery"
+                      : "World Cup opens June 12 · Pick up today in North York, or ship from Toronto (UPS available for faster delivery)"}
                   </p>
                 </div>
               </div>
