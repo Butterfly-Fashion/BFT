@@ -138,7 +138,7 @@ export default function HomePage() {
                 and loose packs are still in stock and ship from Toronto.
               </p>
               <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-black text-gray-900">$125</span>
+                <span className="text-3xl font-black text-gray-900">$114.99</span>
                 <span className="text-sm text-gray-400">packs from $3.99</span>
               </div>
               <p className="mt-4 text-sm font-bold text-brand">Shop stickers →</p>

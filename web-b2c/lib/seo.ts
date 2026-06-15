@@ -210,7 +210,7 @@ export function organizationJsonLd() {
       latitude: 43.706,
       longitude: -79.453,
     },
-    priceRange: "$8.99 - $129.99 CAD",
+    priceRange: "$8.99 - $119.99 CAD",
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

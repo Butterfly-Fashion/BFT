@@ -19,7 +19,7 @@ const UPSELL_DATA = {
   album: {
     name: "Panini FIFA World Cup 2026 Sticker Box – 50 Packs",
     slug: BOX_SLUG,
-    price: 125,
+    price: 114.99,
     image: "/asset/stickers/world_cup_sticker_box_50.png",
     gradient: "linear-gradient(145deg, #4a2d6e 0%, #7c4aa8 100%)",
     message: "You have the album — now fill it.",
