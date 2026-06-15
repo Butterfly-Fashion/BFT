@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, MessageCircle } from "lucide-react";
 
 export function CopyPaymentLink({ url }: { url: string }) {
   const [copied, setCopied] = useState(false);
+
+  const whatsappHref = `https://wa.me/?text=${encodeURIComponent(
+    `Hi! Here's the secure payment link for your Butterfly Fashion order: ${url}`
+  )}`;
 
   async function handleCopy() {
     try {
@@ -33,6 +37,14 @@ export function CopyPaymentLink({ url }: { url: string }) {
           {url}
         </p>
       </div>
+      <a
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-secondary shrink-0 gap-2 text-xs"
+      >
+        <MessageCircle size={13} /> WhatsApp
+      </a>
       <button
         onClick={handleCopy}
         type="button"
