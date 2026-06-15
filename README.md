@@ -1,8 +1,94 @@
-# World Fan Gear — 풀스택 이커머스 플랫폼 기술 문서
+# World Fan Gear — Full-Stack B2C/B2B E-commerce Platform
 
-> **도메인:** [fifa2026.ca](https://fifa2026.ca)  
-> **작성일:** 2026년 5월  
-> **스택:** Next.js 15 · Supabase (PostgreSQL) · Stripe · Shippo · Nodemailer · Vercel  
+Production-oriented commerce platform for a Canadian World Cup 2026 merchandise business. The repository contains two independent Next.js applications, a shared Supabase/PostgreSQL backend, Stripe payment flows, Shippo shipping operations, email automation, SEO infrastructure, and admin tooling for day-to-day order management.
+
+> **Live domain:** [fifa2026.ca](https://fifa2026.ca)  
+> **Repository:** [Butterfly-Fashion/BFT](https://github.com/Butterfly-Fashion/BFT)  
+> **Primary stack:** Next.js · React · TypeScript · Supabase/PostgreSQL · Stripe · Shippo · Vercel  
+> **Target roles:** Software Developer Intern · Full-Stack Developer Intern · Backend/Product Engineering Intern
+
+---
+
+## Portfolio Snapshot
+
+| Area | What this project demonstrates |
+| --- | --- |
+| Product engineering | Built a real commerce workflow across browsing, cart, checkout, orders, shipping, tracking, and admin operations. |
+| Full-stack development | Implemented frontend UI, API routes, database schema, authentication, webhooks, and deployment configuration. |
+| Backend systems | Designed order, product, customer, quote, invoice, and fulfillment flows with Supabase/PostgreSQL. |
+| Payments & operations | Integrated Stripe Checkout, Stripe webhooks, refund/reship admin APIs, Shippo rates, labels, and tracking sync. |
+| Security & access control | Used Supabase Auth, admin-only routes, role-based access, and Row Level Security policies. |
+| Growth engineering | Added product SEO, sitemap/feed routes, landing pages, analytics tags, Google Ads hooks, Vercel Analytics, and Speed Insights. |
+
+## Applications
+
+| App | Audience | Purpose |
+| --- | --- | --- |
+| `web-b2c` | Retail customers | Consumer storefront for World Cup 2026 fan gear, checkout, delivery/pickup, order confirmation, and customer-facing SEO pages. |
+| `web-b2b` | Wholesale buyers | B2B portal for customer approval, wholesale catalog browsing, quotes, order requests, payment links, invoices, and account management. |
+
+## Architecture
+
+```text
+Customer / Buyer
+      |
+      v
+Next.js App Router
+  |-- web-b2c: retail storefront, cart, checkout, product SEO
+  |-- web-b2b: wholesale portal, quotes, orders, invoices
+      |
+      v
+Supabase PostgreSQL + Auth + Row Level Security
+      |
+      +--> Stripe Checkout / Payment Links / Webhooks
+      +--> Shippo Rates / Labels / Tracking Webhooks
+      +--> Nodemailer transactional emails
+      +--> Vercel Analytics / Speed Insights / Google tags
+```
+
+## Key Features
+
+- B2C storefront with product listing, collection pages, team landing pages, cart, checkout, order confirmation, and order lookup.
+- B2B wholesale portal with registration, approval workflow, account pages, customer-specific prices, quotes, pre-orders, and invoice views.
+- Admin dashboards for products, categories, orders, revenue, messages, newsletters, customers, quotes, pre-orders, lookbook content, and shipping actions.
+- Stripe Checkout and webhook handling for paid orders, payment verification, admin refund/reship workflows, and B2B payment links.
+- Shippo integration for live shipping rates, label creation, label sync, reship rates, tracking updates, and delivery status webhooks.
+- Supabase schema and migrations covering profiles, products, B2C products, customer prices, orders, order items, quotes, invoices, stock status, and contact messages.
+- SEO and growth stack with sitemap/feed routes, product schema, city landing pages, blog content, Google Analytics/Ads tags, Vercel Analytics, and Speed Insights.
+
+## Resume Highlights
+
+These bullets are written in resume style and can be adapted directly:
+
+- Built and operated a dual-app B2C/B2B e-commerce platform using Next.js App Router, TypeScript, Supabase/PostgreSQL, Stripe, Shippo, and Vercel.
+- Integrated Stripe Checkout, Stripe webhooks, order verification, refund/reship admin APIs, and transactional emails for customer and admin order workflows.
+- Implemented Shippo shipping-rate lookup, label creation, label sync, tracking webhooks, and delivery-status updates for Canada-wide fulfillment.
+- Designed Supabase schemas and Row Level Security policies for customer profiles, customer-specific wholesale pricing, orders, quotes, invoices, and admin access.
+- Built operational admin dashboards for product CRUD, categories, orders, revenue, customer approvals, messages, newsletters, quotes, pre-orders, and lookbook content.
+- Added SEO and growth infrastructure including product metadata, sitemap/feed routes, location landing pages, blog content, Google Analytics/Ads tags, Vercel Analytics, and Speed Insights.
+
+## Future Engineering Roadmap
+
+Planned extensions that would make the project stronger for software developer and ML-adjacent internship applications:
+
+- **AI Commerce Ops Dashboard:** use order, product, inventory, ad, and analytics data to recommend daily actions such as restock priorities, product copy improvements, campaign budget shifts, and customer reply drafts.
+- **Marketplace Listing Automation:** generate Facebook Marketplace, Google Merchant, Meta Ads, and CSV listings from the product catalog with image, price, and inventory validation.
+- **Analytics Attribution Dashboard:** join Stripe orders, GA4 events, Google Ads, and Meta Ads data to show funnel conversion, CAC, ROAS, product-level revenue, and cohort performance.
+- **Search and recommendation layer:** add embeddings-based product search, semantic blog/product matching, and personalized related-product recommendations.
+- **CI and observability hardening:** add GitHub Actions, Playwright smoke tests, API contract tests, structured logging, and error monitoring.
+
+## Repository Guide
+
+```text
+web-b2c/     Retail e-commerce application
+web-b2b/     Wholesale portal and B2B admin application
+supabase/    Database migrations, seed data, and local Supabase config
+scripts/     Data/image/product maintenance utilities
+```
+
+## Detailed Technical Documentation
+
+The sections below keep the deeper implementation notes, schema details, and operational documentation.
 
 ---
 
