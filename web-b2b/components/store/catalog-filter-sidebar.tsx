@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SlidersHorizontal, ChevronDown } from "lucide-react";
 import type { Category, CategoryTree } from "@/lib/category-utils";
 import { buildCategoryTree } from "@/lib/category-utils";
 
@@ -17,11 +19,12 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
   const router = useRouter();
   const params = useSearchParams();
 
+  const [open, setOpen] = useState(false);
+
   function setCategory(value: string) {
     const next = new URLSearchParams(params.toString());
     if (value) next.set("category", value);
     else next.delete("category");
-    next.delete("q");
     router.push(`/products?${next.toString()}`);
   }
 
@@ -55,18 +58,33 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
   return (
     <aside className="w-full shrink-0 lg:w-52">
       <div className="rounded-xl border border-gray-200 bg-white p-4 lg:sticky lg:top-20">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-gray-700">Filters</h3>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="flex items-center gap-2 lg:pointer-events-none"
+            aria-expanded={open}
+          >
+            <SlidersHorizontal size={14} className="text-gray-500" />
+            <h3 className="text-sm font-bold text-gray-700">Filters</h3>
+            {hasFilters && (
+              <span className="rounded-full px-1.5 py-0.5 text-[11px] font-bold text-white" style={{ background: "var(--primary)" }}>
+                on
+              </span>
+            )}
+            <ChevronDown size={15} className={`text-gray-400 transition-transform lg:hidden ${open ? "rotate-180" : ""}`} />
+          </button>
           {hasFilters && (
             <button
               onClick={() => router.push("/products")}
-              className="text-xs font-semibold text-gray-400 transition-colors hover:text-gray-700"
+              className="text-xs font-semibold text-gray-500 transition-colors hover:text-gray-800"
             >
               Clear all
             </button>
           )}
         </div>
 
+        <div className={`${open ? "mt-4 block" : "hidden"} lg:mt-4 lg:block`}>
         {/* Category */}
         <div className="mb-5">
           <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Category</p>
@@ -132,6 +150,7 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
               </button>
             ))}
           </div>
+        </div>
         </div>
       </div>
     </aside>
