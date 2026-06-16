@@ -32,6 +32,7 @@ export function ProductDetailActions({
   function addToCart() {
     if (!profile) { router.push(`/login?next=/products/${product.slug}`); return; }
     if (quantity <= 0) return;
+    if (caseQty && quantity < caseQty) return;
     cart.addItem({
       productId: product.id,
       quantity,
@@ -40,6 +41,7 @@ export function ProductDetailActions({
       price: product.display_price,
       imageUrl: product.image_url,
       slug: product.slug,
+      caseQty: product.case_qty,
     });
     setAdded(true);
     addedTimer.current = setTimeout(() => setAdded(false), 2000);
@@ -51,6 +53,7 @@ export function ProductDetailActions({
   }
 
   const total = product.display_price * quantity;
+  const belowMoq = caseQty ? quantity < caseQty : false;
 
   return (
     <div className="grid gap-5">
@@ -131,7 +134,7 @@ export function ProductDetailActions({
         <button
           className={`btn-primary gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
           type="button"
-          disabled={quantity <= 0}
+          disabled={quantity <= 0 || belowMoq}
           onClick={addToCart}
         >
           {added ? (
@@ -145,6 +148,12 @@ export function ProductDetailActions({
           Request Quote
         </button>
       </div>
+
+      {belowMoq && (
+        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-amber-800">
+          Minimum order is {caseQty} units (1 case). Increase the quantity to add this item.
+        </p>
+      )}
 
       {/* B2B note */}
       <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">

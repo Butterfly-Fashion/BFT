@@ -102,6 +102,7 @@ export type CartItem = {
   price?: number;
   imageUrl?: string | null;
   slug?: string;
+  caseQty?: number | null;
 };
 
 export type Order = {

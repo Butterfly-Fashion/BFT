@@ -52,27 +52,27 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
   const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
 
-  const padMap = useMemo(
-    () => new Map(cart.orderPadItems.map((i) => [i.productId, i.quantity])),
-    [cart.orderPadItems]
+  const cartMap = useMemo(
+    () => new Map(cart.items.map((i) => [i.productId, i.quantity])),
+    [cart.items]
   );
 
-  const selectedTotal = useMemo(
-    () => cart.orderPadItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0),
-    [cart.orderPadItems]
+  const cartTotal = useMemo(
+    () => cart.items.reduce((s, i) => s + (i.price || 0) * i.quantity, 0),
+    [cart.items]
   );
 
   function setQty(product: PricedProduct, value: string) {
     if (!isApproved) { router.push("/login?next=/products"); return; }
     const qty = Math.max(0, Math.min(9999, parseInt(value || "0") || 0));
-    cart.setOrderQty(
-      { productId: product.id, quantity: qty, name: product.name, sku: product.sku, price: product.display_price, imageUrl: product.image_url, slug: product.slug },
+    cart.setItem(
+      { productId: product.id, quantity: qty, name: product.name, sku: product.sku, price: product.display_price, imageUrl: product.image_url, slug: product.slug, caseQty: product.case_qty },
       qty
     );
   }
 
   function addCase(product: PricedProduct) {
-    const current = padMap.get(product.id) || 0;
+    const current = cartMap.get(product.id) || 0;
     setQty(product, String(current + (product.case_qty || 1)));
   }
 
@@ -89,28 +89,19 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
       {/* Cart summary bar */}
-      {cart.orderPadItems.length > 0 && (
+      {cart.items.length > 0 && (
         <div className="flex items-center justify-between border-b px-4 py-2.5" style={{ background: "var(--primary-light)", borderColor: "var(--primary-border)" }}>
-          <span className="text-sm font-semibold" style={{ color: "var(--primary)" }}>
-            {cart.orderPadCount} items selected · {formatMoney(selectedTotal)}
+          <span className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: "var(--primary)" }}>
+            <ShoppingCart size={13} />
+            {cart.count} items in cart · {formatMoney(cartTotal)}
           </span>
-          <div className="flex gap-2">
-            <button
-              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
-              style={{ background: "var(--primary)" }}
-              onClick={() => cart.addOrderPadToCart()}
-            >
-              <ShoppingCart size={13} />
-              Add to cart
-            </button>
-            <Link
-              href="/cart"
-              className="rounded-lg border px-3 py-1.5 text-sm font-semibold"
-              style={{ borderColor: "var(--primary-border)", color: "var(--primary)" }}
-            >
-              View cart
-            </Link>
-          </div>
+          <Link
+            href="/cart"
+            className="rounded-lg border px-3 py-1.5 text-sm font-semibold"
+            style={{ borderColor: "var(--primary-border)", color: "var(--primary)" }}
+          >
+            Review & submit
+          </Link>
         </div>
       )}
 
@@ -130,7 +121,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
           </thead>
           <tbody>
             {displayList.map((product) => {
-              const qty = padMap.get(product.id) || 0;
+              const qty = cartMap.get(product.id) || 0;
               const selected = qty > 0;
               return (
                 <tr key={product.id} className={selected ? "row-selected" : ""}>
@@ -191,6 +182,11 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                           </p>
                         )}
                       </div>
+                    ) : profile ? (
+                      <span className="flex items-center gap-1 text-sm text-amber-600">
+                        <Lock size={12} />
+                        Pending approval
+                      </span>
                     ) : (
                       <span className="flex items-center gap-1 text-sm text-gray-400">
                         <Lock size={12} />

@@ -32,11 +32,8 @@ const STOCK_LABEL: Record<string, string> = {
 
 function CartPanel({ isApproved }: { isApproved: boolean }) {
   const cart = useCart();
-  const padItems = cart.orderPadItems;
   const cartItems = cart.items;
-  const padTotal = padItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
   const cartTotal = cartItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
-  const hasAnything = padItems.length > 0 || cartItems.length > 0;
 
   if (!isApproved) return null;
 
@@ -52,41 +49,7 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
         </div>
 
         <div className="max-h-[55vh] overflow-y-auto">
-          {/* Order pad (staged items) */}
-          {padItems.length > 0 && (
-            <div>
-              <div className="sticky top-0 z-10 flex items-center justify-between border-b border-blue-100 bg-blue-50 px-4 py-1.5">
-                <p className="text-[10px] font-black uppercase tracking-wide text-blue-600">
-                  Selected · {cart.orderPadCount} units
-                </p>
-                <p className="text-xs font-black text-blue-800">{formatMoney(padTotal)}</p>
-              </div>
-              {padItems.map((item) => (
-                <div key={item.productId} className="grid grid-cols-[28px_1fr_auto] items-center gap-2 border-b border-blue-50 px-3 py-2 last:border-b-0">
-                  <ProductImage
-                    src={item.imageUrl}
-                    alt={item.name || ""}
-                    className="aspect-square rounded-md border border-blue-100 object-contain"
-                  />
-                  <div className="min-w-0">
-                    <p className="truncate text-[11px] font-bold text-gray-800">{item.name}</p>
-                    <p className="text-[10px] font-semibold text-blue-500">
-                      {item.price ? formatMoney(item.price) : "TBD"} × {item.quantity}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => cart.setOrderQty(item, 0)}
-                    className="text-gray-300 hover:text-red-400 transition-colors"
-                  >
-                    <X size={12} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Confirmed cart items */}
-          {cartItems.length > 0 && (
+          {cartItems.length > 0 ? (
             <div>
               <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-100 bg-gray-50 px-4 py-1.5">
                 <p className="text-[10px] font-black uppercase tracking-wide text-gray-500">
@@ -116,9 +79,7 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
                 </div>
               ))}
             </div>
-          )}
-
-          {!hasAnything && (
+          ) : (
             <div className="py-10 text-center">
               <Package size={20} className="mx-auto mb-2 text-gray-200" />
               <p className="text-xs font-semibold text-gray-400">Enter qty on a product to add</p>
@@ -126,27 +87,17 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
           )}
         </div>
 
-        <div className="border-t border-gray-100 p-3 space-y-2">
-          {padItems.length > 0 && (
-            <button
-              className="w-full flex items-center justify-center gap-1.5 rounded-lg py-2 text-sm font-bold text-white transition-colors"
-              style={{ background: "var(--primary)" }}
-              onClick={() => cart.addOrderPadToCart()}
-            >
-              <ShoppingCart size={13} />
-              Add {cart.orderPadCount} items to cart
-            </button>
-          )}
-          {cartItems.length > 0 && (
+        {cartItems.length > 0 && (
+          <div className="border-t border-gray-100 p-3">
             <Link
               href="/cart"
-              className="block w-full rounded-lg border py-2 text-center text-sm font-bold transition-colors hover:bg-gray-50"
-              style={{ borderColor: "var(--line)", color: "var(--primary)" }}
+              className="block w-full rounded-lg py-2 text-center text-sm font-bold text-white transition-colors"
+              style={{ background: "var(--primary)" }}
             >
               Review & submit cart →
             </Link>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </aside>
   );
@@ -156,45 +107,24 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
 
 function CartBottomBar({ isApproved }: { isApproved: boolean }) {
   const cart = useCart();
-  const padTotal = cart.orderPadItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
   const cartTotal = cart.items.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
-  const padCount = cart.orderPadCount;
   const cartCount = cart.count;
 
-  if (!isApproved || (padCount === 0 && cartCount === 0)) return null;
+  if (!isApproved || cartCount === 0) return null;
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 xl:hidden border-t border-gray-200 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
       <div className="container-shell flex items-center gap-3 py-2.5">
         <div className="flex-1 min-w-0 text-sm">
-          {padCount > 0 && (
-            <span className="font-bold text-blue-700">{padCount} selected · {formatMoney(padTotal)}</span>
-          )}
-          {padCount > 0 && cartCount > 0 && <span className="mx-1.5 text-gray-300">|</span>}
-          {cartCount > 0 && (
-            <span className="font-semibold text-gray-600">{cartCount} in cart · {formatMoney(cartTotal)}</span>
-          )}
+          <span className="font-semibold text-gray-600">{cartCount} in cart · {formatMoney(cartTotal)}</span>
         </div>
-        <div className="flex shrink-0 gap-2">
-          {padCount > 0 && (
-            <button
-              className="rounded-full px-4 py-2 text-xs font-bold text-white"
-              style={{ background: "var(--primary)" }}
-              onClick={() => cart.addOrderPadToCart()}
-            >
-              Add to cart
-            </button>
-          )}
-          {cartCount > 0 && (
-            <Link
-              href="/cart"
-              className="rounded-full border px-4 py-2 text-xs font-bold"
-              style={{ borderColor: "var(--primary-border)", color: "var(--primary)" }}
-            >
-              View cart
-            </Link>
-          )}
-        </div>
+        <Link
+          href="/cart"
+          className="shrink-0 rounded-full px-4 py-2 text-xs font-bold text-white"
+          style={{ background: "var(--primary)" }}
+        >
+          Review &amp; submit
+        </Link>
       </div>
     </div>
   );
@@ -207,15 +137,15 @@ export function ProductGalleryGrid({ products, profile }: Props) {
   const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
 
-  const padMap = useMemo(
-    () => new Map(cart.orderPadItems.map((i) => [i.productId, i.quantity])),
-    [cart.orderPadItems]
+  const cartMap = useMemo(
+    () => new Map(cart.items.map((i) => [i.productId, i.quantity])),
+    [cart.items]
   );
 
   function setQty(product: PricedProduct, value: string) {
     if (!isApproved) { router.push("/login?next=/products"); return; }
     const qty = Math.max(0, Math.min(9999, parseInt(value || "0") || 0));
-    cart.setOrderQty(
+    cart.setItem(
       {
         productId: product.id,
         quantity: qty,
@@ -224,13 +154,14 @@ export function ProductGalleryGrid({ products, profile }: Props) {
         price: product.display_price,
         imageUrl: product.image_url,
         slug: product.slug,
+        caseQty: product.case_qty,
       },
       qty
     );
   }
 
   function addCase(product: PricedProduct) {
-    const current = padMap.get(product.id) || 0;
+    const current = cartMap.get(product.id) || 0;
     setQty(product, String(current + (product.case_qty || 1)));
   }
 
@@ -250,7 +181,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
         {/* Cards */}
         <div className="flex-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
           {products.map((product) => {
-            const qty = padMap.get(product.id) || 0;
+            const qty = cartMap.get(product.id) || 0;
             const selected = qty > 0;
 
             return (
@@ -308,10 +239,14 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                       <div className="mt-0.5">
                         {isApproved ? (
                           <p className="text-xs font-black text-gray-900">{formatMoney(product.display_price)}</p>
-                        ) : (
-                          <span className="flex items-center gap-0.5 text-gray-400">
-                            <Lock size={9} /><span className="text-[10px] font-semibold">Login</span>
+                        ) : profile ? (
+                          <span className="flex items-center gap-0.5 text-amber-600">
+                            <Lock size={9} /><span className="text-[10px] font-semibold">Pending</span>
                           </span>
+                        ) : (
+                          <Link href="/login" className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-1 text-gray-400 hover:bg-gray-50 hover:underline">
+                            <Lock size={11} /><span className="text-[11px] font-semibold">Login</span>
+                          </Link>
                         )}
                       </div>
                     </div>
