@@ -754,8 +754,11 @@ export default function OrdersDashboard() {
           <div className="w-full md:w-105 shrink-0 border-l border-gray-200 bg-white flex flex-col overflow-hidden">
             {/* Panel header */}
             <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-              <div>
+              <div className="min-w-0">
                 <p className="font-mono text-sm font-bold text-gray-900">{selected.order_number}</p>
+                {selected.customer_name && (
+                  <p className="truncate text-sm font-semibold text-gray-700">{selected.customer_name}</p>
+                )}
                 <p className="text-xs text-gray-400">
                   {new Date(selected.created_at).toLocaleString("en-CA", {
                     dateStyle: "medium", timeStyle: "short",
@@ -783,9 +786,6 @@ export default function OrdersDashboard() {
                   )}
                   <StatusBadge status={selected.status} />
                 </div>
-                {selected.customer_name && (
-                  <p className="font-semibold text-gray-900">{selected.customer_name}</p>
-                )}
                 {selected.customer_email && (
                   <p className="text-sm text-gray-500">{selected.customer_email}</p>
                 )}
