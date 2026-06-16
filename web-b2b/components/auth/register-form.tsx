@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useActionState } from "react";
+import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { registerAction } from "@/app/actions";
 
@@ -169,7 +170,13 @@ export function RegisterForm() {
       {/* Terms */}
       <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm font-semibold text-slate-700">
         <input name="agree_to_terms" required type="checkbox" className="mt-0.5 shrink-0 accent-(--primary)" />
-        I agree to the terms and conditions of the Butterfly Fashion Trading B2B platform.
+        <span>
+          I agree to the{" "}
+          <Link href="/terms" target="_blank" className="font-black text-(--primary) hover:underline">Terms of Use</Link>
+          {" "}and{" "}
+          <Link href="/privacy" target="_blank" className="font-black text-(--primary) hover:underline">Privacy Policy</Link>
+          {" "}of the Butterfly Fashion Trading B2B platform.
+        </span>
       </label>
 
       {state?.error && (
