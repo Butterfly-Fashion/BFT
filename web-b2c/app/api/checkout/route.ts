@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_MESSAGE, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
 import { stripeClient, siteUrl } from "@/lib/stripe";
 import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import { applyJerseyTiers, JERSEY_KIT_SLUGS } from "@/lib/jersey-pricing";
@@ -61,6 +61,13 @@ export async function POST(req: NextRequest) {
 
   // Server-side authority on jersey volume pricing — never trust client prices for kits.
   const items = applyJerseyTiers(body.items);
+
+  // Shipping is reserved for $200+ orders (server-computed subtotal, can't be bypassed).
+  // Pickup is always allowed.
+  const serverSubtotal = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  if (deliveryMethod === "shipping" && serverSubtotal < SHIPPING_MIN_SUBTOTAL) {
+    return NextResponse.json({ error: SHIPPING_MIN_MESSAGE }, { status: 422 });
+  }
 
   try {
     const stripe = stripeClient();

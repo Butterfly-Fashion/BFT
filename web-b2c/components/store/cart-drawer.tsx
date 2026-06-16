@@ -5,7 +5,7 @@ import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { formatCAD, calculateTax } from "@/lib/money";
-import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import { countJerseyKits, jerseyTierFor, nextJerseyTier } from "@/lib/jersey-pricing";
@@ -21,6 +21,7 @@ export function CartDrawer({ open, onClose }: Props) {
   const pickupTotal = subtotal + pickupTax;
   const kitQty = countJerseyKits(items);
   const kitTierUp = nextJerseyTier(kitQty);
+  const amountToShipping = Math.max(0, SHIPPING_MIN_SUBTOTAL - subtotal);
 
   if (!open) return null;
 
@@ -193,6 +194,12 @@ export function CartDrawer({ open, onClose }: Props) {
                 <span className="font-bold text-gray-900">Pickup Total</span>
                 <span className="font-black text-lg text-brand">{formatCAD(pickupTotal)}</span>
               </div>
+
+              {CHECKOUT_ENABLED && amountToShipping > 0 && (
+                <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] leading-4 text-amber-900">
+                  📍 <b>Pickup only under {formatCAD(SHIPPING_MIN_SUBTOTAL)}.</b> Add {formatCAD(amountToShipping)} more to unlock shipping.
+                </p>
+              )}
 
               {/* CTAs */}
               <Link

@@ -6,7 +6,7 @@ import { Trash2 } from "lucide-react";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { calculateTax, formatCAD } from "@/lib/money";
-import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import { isSoldOut } from "@/lib/sold-out";
@@ -87,6 +87,8 @@ export default function CartPage() {
   const { items, pricedItems, removeItem, updateQuantity, subtotal } = useCart();
   const pickupTax = calculateTax(subtotal, "ON");
   const estimatedTotal = subtotal + pickupTax;
+  const amountToShipping = Math.max(0, SHIPPING_MIN_SUBTOTAL - subtotal);
+  const pickupOnly = amountToShipping > 0;
   const checkoutHref = CHECKOUT_ENABLED ? "/checkout" : "/cart";
   if (items.length === 0) {
     return (
@@ -219,10 +221,22 @@ export default function CartPage() {
                 </span>
               </div>
 
+              {CHECKOUT_ENABLED && pickupOnly && (
+                <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3">
+                  <p className="text-xs font-bold text-amber-900">📍 Pickup only under {formatCAD(SHIPPING_MIN_SUBTOTAL)}</p>
+                  <p className="mt-0.5 text-xs text-amber-800">
+                    Add <strong>{formatCAD(amountToShipping)}</strong> more to unlock shipping — or check out now with free local pickup.
+                  </p>
+                </div>
+              )}
+
               <Link
                 href={checkoutHref}
-                onClick={() => {
-                  if (!CHECKOUT_ENABLED) return;
+                onClick={(e) => {
+                  if (!CHECKOUT_ENABLED) {
+                    e.preventDefault();
+                    return;
+                  }
                   trackBeginCheckout({
                     value: estimatedTotal,
                     items: items.map((i) => ({
@@ -234,7 +248,11 @@ export default function CartPage() {
                     })),
                   });
                 }}
-                className="mt-5 block w-full py-3.5 bg-brand text-white font-semibold rounded-full text-center hover:bg-brand-hover transition-colors text-sm shadow-sm"
+                className={`mt-3 block w-full py-3.5 font-semibold rounded-full text-center text-sm shadow-sm transition-colors ${
+                  CHECKOUT_ENABLED
+                    ? "bg-brand text-white hover:bg-brand-hover"
+                    : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
               >
                 {CHECKOUT_ENABLED ? `Checkout - ${formatCAD(estimatedTotal)}` : "Checkout Paused"}
               </Link>

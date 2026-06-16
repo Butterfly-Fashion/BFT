@@ -7,7 +7,7 @@ import { formatCAD, calculateTax, getTaxLabel } from "@/lib/money";
 import { CANADIAN_PROVINCES, US_STATES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import type { ShippingRate } from "@/app/api/shipping-rates/route";
-import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-status";
+import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
 import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
@@ -72,6 +72,14 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const countryCode: "CA" | "US" = form.country === "United States" ? "US" : "CA";
+
+  // Orders under the threshold are pickup-only (no shipping) to cut packaging overhead.
+  const shippingLocked = subtotal < SHIPPING_MIN_SUBTOTAL;
+
+  // If the cart drops below the threshold while "shipping" is selected, fall back to pickup.
+  useEffect(() => {
+    if (shippingLocked && deliveryMethod === "shipping") setDeliveryMethod("pickup");
+  }, [shippingLocked, deliveryMethod]);
 
   function handleCountryChange(opt: typeof COUNTRY_OPTIONS[number]) {
     setForm((prev) => ({
@@ -163,6 +171,11 @@ export default function CheckoutPage() {
 
     if (items.length === 0) {
       setError("Your cart is empty.");
+      return;
+    }
+
+    if (shippingLocked && deliveryMethod === "shipping") {
+      setError(`Orders under ${formatCAD(SHIPPING_MIN_SUBTOTAL)} are pickup only. Please switch to Pickup.`);
       return;
     }
 
@@ -323,17 +336,29 @@ export default function CheckoutPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setDeliveryMethod("shipping")}
+                onClick={() => { if (!shippingLocked) setDeliveryMethod("shipping"); }}
+                disabled={shippingLocked}
                 className={`flex flex-col items-start gap-1 rounded-xl border-2 px-4 py-4 text-left transition-colors ${
-                  deliveryMethod === "shipping"
-                    ? "border-brand bg-red-50"
-                    : "border-gray-200 bg-white hover:border-gray-400"
+                  shippingLocked
+                    ? "border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed"
+                    : deliveryMethod === "shipping"
+                      ? "border-brand bg-red-50"
+                      : "border-gray-200 bg-white hover:border-gray-400"
                 }`}
               >
                 <span className="text-sm font-bold text-gray-900">Shipping</span>
-                <span className="text-xs text-gray-500">Carrier rates calculated by address</span>
+                <span className="text-xs text-gray-500">
+                  {shippingLocked
+                    ? `Available on ${formatCAD(SHIPPING_MIN_SUBTOTAL)}+ orders`
+                    : "Carrier rates calculated by address"}
+                </span>
               </button>
             </div>
+            {shippingLocked && (
+              <p className="mt-2 text-xs text-amber-800 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
+                📍 Orders under {formatCAD(SHIPPING_MIN_SUBTOTAL)} are <strong>pickup only</strong>. Add more items to unlock shipping.
+              </p>
+            )}
           </fieldset>
 
           {/* Pickup address info */}
