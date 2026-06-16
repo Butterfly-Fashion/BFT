@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake } from "lucide-react";
@@ -8,6 +9,13 @@ import { getCurrentProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Butterfly Fashion Trading — over 30 years supplying Canadian retailers from our Toronto warehouse with wholesale variety, novelty, and fan merchandise.",
+  alternates: { canonical: "/about" },
+};
 
 const CATEGORY_GROUPS = [
   {

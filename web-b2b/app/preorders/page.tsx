@@ -1,9 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, ClipboardList, Lock, Package } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { getCurrentProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "Pre-orders",
+  description:
+    "Reserve upcoming wholesale drops before they land. Pre-order campaigns for approved B2B accounts at Butterfly Fashion Trading, Toronto.",
+  alternates: { canonical: "/preorders" },
+};
 import { PreorderList, type PreorderItem } from "./preorder-list";
 
 export const dynamic = "force-dynamic";

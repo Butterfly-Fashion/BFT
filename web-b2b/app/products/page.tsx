@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
 import { Header } from "@/components/store/header";
@@ -12,6 +13,13 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Wholesale Catalog",
+  description:
+    "Browse the Butterfly Fashion Trading wholesale catalog — variety, novelty, and fan merchandise with Item Codes, MOQ from one case, and B2B pricing for approved accounts. Ships from Toronto across Canada & the USA.",
+  alternates: { canonical: "/products" },
+};
 
 export default async function ProductsPage({
   searchParams,
