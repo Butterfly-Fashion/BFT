@@ -29,6 +29,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const [product] = await applyCustomerPrices([data as Product], profile);
 
   const isApproved = profile?.is_b2b_approved ?? false;
+  const availabilityLabel =
+    product.availability_status === "Manual Confirm" ? "Pre-order" : product.availability_status;
   const hasDimensions = product.weight_kg || product.box_length_cm || product.box_width_cm || product.box_height_cm;
 
   return (
@@ -85,7 +87,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             {/* Availability + stock */}
             <div className="flex flex-wrap items-center gap-2">
               <span className={`badge ${availabilityStyle(product.availability_status)}`}>
-                {product.availability_status}
+                {availabilityLabel}
               </span>
               {(product as any).stock_qty != null && (
                 <span className="badge border-slate-200 bg-slate-50 text-slate-600">
