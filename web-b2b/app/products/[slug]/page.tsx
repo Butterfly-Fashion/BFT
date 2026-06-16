@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock } from "lucide-react";
+import { ChevronLeft, ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock, CalendarClock } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { ProductDetailActions } from "@/components/store/product-detail-actions";
@@ -62,9 +62,24 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const [product] = await applyCustomerPrices([data as Product], profile);
 
   const isApproved = profile?.is_b2b_approved ?? false;
-  const availabilityLabel =
-    product.availability_status === "Manual Confirm" ? "Pre-order" : product.availability_status;
+  const isPreorder = product.availability_status === "Manual Confirm";
+  const availabilityLabel = isPreorder ? "Pre-order" : product.availability_status;
   const hasDimensions = product.weight_kg || product.box_length_cm || product.box_width_cm || product.box_height_cm;
+
+  // Deep-link approved buyers to the open campaign for this item (RLS hides
+  // campaigns from non-approved accounts, so they get the generic /preorders).
+  const { data: openCampaign } =
+    isPreorder && isApproved
+      ? await supabase
+          .from("preorder_campaigns")
+          .select("id")
+          .eq("product_id", data.id)
+          .eq("status", "open")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle()
+      : { data: null };
+  const preorderHref = openCampaign ? `/preorders#campaign-${openCampaign.id}` : "/preorders";
 
   const base = siteUrl();
   const productJsonLd = {
@@ -157,6 +172,23 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 </span>
               )}
             </div>
+
+            {/* Pre-order CTA — closes the funnel from out-of-stock items */}
+            {isPreorder && (
+              <Link
+                href={preorderHref}
+                className="flex items-center justify-between gap-3 rounded-xl border border-(--primary-border) bg-(--primary-light) px-4 py-3 transition-opacity hover:opacity-90"
+              >
+                <div className="flex items-center gap-2.5">
+                  <CalendarClock size={16} className="shrink-0" style={{ color: "var(--primary)" }} />
+                  <div>
+                    <p className="text-sm font-bold text-slate-900">Available to pre-order</p>
+                    <p className="text-xs text-slate-500">Reserve cases now — no payment until we confirm demand.</p>
+                  </div>
+                </div>
+                <span className="shrink-0 text-sm font-black" style={{ color: "var(--primary)" }}>Reserve →</span>
+              </Link>
+            )}
 
             {/* Pricing block */}
             <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">

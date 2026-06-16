@@ -4,7 +4,7 @@ import { CheckCircle2, ClipboardList, Lock, Package } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { getCurrentProfile } from "@/lib/auth";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Pre-orders",
@@ -41,6 +41,21 @@ export default async function PreordersPage() {
 
   const commitMap = new Map((myCommitments || []).map((c) => [c.campaign_id, c]));
 
+  // Aggregate demand across all buyers (one commitment row per buyer per campaign).
+  // Queried with the admin client so the count is server-computed; only the
+  // buyer count — never per-buyer data — is sent to the client.
+  const { data: allCommits } =
+    isApproved && campaignIds.length
+      ? await createSupabaseAdminClient()
+          .from("preorder_commitments")
+          .select("campaign_id")
+          .in("campaign_id", campaignIds)
+      : { data: null };
+  const buyerCountMap = new Map<string, number>();
+  for (const c of allCommits || []) {
+    buyerCountMap.set(c.campaign_id, (buyerCountMap.get(c.campaign_id) ?? 0) + 1);
+  }
+
   // Flatten campaigns into serializable items for the client search list
   const list = campaigns || [];
   const items: PreorderItem[] = list.map((campaign) => {
@@ -51,6 +66,7 @@ export default async function PreordersPage() {
       id: campaign.id,
       title: campaign.title ?? null,
       name: product?.name ?? campaign.title ?? "",
+      description: campaign.description?.trim() || null,
       sku: product?.sku ?? null,
       imageUrl: product?.image_url ?? null,
       category: product?.category ?? "Other",
@@ -59,6 +75,7 @@ export default async function PreordersPage() {
       unitPrice: campaign.unit_price,
       closesAt: campaign.closes_at ?? null,
       committedQty: myCommit ? myCommit.quantity : null,
+      buyerCount: buyerCountMap.get(campaign.id) ?? 0,
     };
   });
 
@@ -113,6 +130,31 @@ export default async function PreordersPage() {
 
         {isApproved && (
           <>
+            {/* How it works — 3 steps, no payment now */}
+            <div className="mb-6 rounded-2xl border border-slate-100 bg-slate-50 p-5">
+              <p className="mb-4 text-xs font-black uppercase tracking-widest text-slate-500">How pre-orders work</p>
+              <ol className="grid gap-4 sm:grid-cols-3">
+                {[
+                  { n: 1, t: "Reserve a quantity", d: "Enter how many cases you'd take. No payment now — it's a non-binding commitment." },
+                  { n: 2, t: "We confirm demand", d: "Once the campaign closes, we place the wholesale order based on total demand." },
+                  { n: 3, t: "We invoice you", d: "You get an email to finalize and pay only the cases we confirm." },
+                ].map((s) => (
+                  <li key={s.n} className="flex gap-3">
+                    <span
+                      className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-xs font-black text-white"
+                      style={{ background: "var(--primary)" }}
+                    >
+                      {s.n}
+                    </span>
+                    <div>
+                      <p className="text-sm font-bold text-slate-900">{s.t}</p>
+                      <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{s.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
             {/* Committed summary bar */}
             {totalCommitted > 0 && (
               <div className="mb-6 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3">

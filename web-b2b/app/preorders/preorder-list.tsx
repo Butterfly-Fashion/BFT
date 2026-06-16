@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CalendarClock, CheckCircle2, Package, Search } from "lucide-react";
+import { CalendarClock, CheckCircle2, Package, Search, Users } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import { submitPreorderCommitmentAction } from "@/app/actions";
 
@@ -9,6 +9,7 @@ export interface PreorderItem {
   id: string;
   title: string | null;
   name: string;
+  description: string | null;
   sku: string | null;
   imageUrl: string | null;
   category: string;
@@ -17,6 +18,12 @@ export interface PreorderItem {
   unitPrice: number;
   closesAt: string | null;
   committedQty: number | null;
+  buyerCount: number;
+}
+
+/** Days until close (rounded up). Negative if already past. */
+function daysUntil(date: Date): number {
+  return Math.ceil((date.getTime() - Date.now()) / 86_400_000);
 }
 
 export function PreorderList({ items }: { items: PreorderItem[] }) {
@@ -87,12 +94,14 @@ export function PreorderList({ items }: { items: PreorderItem[] }) {
                 const committedCases = item.committedQty ? Math.round(item.committedQty / item.caseQty) : 0;
                 const closesAt = item.closesAt ? new Date(item.closesAt) : null;
                 const isExpired = closesAt ? closesAt < new Date() : false;
+                const daysLeft = closesAt && !isExpired ? daysUntil(closesAt) : null;
                 const hasCommit = item.committedQty != null;
 
                 return (
                   <div
                     key={item.id}
-                    className={`flex items-start gap-4 px-4 py-4 ${idx !== 0 ? "border-t border-slate-100" : ""} ${hasCommit ? "bg-emerald-50/40" : ""}`}
+                    id={`campaign-${item.id}`}
+                    className={`flex scroll-mt-24 items-start gap-4 px-4 py-4 ${idx !== 0 ? "border-t border-slate-100" : ""} ${hasCommit ? "bg-emerald-50/40" : ""}`}
                   >
                     <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-slate-50">
                       {item.imageUrl ? (
@@ -118,7 +127,13 @@ export function PreorderList({ items }: { items: PreorderItem[] }) {
                           </p>
                           <div className="mt-0.5 flex flex-wrap items-center gap-2">
                             <span className="font-mono text-[11px] text-slate-400">{item.sku}</span>
-                            {closesAt && !isExpired && (
+                            {daysLeft != null && daysLeft <= 3 && (
+                              <span className="flex items-center gap-1 rounded-full bg-red-50 px-1.5 py-0.5 text-[11px] font-bold text-red-600">
+                                <CalendarClock size={10} />
+                                {daysLeft <= 0 ? "Closes today" : `Closes in ${daysLeft} day${daysLeft !== 1 ? "s" : ""}`}
+                              </span>
+                            )}
+                            {daysLeft != null && daysLeft > 3 && closesAt && (
                               <span className="flex items-center gap-1 text-[11px] font-semibold text-amber-600">
                                 <CalendarClock size={10} />
                                 Closes {closesAt.toLocaleDateString("en-CA", { month: "short", day: "numeric" })}
@@ -138,6 +153,16 @@ export function PreorderList({ items }: { items: PreorderItem[] }) {
                           </p>
                         </div>
                       </div>
+
+                      {item.description && (
+                        <p className="mt-2 text-xs leading-relaxed text-slate-500">{item.description}</p>
+                      )}
+                      {item.buyerCount > 0 && (
+                        <p className="mt-1.5 flex items-center gap-1 text-[11px] font-semibold text-slate-400">
+                          <Users size={10} />
+                          {item.buyerCount} {item.buyerCount === 1 ? "business has" : "businesses have"} reserved
+                        </p>
+                      )}
 
                       <div className="mt-3">
                         {hasCommit && (
@@ -170,6 +195,7 @@ export function PreorderList({ items }: { items: PreorderItem[] }) {
                             >
                               {hasCommit ? "Update" : "Commit"}
                             </button>
+                            <span className="text-[11px] font-semibold text-slate-400">No payment now</span>
                           </form>
                         )}
                       </div>
