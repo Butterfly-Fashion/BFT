@@ -16,6 +16,7 @@ export function ProductDetailActions({
 }) {
   const cart = useCart();
   const router = useRouter();
+  const isApproved = profile?.is_b2b_approved ?? false;
   const [quantity, setQuantity] = useState(product.case_qty || 1);
   const [added, setAdded] = useState(false);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -54,6 +55,23 @@ export function ProductDetailActions({
 
   const total = product.display_price * quantity;
   const belowMoq = caseQty ? quantity < caseQty : false;
+
+  // Pricing and ordering are gated to approved B2B accounts.
+  if (!isApproved) {
+    return (
+      <div className="grid gap-3">
+        <button className="btn-secondary gap-2 py-3 text-sm" type="button" onClick={requestQuote}>
+          <FileText size={16} />
+          Request Quote
+        </button>
+        <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
+          {profile
+            ? "Your B2B account is pending approval — wholesale pricing and ordering unlock once approved."
+            : "Sign in or register with an approved B2B account to see wholesale pricing and place orders."}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-5">

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock } from "lucide-react";
@@ -10,9 +11,41 @@ import { availabilityStyle } from "@/lib/availability";
 import { formatMoney } from "@/lib/money";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { siteUrl } from "@/lib/env";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("products")
+    .select("name, sku, category, description, image_url, case_qty")
+    .eq("slug", slug)
+    .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"])
+    .single();
+  if (!data) return { title: "Product" };
+
+  const moq = data.case_qty ? `MOQ ${data.case_qty} units` : "wholesale";
+  const title = `${data.name} — ${data.category} Wholesale`;
+  const description =
+    (data.description?.trim().slice(0, 155)) ||
+    `${data.name} (${data.category}) wholesale — Item Code ${data.sku}, ${moq}. Order from Butterfly Fashion Trading, Toronto.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `/products/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `/products/${slug}`,
+      images: data.image_url ? [data.image_url] : undefined,
+    },
+  };
+}
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -33,8 +66,32 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     product.availability_status === "Manual Confirm" ? "Pre-order" : product.availability_status;
   const hasDimensions = product.weight_kg || product.box_length_cm || product.box_width_cm || product.box_height_cm;
 
+  const base = siteUrl();
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    sku: product.sku,
+    category: product.category,
+    ...(product.image_url ? { image: [product.image_url] } : {}),
+    ...(product.description ? { description: product.description } : {}),
+    brand: { "@type": "Brand", name: "Butterfly Fashion Trading" },
+  };
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: base },
+      { "@type": "ListItem", position: 2, name: "Products", item: `${base}/products` },
+      { "@type": "ListItem", position: 3, name: product.category, item: `${base}/products?category=${encodeURIComponent(product.category)}` },
+      { "@type": "ListItem", position: 4, name: product.name, item: `${base}/products/${product.slug}` },
+    ],
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <Header profile={profile} />
       <main className="container-shell py-4 sm:py-6">
         {/* Back button */}
@@ -109,12 +166,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 </p>
               </div>
               <div className="divide-y divide-slate-100">
-                <div className="flex items-center justify-between px-4 py-3">
-                  <div>
-                    <p className="text-xs font-semibold text-slate-500">Unit price / ea</p>
+                {isApproved && (
+                  <div className="flex items-center justify-between px-4 py-3">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-500">Unit price / ea</p>
+                    </div>
+                    <strong className="text-2xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
                   </div>
-                  <strong className="text-2xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
-                </div>
+                )}
                 {isApproved && product.display_case_price && product.case_qty && (
                   <div className="flex items-center justify-between bg-slate-50 px-4 py-3">
                     <div>
