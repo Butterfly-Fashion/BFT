@@ -102,7 +102,7 @@ const FAQ_SECTIONS: FaqSection[] = [
     items: [
       {
         q: "What product categories do you carry?",
-        a: "We carry world cup and fan gear (car flags, caps, bucket hats, boxing gloves), seasonal and winter items (gloves, toques, scarves), vape and smoke shop supplies, and trending accessories. New products are added regularly.",
+        a: "We carry seasonal and winter items (gloves, toques, scarves, masks), novelty and fidget toys, vape and smoke shop supplies (rolling papers and more), and trending variety accessories. New products are added regularly.",
       },
       {
         q: "What is a Pre-order Campaign?",

@@ -44,7 +44,7 @@ export default async function NewPreorderCampaignPage() {
 
               <label className="label">
                 Campaign title
-                <input className="field" name="title" required placeholder="e.g. FIFA 2026 Car Flag — Pre-order" />
+                <input className="field" name="title" required placeholder="e.g. Winter Gloves Restock — Pre-order" />
               </label>
 
               <label className="label">

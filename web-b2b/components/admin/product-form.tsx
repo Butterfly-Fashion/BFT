@@ -9,15 +9,14 @@ import type { Category } from "@/lib/category-utils";
 import { buildCategoryTree } from "@/lib/category-utils";
 
 const FALLBACK_CATEGORIES: Category[] = [
-  { id: "1", name: "Car Flags", slug: "car-flags", sort_order: 1, is_active: true, parent_id: null },
-  { id: "2", name: "Caps", slug: "caps", sort_order: 2, is_active: true, parent_id: null },
-  { id: "3", name: "Bucket Hats", slug: "bucket-hats", sort_order: 3, is_active: true, parent_id: null },
-  { id: "4", name: "Boxing Gloves", slug: "boxing-gloves", sort_order: 4, is_active: true, parent_id: null },
+  { id: "1", name: "Winter Gloves", slug: "winter-gloves", sort_order: 1, is_active: true, parent_id: null },
+  { id: "2", name: "Winter Hats", slug: "winter-hats", sort_order: 2, is_active: true, parent_id: null },
+  { id: "3", name: "Winter Masks", slug: "winter-masks", sort_order: 3, is_active: true, parent_id: null },
+  { id: "4", name: "Fidget Toy", slug: "fidget-toy", sort_order: 4, is_active: true, parent_id: null },
   { id: "5", name: "Rolling Papers", slug: "rolling-papers", sort_order: 5, is_active: true, parent_id: null },
   { id: "6", name: "Bongs & Pipes", slug: "bongs-pipes", sort_order: 6, is_active: true, parent_id: null },
   { id: "7", name: "Lighters", slug: "lighters", sort_order: 7, is_active: true, parent_id: null },
-  { id: "8", name: "Winter Items", slug: "winter-items", sort_order: 8, is_active: true, parent_id: null },
-  { id: "9", name: "Accessories", slug: "accessories", sort_order: 9, is_active: true, parent_id: null },
+  { id: "8", name: "Accessories", slug: "accessories", sort_order: 8, is_active: true, parent_id: null },
 ];
 
 /** Resize image to max 1200px on longest side, convert to JPEG 85% quality */
@@ -398,7 +397,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
             <div className="grid gap-4">
               <label className="label">
                 Product name <span className="text-red-500">*</span>
-                <input className="field" name="name" defaultValue={product?.name || ""} required placeholder="e.g. Canada Car Flag" />
+                <input className="field" name="name" defaultValue={product?.name || ""} required placeholder="e.g. Fleece Winter Gloves" />
               </label>
 
               <label className="label">

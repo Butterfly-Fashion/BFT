@@ -7,11 +7,11 @@ import type { Category, CategoryTree } from "@/lib/category-utils";
 import { buildCategoryTree } from "@/lib/category-utils";
 
 const FALLBACK: CategoryTree[] = [
-  { id: "1", name: "Car Flags", slug: "car-flags", sort_order: 1, is_active: true, parent_id: null, children: [] },
-  { id: "2", name: "Caps", slug: "caps", sort_order: 2, is_active: true, parent_id: null, children: [] },
-  { id: "3", name: "Bucket Hats", slug: "bucket-hats", sort_order: 3, is_active: true, parent_id: null, children: [] },
-  { id: "4", name: "Boxing Gloves", slug: "boxing-gloves", sort_order: 4, is_active: true, parent_id: null, children: [] },
-  { id: "5", name: "Accessories", slug: "accessories", sort_order: 5, is_active: true, parent_id: null, children: [] },
+  { id: "1", name: "Winter Gloves", slug: "winter-gloves", sort_order: 1, is_active: true, parent_id: null, children: [] },
+  { id: "2", name: "Winter Hats", slug: "winter-hats", sort_order: 2, is_active: true, parent_id: null, children: [] },
+  { id: "3", name: "Winter Masks", slug: "winter-masks", sort_order: 3, is_active: true, parent_id: null, children: [] },
+  { id: "4", name: "Fidget Toy", slug: "fidget-toy", sort_order: 4, is_active: true, parent_id: null, children: [] },
+  { id: "5", name: "Rolling Papers", slug: "rolling-papers", sort_order: 5, is_active: true, parent_id: null, children: [] },
 ];
 
 export function CatalogFilterSidebar({ productCount, categories }: { productCount: number; categories?: Category[] }) {

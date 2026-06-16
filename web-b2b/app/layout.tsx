@@ -13,7 +13,7 @@ import { siteUrl } from "@/lib/env";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const DESCRIPTION =
-  "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, rolling papers, plus World Cup 2026 fan gear. Register for wholesale pricing — MOQ from one case, ships across Canada & the USA.";
+  "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, rolling papers, and trending variety goods. Register for wholesale pricing — MOQ from one case, ships across Canada & the USA.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),

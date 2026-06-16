@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Butterfly Fashion Trading — over 30 years supplying Canadian retailers from our Toronto warehouse with wholesale variety, novelty, and fan merchandise.",
+    "Butterfly Fashion Trading — over 30 years supplying Canadian retailers from our Toronto warehouse with wholesale variety, novelty, seasonal, and smoke-shop goods.",
   alternates: { canonical: "/about" },
 };
 

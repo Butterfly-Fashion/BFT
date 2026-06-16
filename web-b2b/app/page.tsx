@@ -44,14 +44,14 @@ export default async function HomePage() {
         <section className="border-b border-gray-200 bg-white">
           <div className="container-shell py-12 sm:py-16">
             <div className="max-w-2xl">
-              <span className="section-label">Toronto Wholesale · World Cup 2026</span>
+              <span className="section-label">Toronto Wholesale · Variety & Novelty Goods</span>
               <h1 className="mt-3 text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl">
-                Wholesale fan merchandise<br />
+                Wholesale variety &amp; novelty goods<br />
                 <span style={{ color: "var(--primary)" }}>for Canadian retailers.</span>
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-gray-500">
-                Bulk car flags, caps, bucket hats, boxing gloves, and fan gear.
-                Direct from our Toronto warehouse to retailers, event buyers, and resellers across Canada and the USA.
+                Bulk winter accessories, novelty &amp; fidget toys, rolling papers, and trending variety goods.
+                Direct from our Toronto warehouse to retailers, convenience stores, and resellers across Canada and the USA.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/products">

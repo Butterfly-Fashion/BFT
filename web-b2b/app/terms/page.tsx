@@ -52,15 +52,6 @@ export default async function TermsPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Affiliation</h2>
-            <p className="mt-2">
-              Our merchandise is inspired by soccer fan culture and the 2026 tournament season. We are
-              not affiliated with FIFA or any official organizing body unless explicitly stated on a
-              product page.
-            </p>
-          </div>
-
-          <div>
             <h2 className="text-lg font-bold text-gray-900">Contact</h2>
             <p className="mt-2">
               Questions about these terms? Reach us at{" "}
