@@ -12,6 +12,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   turbopack: {
     root: __dirname,
   },
@@ -41,6 +42,12 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: securityHeaders,
       },
+    ];
+  },
+  async redirects() {
+    return [
+      { source: "/pre-orders", destination: "/preorders", permanent: true },
+      { source: "/pre-orders/:path*", destination: "/preorders", permanent: true },
     ];
   },
 };
