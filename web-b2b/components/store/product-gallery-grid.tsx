@@ -169,7 +169,14 @@ export function ProductGalleryGrid({ products, profile }: Props) {
     return (
       <div className="rounded-xl border border-dashed border-gray-200 bg-white py-20 text-center">
         <Package size={28} className="mx-auto mb-3 text-gray-300" />
-        <p className="font-semibold text-gray-400">No products match your filters.</p>
+        <p className="font-semibold text-gray-500">No products match your filters.</p>
+        <button
+          onClick={() => router.push("/products")}
+          className="mt-4 rounded-lg border px-4 py-2 text-sm font-semibold transition-colors hover:bg-gray-50"
+          style={{ borderColor: "var(--line)", color: "var(--primary)" }}
+        >
+          Clear filters
+        </button>
       </div>
     );
   }
@@ -215,6 +222,8 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   <span
                     className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full ring-2 ring-white"
                     style={{ background: STOCK_COLOR[product.availability_status] ?? "#9CA3AF" }}
+                    title={STOCK_LABEL[product.availability_status] ?? product.availability_status}
+                    aria-label={STOCK_LABEL[product.availability_status] ?? product.availability_status}
                   />
                 </Link>
 
@@ -229,19 +238,19 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   {/* Info grid */}
                   <div className="grid grid-cols-3 gap-x-1 gap-y-1.5 border-t border-gray-100 pt-2">
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-wide text-gray-400">MOQ</p>
-                      <p className="mt-0.5 text-xs font-semibold text-gray-700">
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">MOQ</p>
+                      <p className="mt-0.5 text-sm font-semibold text-gray-900">
                         {product.case_qty ? `${product.case_qty}` : <span className="text-gray-400">—</span>}
                       </p>
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-wide text-gray-400">Price/ea</p>
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">Price/ea</p>
                       <div className="mt-0.5">
                         {isApproved ? (
-                          <p className="text-xs font-black text-gray-900">{formatMoney(product.display_price)}</p>
+                          <p className="text-sm font-black text-gray-900">{formatMoney(product.display_price)}</p>
                         ) : profile ? (
-                          <span className="flex items-center gap-0.5 text-amber-600">
-                            <Lock size={9} /><span className="text-[10px] font-semibold">Pending</span>
+                          <span className="flex items-center gap-1 text-amber-700">
+                            <Lock size={11} /><span className="text-[11px] font-semibold">Pending</span>
                           </span>
                         ) : (
                           <Link href="/login" className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-1 text-gray-400 hover:bg-gray-50 hover:underline">
@@ -251,8 +260,8 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                       </div>
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold uppercase tracking-wide text-gray-400">Stock</p>
-                      <p className="mt-0.5 text-xs font-semibold" style={{ color: STOCK_COLOR[product.availability_status] ?? "#9CA3AF" }}>
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">Stock</p>
+                      <p className="mt-0.5 text-sm font-semibold" style={{ color: STOCK_COLOR[product.availability_status] ?? "#9CA3AF" }}>
                         {STOCK_LABEL[product.availability_status] ?? "—"}
                       </p>
                     </div>
@@ -261,7 +270,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   {/* Qty input (approved only) */}
                   {isApproved && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
-                      <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-gray-400">
+                      <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-500">
                         Qty{product.case_qty ? ` · 1cs = ${product.case_qty}ea` : ""}
                       </p>
                       <div className="flex items-center gap-1.5">

@@ -79,7 +79,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
   if (!products.length) {
     return (
       <div className="rounded-xl border border-dashed border-gray-200 bg-white py-14 text-center">
-        <p className="font-semibold text-gray-400">No products match your filters.</p>
+        <p className="font-semibold text-gray-500">No products match your filters.</p>
       </div>
     );
   }
@@ -143,7 +143,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                           {product.name}
                         </Link>
                         {product.country && (
-                          <span className="text-xs text-gray-400">{product.country}</span>
+                          <span className="text-xs text-gray-500">{product.country}</span>
                         )}
                       </div>
                     </div>
@@ -160,9 +160,9 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                   {/* MOQ */}
                   <td className="whitespace-nowrap text-sm text-gray-600">
                     {product.case_qty ? (
-                      <span>{product.case_qty} <span className="text-gray-400">units</span></span>
+                      <span>{product.case_qty} <span className="text-gray-500">units</span></span>
                     ) : (
-                      <span className="text-gray-400">—</span>
+                      <span className="text-gray-500">—</span>
                     )}
                   </td>
 
@@ -177,18 +177,18 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                           </span>
                         )}
                         {product.display_case_price && product.case_qty && (
-                          <p className="mt-0.5 text-xs text-gray-400">
+                          <p className="mt-0.5 text-xs text-gray-500">
                             {formatMoney(product.display_case_price)}/case
                           </p>
                         )}
                       </div>
                     ) : profile ? (
-                      <span className="flex items-center gap-1 text-sm text-amber-600">
+                      <span className="flex items-center gap-1 text-sm text-amber-700">
                         <Lock size={12} />
                         Pending approval
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 text-sm text-gray-400">
+                      <span className="flex items-center gap-1 text-sm text-gray-500">
                         <Lock size={12} />
                         <Link href="/login" className="hover:underline">Login</Link>
                       </span>
