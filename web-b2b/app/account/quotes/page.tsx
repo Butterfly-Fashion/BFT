@@ -104,7 +104,7 @@ export default async function AccountQuotesPage({
               quoteList.map((quote) => (
                 <article className="card p-4" key={quote.id}>
                   <div className="flex items-center justify-between gap-3">
-                    <StatusBadge status={quote.status} />
+                    <StatusBadge status={quote.status} type="quote" />
                     <span className="text-[11px] font-semibold text-slate-400">
                       {new Date(quote.created_at).toLocaleDateString("en-CA", {
                         year: "numeric", month: "short", day: "numeric",
