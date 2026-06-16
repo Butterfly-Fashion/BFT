@@ -473,9 +473,15 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
           )}
 
           {deliveryMethod === "Pickup" && (
-            <p className="text-xs font-semibold text-slate-400">
-              We will confirm pickup location and timing after review.
-            </p>
+            <div className="flex items-start gap-2 text-sm">
+              <MapPin size={14} className="mt-0.5 shrink-0 text-slate-400" />
+              <div>
+                <p className="font-semibold text-slate-800">178 Bentworth Ave, North York, ON M6A 1P7</p>
+                <p className="mt-0.5 text-xs font-semibold text-slate-500">
+                  Mon–Fri · 9 AM – 5 PM ET — we confirm exact pickup timing after review.
+                </p>
+              </div>
+            </div>
           )}
         </div>
 
@@ -522,6 +528,11 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
                   Qty {item.quantity}
                   {item.sku && <> · {item.sku}</>}
                 </p>
+                {item.caseQty && item.quantity < item.caseQty && (
+                  <p className="mt-0.5 text-[11px] font-bold text-red-600">
+                    Below minimum — order at least {item.caseQty} (1 case)
+                  </p>
+                )}
               </div>
               <span className="shrink-0 text-sm font-black">
                 {item.price ? formatMoney(item.price * item.quantity) : "TBD"}
