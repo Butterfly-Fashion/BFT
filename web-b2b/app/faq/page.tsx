@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
 import { FaqAccordion } from "@/components/store/faq-accordion";
 import { getCurrentProfile } from "@/lib/auth";
@@ -180,6 +181,7 @@ export default async function FaqPage() {
           </div>
         </div>
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

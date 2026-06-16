@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { ProductGalleryGrid } from "@/components/store/product-gallery-grid";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
@@ -164,6 +165,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
           </section>
         )}
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

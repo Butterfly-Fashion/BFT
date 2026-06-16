@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, Lock, ShoppingBag } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
@@ -257,6 +258,7 @@ export default async function LookbookPage() {
           </div>
         </div>
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -347,6 +348,7 @@ export default async function AboutPage() {
         </section>
 
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

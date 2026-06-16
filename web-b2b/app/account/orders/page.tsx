@@ -6,6 +6,7 @@ import { requireProfile } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
+import { Footer } from "@/components/store/footer";
 
 export const dynamic = "force-dynamic";
 
@@ -158,6 +159,7 @@ export default async function AccountOrdersPage() {
           </div>
         )}
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

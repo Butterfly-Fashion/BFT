@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, MapPin, Truck, Package2, ShieldCheck, FileText, Tag } from "lucide-react";
 import { BackToTop } from "@/components/store/back-to-top";
+import { Footer } from "@/components/store/footer";
 import { Header } from "@/components/store/header";
 import { ProductCatalogTable } from "@/components/store/product-catalog-table";
 import { SetupRequired } from "@/components/setup-required";
@@ -234,6 +235,7 @@ export default async function HomePage() {
         </section>
 
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

@@ -7,6 +7,7 @@ import { requireProfile } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
+import { Footer } from "@/components/store/footer";
 import { ReorderButton } from "@/components/store/reorder-button";
 
 export const dynamic = "force-dynamic";
@@ -248,6 +249,7 @@ export default async function AccountOrderDetailPage({
           </div>
         </div>
       </main>
+      <Footer />
       <BackToTop />
     </>
   );

@@ -1,4 +1,5 @@
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { OrderRequestForm } from "@/components/store/order-request-form";
 import { requireProfile } from "@/lib/auth";
 import { Truck } from "lucide-react";
@@ -23,7 +24,7 @@ export default async function CheckoutPage() {
           <p className="section-label">Order</p>
           <h1 className="mt-1 flex items-center gap-3 text-3xl font-black text-slate-900">
             <Truck size={26} />
-            Checkout
+            Review &amp; request order
           </h1>
           <p className="mt-2 text-sm font-medium text-slate-600">
             Choose fulfillment, add any notes, and submit your request.
@@ -33,6 +34,7 @@ export default async function CheckoutPage() {
         </div>
         <OrderRequestForm defaultAddress={defaultAddress} />
       </main>
+      <Footer />
     </>
   );
 }

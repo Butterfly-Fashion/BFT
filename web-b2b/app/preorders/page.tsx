@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckCircle2, ClipboardList, Lock, Package } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { getCurrentProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { PreorderList, type PreorderItem } from "./preorder-list";
@@ -137,6 +138,7 @@ export default async function PreordersPage() {
           </>
         )}
       </main>
+      <Footer />
     </>
   );
 }

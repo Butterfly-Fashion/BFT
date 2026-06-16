@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ChevronRight, Tag, Package, MapPin, Clock, Ruler, Lock } from "lucide-react";
 import { Header } from "@/components/store/header";
+import { Footer } from "@/components/store/footer";
 import { ProductDetailActions } from "@/components/store/product-detail-actions";
 import { ProductImageGallery } from "@/components/store/product-image-gallery";
 import { getCurrentProfile } from "@/lib/auth";
@@ -28,7 +29,6 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const [product] = await applyCustomerPrices([data as Product], profile);
 
   const isApproved = profile?.is_b2b_approved ?? false;
-  const showPrice = isApproved || !!profile?.is_b2b_approved;
   const hasDimensions = product.weight_kg || product.box_length_cm || product.box_width_cm || product.box_height_cm;
 
   return (
@@ -193,6 +193,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
