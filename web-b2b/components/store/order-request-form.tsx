@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Truck, Store, AlertCircle, ShoppingCart, Plus, MapPin, Pencil, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
@@ -200,6 +201,12 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
 
   function submit() {
     setError("");
+    const belowMoq = cart.items.filter((item) => item.caseQty && item.quantity < item.caseQty);
+    if (belowMoq.length) {
+      const detail = belowMoq.map((item) => `${item.name} (min ${item.caseQty})`).join(", ");
+      setError(`Minimum order not met: ${detail}. Please order at least one full case of each before submitting.`);
+      return;
+    }
     startTransition(async () => {
       const result = await createOrderRequestAction({
         items: cart.items,
@@ -216,7 +223,18 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[1fr_340px] lg:items-start">
+    <>
+      {!cart.items.length && (
+        <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm">
+          <span className="font-semibold text-amber-800">
+            Your cart is empty — add products before submitting a request.
+          </span>
+          <Link href="/products" className="ml-auto font-semibold underline" style={{ color: "var(--primary)" }}>
+            Browse catalog →
+          </Link>
+        </div>
+      )}
+      <div className="grid gap-6 lg:grid-cols-[1fr_340px] lg:items-start">
       {/* Left: form */}
       <div className="grid gap-5">
         {/* Fulfillment method */}
@@ -538,6 +556,7 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
           </p>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

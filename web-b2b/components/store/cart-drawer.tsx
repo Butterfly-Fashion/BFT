@@ -138,7 +138,7 @@ export function CartDrawer({ open, onClose }: Props) {
               className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-white transition-colors"
               style={{ background: "var(--primary)" }}
             >
-              Checkout
+              Review &amp; request
               <ArrowRight size={15} />
             </Link>
           </div>

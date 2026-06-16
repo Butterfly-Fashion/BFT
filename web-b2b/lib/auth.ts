@@ -13,9 +13,9 @@ export async function getCurrentProfile(): Promise<Profile | null> {
   return data as Profile | null;
 }
 
-export async function requireProfile() {
+export async function requireProfile(redirectTo = "/login") {
   const profile = await getCurrentProfile();
-  if (!profile) redirect("/login");
+  if (!profile) redirect(redirectTo);
   return profile;
 }
 

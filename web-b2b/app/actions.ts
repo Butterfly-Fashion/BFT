@@ -343,13 +343,20 @@ async function _registerActionInner(
   redirect("/login?registered=1");
 }
 
+// Only allow same-site relative paths to prevent open-redirect abuse.
+function safeRedirectPath(value: unknown): string {
+  if (typeof value !== "string") return "/";
+  if (!value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) return "/";
+  return value;
+}
+
 export async function loginAction(_prevState: unknown, formData: FormData) {
   const email = String(formData.get("email") || "");
   const password = String(formData.get("password") || "");
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: friendlyAuthError(error.message) };
-  redirect("/");
+  redirect(safeRedirectPath(formData.get("next")));
 }
 
 export async function logoutAction() {
@@ -426,6 +433,14 @@ export async function createOrderRequestAction(input: {
       lineTotal: Number((quantity * unitPrice).toFixed(2)),
     };
   });
+
+  // Enforce minimum order quantity (one case) per item.
+  const belowMoq = itemSnapshots.filter((item) => item.product.case_qty && item.quantity < item.product.case_qty);
+  if (belowMoq.length) {
+    const detail = belowMoq.map((item) => `${item.product.name} (min ${item.product.case_qty})`).join(", ");
+    return { error: `These items are below their minimum order quantity: ${detail}. Please order at least one full case of each.` };
+  }
+
   const totals = calculateTotals(itemSnapshots.map((item) => ({ quantity: item.quantity, unitPrice: item.unitPrice })));
 
   const { data: order, error: orderError } = await supabase
@@ -732,6 +747,7 @@ export async function createQuoteAction(formData: FormData) {
   }
   revalidatePath("/account/quotes");
   revalidatePath("/admin/quotes");
+  redirect("/account/quotes?submitted=1");
 }
 
 export async function upsertProductAction(

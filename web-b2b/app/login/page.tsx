@@ -7,9 +7,9 @@ import { AuthActionForm } from "@/components/auth/action-form-status";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ registered?: string }>;
+  searchParams: Promise<{ registered?: string; next?: string }>;
 }) {
-  const { registered } = await searchParams;
+  const { registered, next } = await searchParams;
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -45,6 +45,7 @@ export default async function LoginPage({
 
             <div className="p-6">
               <AuthActionForm action={loginAction} submitLabel="Log in">
+                {next && <input type="hidden" name="next" value={next} />}
                 <label className="label">
                   Email address
                   <input className="field" name="email" required type="email" autoComplete="email" />
