@@ -3,6 +3,7 @@ import { ArrowRight, MapPin, Truck, Package2, ShieldCheck, FileText, Tag } from 
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
 import { Header } from "@/components/store/header";
+import { HeroCarousel } from "@/components/store/hero-carousel";
 import { ProductCatalogTable } from "@/components/store/product-catalog-table";
 import { SetupRequired } from "@/components/setup-required";
 import { getCurrentProfile } from "@/lib/auth";
@@ -10,7 +11,7 @@ import { isSupabaseConfigured } from "@/lib/env";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { fetchCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import type { Product } from "@/lib/types";
+import type { Product, HeroBanner } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
@@ -26,14 +27,18 @@ const WHY_BUY = [
 export default async function HomePage() {
   if (!isSupabaseConfigured()) return <SetupRequired />;
 
-  const [profile, categories, supabaseResult] = await Promise.all([
+  const [profile, categories, supabaseResult, bannerResult] = await Promise.all([
     getCurrentProfile(),
     fetchCategories(),
     createSupabaseServerClient().then((supabase) =>
       supabase.from("products").select("*").eq("is_hidden", false).contains("sales_channels", ["b2b"]).order("created_at", { ascending: false }).limit(10)
     ),
+    createSupabaseServerClient().then((supabase) =>
+      supabase.from("hero_banners").select("*").eq("is_published", true).order("sort_order", { ascending: true }).order("created_at", { ascending: false })
+    ),
   ]);
   const products = await applyCustomerPrices((supabaseResult.data || []) as Product[], profile);
+  const banners = (bannerResult.data || []) as HeroBanner[];
 
   return (
     <>
@@ -41,6 +46,9 @@ export default async function HomePage() {
       <main>
 
         {/* ── Hero ── */}
+        {banners.length > 0 ? (
+          <HeroCarousel banners={banners} />
+        ) : (
         <section className="border-b border-gray-200 bg-white">
           <div className="container-shell py-12 sm:py-16">
             <div className="max-w-2xl">
@@ -80,6 +88,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── How it works ── */}
         <section className="border-b border-gray-200 bg-gray-50">

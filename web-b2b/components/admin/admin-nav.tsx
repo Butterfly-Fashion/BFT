@@ -7,7 +7,7 @@ import {
   Package, LayoutDashboard, ShoppingBag, Users,
   ClipboardList, FileText, ExternalLink, LogOut,
   CalendarClock, Tag, UserCheck, Mail, MessageSquare,
-  ChevronDown, ShieldCheck, Images,
+  ChevronDown, ShieldCheck, Images, Megaphone,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
@@ -32,6 +32,7 @@ const NAV: (NavItem | NavGroup)[] = [
       { label: "Products",   href: "/admin/products",   icon: ShoppingBag },
       { label: "Categories", href: "/admin/categories", icon: Tag },
       { label: "Lookbook",   href: "/admin/lookbook",   icon: Images },
+      { label: "Hero banners", href: "/admin/hero",     icon: Megaphone },
     ],
   },
   {

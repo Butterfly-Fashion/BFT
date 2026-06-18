@@ -1279,6 +1279,100 @@ export async function toggleLookbookPublishedAction(itemId: string, isPublished:
   revalidatePath("/lookbook");
 }
 
+// ── Hero banners ─────────────────────────────────────────────────────────────
+
+async function saveHeroBannerImage(file: File, bannerId: string) {
+  if (!file.size) return null;
+  if (!file.type.startsWith("image/")) throw new Error("Please upload a valid image file.");
+  if (file.size > 5 * 1024 * 1024) throw new Error("Image must be under 5 MB.");
+  const ext = (file.name.split(".").pop()?.toLowerCase() || "jpg").replace(/[^a-z0-9]/g, "");
+  const safeName = `${bannerId}-${Date.now()}.${ext}`;
+  const admin = createSupabaseAdminClient();
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const { error } = await admin.storage.from("hero-banners").upload(safeName, bytes, { contentType: file.type, upsert: false });
+  if (error) throw new Error(`Image upload failed: ${error.message}`);
+  const { data: { publicUrl } } = admin.storage.from("hero-banners").getPublicUrl(safeName);
+  return publicUrl;
+}
+
+export async function createHeroBannerAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const title = String(formData.get("title") || "").trim();
+  const subtitle = String(formData.get("subtitle") || "").trim() || null;
+  const linkUrl = String(formData.get("link_url") || "").trim() || null;
+  const sortOrder = Number(formData.get("sort_order") || 0);
+  const isPublished = formData.get("is_published") === "true";
+  if (!title) return { error: "Title is required." };
+
+  const bannerId = crypto.randomUUID();
+  const imageFile = formData.get("image") as File | null;
+  let imageUrl: string | null = null;
+  if (imageFile && imageFile.size > 0) {
+    try {
+      imageUrl = await saveHeroBannerImage(imageFile, bannerId);
+    } catch (err) {
+      return { error: errorMessage(err) };
+    }
+  }
+  if (!imageUrl) return { error: "An image is required." };
+
+  const { error } = await admin.from("hero_banners").insert({
+    id: bannerId, title, subtitle, image_url: imageUrl,
+    link_url: linkUrl, sort_order: sortOrder, is_published: isPublished,
+  });
+  if (error) return { error: `Failed to save: ${error.message}` };
+  revalidatePath("/admin/hero");
+  revalidatePath("/");
+  redirect("/admin/hero");
+}
+
+export async function updateHeroBannerAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const bannerId = String(formData.get("banner_id") || "");
+  const title = String(formData.get("title") || "").trim();
+  const subtitle = String(formData.get("subtitle") || "").trim() || null;
+  const linkUrl = String(formData.get("link_url") || "").trim() || null;
+  const sortOrder = Number(formData.get("sort_order") || 0);
+  const isPublished = formData.get("is_published") === "true";
+  if (!bannerId || !title) return;
+
+  const imageFile = formData.get("image") as File | null;
+  let imageUrl: string | null = null;
+  if (imageFile && imageFile.size > 0) {
+    try {
+      imageUrl = await saveHeroBannerImage(imageFile, bannerId);
+    } catch (err) {
+      return { error: errorMessage(err) };
+    }
+  }
+
+  const payload: Record<string, unknown> = { title, subtitle, link_url: linkUrl, sort_order: sortOrder, is_published: isPublished };
+  if (imageUrl) payload.image_url = imageUrl;
+
+  await admin.from("hero_banners").update(payload).eq("id", bannerId);
+  revalidatePath("/admin/hero");
+  revalidatePath("/");
+  redirect("/admin/hero");
+}
+
+export async function deleteHeroBannerAction(bannerId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("hero_banners").delete().eq("id", bannerId);
+  revalidatePath("/admin/hero");
+  revalidatePath("/");
+}
+
+export async function toggleHeroBannerPublishedAction(bannerId: string, isPublished: boolean) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("hero_banners").update({ is_published: isPublished }).eq("id", bannerId);
+  revalidatePath("/admin/hero");
+  revalidatePath("/");
+}
+
 // ── Category CRUD ──────────────────────────────────────────────────────────────
 
 function slugifyCategory(name: string) {
