@@ -38,7 +38,6 @@ export default async function AdminProductsPage({
   const b2bCount = all.filter((p) => (p.sales_channels || ["b2b"]).includes("b2b")).length;
   const categories = [...new Set(all.map((p) => p.category).filter(Boolean))].sort();
   const inventoryValue = all.reduce((sum, p) => sum + Number(p.unit_price || 0), 0);
-  const stripeFailedCount = all.filter((p) => p.stripe_sync_status === "failed").length;
 
   return (
     <>
@@ -69,7 +68,6 @@ export default async function AdminProductsPage({
             { label: "B2C Store", value: b2cCount },
             { label: "B2B Wholesale", value: b2bCount },
             { label: `${categories.length} categories · Base total`, value: formatMoney(inventoryValue) },
-            { label: "Stripe sync issues", value: stripeFailedCount },
           ].map(({ label, value }) => (
             <div key={label} className="card p-4">
               <p className="text-xs font-semibold text-slate-500">{label}</p>

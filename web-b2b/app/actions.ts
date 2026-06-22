@@ -9,7 +9,7 @@ import {
   registrationEmail, orderReceivedEmail, adminNewOrderEmail,
   paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
 } from "@/lib/email";
-import { createOrderCheckoutSession, syncB2BProductToStripe } from "@/lib/stripe";
+import { createOrderCheckoutSession } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { requireAdmin, requireProfile } from "@/lib/auth";
 import { siteUrl } from "@/lib/env";
@@ -88,72 +88,6 @@ function errorMessage(err: unknown) {
     );
   }
   return String(err);
-}
-
-type ProductStripeSyncRecord = {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string | null;
-  sku: string;
-  category: string;
-  unit_price: number;
-  is_hidden: boolean;
-  stripe_product_id?: string | null;
-  stripe_price_id?: string | null;
-};
-
-async function markProductStripeSync(
-  admin: ReturnType<typeof createSupabaseAdminClient>,
-  productId: string,
-  values: {
-    stripe_sync_status: "synced" | "failed" | "pending";
-    stripe_product_id?: string | null;
-    stripe_price_id?: string | null;
-    stripe_sync_error?: string | null;
-    stripe_synced_at?: string | null;
-  }
-) {
-  const { error } = await admin.from("products").update(values).eq("id", productId);
-  if (error) {
-    console.warn("[product stripe sync status update failed]", error.message);
-  }
-}
-
-async function syncProductToStripeAfterSave(
-  admin: ReturnType<typeof createSupabaseAdminClient>,
-  product: ProductStripeSyncRecord,
-  currentUnitPrice?: number | null
-) {
-  try {
-    const result = await syncB2BProductToStripe({
-      name: product.name,
-      description: product.description,
-      sku: product.sku,
-      slug: product.slug,
-      category: product.category,
-      unitPrice: Number(product.unit_price || 0),
-      currentUnitPrice,
-      isHidden: product.is_hidden,
-      stripeProductId: product.stripe_product_id,
-      stripePriceId: product.stripe_price_id,
-    });
-
-    await markProductStripeSync(admin, product.id, {
-      stripe_product_id: result.stripeProductId,
-      stripe_price_id: result.stripePriceId,
-      stripe_sync_status: "synced",
-      stripe_sync_error: null,
-      stripe_synced_at: new Date().toISOString(),
-    });
-  } catch (err) {
-    const message = errorMessage(err);
-    console.error("[product stripe sync failed]", message);
-    await markProductStripeSync(admin, product.id, {
-      stripe_sync_status: "failed",
-      stripe_sync_error: message.slice(0, 500),
-    });
-  }
 }
 
 async function uniqueProductValue(
@@ -842,26 +776,6 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const id = String(formData.get("id") || "");
-  let hasStripeSyncColumns = true;
-  let currentProduct: {
-    unit_price?: number | null;
-    stripe_product_id?: string | null;
-    stripe_price_id?: string | null;
-  } | null = null;
-  if (id) {
-    const { data, error } = await admin
-      .from("products")
-      .select("id,unit_price,stripe_product_id,stripe_price_id")
-      .eq("id", id)
-      .maybeSingle();
-    if (error && error.message.includes("stripe_product_id")) {
-      hasStripeSyncColumns = false;
-      const fallback = await admin.from("products").select("id,unit_price").eq("id", id).maybeSingle();
-      currentProduct = fallback.data;
-    } else {
-      currentProduct = data;
-    }
-  }
   const name = String(formData.get("name") || "").trim();
   const category = String(formData.get("category") || "").trim();
 
@@ -945,42 +859,18 @@ async function _upsertProductActionInner(formData: FormData): Promise<{ error: s
     lead_time: String(formData.get("lead_time") || "") || null,
     updated_at: new Date().toISOString(),
   };
-  const stripeSyncFields = {
-    stripe_sync_status: "pending",
-    stripe_sync_error: null,
-  };
-  let savedProduct: ProductStripeSyncRecord | null = null;
   try {
     const query = id
-      ? admin
-          .from("products")
-          .update(hasStripeSyncColumns ? { ...payload, ...stripeSyncFields } : payload)
-          .eq("id", id)
-      : admin.from("products").insert(hasStripeSyncColumns ? { ...payload, ...stripeSyncFields } : payload);
-    const { data, error } = await query.select("*").single();
+      ? admin.from("products").update(payload).eq("id", id)
+      : admin.from("products").insert(payload);
+    const { error } = await query;
     if (error) throw error;
-    savedProduct = data as unknown as ProductStripeSyncRecord;
   } catch (err) {
     const msg = errorMessage(err);
-    if (hasStripeSyncColumns && (msg.includes("stripe_sync_status") || msg.includes("stripe_sync_error") || msg.includes("stripe_product_id"))) {
-      hasStripeSyncColumns = false;
-      const retryQuery = id
-        ? admin.from("products").update(payload).eq("id", id)
-        : admin.from("products").insert(payload);
-      const { data, error } = await retryQuery
-        .select("id,name,slug,description,sku,category,unit_price,is_hidden")
-        .single();
-      if (error) return { error: `Failed to save product: ${error.message}` };
-      savedProduct = data as ProductStripeSyncRecord;
-    } else
     if (msg.includes("duplicate") || msg.includes("unique")) {
       return { error: "A product with this slug or SKU already exists. Try a different name or clear the System IDs fields to auto-generate." };
-    } else {
-      return { error: `Failed to save product: ${msg}` };
     }
-  }
-  if (savedProduct && hasStripeSyncColumns) {
-    await syncProductToStripeAfterSave(admin, savedProduct, currentProduct?.unit_price ?? null);
+    return { error: `Failed to save product: ${msg}` };
   }
   revalidatePath("/admin/products");
   revalidatePath("/products");
