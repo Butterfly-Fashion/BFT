@@ -7,7 +7,7 @@ import { calculateTotals } from "@/lib/money";
 import {
   sendEmail, emailHtml,
   registrationEmail, orderReceivedEmail, adminNewOrderEmail,
-  paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail,
+  paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
 } from "@/lib/email";
 import { createOrderCheckoutSession, syncB2BProductToStripe } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
@@ -492,6 +492,64 @@ export async function createOrderRequestAction(input: {
 
   revalidatePath("/admin/orders");
   return { orderId: order.id };
+}
+
+type LeadState = { error?: string; success?: boolean } | null;
+
+const leadSchema = z.object({
+  email: z.string().email("Please enter a valid email address."),
+  company: z.string().min(1, "Please enter your company or store name."),
+  name: z.string().optional(),
+  phone: z.string().optional(),
+  expected_quantity: z.string().optional(),
+  message: z.string().optional(),
+  source: z.string().optional(),
+});
+
+export async function submitWholesaleLeadAction(_prev: LeadState, formData: FormData): Promise<LeadState> {
+  const parsed = leadSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message || "Please check your details and try again." };
+  }
+  const data = parsed.data;
+  const admin = createSupabaseAdminClient();
+
+  const { error } = await admin.from("wholesale_leads").insert({
+    name: data.name || null,
+    company: data.company,
+    email: data.email.toLowerCase(),
+    phone: data.phone || null,
+    expected_quantity: data.expected_quantity || null,
+    message: data.message || null,
+    source: data.source || null,
+  });
+  if (error) {
+    console.error("[submitWholesaleLeadAction]", error.message);
+    return { error: "We couldn't submit your request right now. Please email orders@butterfly-fashion.ca instead." };
+  }
+
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (adminEmail) {
+    await sendEmail({
+      to: adminEmail,
+      subject: `New wholesale catalog request — ${data.company}`,
+      html: adminNewLeadEmail(
+        {
+          name: data.name,
+          company: data.company,
+          email: data.email,
+          phone: data.phone,
+          expectedQuantity: data.expected_quantity,
+          message: data.message,
+          source: data.source,
+        },
+        siteUrl()
+      ),
+    }).catch((err) => console.error("[lead admin email failed]", errorMessage(err)));
+  }
+
+  revalidatePath("/admin/leads");
+  return { success: true };
 }
 
 export async function updateOrderReviewAction(formData: FormData) {

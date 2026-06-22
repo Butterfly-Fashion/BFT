@@ -74,6 +74,13 @@ function CategoryNavLinks() {
       >
         About
       </Link>
+      <Link
+        href="/wholesale-catalog"
+        className="ml-1 whitespace-nowrap rounded-full px-3 py-1 text-sm font-bold text-white transition-opacity hover:opacity-90"
+        style={{ background: "var(--primary)" }}
+      >
+        Get Catalog
+      </Link>
     </>
   );
 }

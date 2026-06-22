@@ -97,6 +97,34 @@ export function adminNewOrderEmail(businessName: string, orderId: string, siteOr
   `);
 }
 
+export function adminNewLeadEmail(lead: {
+  name?: string | null;
+  company?: string | null;
+  email: string;
+  phone?: string | null;
+  expectedQuantity?: string | null;
+  message?: string | null;
+  source?: string | null;
+}, siteOrigin: string) {
+  const row = (label: string, value?: string | null) =>
+    value
+      ? `<tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">${label}</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;">${value}</td></tr>`
+      : "";
+  return emailHtml("New wholesale catalog request", `
+    <p>A new wholesale lead just requested the catalog.</p>
+    <table style="width:100%;margin:16px 0;border-collapse:collapse;">
+      ${row("Company", lead.company)}
+      ${row("Name", lead.name)}
+      ${row("Email", lead.email)}
+      ${row("Phone", lead.phone)}
+      ${row("Est. quantity", lead.expectedQuantity)}
+      ${row("Source", lead.source)}
+    </table>
+    ${lead.message ? `<p style="font-size:13px;color:#374151;"><strong>Message:</strong><br/>${lead.message}</p>` : ""}
+    ${btn("View leads →", `${siteOrigin}/admin/leads`)}
+  `);
+}
+
 export function paymentLinkEmail(businessName: string, orderId: string, paymentLink: string, siteOrigin: string) {
   return emailHtml("Your order is approved — pay now", `
     <p>Hi ${businessName},</p>

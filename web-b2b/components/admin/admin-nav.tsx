@@ -7,7 +7,7 @@ import {
   Package, LayoutDashboard, ShoppingBag, Users,
   ClipboardList, FileText, ExternalLink, LogOut,
   CalendarClock, Tag, UserCheck, Mail, MessageSquare,
-  ChevronDown, ShieldCheck, Images, Megaphone,
+  ChevronDown, ShieldCheck, Images, Megaphone, Inbox,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
@@ -20,6 +20,7 @@ const NAV: (NavItem | NavGroup)[] = [
     label: "Customers",
     items: [
       { label: "Approvals",     href: "/admin/approvals",  icon: UserCheck },
+      { label: "Catalog leads", href: "/admin/leads",      icon: Inbox },
       { label: "Customer list", href: "/admin/customers",  icon: Users },
       { label: "Administrators", href: "/admin/admins",    icon: ShieldCheck },
       { label: "Messages",      href: "/admin/messages",   icon: MessageSquare },
