@@ -82,15 +82,34 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const preorderHref = openCampaign ? `/preorders#campaign-${openCampaign.id}` : "/preorders";
 
   const base = siteUrl();
+  const galleryImages = [product.image_url, ...(product.additional_images ?? [])].filter(
+    (url): url is string => !!url
+  );
+  const availabilityUrl =
+    product.availability_status === "Available"
+      ? "https://schema.org/InStock"
+      : product.availability_status === "Limited"
+        ? "https://schema.org/LimitedAvailability"
+        : product.availability_status === "Manual Confirm"
+          ? "https://schema.org/PreOrder"
+          : "https://schema.org/OutOfStock";
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     sku: product.sku,
     category: product.category,
-    ...(product.image_url ? { image: [product.image_url] } : {}),
+    ...(galleryImages.length ? { image: galleryImages } : {}),
     ...(product.description ? { description: product.description } : {}),
     brand: { "@type": "Brand", name: "Butterfly Fashion Trading" },
+    offers: {
+      "@type": "Offer",
+      availability: availabilityUrl,
+      itemCondition: "https://schema.org/NewCondition",
+      priceCurrency: "CAD",
+      url: `${base}/products/${product.slug}`,
+      seller: { "@type": "Organization", name: "Butterfly Fashion Trading" },
+    },
   };
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -131,7 +150,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
 
         <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1fr_460px]">
           {/* Image panel */}
-          <ProductImageGallery src={product.image_url} alt={product.name} />
+          <ProductImageGallery images={galleryImages} alt={product.name} />
 
           {/* Info panel */}
           <div className="flex flex-col gap-4">
@@ -182,7 +201,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                   <CalendarClock size={16} className="shrink-0" style={{ color: "var(--primary)" }} />
                   <div>
                     <p className="text-sm font-bold text-slate-900">Available to pre-order</p>
-                    <p className="text-xs text-slate-500">Reserve cases now — no payment until we confirm demand.</p>
+                    <p className="text-xs text-slate-500">Reserve cases now — we confirm availability within 1 business day, no payment upfront.</p>
                   </div>
                 </div>
                 <span className="shrink-0 text-sm font-black" style={{ color: "var(--primary)" }}>Reserve →</span>

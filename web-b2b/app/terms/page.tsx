@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Terms of Use",
   description:
     "Terms for using the Butterfly Fashion Trading B2B wholesale platform — accounts, orders, pricing, and fulfillment.",
+  alternates: { canonical: "/terms" },
 };
 
 export const dynamic = "force-dynamic";
@@ -55,8 +56,8 @@ export default async function TermsPage() {
             <h2 className="text-lg font-bold text-gray-900">Contact</h2>
             <p className="mt-2">
               Questions about these terms? Reach us at{" "}
-              <a href="mailto:jameskimkim1@gmail.com" className="font-semibold text-gray-900 underline">
-                jameskimkim1@gmail.com
+              <a href="mailto:orders@butterfly-fashion.ca" className="font-semibold text-gray-900 underline">
+                orders@butterfly-fashion.ca
               </a>{" "}
               or see our{" "}
               <Link href="/faq" className="font-semibold text-gray-900 underline">FAQ</Link>.

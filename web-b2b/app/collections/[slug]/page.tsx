@@ -9,6 +9,7 @@ import { getCurrentProfile } from "@/lib/auth";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { fetchCategories, buildCategoryTree, resolveFilterCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { siteUrl } from "@/lib/env";
 import type { Product } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -18,9 +19,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const categories = await fetchCategories();
   const category = categories.find((c) => c.slug === slug);
   if (!category) return {};
+  const title = `Wholesale ${category.name} | Butterfly Fashion Trading`;
+  const description = `Buy wholesale ${category.name} in bulk. MOQ from 1 case. Ships across Canada and USA. B2B pricing for approved accounts.`;
   return {
-    title: `Wholesale ${category.name} | Butterfly Fashion Trading`,
-    description: `Buy wholesale ${category.name} in bulk. MOQ from 1 case. Ships across Canada and USA. B2B pricing for approved accounts.`,
+    title,
+    description,
+    alternates: { canonical: `/collections/${slug}` },
+    openGraph: { title, description, url: `/collections/${slug}` },
   };
 }
 
@@ -58,7 +63,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
     "@type": "CollectionPage",
     name: `Wholesale ${category.name}`,
     description: `Buy wholesale ${category.name} in bulk. MOQ from 1 case. Ships across Canada and USA.`,
-    url: `https://mask12.com/collections/${slug}`,
+    url: `${siteUrl()}/collections/${slug}`,
   };
 
   return (

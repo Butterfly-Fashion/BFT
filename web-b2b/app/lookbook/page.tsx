@@ -14,6 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Lookbook | Butterfly Fashion Trading Wholesale",
   description: "Browse our seasonal campaigns and wholesale product showcases.",
+  alternates: { canonical: "/lookbook" },
 };
 
 type Product = {

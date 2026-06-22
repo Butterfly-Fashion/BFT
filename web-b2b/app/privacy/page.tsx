@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "How Butterfly Fashion Trading collects, uses, and protects business and contact information on its B2B platform.",
+  alternates: { canonical: "/privacy" },
 };
 
 export const dynamic = "force-dynamic";
@@ -54,8 +55,8 @@ export default async function PrivacyPage() {
             <h2 className="text-lg font-bold text-gray-900">Contact</h2>
             <p className="mt-2">
               For privacy questions or data requests, contact{" "}
-              <a href="mailto:jameskimkim1@gmail.com" className="font-semibold text-gray-900 underline">
-                jameskimkim1@gmail.com
+              <a href="mailto:orders@butterfly-fashion.ca" className="font-semibold text-gray-900 underline">
+                orders@butterfly-fashion.ca
               </a>.
             </p>
           </div>

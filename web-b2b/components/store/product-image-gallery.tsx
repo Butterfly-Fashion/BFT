@@ -5,16 +5,22 @@ import { X, ZoomIn } from "lucide-react";
 import { ProductImage } from "@/components/store/product-image";
 
 export function ProductImageGallery({
-  src,
+  images,
   alt,
 }: {
-  src?: string | null;
+  images: string[];
   alt: string;
 }) {
+  const [active, setActive] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const list = images.length ? images : [""];
+  const index = Math.min(active, list.length - 1);
+  const current = list[index] || null;
+  const hasThumbs = list.length > 1;
+
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <div
         className="group relative cursor-zoom-in overflow-hidden rounded-xl border border-slate-200 bg-[#f7f7f5]"
         onClick={() => setOpen(true)}
@@ -26,7 +32,7 @@ export function ProductImageGallery({
         <div className="flex aspect-square items-center justify-center p-6 sm:p-10">
           <ProductImage
             className="max-h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
-            src={src}
+            src={current}
             alt={alt}
           />
         </div>
@@ -34,6 +40,29 @@ export function ProductImageGallery({
           <ZoomIn size={15} />
         </div>
       </div>
+
+      {hasThumbs && (
+        <div className="flex flex-wrap gap-2">
+          {list.map((src, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => setActive(i)}
+              aria-label={`View image ${i + 1}`}
+              aria-current={i === index}
+              className={`grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-lg border bg-[#f7f7f5] p-1.5 transition-colors ${
+                i === index ? "border-slate-900" : "border-slate-200 hover:border-slate-400"
+              }`}
+            >
+              <ProductImage
+                className="max-h-full w-full object-contain"
+                src={src}
+                alt={`${alt} thumbnail ${i + 1}`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
 
       {open && (
         <div
@@ -53,12 +82,12 @@ export function ProductImageGallery({
           >
             <ProductImage
               className="max-h-[90vh] max-w-[90vw] rounded-lg object-contain shadow-2xl"
-              src={src}
+              src={current}
               alt={alt}
             />
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
