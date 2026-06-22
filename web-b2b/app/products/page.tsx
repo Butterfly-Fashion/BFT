@@ -7,6 +7,7 @@ import { ProductGalleryGrid } from "@/components/store/product-gallery-grid";
 import { CatalogFilterSidebar } from "@/components/store/catalog-filter-sidebar";
 import { CatalogTopBar } from "@/components/store/catalog-top-bar";
 import { getCurrentProfile } from "@/lib/auth";
+import { contactTel } from "@/lib/contact";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { fetchCategories, buildCategoryTree, resolveFilterCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; category?: string; sort?: string; stock?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; sort?: string }>;
 }) {
   const params = await searchParams;
   const [profile, categories, supabase] = await Promise.all([
@@ -42,8 +43,6 @@ export default async function ProductsPage({
   }
   if (params.q)
     query = query.or(`name.ilike.%${params.q}%,sku.ilike.%${params.q}%,category.ilike.%${params.q}%,country.ilike.%${params.q}%`);
-  if (params.stock === "instock") query = query.eq("availability_status", "Available");
-  if (params.stock === "limited") query = query.in("availability_status", ["Available", "Limited"]);
 
   if (params.sort === "priceAsc") query = query.order("unit_price", { ascending: true });
   else if (params.sort === "priceDesc") query = query.order("unit_price", { ascending: false });
@@ -66,9 +65,9 @@ export default async function ProductsPage({
               Wholesale pricing is visible to approved B2B accounts only.
               <span className="ml-2 font-normal text-amber-600">· Pending approval</span>
             </span>
-            <Link href="/account/quotes" className="ml-auto font-semibold underline" style={{ color: "var(--primary)" }}>
-              Request a quote while you wait →
-            </Link>
+            <a href={contactTel} className="ml-auto font-semibold underline" style={{ color: "var(--primary)" }}>
+              Call to order while you wait →
+            </a>
           </div>
         )}
         {!profile && (
@@ -89,7 +88,6 @@ export default async function ProductsPage({
             initialQ={params.q}
             initialSort={params.sort}
             category={params.category}
-            stock={params.stock}
             productCount={products.length}
             title={params.category || "Wholesale Catalog"}
             isApproved={isApproved}

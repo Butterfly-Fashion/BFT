@@ -28,16 +28,8 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
     router.push(`/products?${next.toString()}`);
   }
 
-  function setStock(value: string) {
-    const next = new URLSearchParams(params.toString());
-    if (value) next.set("stock", value);
-    else next.delete("stock");
-    router.push(`/products?${next.toString()}`);
-  }
-
   const activeCategory = params.get("category") || "";
-  const activeStock = params.get("stock") || "";
-  const hasFilters = activeCategory || activeStock;
+  const hasFilters = !!activeCategory;
 
   function catBtn(name: string, indent = false) {
     const active = activeCategory === name;
@@ -123,32 +115,6 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
                 </div>
               )
             )}
-          </div>
-        </div>
-
-        {/* Availability */}
-        <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Availability</p>
-          <div className="space-y-1">
-            {[
-              { label: "All", value: "" },
-              { label: "In stock", value: "instock" },
-              { label: "In stock + limited", value: "limited" },
-            ].map(({ label, value }) => (
-              <button
-                key={value}
-                onClick={() => setStock(value)}
-                className={`flex w-full items-center gap-2 rounded-md px-2.5 py-1.5 text-sm transition-colors ${
-                  activeStock === value ? "font-semibold" : "text-gray-600 hover:bg-gray-50"
-                }`}
-                style={activeStock === value ? { color: "var(--primary)" } : {}}
-              >
-                {value === "instock" && <span className="stock-dot" style={{ background: "#16A34A" }} />}
-                {value === "limited" && <span className="stock-dot" style={{ background: "#D97706" }} />}
-                {!value && <span className="h-[7px] w-[7px] shrink-0" />}
-                {label}
-              </button>
-            ))}
           </div>
         </div>
         </div>

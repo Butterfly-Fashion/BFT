@@ -96,7 +96,7 @@ export default async function PreordersPage() {
           <p className="mb-1 text-xs font-black uppercase tracking-widest" style={{ color: "var(--primary)" }}>
             Pre-order
           </p>
-          <h1 className="text-2xl font-black text-slate-900">Winter Pre-orders</h1>
+          <h1 className="text-2xl font-black text-slate-900">Pre-orders</h1>
           <p className="mt-1 text-sm text-slate-500">
             Enter case quantities and submit — we&apos;ll confirm by email once the campaign closes.
           </p>

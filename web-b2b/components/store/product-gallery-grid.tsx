@@ -14,20 +14,6 @@ type Props = {
   profile: Profile | null;
 };
 
-const STOCK_COLOR: Record<string, string> = {
-  Available:        "#16A34A",
-  Limited:          "#D97706",
-  "Manual Confirm": "#7C3AED",
-  Hidden:           "#9CA3AF",
-};
-
-const STOCK_LABEL: Record<string, string> = {
-  Available:        "In stock",
-  Limited:          "Limited",
-  "Manual Confirm": "Pre-order",
-  Hidden:           "—",
-};
-
 // ── Cart side panel (xl screens) ─────────────────────────────────────────────
 
 function CartPanel({ isApproved }: { isApproved: boolean }) {
@@ -190,6 +176,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
           {products.map((product) => {
             const qty = cartMap.get(product.id) || 0;
             const selected = qty > 0;
+            const isPreorder = product.availability_status === "Manual Confirm";
 
             return (
               <div
@@ -218,13 +205,15 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   >
                     {product.category}
                   </span>
-                  {/* Stock dot */}
-                  <span
-                    className="absolute right-2.5 top-2.5 h-2.5 w-2.5 rounded-full ring-2 ring-white"
-                    style={{ background: STOCK_COLOR[product.availability_status] ?? "#9CA3AF" }}
-                    title={STOCK_LABEL[product.availability_status] ?? product.availability_status}
-                    aria-label={STOCK_LABEL[product.availability_status] ?? product.availability_status}
-                  />
+                  {/* Pre-order badge */}
+                  {isPreorder && (
+                    <span
+                      className="absolute right-2.5 top-2.5 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+                      style={{ background: "rgba(124,58,237,0.9)" }}
+                    >
+                      Pre-order
+                    </span>
+                  )}
                 </Link>
 
                 {/* Info */}
@@ -236,7 +225,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   </Link>
 
                   {/* Info grid */}
-                  <div className="grid grid-cols-3 gap-x-1 gap-y-1.5 border-t border-gray-100 pt-2">
+                  <div className="grid grid-cols-2 gap-x-1 gap-y-1.5 border-t border-gray-100 pt-2">
                     <div>
                       <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">MOQ</p>
                       <p className="mt-0.5 text-sm font-semibold text-gray-900">
@@ -258,12 +247,6 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                           </Link>
                         )}
                       </div>
-                    </div>
-                    <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">Stock</p>
-                      <p className="mt-0.5 text-sm font-semibold" style={{ color: STOCK_COLOR[product.availability_status] ?? "#9CA3AF" }}>
-                        {STOCK_LABEL[product.availability_status] ?? "—"}
-                      </p>
                     </div>
                   </div>
 

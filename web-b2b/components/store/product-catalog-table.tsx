@@ -15,38 +15,6 @@ type Props = {
   compact?: boolean;
 };
 
-const STOCK_DOT: Record<string, string> = {
-  Available:        "#16A34A",
-  Limited:          "#D97706",
-  "Manual Confirm": "#7C3AED",
-  Hidden:           "#9CA3AF",
-};
-
-const STOCK_TEXT_COLOR: Record<string, string> = {
-  Available:        "#166534",
-  Limited:          "#D97706",
-  "Manual Confirm": "#6D28D9",
-  Hidden:           "#9CA3AF",
-};
-
-function StockCell({ status, qty }: { status: string; qty?: number | null }) {
-  const color = STOCK_DOT[status] ?? "#9CA3AF";
-  const textColor = STOCK_TEXT_COLOR[status] ?? "#9CA3AF";
-  const label =
-    status === "Available" ? "In stock"
-    : status === "Limited" ? "Limited"
-    : status === "Manual Confirm" ? "Pre-order"
-    : "—";
-  return (
-    <span className="flex items-center gap-1.5 whitespace-nowrap">
-      <span className="stock-dot" style={{ background: color }} />
-      <span className="text-sm" style={{ color: textColor }}>
-        {qty != null ? `${qty} left` : label}
-      </span>
-    </span>
-  );
-}
-
 export function ProductCatalogTable({ products, profile, compact }: Props) {
   const cart = useCart();
   const router = useRouter();
@@ -114,7 +82,6 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
               <th style={{ width: 120 }} className="hidden lg:table-cell">Category</th>
               <th style={{ width: 100 }}>MOQ</th>
               <th style={{ width: 110 }}>Price / ea</th>
-              <th style={{ width: 110 }} className="hidden sm:table-cell">Stock</th>
               {isApproved && <th style={{ width: 90 }}>Qty</th>}
               {isApproved && <th style={{ width: 80 }}></th>}
             </tr>
@@ -142,9 +109,16 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                         >
                           {product.name}
                         </Link>
-                        {product.country && (
-                          <span className="text-xs text-gray-500">{product.country}</span>
-                        )}
+                        <span className="flex items-center gap-1.5">
+                          {product.availability_status === "Manual Confirm" && (
+                            <span className="rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white" style={{ background: "#7C3AED" }}>
+                              Pre-order
+                            </span>
+                          )}
+                          {product.country && (
+                            <span className="text-xs text-gray-500">{product.country}</span>
+                          )}
+                        </span>
                       </div>
                     </div>
                   </td>
@@ -193,11 +167,6 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                         <Link href="/login" className="hover:underline">Login</Link>
                       </span>
                     )}
-                  </td>
-
-                  {/* Stock */}
-                  <td className="hidden sm:table-cell">
-                    <StockCell status={product.availability_status} qty={product.stock_qty} />
                   </td>
 
                   {/* Qty input */}

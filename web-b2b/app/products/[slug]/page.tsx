@@ -156,22 +156,21 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             {/* Name */}
             <h1 className="text-2xl font-black leading-tight text-slate-900 sm:text-3xl">{product.name}</h1>
 
-            {/* Availability + stock */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className={`badge ${availabilityStyle(product.availability_status)}`}>
-                {availabilityLabel}
-              </span>
-              {(product as any).stock_qty != null && (
-                <span className="badge border-slate-200 bg-slate-50 text-slate-600">
-                  {(product as any).stock_qty} units in stock
-                </span>
-              )}
-              {product.has_customer_price && (
-                <span className="badge border-amber-200 bg-amber-50 text-amber-800">
-                  Custom B2B Pricing
-                </span>
-              )}
-            </div>
+            {/* Pre-order tag + custom pricing */}
+            {(isPreorder || product.has_customer_price) && (
+              <div className="flex flex-wrap items-center gap-2">
+                {isPreorder && (
+                  <span className={`badge ${availabilityStyle(product.availability_status)}`}>
+                    {availabilityLabel}
+                  </span>
+                )}
+                {product.has_customer_price && (
+                  <span className="badge border-amber-200 bg-amber-50 text-amber-800">
+                    Custom B2B Pricing
+                  </span>
+                )}
+              </div>
+            )}
 
             {/* Pre-order CTA — closes the funnel from out-of-stock items */}
             {isPreorder && (
