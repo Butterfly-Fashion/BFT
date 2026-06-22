@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, Phone } from "lucide-react";
+import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, Gamepad2, Phone } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
@@ -18,20 +18,29 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
+// Categories must match the real catalog so chips link to live pages and the
+// preview image loads. Only categories that actually have products are shown.
 const CATEGORY_GROUPS = [
   {
-    icon: Leaf,
-    title: "Vape & Smoke Shop",
-    desc: "Rolling papers, glass pipes, bongs, and lighters wholesale. Competitive pricing for variety stores, convenience chains, and specialty retailers.",
-    categories: ["Rolling Papers", "Bongs & Pipes", "Lighters"],
-    queryCategories: ["Rolling Papers", "Bongs & Pipes", "Lighters", "Vape"],
+    icon: Snowflake,
+    title: "Winter Accessories",
+    desc: "Gloves, toques, balaclavas and masks. Strong seasonal demand every fall — stock early and sell through winter.",
+    categories: ["Winter Gloves", "Winter Hats", "Winter Masks"],
+    queryCategories: ["Winter Gloves", "Winter Hats", "Winter Masks"],
   },
   {
-    icon: Snowflake,
-    title: "Seasonal & Winter",
-    desc: "Winter gloves, toques, scarves, and cold-weather accessories. Strong demand every fall season — stock early, sell through winter.",
-    categories: ["Winter Items"],
-    queryCategories: ["Winter Items", "Winter", "Seasonal"],
+    icon: Gamepad2,
+    title: "Fidget & Novelty Toys",
+    desc: "Squishies, fidgets and trending novelty toys — fast-moving impulse buys for variety, gift and convenience stores.",
+    categories: ["Fidget Toy"],
+    queryCategories: ["Fidget Toy"],
+  },
+  {
+    icon: Leaf,
+    title: "Smoke Shop",
+    desc: "Rolling papers and smoke-shop accessories at competitive wholesale pricing for convenience and specialty retailers.",
+    categories: ["Rolling Papers"],
+    queryCategories: ["Rolling Papers"],
   },
 ];
 
@@ -56,15 +65,46 @@ async function fetchCategoryImage(supabase: Awaited<ReturnType<typeof createSupa
   return data ? { url: data.image_url as string, alt: data.name as string } : null;
 }
 
+type TrendingProduct = { name: string; slug: string; image_url: string | null; category: string | null };
+
 async function fetchTrendingProducts(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>) {
   const { data } = await supabase
     .from("products")
     .select("name, slug, image_url, category")
     .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"])
     .not("image_url", "is", null)
     .order("created_at", { ascending: false })
-    .limit(8);
-  return data ?? [];
+    .limit(80);
+  return (data ?? []) as TrendingProduct[];
+}
+
+async function fetchPresentCategories(supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>) {
+  const { data } = await supabase
+    .from("products")
+    .select("category")
+    .eq("is_hidden", false)
+    .contains("sales_channels", ["b2b"]);
+  return new Set((data ?? []).map((p) => p.category).filter(Boolean));
+}
+
+/** Round-robin one product per category so the list spans categories, not 8 of one type. */
+function pickDiverse(products: TrendingProduct[], max: number): TrendingProduct[] {
+  const buckets = new Map<string, TrendingProduct[]>();
+  for (const p of products) {
+    const c = p.category || "Other";
+    if (!buckets.has(c)) buckets.set(c, []);
+    buckets.get(c)!.push(p);
+  }
+  const lists = [...buckets.values()];
+  const result: TrendingProduct[] = [];
+  let i = 0;
+  while (result.length < max && lists.some((l) => l.length)) {
+    const list = lists[i % lists.length];
+    if (list.length) result.push(list.shift()!);
+    i += 1;
+  }
+  return result;
 }
 
 export default async function AboutPage() {
@@ -73,16 +113,22 @@ export default async function AboutPage() {
     createSupabaseServerClient(),
   ]);
 
-  const [categoryImages, trending] = await Promise.all([
+  const [categoryImages, trendingRaw, presentCategories] = await Promise.all([
     Promise.all(CATEGORY_GROUPS.map((g) => fetchCategoryImage(supabase, g.queryCategories))),
     fetchTrendingProducts(supabase),
+    fetchPresentCategories(supabase),
   ]);
 
+  // Spread trending across categories so customers see variety, not 8 of one type.
+  const trending = pickDiverse(trendingRaw, 8);
+
+  // Only show category groups/chips that actually have live products.
   const WHAT_WE_CARRY = CATEGORY_GROUPS.map((g, i) => ({
     ...g,
     image: categoryImages[i]?.url ?? null,
     imageAlt: categoryImages[i]?.alt ?? g.title,
-  }));
+    categories: g.categories.filter((c) => presentCategories.has(c)),
+  })).filter((g) => g.categories.length > 0);
 
   return (
     <>
