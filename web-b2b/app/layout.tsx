@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Inter } from "next/font/google";
@@ -11,6 +12,8 @@ import { fetchCategories } from "@/lib/categories";
 import { siteUrl } from "@/lib/env";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
+
+const GA_MEASUREMENT_ID = "G-RZV3Q4DEWK";
 
 const DESCRIPTION =
   "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, rolling papers, and trending variety goods. Register for wholesale pricing — MOQ from one case, ships across Canada & the USA.";
@@ -44,7 +47,8 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "Butterfly Fashion Trading",
   url: siteUrl(),
-  email: "jameskimkim1@gmail.com",
+  logo: `${siteUrl()}/asset/logo.jpg`,
+  email: "orders@butterfly-fashion.ca",
   telephone: "+1-416-785-5999",
   address: {
     "@type": "PostalAddress",
@@ -76,6 +80,18 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         </CategoriesProvider>
         <Analytics />
         <SpeedInsights />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
