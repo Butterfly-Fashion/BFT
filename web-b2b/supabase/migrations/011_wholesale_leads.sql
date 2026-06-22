@@ -19,6 +19,8 @@ alter table public.wholesale_leads enable row level security;
 
 -- Reads/writes are admin-only. Public submissions are inserted server-side with the
 -- service-role key (submitWholesaleLeadAction), which bypasses RLS.
+drop policy if exists "wholesale_leads admin read" on public.wholesale_leads;
+drop policy if exists "wholesale_leads admin write" on public.wholesale_leads;
 create policy "wholesale_leads admin read" on public.wholesale_leads
   for select using (public.is_admin());
 create policy "wholesale_leads admin write" on public.wholesale_leads
