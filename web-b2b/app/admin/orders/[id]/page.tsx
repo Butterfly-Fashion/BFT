@@ -5,6 +5,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
 import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { CopyPaymentLink } from "@/components/admin/copy-payment-link";
+import { ShippingLabel } from "@/components/admin/shipping-label";
 import { requireAdmin } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -87,6 +88,26 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           </div>
         )}
 
+        <div className="mb-5">
+          <ShippingLabel
+            orderId={order.id}
+            deliveryMethod={order.delivery_method}
+            labelUrl={order.shippo_label_url ?? null}
+            trackingNumber={order.tracking_number ?? null}
+            trackingUrl={order.tracking_url ?? null}
+            carrier={order.carrier ?? null}
+            orderShippingAddress={order.shipping_address ?? null}
+            defaultAddress={{
+              name: customer?.business_name || customer?.contact_name || "",
+              street: customer?.business_address || "",
+              city: customer?.city || "",
+              province: customer?.province || "",
+              postal: customer?.postal_code || "",
+              country: /^can/i.test(customer?.country || "") ? "CA" : (customer?.country || "CA").slice(0, 2).toUpperCase(),
+            }}
+          />
+        </div>
+
         <form action={updateOrderReviewAction} className="grid gap-5">
           <input name="order_id" type="hidden" value={order.id} />
           <div className="grid gap-4 lg:grid-cols-[1fr_1.5fr]">
@@ -152,6 +173,17 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                   </select>
                 </label>
                 <label className="label">
+                  Payment method
+                  <select className="field" name="payment_method" defaultValue={order.payment_method || ""}>
+                    <option value="">— Not set —</option>
+                    <option>Stripe</option>
+                    <option>E-Transfer</option>
+                    <option>Cash</option>
+                    <option>Bank Transfer</option>
+                    <option>Card (in-person)</option>
+                  </select>
+                </label>
+                <label className="label">
                   Shipping ($)
                   <input className="field" name="shipping_fee" defaultValue={order.shipping_fee} step="0.01" type="number" />
                 </label>
@@ -162,6 +194,21 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <label className="label">
                   HST ($)
                   <input className="field" name="tax_amount" defaultValue={order.tax_amount} step="0.01" type="number" />
+                </label>
+                <label className="label md:col-span-3">
+                  Final total override ($) — optional
+                  <input
+                    className="field"
+                    name="total_override"
+                    defaultValue={order.total_override ?? ""}
+                    step="0.01"
+                    min={0}
+                    type="number"
+                    placeholder={`Leave blank to auto-calculate (${formatMoney(order.total_amount)})`}
+                  />
+                  <span className="mt-1 text-xs text-slate-400">
+                    Set this to bill a custom negotiated total. When filled, it replaces the calculated total on the order and payment link.
+                  </span>
                 </label>
                 <label className="label md:col-span-3">
                   Shipping address
@@ -237,7 +284,11 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <span>{formatMoney(order.total_amount)}</span>
               </div>
             </div>
-            <p className="mt-3 text-xs text-slate-400">Total is recalculated from items when you save.</p>
+            <p className="mt-3 text-xs text-slate-400">
+              {order.total_override != null
+                ? "Total is set manually (override). Clear the override field to recalculate from items."
+                : "Total is recalculated from items when you save."}
+            </p>
           </section>
 
           <div className="sticky bottom-0 flex justify-end gap-3 border-t border-slate-200 bg-[#f6f6f3]/95 py-3 backdrop-blur">
