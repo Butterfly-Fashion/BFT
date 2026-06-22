@@ -33,3 +33,12 @@ scripts/outreach/*.xlsx
 /*.jpg
 /*.jpeg
 sticker-product-img/
+
+# Local editor / agent / CLI state (machine-specific)
+.claude/settings.local.json
+supabase/.temp/
+.playwright-mcp/
+
+# One-off audit reports & scratch folders (kept locally, not tracked)
+/*_audit_report_*.md
+fb-listing/
