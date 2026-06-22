@@ -1,0 +1,34 @@
+# Butterfly Fashion Trading
+
+> Canadian B2B wholesale supplier based in Toronto (North York, Ontario). We supply
+> variety, novelty, seasonal, and smoke-shop goods in bulk to retailers across Canada
+> and the United States. In business since 1996.
+
+## What we sell (wholesale, by the case)
+- Winter accessories: gloves, toques/hats, balaclavas, masks
+- Fidget & novelty toys: squishies, fidgets, trending impulse items
+- Smoke shop: rolling papers and accessories
+
+## Who we serve
+Dollar & variety stores, toy & gift shops, convenience stores, arcades, and event
+resellers across Canada and the USA.
+
+## Wholesale terms
+- Minimum order: from one case per item (most items 12–50 units/case)
+- Pricing: wholesale pricing visible after free B2B account approval (usually within 24 hours)
+- Fulfillment: pickup or shipping from our Toronto warehouse; ships across Canada & the USA
+- Payment: Stripe payment link, e-transfer, cash (pickup), or bank transfer
+- Invoicing with NET 30 available for established accounts
+
+## Location & contact
+- Address: 178 Bentworth Ave, North York, ON M6A 1P7, Canada
+- Hours: Monday–Friday, 9 AM – 5 PM ET
+- Email: orders@butterfly-fashion.ca
+- Phone: +1-416-785-5999
+
+## Key pages
+- Request wholesale catalog: /wholesale-catalog
+- Product catalog: /products
+- Buyer guides / blog: /blog
+- Pre-orders: /preorders
+- About: /about

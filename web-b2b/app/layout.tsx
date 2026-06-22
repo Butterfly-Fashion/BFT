@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     title: "Butterfly Fashion Trading — B2B Wholesale Toronto",
     description: DESCRIPTION,
     url: "/",
+    locale: "en_CA",
   },
   twitter: {
     card: "summary_large_image",
@@ -44,12 +45,14 @@ export const metadata: Metadata = {
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": "WholesaleStore",
   name: "Butterfly Fashion Trading",
   url: siteUrl(),
   logo: `${siteUrl()}/asset/logo.jpg`,
   email: "orders@butterfly-fashion.ca",
   telephone: "+1-416-785-5999",
+  priceRange: "$$",
+  knowsLanguage: "en-CA",
   address: {
     "@type": "PostalAddress",
     streetAddress: "178 Bentworth Ave",
@@ -58,13 +61,22 @@ const organizationJsonLd = {
     postalCode: "M6A 1P7",
     addressCountry: "CA",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 43.7203,
+    longitude: -79.4501,
+  },
+  areaServed: [
+    { "@type": "Country", name: "Canada" },
+    { "@type": "Country", name: "United States" },
+  ],
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const categories = await fetchCategories();
 
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en-CA" className={inter.className}>
       <body>
         <script
           type="application/ld+json"
