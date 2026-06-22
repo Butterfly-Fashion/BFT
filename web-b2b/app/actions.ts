@@ -711,45 +711,6 @@ export async function removeAdminRoleAction(profileId: string) {
   redirect("/admin/admins?status=removed");
 }
 
-export async function createQuoteAction(formData: FormData) {
-  const profile = await requireProfile();
-  const supabase = await createSupabaseServerClient();
-  const productId = String(formData.get("product_id") || "");
-  const quantity = Math.max(1, Number(formData.get("quantity") || 1));
-  const message = String(formData.get("message") || "");
-  const requestedPrice = Number(formData.get("requested_price") || 0) || null;
-
-  const { data: quote, error } = await supabase.from("quotes").insert({
-    customer_id: profile.id,
-    status: "Pending",
-    message,
-  }).select().single();
-  if (error || !quote) return;
-  if (productId) {
-    await supabase.from("quote_items").insert({
-      quote_id: quote.id,
-      product_id: productId,
-      quantity,
-      requested_price: requestedPrice,
-    });
-  }
-  const quoteAdminEmail = process.env.ADMIN_EMAIL;
-  if (quoteAdminEmail) {
-    await sendEmail({
-      to: quoteAdminEmail,
-      subject: `New quote request — ${profile.business_name || profile.email}`,
-      html: emailHtml("New quote request", `
-        <p><strong>${profile.business_name || profile.contact_name}</strong> submitted a quote request.</p>
-        ${message ? `<p style="margin-top:12px;padding:12px;background:#F9FAFB;border-radius:6px;font-size:13px;">${message}</p>` : ""}
-        <p style="margin-top:16px;"><a href="${siteUrl()}/admin/quotes" style="color:#166534;font-weight:600;">View quote requests →</a></p>
-      `),
-    });
-  }
-  revalidatePath("/account/quotes");
-  revalidatePath("/admin/quotes");
-  redirect("/account/quotes?submitted=1");
-}
-
 export async function upsertProductAction(
   _prev: { error: string } | null,
   formData: FormData

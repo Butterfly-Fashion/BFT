@@ -919,20 +919,13 @@ test.describe("9. Pre-order 시스템", () => {
 
 // ─── 10. Quote 요청 ─────────────────────────────────────────────────────────
 test.describe("10. Quote 요청", () => {
-  test("고객 — /account/quotes 견적 요청 작성", async () => {
+  test("고객 — /account/quotes 는 Messages 로 리다이렉트", async () => {
+    // Quote 흐름은 단일 '요청/문의'로 통합됨 — 구 링크는 Messages 로 redirect.
     const { ctx, page } = await customerContext();
     try {
       await page.goto(`${BASE}/account/quotes`);
       await page.waitForTimeout(1_000);
-      const msgInput = page.locator('textarea[name="message"], input[name="message"]').first();
-      if (await msgInput.isVisible()) {
-        await msgInput.fill("E2E 테스트 견적 요청 — 대량 주문 문의드립니다.");
-        const submitBtn = page.locator('button[type="submit"]').first();
-        await submitBtn.click();
-        await page.waitForTimeout(2_000);
-      }
-      const content = await page.content();
-      expect(content).toMatch(/quote|견적/i);
+      await expect(page).toHaveURL(/\/account\/messages/);
     } finally {
       await ctx.browser()?.close();
     }

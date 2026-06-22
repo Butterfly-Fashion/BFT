@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Phone, Mail } from "lucide-react";
+import { CONTACT_PHONE, contactTel, contactMailto } from "@/lib/contact";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
@@ -10,6 +12,7 @@ import type { FaqSection } from "@/components/store/faq-accordion";
 export const metadata: Metadata = {
   title: "FAQ | Butterfly Fashion Trading Wholesale",
   description: "Frequently asked questions about wholesale ordering, B2B accounts, MOQ, payment, and shipping at Butterfly Fashion Trading.",
+  alternates: { canonical: "/faq" },
 };
 
 const FAQ_SECTIONS: FaqSection[] = [
@@ -43,11 +46,11 @@ const FAQ_SECTIONS: FaqSection[] = [
       },
       {
         q: "How do I place an order?",
-        a: "Add products to your cart, then submit your order. Our team reviews it, confirms availability, and sends you a payment link. No charge is made until the order is approved.",
+        a: "Two easy ways: call or email us directly with the Item Codes and quantities you want, or add products to your cart on the site and submit an order request. Either way our team reviews it, confirms availability, and sends you a payment link. No charge is made until the order is approved.",
       },
       {
-        q: "Can I request a quote before ordering?",
-        a: "Yes. Use the Request a Quote feature in your account to get a custom price quote for large orders or special requests before committing.",
+        q: "Can I get bulk or custom pricing?",
+        a: "Yes. Add the quantities you need to your order request (or call/email us) and note any volume or special requirements — we'll confirm bulk pricing before you commit.",
       },
       {
         q: "Can I order products that are out of stock?",
@@ -110,7 +113,7 @@ const FAQ_SECTIONS: FaqSection[] = [
       },
       {
         q: "How do I know if a product is in stock?",
-        a: "Products are marked Available, Limited Stock, or Manual Confirm on the catalog. Manual Confirm means we verify stock before confirming your order.",
+        a: "We confirm exact stock when you place a request — every order is checked against our Toronto warehouse before we confirm it. Items marked Pre-order aren't stocked yet and are handled through a Pre-order Campaign.",
       },
       {
         q: "Can I reorder the exact same style?",
@@ -170,11 +173,14 @@ export default async function FaqPage() {
                 Our team is happy to help with pricing, stock, or shipping questions.
               </p>
               <div className="mt-4 flex flex-wrap justify-center gap-3">
-                <Link className="btn-primary min-h-8 px-5 text-sm" href="/account/messages">
+                <a className="btn-primary min-h-8 gap-1.5 px-5 text-sm" href={contactTel}>
+                  <Phone size={14} /> {CONTACT_PHONE}
+                </a>
+                <a className="btn-secondary min-h-8 gap-1.5 px-5 text-sm" href={contactMailto}>
+                  <Mail size={14} /> Email us
+                </a>
+                <Link className="btn-ghost min-h-8 px-5 text-sm" href="/account/messages">
                   Send a message
-                </Link>
-                <Link className="btn-secondary min-h-8 px-5 text-sm" href="/account/quotes">
-                  Request a quote
                 </Link>
               </div>
             </div>

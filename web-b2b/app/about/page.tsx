@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake } from "lucide-react";
+import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, Phone } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
+import { contactTel } from "@/lib/contact";
 import { getCurrentProfile } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -348,9 +349,9 @@ export default async function AboutPage() {
               <Link className="btn-secondary px-6 py-2.5 text-sm" href="/products">
                 Browse catalog
               </Link>
-              <Link className="btn-ghost px-6 py-2.5 text-sm" href="/account/quotes">
-                Request a quote
-              </Link>
+              <a className="btn-ghost gap-2 px-6 py-2.5 text-sm" href={contactTel}>
+                <Phone size={14} /> Call to order
+              </a>
             </div>
           </div>
         </section>

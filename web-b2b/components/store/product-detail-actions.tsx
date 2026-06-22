@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, FileText, CheckCircle } from "lucide-react";
+import { ShoppingCart, CheckCircle } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
+import { OrderContactCta } from "@/components/store/order-contact-cta";
 
 export function ProductDetailActions({
   product,
@@ -48,26 +49,20 @@ export function ProductDetailActions({
     addedTimer.current = setTimeout(() => setAdded(false), 2000);
   }
 
-  function requestQuote() {
-    if (!profile) router.push("/login?next=/account/quotes");
-    else router.push(`/account/quotes?product=${product.id}`);
-  }
-
   const total = product.display_price * quantity;
   const belowMoq = caseQty ? quantity < caseQty : false;
 
-  // Pricing and ordering are gated to approved B2B accounts.
+  // Pricing and online ordering are gated to approved B2B accounts. Until then,
+  // buyers can still order this item by phone or email.
   if (!isApproved) {
     return (
       <div className="grid gap-3">
-        <button className="btn-secondary gap-2 py-3 text-sm" type="button" onClick={requestQuote}>
-          <FileText size={16} />
-          Request Quote
-        </button>
+        <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Order this item</p>
+        <OrderContactCta showMessages={!!profile} />
         <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
           {profile
-            ? "Your B2B account is pending approval — wholesale pricing and ordering unlock once approved."
-            : "Sign in or register with an approved B2B account to see wholesale pricing and place orders."}
+            ? "Your B2B account is pending approval — wholesale pricing and online ordering unlock once approved. In the meantime, call or email us to order."
+            : "Call or email to order, or sign in with an approved B2B account to see wholesale pricing and order online."}
         </p>
       </div>
     );
@@ -147,25 +142,19 @@ export function ProductDetailActions({
         )}
       </div>
 
-      {/* CTA buttons */}
-      <div className="grid gap-2 sm:grid-cols-2">
-        <button
-          className={`btn-primary gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
-          type="button"
-          disabled={quantity <= 0 || belowMoq}
-          onClick={addToCart}
-        >
-          {added ? (
-            <><CheckCircle size={16} />Added to Cart</>
-          ) : (
-            <><ShoppingCart size={16} />Add to Cart</>
-          )}
-        </button>
-        <button className="btn-secondary gap-2 py-3 text-sm" type="button" onClick={requestQuote}>
-          <FileText size={16} />
-          Request Quote
-        </button>
-      </div>
+      {/* CTA button */}
+      <button
+        className={`btn-primary w-full gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
+        type="button"
+        disabled={quantity <= 0 || belowMoq}
+        onClick={addToCart}
+      >
+        {added ? (
+          <><CheckCircle size={16} />Added to Cart</>
+        ) : (
+          <><ShoppingCart size={16} />Add to Cart</>
+        )}
+      </button>
 
       {belowMoq && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-amber-800">
@@ -175,7 +164,7 @@ export function ProductDetailActions({
 
       {/* B2B note */}
       <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
-        No payment collected now — we review your order, confirm availability and final pricing, then send a payment link.
+        No payment collected now — we confirm availability and final pricing within 1 business day, then send a payment link.
       </p>
     </div>
   );
