@@ -17,6 +17,26 @@ import type { Product, HeroBanner } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
+/** Round-robin one product per category so the home preview shows variety,
+ *  not 10 of whatever was imported last. */
+function pickDiverse(products: Product[], max: number): Product[] {
+  const buckets = new Map<string, Product[]>();
+  for (const p of products) {
+    const c = p.category || "Other";
+    if (!buckets.has(c)) buckets.set(c, []);
+    buckets.get(c)!.push(p);
+  }
+  const lists = [...buckets.values()];
+  const result: Product[] = [];
+  let i = 0;
+  while (result.length < max && lists.some((l) => l.length)) {
+    const list = lists[i % lists.length];
+    if (list.length) result.push(list.shift()!);
+    i += 1;
+  }
+  return result;
+}
+
 const WHY_BUY = [
   { icon: MapPin, title: "Toronto warehouse", desc: "Pick up same-day or ship next business day from our Toronto location." },
   { icon: Truck, title: "Ships CA & USA", desc: "Canada-wide and cross-border shipping available for all wholesale orders." },
@@ -33,13 +53,14 @@ export default async function HomePage() {
     getCurrentProfile(),
     fetchCategories(),
     createSupabaseServerClient().then((supabase) =>
-      supabase.from("products").select("*").eq("is_hidden", false).contains("sales_channels", ["b2b"]).order("created_at", { ascending: false }).limit(10)
+      supabase.from("products").select("*").eq("is_hidden", false).contains("sales_channels", ["b2b"]).order("created_at", { ascending: false }).limit(80)
     ),
     createSupabaseServerClient().then((supabase) =>
       supabase.from("hero_banners").select("*").eq("is_published", true).order("sort_order", { ascending: true }).order("created_at", { ascending: false })
     ),
   ]);
-  const products = await applyCustomerPrices((supabaseResult.data || []) as Product[], profile);
+  const diverse = pickDiverse((supabaseResult.data || []) as Product[], 12);
+  const products = await applyCustomerPrices(diverse, profile);
   const banners = (bannerResult.data || []) as HeroBanner[];
 
   return (
