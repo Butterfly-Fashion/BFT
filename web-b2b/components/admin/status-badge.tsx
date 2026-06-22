@@ -35,6 +35,10 @@ export function StatusBadge({ status, type = "order" }: { status: string; type?:
   return <span className={`badge ${className}`}>{status}</span>;
 }
 
+export function orderStatusChip(status: string) {
+  return orderStatusClasses[status] || "border-slate-300 bg-slate-100 text-slate-800";
+}
+
 export function orderRowTone(status: string) {
   if (status === "Pending Review") return "bg-amber-50/60";
   if (status === "Approved") return "bg-lime-50/70";

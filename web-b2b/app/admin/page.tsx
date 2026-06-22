@@ -11,7 +11,7 @@ export default async function AdminDashboardPage() {
   const admin = createSupabaseAdminClient();
   const [{ data: orders }, { count: quoteRequests }, { count: customers }, { count: products }] =
     await Promise.all([
-      admin.from("orders").select("*, profiles(business_name,email)").order("created_at", { ascending: false }),
+      admin.from("orders").select("*, profiles(business_name,email)").eq("channel", "b2b").order("created_at", { ascending: false }),
       admin.from("quotes").select("*", { count: "exact", head: true }),
       admin.from("profiles").select("*", { count: "exact", head: true }),
       admin.from("products").select("*", { count: "exact", head: true }).eq("is_hidden", false),

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AdminNav } from "@/components/admin/admin-nav";
-import { StatusBadge, orderRowTone } from "@/components/admin/status-badge";
+import { StatusBadge, orderRowTone, orderStatusChip } from "@/components/admin/status-badge";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
@@ -13,43 +13,73 @@ export default async function AdminOrdersPage({
 }) {
   const sp = await searchParams;
   const admin = createSupabaseAdminClient();
-  let query = admin
+  const { data: orders } = await admin
     .from("orders")
     .select("*, profiles(business_name, contact_name, email)")
+    .eq("channel", "b2b")
     .order("created_at", { ascending: false });
-  if (sp.status) query = query.eq("status", sp.status);
-  const { data: orders } = await query;
-  const orderList = orders || [];
+  const allOrders = orders || [];
+
+  // Status tabs with live counts. Filtering happens in-memory off the full B2B list.
+  const TABS = [
+    "Pending Review",
+    "Approved",
+    "Payment Link Sent",
+    "Paid",
+    "Processing",
+    "Label Created",
+    "Ready for Pickup",
+    "Shipped",
+    "Completed",
+    "Cancelled",
+    "Refunded",
+  ];
+  const tally = new Map<string, number>();
+  for (const o of allOrders) tally.set(o.status, (tally.get(o.status) ?? 0) + 1);
+  const activeStatus = sp.status && TABS.includes(sp.status) ? sp.status : "";
+  const orderList = activeStatus ? allOrders.filter((o) => o.status === activeStatus) : allOrders;
 
   return (
     <>
       <AdminNav />
       <main className="container-shell py-7">
-        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="section-label">Order management</p>
-            <h1 className="mt-1 text-3xl font-black text-slate-900">Orders</h1>
-            <p className="mt-1.5 text-sm font-medium text-slate-500">
-              Review, approve, and create payment links for B2B order requests.
-            </p>
-          </div>
-          <form className="flex items-end gap-2">
-            <label className="label">
-              Filter by status
-              <select className="field w-48" name="status" defaultValue={sp.status || ""}>
-                <option value="">All statuses</option>
-                <option>Pending Review</option>
-                <option>Approved</option>
-                <option>Payment Link Sent</option>
-                <option>Paid</option>
-                <option>Processing</option>
-                <option>Completed</option>
-                <option>Cancelled</option>
-                <option>Refunded</option>
-              </select>
-            </label>
-            <button className="btn-primary text-xs" type="submit">Filter</button>
-          </form>
+        <div className="mb-5">
+          <p className="section-label">Order management</p>
+          <h1 className="mt-1 text-3xl font-black text-slate-900">Orders</h1>
+          <p className="mt-1.5 text-sm font-medium text-slate-500">
+            Review, approve, and create payment links for B2B order requests.
+          </p>
+        </div>
+
+        <div className="mb-5 flex flex-wrap gap-1.5">
+          <Link
+            href="/admin/orders"
+            className={`badge transition-colors ${
+              activeStatus === "" ? "border-slate-900 bg-slate-900 text-white" : "border-slate-300 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            All<span className="ml-1.5 opacity-70">{allOrders.length}</span>
+          </Link>
+          {TABS.map((status) => {
+            const count = tally.get(status) ?? 0;
+            const active = activeStatus === status;
+            return (
+              <Link
+                key={status}
+                href={`/admin/orders?status=${encodeURIComponent(status)}`}
+                className={`badge transition-colors ${
+                  active
+                    ? "border-slate-900 bg-slate-900 text-white"
+                    : count
+                      ? `${orderStatusChip(status)} hover:opacity-80`
+                      : "border-slate-200 bg-white text-slate-400 hover:bg-slate-50"
+                }`}
+              >
+                {status}
+                <span className="ml-1.5 opacity-70">{count}</span>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
