@@ -247,3 +247,19 @@ select.field {
   50% { opacity: 0.45; }
 }
 .skeleton { background: var(--line); border-radius: 6px; animation: pulse-bg 1.5s ease-in-out infinite; }
+
+/* Rich-text blog content (Tiptap editor + public article). Tailwind preflight
+   strips default heading/list styling, so restore readable typography here. */
+.blog-content { color: #1f2937; line-height: 1.75; font-size: 1rem; }
+.blog-content > :first-child { margin-top: 0; }
+.blog-content h2 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 1.6em 0 0.5em; }
+.blog-content h3 { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin: 1.3em 0 0.4em; }
+.blog-content p { margin: 0.8em 0; }
+.blog-content ul { list-style: disc; padding-left: 1.4em; margin: 0.8em 0; }
+.blog-content ol { list-style: decimal; padding-left: 1.4em; margin: 0.8em 0; }
+.blog-content li { margin: 0.3em 0; }
+.blog-content a { color: var(--primary); text-decoration: underline; }
+.blog-content strong { font-weight: 700; color: #0f172a; }
+.blog-content blockquote { border-left: 3px solid var(--primary); padding-left: 1em; margin: 1em 0; color: #475569; font-style: italic; }
+.blog-content img { border-radius: 10px; margin: 1em 0; max-width: 100%; height: auto; }
+.blog-content:focus { outline: none; }

@@ -1358,6 +1358,136 @@ export async function toggleHeroBannerPublishedAction(bannerId: string, isPublis
   revalidatePath("/");
 }
 
+// ── Blog ─────────────────────────────────────────────────────────────────────
+
+async function saveBlogImage(file: File, slug: string) {
+  if (!file.size) return null;
+  if (!file.type.startsWith("image/")) throw new Error("Please upload a valid image file.");
+  if (file.size > 5 * 1024 * 1024) throw new Error("Image must be under 5 MB.");
+  const ext = (file.name.split(".").pop()?.toLowerCase() || "jpg").replace(/[^a-z0-9]/g, "");
+  const safeName = `blog-${slug}-${Date.now()}.${ext}`;
+  const admin = createSupabaseAdminClient();
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const { error } = await admin.storage.from("product-images").upload(safeName, bytes, { contentType: file.type, upsert: false });
+  if (error) throw new Error(`Image upload failed: ${error.message}`);
+  const { data: { publicUrl } } = admin.storage.from("product-images").getPublicUrl(safeName);
+  return publicUrl;
+}
+
+async function uniqueBlogSlug(
+  admin: ReturnType<typeof createSupabaseAdminClient>,
+  base: string,
+  currentId?: string
+) {
+  const clean = base || `post-${Date.now()}`;
+  for (let i = 0; i < 20; i += 1) {
+    const candidate = i === 0 ? clean : `${clean}-${i + 1}`;
+    let query = admin.from("blog_posts").select("id").eq("slug", candidate);
+    if (currentId) query = query.neq("id", currentId);
+    const { data } = await query.maybeSingle();
+    if (!data) return candidate;
+  }
+  return `${clean}-${Date.now()}`;
+}
+
+type BlogState = { error?: string } | null;
+
+export async function createBlogPostAction(_prev: BlogState, formData: FormData): Promise<BlogState> {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const title = String(formData.get("title") || "").trim();
+  if (!title) return { error: "Title is required." };
+
+  const slug = await uniqueBlogSlug(admin, slugify(String(formData.get("slug") || "").trim() || title));
+  const status = formData.get("status") === "published" ? "published" : "draft";
+
+  let coverUrl = String(formData.get("cover_image_url") || "") || null;
+  const cover = formData.get("cover_image");
+  if (cover instanceof File && cover.size > 0) {
+    try { coverUrl = await saveBlogImage(cover, slug); } catch (err) { return { error: errorMessage(err) }; }
+  }
+
+  const { error } = await admin.from("blog_posts").insert({
+    slug,
+    title,
+    excerpt: String(formData.get("excerpt") || "") || null,
+    body_html: String(formData.get("body_html") || ""),
+    cover_image_url: coverUrl,
+    category: String(formData.get("category") || "") || null,
+    meta_description: String(formData.get("meta_description") || "") || null,
+    status,
+    published_at: status === "published" ? new Date().toISOString() : null,
+  });
+  if (error) return { error: `Failed to save: ${error.message}` };
+
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog");
+  redirect("/admin/blog");
+}
+
+export async function updateBlogPostAction(_prev: BlogState, formData: FormData): Promise<BlogState> {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const id = String(formData.get("post_id") || "");
+  const title = String(formData.get("title") || "").trim();
+  if (!id || !title) return { error: "Title is required." };
+
+  const { data: existing } = await admin.from("blog_posts").select("status, cover_image_url").eq("id", id).single();
+  const slug = await uniqueBlogSlug(admin, slugify(String(formData.get("slug") || "").trim() || title), id);
+  const status = formData.get("status") === "published" ? "published" : "draft";
+
+  let coverUrl = existing?.cover_image_url ?? null;
+  const cover = formData.get("cover_image");
+  if (cover instanceof File && cover.size > 0) {
+    try { coverUrl = await saveBlogImage(cover, slug); } catch (err) { return { error: errorMessage(err) }; }
+  }
+
+  const payload: Record<string, unknown> = {
+    slug,
+    title,
+    excerpt: String(formData.get("excerpt") || "") || null,
+    body_html: String(formData.get("body_html") || ""),
+    cover_image_url: coverUrl,
+    category: String(formData.get("category") || "") || null,
+    meta_description: String(formData.get("meta_description") || "") || null,
+    status,
+    updated_at: new Date().toISOString(),
+  };
+  // Stamp published_at the first time it goes live.
+  if (status === "published" && existing?.status !== "published") {
+    payload.published_at = new Date().toISOString();
+  }
+
+  const { error } = await admin.from("blog_posts").update(payload).eq("id", id);
+  if (error) return { error: `Failed to save: ${error.message}` };
+
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
+  redirect("/admin/blog");
+}
+
+export async function deleteBlogPostAction(id: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("blog_posts").delete().eq("id", id);
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog");
+  redirect("/admin/blog");
+}
+
+export async function toggleBlogPublishedAction(id: string, publish: boolean) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("blog_posts").update({
+    status: publish ? "published" : "draft",
+    ...(publish ? { published_at: new Date().toISOString() } : {}),
+    updated_at: new Date().toISOString(),
+  }).eq("id", id);
+  revalidatePath("/admin/blog");
+  revalidatePath("/blog");
+}
+
 // ── Category CRUD ──────────────────────────────────────────────────────────────
 
 function slugifyCategory(name: string) {

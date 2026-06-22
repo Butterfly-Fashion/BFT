@@ -175,6 +175,21 @@ export type LookbookItem = {
   created_at: string;
 };
 
+export type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  body_html: string;
+  cover_image_url: string | null;
+  category: string | null;
+  meta_description: string | null;
+  status: "draft" | "published";
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export type HeroBanner = {
   id: string;
   title: string;

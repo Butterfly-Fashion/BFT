@@ -75,6 +75,13 @@ function CategoryNavLinks() {
         About
       </Link>
       <Link
+        href="/blog"
+        className="whitespace-nowrap px-1 py-1.5 text-sm font-semibold transition-colors"
+        style={pathname.startsWith("/blog") ? { color: "var(--primary)", borderBottom: "2px solid var(--primary)" } : { color: "#6B7280", borderBottom: "2px solid transparent" }}
+      >
+        Guides
+      </Link>
+      <Link
         href="/wholesale-catalog"
         className="ml-1 whitespace-nowrap rounded-full px-3 py-1 text-sm font-bold text-white transition-opacity hover:opacity-90"
         style={{ background: "var(--primary)" }}

@@ -18,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
+    { url: `${base}/blog`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/preorders`, changeFrequency: "weekly", priority: 0.6 },
     { url: `${base}/lookbook`, changeFrequency: "weekly", priority: 0.5 },
     { url: `${base}/about`, changeFrequency: "monthly", priority: 0.5 },
@@ -28,6 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   let productRoutes: MetadataRoute.Sitemap = [];
   let categoryRoutes: MetadataRoute.Sitemap = [];
+  let blogRoutes: MetadataRoute.Sitemap = [];
 
   try {
     const [supabase, categories] = await Promise.all([createSupabaseServerClient(), fetchCategories()]);
@@ -37,6 +39,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .select("slug, updated_at")
       .eq("is_hidden", false)
       .contains("sales_channels", ["b2b"]);
+
+    const { data: blogPosts } = await supabase
+      .from("blog_posts")
+      .select("slug, updated_at")
+      .eq("status", "published");
+    blogRoutes = (blogPosts || [])
+      .filter((p): p is { slug: string; updated_at: string | null } => Boolean(p.slug))
+      .map((p) => ({
+        url: `${base}/blog/${p.slug}`,
+        lastModified: p.updated_at ? new Date(p.updated_at) : undefined,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      }));
 
     productRoutes = (products || [])
       .filter((p): p is { slug: string; updated_at: string | null } => Boolean(p.slug))
@@ -58,5 +73,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If the catalog is unavailable, still return the static routes.
   }
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...blogRoutes];
 }

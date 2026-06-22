@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   Package, LayoutDashboard, ShoppingBag, Users,
-  ClipboardList, ExternalLink, LogOut,
+  ClipboardList, FileText, ExternalLink, LogOut,
   CalendarClock, Tag, UserCheck, MessageSquare,
   ChevronDown, ShieldCheck, Images, Megaphone, Inbox,
 } from "lucide-react";
@@ -31,6 +31,7 @@ const NAV: (NavItem | NavGroup)[] = [
     items: [
       { label: "Products",   href: "/admin/products",   icon: ShoppingBag },
       { label: "Categories", href: "/admin/categories", icon: Tag },
+      { label: "Blog & guides", href: "/admin/blog",    icon: FileText },
       { label: "Lookbook",   href: "/admin/lookbook",   icon: Images },
       { label: "Hero banners", href: "/admin/hero",     icon: Megaphone },
     ],
