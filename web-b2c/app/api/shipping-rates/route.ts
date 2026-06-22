@@ -55,14 +55,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ rates: [], fallback: true, debug: "SHIPPO_API_KEY not set in env" }, { status: 200 });
   }
 
-  let body: { name?: string; street?: string; postal: string; province: string; city?: string; weightKg?: number; country?: string };
+  let body: { name?: string; street?: string; apartment?: string; postal: string; province: string; city?: string; weightKg?: number; country?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { name, street, postal, province, city, weightKg, country = "CA" } = body;
+  const { name, street, apartment, postal, province, city, weightKg, country = "CA" } = body;
   if (!postal || !province) {
     return NextResponse.json({ error: "postal and province required" }, { status: 400 });
   }
@@ -88,6 +88,7 @@ export async function POST(req: NextRequest) {
     address_to: {
       name: name?.trim() || "Customer",
       street1: street?.trim() || "1 Main St",
+      ...(apartment?.trim() && { street2: apartment.trim() }),
       city: city || (country === "US" ? "New York" : "Toronto"),
       state: province,
       zip: postal.replace(/\s/g, "").toUpperCase(),
