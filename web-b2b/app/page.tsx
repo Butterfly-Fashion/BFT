@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Phone } from "lucide-react";
+import { ArrowRight, Truck, Package2, ShieldCheck, FileText, Tag, Phone, Clock } from "lucide-react";
 import { contactTel } from "@/lib/contact";
 import { OrderContactCta } from "@/components/store/order-contact-cta";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
 import { Header } from "@/components/store/header";
 import { HeroCarousel } from "@/components/store/hero-carousel";
-import { ProductCatalogTable } from "@/components/store/product-catalog-table";
+import { ProductCard } from "@/components/store/product-card";
 import { SetupRequired } from "@/components/setup-required";
 import { getCurrentProfile } from "@/lib/auth";
 import { isSupabaseConfigured } from "@/lib/env";
@@ -37,13 +37,14 @@ function pickDiverse(products: Product[], max: number): Product[] {
   return result;
 }
 
+// Reasons to buy — framed as trust/depth, distinct from the quick facts in the hero.
 const WHY_BUY = [
-  { icon: MapPin, title: "Toronto warehouse", desc: "Pick up same-day or ship next business day from our Toronto location." },
-  { icon: Truck, title: "Ships CA & USA", desc: "Canada-wide and cross-border shipping available for all wholesale orders." },
-  { icon: Package2, title: "MOQ from 1 case", desc: "No massive minimums. Order by the case — most items start at 12–50 units." },
-  { icon: ShieldCheck, title: "B2B pricing", desc: "Approved accounts see wholesale pricing. Register and get approved in 24 hrs." },
-  { icon: FileText, title: "Invoice & NET terms", desc: "Professional invoicing. NET 30 available for established accounts." },
-  { icon: Tag, title: "Item Code traceability", desc: "Every product has a unique Item Code. Reorder exact styles fast." },
+  { icon: Clock, title: "30+ years sourcing", desc: "We've supplied Canadian retailers since 1996 — we know which products sell." },
+  { icon: Package2, title: "Real Toronto inventory", desc: "Stocked locally. Pick up same-day or ship next business day — no overseas wait." },
+  { icon: ShieldCheck, title: "Approved in 24 hours", desc: "Register and unlock wholesale pricing fast — most accounts approved same day." },
+  { icon: FileText, title: "Invoice & NET 30", desc: "Professional invoicing on every order; NET 30 available for established accounts." },
+  { icon: Truck, title: "Ships across Canada & USA", desc: "Canada-wide and cross-border shipping on all wholesale orders." },
+  { icon: Tag, title: "Easy reorders", desc: "Every product has a unique Item Code — reorder the exact styles in seconds." },
 ];
 
 export default async function HomePage() {
@@ -84,25 +85,22 @@ export default async function HomePage() {
                 Bulk winter accessories, novelty &amp; fidget toys, rolling papers, and trending variety goods.
                 Direct from our Toronto warehouse to retailers, convenience stores, and resellers across Canada and the USA.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/products">
-                  Browse wholesale catalog <ArrowRight size={14} />
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/wholesale-catalog">
+                  Request wholesale catalog <ArrowRight size={14} />
                 </Link>
-                <a className="btn-secondary gap-2 px-6 py-2.5 text-sm" href={contactTel}>
-                  <Phone size={14} /> Call to order
+                <Link className="btn-secondary px-6 py-2.5 text-sm" href="/products">
+                  Browse catalog
+                </Link>
+                <a className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-gray-800" href={contactTel}>
+                  <Phone size={14} /> or call to order
                 </a>
               </div>
             </div>
 
-            {/* Key facts */}
+            {/* Key facts — quick, single line */}
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-gray-100 pt-6">
-              {[
-                "Toronto warehouse stock",
-                "Ships Canada & USA",
-                "MOQ from 1 case",
-                "B2B pricing on approval",
-                "Invoice + NET 30 available",
-              ].map((fact) => (
+              {["Toronto warehouse stock", "Ships Canada & USA", "MOQ from 1 case"].map((fact) => (
                 <span key={fact} className="flex items-center gap-2 text-sm font-semibold text-gray-500">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--primary)" }} />
                   {fact}
@@ -113,8 +111,67 @@ export default async function HomePage() {
         </section>
         )}
 
+        {/* ── Category quick-links ── */}
+        <section className="border-b border-gray-200 bg-white">
+          <div className="container-shell">
+            <div className="flex flex-wrap gap-2 py-4">
+              <span className="self-center text-xs font-semibold text-gray-400 mr-1">Categories:</span>
+              {categories.map((cat) => (
+                <Link
+                  key={cat.name}
+                  href={cat.slug ? `/collections/${cat.slug}` : `/products?category=${encodeURIComponent(cat.name)}`}
+                  className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+              <Link
+                href="/products"
+                className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-400 transition-colors hover:text-gray-700"
+              >
+                All products →
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Product preview (diverse grid) ── */}
+        <section className="py-10 sm:py-12">
+          <div className="container-shell">
+            <div className="mb-5 flex items-baseline justify-between gap-4">
+              <div>
+                <span className="section-label">Wholesale catalog</span>
+                <h2 className="mt-1.5 text-xl font-bold text-gray-900">
+                  {products.length > 0 ? "A taste of the range" : "Products coming soon"}
+                </h2>
+              </div>
+              {products.length > 0 && (
+                <Link className="btn-secondary text-sm" href="/products">
+                  Full catalog <ArrowRight size={13} className="ml-1" />
+                </Link>
+              )}
+            </div>
+
+            {products.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} profile={profile} />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-xl border border-dashed border-gray-200 bg-white py-16 text-center">
+                <Package2 size={28} className="mx-auto mb-3 text-gray-300" />
+                <p className="font-semibold text-gray-400">Products will appear here once added by admin.</p>
+                <p className="mt-1 text-sm text-gray-300">
+                  <Link href="/register" className="underline hover:text-gray-500">Create a B2B account</Link> to be notified when inventory is live.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* ── How it works ── */}
-        <section className="border-b border-gray-200 bg-gray-50">
+        <section className="border-y border-gray-200 bg-gray-50">
           <div className="container-shell py-10">
             <div className="mb-6">
               <span className="section-label">Getting started</span>
@@ -138,8 +195,8 @@ export default async function HomePage() {
                 },
                 {
                   step: "03",
-                  title: "Browse & add to cart",
-                  desc: "See wholesale pricing, add products by Item Code or category, set quantities.",
+                  title: "Add items & request",
+                  desc: "See wholesale pricing, add items by the case, and submit a request — no payment yet.",
                   href: "/products",
                   cta: "Browse catalog →",
                 },
@@ -172,61 +229,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── Category quick-links ── */}
-        <section className="border-b border-gray-200 bg-white">
-          <div className="container-shell">
-            <div className="flex flex-wrap gap-2 py-4">
-              <span className="self-center text-xs font-semibold text-gray-400 mr-1">Categories:</span>
-              {categories.map((cat) => (
-                <Link
-                  key={cat.name}
-                  href={cat.slug ? `/collections/${cat.slug}` : `/products?category=${encodeURIComponent(cat.name)}`}
-                  className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-600 transition-colors hover:border-green-300 hover:bg-green-50 hover:text-green-700"
-                >
-                  {cat.name}
-                </Link>
-              ))}
-              <Link
-                href="/products"
-                className="rounded-full border border-gray-200 bg-gray-50 px-3.5 py-1.5 text-xs font-semibold text-gray-400 transition-colors hover:text-gray-700"
-              >
-                All products →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Product catalog preview ── */}
-        <section className="py-10 sm:py-12">
-          <div className="container-shell">
-            <div className="mb-5 flex items-baseline justify-between gap-4">
-              <div>
-                <span className="section-label">Wholesale catalog</span>
-                <h2 className="mt-1.5 text-xl font-bold text-gray-900">
-                  {products.length > 0 ? "Available now" : "Products coming soon"}
-                </h2>
-              </div>
-              {products.length > 0 && (
-                <Link className="btn-secondary text-sm" href="/products">
-                  Full catalog <ArrowRight size={13} className="ml-1" />
-                </Link>
-              )}
-            </div>
-
-            {products.length > 0 ? (
-              <ProductCatalogTable products={products} profile={profile} compact />
-            ) : (
-              <div className="rounded-xl border border-dashed border-gray-200 bg-white py-16 text-center">
-                <Package2 size={28} className="mx-auto mb-3 text-gray-300" />
-                <p className="font-semibold text-gray-400">Products will appear here once added by admin.</p>
-                <p className="mt-1 text-sm text-gray-300">
-                  <Link href="/register" className="underline hover:text-gray-500">Create a B2B account</Link> to be notified when inventory is live.
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
-
         {/* ── Why buy from us ── */}
         <section className="border-t border-gray-200 bg-white py-10 sm:py-14">
           <div className="container-shell">
@@ -253,19 +255,19 @@ export default async function HomePage() {
           <div className="container-shell max-w-2xl">
             <h2 className="text-2xl font-black text-gray-900">Ready to order wholesale?</h2>
             <p className="mt-3 text-base text-gray-500">
-              Order the fastest way for you — call or email us directly with the Item Codes you want,
-              and we&apos;ll confirm availability and pricing within 1 business day.
+              Request our catalog for bulk pricing, or contact us directly with the items you want —
+              we&apos;ll confirm availability and pricing within 1 business day.
             </p>
-            <OrderContactCta className="mt-6" />
-            <p className="mt-6 text-sm text-gray-500">
-              Prefer to order online? Create a B2B account to unlock wholesale pricing — approval typically takes under 24 hours.
-            </p>
-            <div className="mt-3 flex flex-wrap gap-3">
-              <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/register">
-                Create B2B account <ArrowRight size={14} />
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/wholesale-catalog">
+                Request wholesale catalog <ArrowRight size={14} />
               </Link>
-              <Link className="btn-secondary px-6 py-2.5 text-sm" href="/login">Sign in</Link>
+              <Link className="btn-secondary px-6 py-2.5 text-sm" href="/register">Create B2B account</Link>
             </div>
+            <OrderContactCta className="mt-6" />
+            <p className="mt-4 text-sm text-gray-500">
+              Already have an account? <Link href="/login" className="font-semibold underline" style={{ color: "var(--primary)" }}>Sign in</Link>.
+            </p>
           </div>
         </section>
 
