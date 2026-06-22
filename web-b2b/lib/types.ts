@@ -115,7 +115,9 @@ export type Order = {
   discount_amount: number;
   tax_amount: number;
   total_amount: number;
+  total_override?: number | null;
   delivery_method: DeliveryMethod;
+  payment_method?: string | null;
   shipping_address?: string | null;
   customer_notes?: string | null;
   admin_notes?: string | null;

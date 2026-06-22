@@ -447,6 +447,7 @@ export async function createOrderRequestAction(input: {
     .from("orders")
     .insert({
       customer_id: profile.id,
+      channel: "b2b",
       status: "Pending Review",
       payment_status: "Unpaid",
       subtotal: totals.subtotal,
@@ -504,7 +505,10 @@ export async function updateOrderReviewAction(formData: FormData) {
   const deliveryMethod = String(formData.get("delivery_method")) as "Pickup" | "Shipping";
   const status = String(formData.get("status") || "");
   const paymentStatus = String(formData.get("payment_status") || "");
+  const paymentMethod = String(formData.get("payment_method") || "").trim();
   const shippingAddress = String(formData.get("shipping_address") || "");
+  const rawTotalOverride = String(formData.get("total_override") || "").trim();
+  const totalOverride = rawTotalOverride === "" ? null : Number(rawTotalOverride);
 
   const { data: items } = await admin.from("order_items").select("*").eq("order_id", orderId);
   const updatedItems = (items || []).map((item) => {
@@ -520,7 +524,11 @@ export async function updateOrderReviewAction(formData: FormData) {
     }).eq("id", item.id);
   }
   const subtotal = updatedItems.reduce((sum, item) => sum + Number(item.line_total), 0);
-  const total = subtotal - discount + shipping + tax;
+  const computedTotal = subtotal - discount + shipping + tax;
+  // A manual override (per-customer negotiated total) wins over the item-based calculation.
+  const total = totalOverride != null && Number.isFinite(totalOverride) && totalOverride >= 0
+    ? totalOverride
+    : computedTotal;
 
   // Deduct stock_qty once when order transitions to Completed
   if (status === "Completed") {
@@ -538,7 +546,7 @@ export async function updateOrderReviewAction(formData: FormData) {
     }
   }
 
-  await admin.from("orders").update({
+  const updatePayload: Record<string, unknown> = {
     subtotal,
     shipping_fee: shipping,
     discount_amount: discount,
@@ -549,8 +557,16 @@ export async function updateOrderReviewAction(formData: FormData) {
     ...(paymentStatus ? { payment_status: paymentStatus } : {}),
     shipping_address: shippingAddress || null,
     admin_notes: adminNotes || null,
+    payment_method: paymentMethod || null,
+    total_override: totalOverride != null && Number.isFinite(totalOverride) ? totalOverride : null,
     updated_at: new Date().toISOString(),
-  }).eq("id", orderId);
+  };
+  const { error } = await admin.from("orders").update(updatePayload).eq("id", orderId);
+  // Tolerate the migration (010) not being applied yet — retry without the new columns.
+  if (error && (error.message.includes("payment_method") || error.message.includes("total_override"))) {
+    const { payment_method: _pm, total_override: _to, ...legacyPayload } = updatePayload;
+    await admin.from("orders").update(legacyPayload).eq("id", orderId);
+  }
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
 }
@@ -660,6 +676,42 @@ export async function approveB2BCustomerAction(customerId: string, approved: boo
 
   revalidatePath("/admin/customers");
   revalidatePath(`/admin/customers/${customerId}`);
+}
+
+export async function deleteCustomerAction(customerId: string) {
+  const currentAdmin = await requireAdmin();
+  if (currentAdmin.id === customerId) redirect("/admin/customers?error=self-delete");
+
+  const admin = createSupabaseAdminClient();
+  const { data: target } = await admin
+    .from("profiles")
+    .select("id, role, auth_user_id")
+    .eq("id", customerId)
+    .single();
+  if (!target) redirect("/admin/customers?error=not-found");
+  if (target.role === "admin") redirect(`/admin/customers/${customerId}?error=is-admin`);
+
+  // Force delete: remove this customer's orders and quotes first. orders.customer_id is
+  // ON DELETE RESTRICT, so the profile cannot be deleted while orders exist. order_items,
+  // quote_items, and invoices cascade from their parent rows.
+  await admin.from("orders").delete().eq("customer_id", customerId);
+  await admin.from("quotes").delete().eq("customer_id", customerId);
+
+  // Clean up other rows that reference this profile.
+  // customer_prices cascade automatically when the profile row is deleted.
+  await admin.from("b2b_messages").delete().eq("profile_id", customerId);
+  await admin.from("preorder_commitments").delete().eq("customer_id", customerId);
+
+  // Deleting the auth user cascades to the profile row (and customer_prices).
+  if (target.auth_user_id) {
+    const { error } = await admin.auth.admin.deleteUser(target.auth_user_id);
+    if (error) redirect(`/admin/customers/${customerId}?error=delete-failed`);
+  } else {
+    await admin.from("profiles").delete().eq("id", customerId);
+  }
+
+  revalidatePath("/admin/customers");
+  redirect("/admin/customers?status=deleted");
 }
 
 export async function promoteAdminByEmailAction(formData: FormData) {
