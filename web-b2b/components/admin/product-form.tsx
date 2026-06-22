@@ -579,11 +579,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
           </CollapsibleSection>
 
           {/* Internal staff notes */}
-          <div className="card p-5">
-            <div className="mb-3 flex items-center gap-2">
-              <p className="text-sm font-bold text-slate-700">Internal notes</p>
-              <span className="rounded border border-amber-200 bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700">Staff only</span>
-            </div>
+          <CollapsibleSection title="Internal notes" description="Staff-only — not visible to customers" defaultOpen={Boolean(product?.internal_notes)}>
             <textarea
               className="field min-h-24 resize-y text-sm"
               name="internal_notes"
@@ -594,7 +590,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
               <svg viewBox="0 0 16 16" className="h-3.5 w-3.5 shrink-0 fill-current"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 12.5A5.5 5.5 0 118 2.5a5.5 5.5 0 010 11zM7.25 5.5h1.5v1.5h-1.5zm0 3h1.5v4h-1.5z"/></svg>
               This is an internal-only field — not visible to customers or B2B buyers.
             </p>
-          </div>
+          </CollapsibleSection>
         </div>
 
         {/* ── Right: image + visibility ── */}

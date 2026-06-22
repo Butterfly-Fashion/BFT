@@ -9,13 +9,16 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const admin = createSupabaseAdminClient();
-  const [{ data: orders }, { count: quoteRequests }, { count: customers }, { count: products }] =
+  const [{ data: orders }, { count: customers }, { count: products }, leadsRes, approvalsRes] =
     await Promise.all([
       admin.from("orders").select("*, profiles(business_name,email)").eq("channel", "b2b").order("created_at", { ascending: false }),
-      admin.from("quotes").select("*", { count: "exact", head: true }),
       admin.from("profiles").select("*", { count: "exact", head: true }),
       admin.from("products").select("*", { count: "exact", head: true }).eq("is_hidden", false),
+      admin.from("wholesale_leads").select("id", { count: "exact", head: true }).eq("status", "New"),
+      admin.from("profiles").select("id", { count: "exact", head: true }).eq("is_b2b_approved", false).eq("role", "customer"),
     ]);
+  const newLeads = leadsRes?.count ?? 0;
+  const pendingApprovals = approvalsRes?.count ?? 0;
 
   const orderList = orders || [];
   let revenue = 0;
@@ -83,6 +86,29 @@ export default async function AdminDashboardPage() {
             <Link className="btn-secondary text-xs" href="/admin/orders">Review orders</Link>
             <Link className="btn-primary text-xs" href="/admin/products">Manage products</Link>
           </div>
+        </section>
+
+        {/* Today — action items */}
+        <section className="mb-6 grid gap-3 sm:grid-cols-3">
+          {[
+            { label: "New order requests", value: pendingCount, href: "/admin/orders?status=Pending%20Review", border: "border-l-amber-400", text: "text-amber-600" },
+            { label: "New catalog leads", value: newLeads, href: "/admin/leads", border: "border-l-sky-400", text: "text-sky-600" },
+            { label: "Pending approvals", value: pendingApprovals, href: "/admin/approvals", border: "border-l-green-400", text: "text-green-600" },
+          ].map((item) => (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`card flex items-center justify-between border-l-4 p-4 transition-shadow hover:shadow-md ${item.border}`}
+            >
+              <div>
+                <p className="text-xs font-semibold text-slate-500">{item.label}</p>
+                <strong className={`mt-1 block text-3xl font-black ${item.value > 0 ? item.text : "text-slate-300"}`}>
+                  {item.value}
+                </strong>
+              </div>
+              <span className="text-xs font-bold text-slate-400">View →</span>
+            </Link>
+          ))}
         </section>
 
         {/* KPI cards */}

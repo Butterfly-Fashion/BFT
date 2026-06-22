@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   Package, LayoutDashboard, ShoppingBag, Users,
-  ClipboardList, FileText, ExternalLink, LogOut,
-  CalendarClock, Tag, UserCheck, Mail, MessageSquare,
+  ClipboardList, ExternalLink, LogOut,
+  CalendarClock, Tag, UserCheck, MessageSquare,
   ChevronDown, ShieldCheck, Images, Megaphone, Inbox,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions";
@@ -24,7 +24,6 @@ const NAV: (NavItem | NavGroup)[] = [
       { label: "Customer list", href: "/admin/customers",  icon: Users },
       { label: "Administrators", href: "/admin/admins",    icon: ShieldCheck },
       { label: "Messages",      href: "/admin/messages",   icon: MessageSquare },
-      { label: "Newsletter",    href: "/admin/newsletter", icon: Mail },
     ],
   },
   {
@@ -41,7 +40,6 @@ const NAV: (NavItem | NavGroup)[] = [
     items: [
       { label: "Orders",     href: "/admin/orders",    icon: ClipboardList },
       { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
-      { label: "Quotes",     href: "/admin/quotes",    icon: FileText },
     ],
   },
 ];
