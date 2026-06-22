@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { approveB2BCustomerAction, setCustomerPriceAction, deleteCustomerPriceAction } from "@/app/actions";
+import { approveB2BCustomerAction, setCustomerPriceAction, deleteCustomerPriceAction, deleteCustomerAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -9,11 +9,18 @@ import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminCustomerDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function AdminCustomerDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ error?: string }>;
+}) {
   const { id } = await params;
+  const { error: deleteError } = await searchParams;
   const admin = createSupabaseAdminClient();
 
-  const [{ data: customer }, { data: products }, { data: orders }, { data: customerPrices }, { data: purchaseItems }] = await Promise.all([
+  const [{ data: customer }, { data: products }, { data: orders }, { data: customerPrices }, { data: purchaseItems }, { count: quoteCount }] = await Promise.all([
     admin.from("profiles").select("*").eq("id", id).single(),
     admin
       .from("products")
@@ -28,9 +35,20 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
       .select("product_id, product_name_snapshot, sku_snapshot, quantity, unit_price_snapshot, line_total, orders!inner(id,customer_id,status,payment_status,created_at)")
       .eq("orders.customer_id", id)
       .order("created_at", { ascending: false, foreignTable: "orders" }),
+    admin.from("quotes").select("id", { count: "exact", head: true }).eq("customer_id", id),
   ]);
 
   if (!customer) notFound();
+
+  const orderCount = orders?.length ?? 0;
+  const quotesCount = quoteCount ?? 0;
+  const isAdminAccount = customer.role === "admin";
+  const hasRecords = orderCount > 0 || quotesCount > 0;
+  const DELETE_ERRORS: Record<string, string> = {
+    "is-admin": "관리자 계정은 여기서 삭제할 수 없습니다.",
+    "self-delete": "본인 계정은 삭제할 수 없습니다.",
+    "delete-failed": "삭제에 실패했습니다. 다시 시도해 주세요.",
+  };
 
   const paidRevenue = (orders || []).filter((order) => order.status === "Paid").reduce((sum, order) => sum + Number(order.total_amount || 0), 0);
   const totalRevenue = (orders || []).reduce((sum, order) => sum + Number(order.total_amount || 0), 0);
@@ -51,6 +69,11 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
     <>
       <AdminNav />
       <main className="container-shell py-6">
+        {deleteError && DELETE_ERRORS[deleteError] && (
+          <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            {DELETE_ERRORS[deleteError]}
+          </div>
+        )}
         <section className="mb-5 rounded border border-slate-200 bg-white p-5">
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 pb-4">
             <div className="min-w-0">
@@ -223,6 +246,39 @@ export default async function AdminCustomerDetailPage({ params }: { params: Prom
             </section>
           </div>
         </div>
+
+        {/* Danger zone */}
+        <section className="mt-6 overflow-hidden rounded border border-red-200 bg-white">
+          <div className="border-b border-red-100 bg-red-50 p-4">
+            <h2 className="text-lg font-black text-red-700">Danger zone</h2>
+            <p className="mt-0.5 text-xs font-semibold text-red-600">Deleting a customer is permanent and cannot be undone.</p>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4">
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-slate-900">Delete this customer</p>
+              <p className="mt-0.5 text-xs text-slate-500">
+                Permanently removes the account, login, custom prices, messages
+                {hasRecords ? `, and all ${orderCount} order(s) and ${quotesCount} quote(s)` : ""}.
+              </p>
+            </div>
+            {isAdminAccount ? (
+              <p className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-500">
+                관리자 계정은 여기서 삭제할 수 없습니다.
+              </p>
+            ) : (
+              <DangerForm
+                action={deleteCustomerAction.bind(null, customer.id)}
+                confirmMessage={
+                  hasRecords
+                    ? `정말로 이 고객을 삭제하시겠습니까?\n\n"${customer.business_name}" 계정과 로그인 정보, 맞춤 가격, 메시지가 삭제되며,\n이 고객의 주문 ${orderCount}건과 견적 ${quotesCount}건도 함께 영구 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`
+                    : `정말로 이 고객을 삭제하시겠습니까?\n\n"${customer.business_name}" 계정과 로그인 정보, 맞춤 가격, 메시지가 영구적으로 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`
+                }
+                submitLabel="Delete customer"
+                className="contents"
+              />
+            )}
+          </div>
+        </section>
       </main>
     </>
   );
