@@ -1,33 +1,57 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { DangerForm } from "@/components/admin/danger-form";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
-import { updatePreorderCampaignStatusAction, updatePreorderCampaignAction } from "@/app/actions";
+import {
+  updatePreorderCampaignStatusAction,
+  updatePreorderCampaignAction,
+  addPreorderItemAction,
+  deletePreorderItemAction,
+} from "@/app/actions";
 
 export const dynamic = "force-dynamic";
+
+type ItemProduct = { name: string; sku: string | null; image_url: string | null; category: string | null };
 
 export default async function AdminPreorderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const admin = createSupabaseAdminClient();
 
-  const { data: campaign } = await admin
-    .from("preorder_campaigns")
-    .select("*, products(name, sku, image_url, category)")
-    .eq("id", id)
-    .single();
-
+  const { data: campaign } = await admin.from("preorder_campaigns").select("*").eq("id", id).single();
   if (!campaign) notFound();
 
-  const { data: commitments } = await admin
-    .from("preorder_commitments")
-    .select("*, profiles(business_name, contact_name, email, phone)")
-    .eq("campaign_id", id)
-    .order("created_at", { ascending: false });
+  const [{ data: items }, { data: commitments }, { data: products }] = await Promise.all([
+    admin.from("preorder_campaign_items").select("*, products(name, sku, image_url, category)").eq("campaign_id", id),
+    admin.from("preorder_commitments").select("*, profiles(business_name, email)").eq("campaign_id", id),
+    admin
+      .from("products")
+      .select("id, name, sku, unit_price, case_price, case_qty")
+      .eq("is_hidden", false)
+      .contains("sales_channels", ["b2b"])
+      .order("name"),
+  ]);
 
-  const product = Array.isArray(campaign.products) ? campaign.products[0] : campaign.products;
-  const totalUnits = (commitments || []).reduce((sum, c) => sum + Number(c.quantity || 0), 0);
-  const caseCount = campaign.case_qty ? Math.floor(totalUnits / campaign.case_qty) : null;
+  const itemList = items || [];
+  const commitList = commitments || [];
+  const addedProductIds = new Set(itemList.map((it) => it.product_id));
+  const availableProducts = (products || []).filter((p) => !addedProductIds.has(p.id));
+
+  // Per-item demand aggregation.
+  const demandByProduct = new Map<string, { units: number; buyers: number }>();
+  for (const c of commitList) {
+    if (!c.product_id) continue;
+    const d = demandByProduct.get(c.product_id) || { units: 0, buyers: 0 };
+    d.units += Number(c.quantity || 0);
+    d.buyers += 1;
+    demandByProduct.set(c.product_id, d);
+  }
+  const totalUnits = commitList.reduce((sum, c) => sum + Number(c.quantity || 0), 0);
+  const totalEstValue = itemList.reduce((sum, it) => {
+    const d = demandByProduct.get(it.product_id);
+    return sum + (d ? d.units * Number(it.unit_price || 0) : 0);
+  }, 0);
 
   return (
     <>
@@ -48,89 +72,105 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
             <section className="card p-5">
               <p className="section-label">Campaign</p>
               <h1 className="mt-1 text-2xl font-black text-slate-900">{campaign.title}</h1>
-              {campaign.description && (
-                <p className="mt-2 text-sm text-slate-500">{campaign.description}</p>
+              {campaign.description && <p className="mt-2 text-sm text-slate-500">{campaign.description}</p>}
+              {campaign.closes_at && (
+                <p className="mt-2 text-sm text-slate-500">
+                  Closes {new Date(campaign.closes_at).toLocaleDateString("en-CA")}
+                </p>
               )}
-              <div className="mt-4 grid gap-2 rounded-xl bg-slate-50 p-4 text-sm">
-                <div className="flex justify-between"><span className="font-semibold text-slate-500">Product</span><span className="font-black">{product?.name}</span></div>
-                <div className="flex justify-between"><span className="font-semibold text-slate-500">Item Code</span><span className="font-mono text-xs font-semibold">{product?.sku}</span></div>
-                <div className="flex justify-between"><span className="font-semibold text-slate-500">Unit price</span><span className="font-black">{formatMoney(campaign.unit_price)}</span></div>
-                {campaign.case_price != null && (
-                  <div className="flex justify-between"><span className="font-semibold text-slate-500">Case price ({campaign.case_qty} pcs)</span><span className="font-black">{formatMoney(campaign.case_price)}</span></div>
-                )}
-                {campaign.closes_at && (
-                  <div className="flex justify-between"><span className="font-semibold text-slate-500">Closes at</span><span className="font-black">{new Date(campaign.closes_at).toLocaleDateString("en-CA")}</span></div>
-                )}
-              </div>
             </section>
 
-            {/* Commitments table */}
+            {/* Products in campaign */}
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <div className="border-b border-slate-100 bg-slate-50 px-5 py-3 flex items-center justify-between">
-                <h2 className="text-base font-black text-slate-900">Commitments ({commitments?.length || 0})</h2>
-                <p className="text-sm font-black text-slate-700">Total: <span className="text-(--primary)">{totalUnits} units</span>{caseCount != null ? ` (${caseCount} cases)` : ""}</p>
+              <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-5 py-3">
+                <h2 className="text-base font-black text-slate-900">Products ({itemList.length})</h2>
+                <p className="text-sm font-black text-slate-700">
+                  Total demand: <span className="text-(--primary)">{totalUnits} units</span> · {formatMoney(totalEstValue)}
+                </p>
               </div>
               <div className="overflow-auto">
                 <table className="w-full min-w-160 text-sm">
                   <thead>
                     <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
-                      <th className="px-5 py-3">Business</th>
-                      <th className="px-5 py-3">Contact</th>
-                      <th className="px-5 py-3">Qty</th>
+                      <th className="px-5 py-3">Product</th>
+                      <th className="px-5 py-3">Unit / case</th>
+                      <th className="px-5 py-3">Committed</th>
+                      <th className="px-5 py-3">Buyers</th>
                       <th className="px-5 py-3">Est. value</th>
-                      <th className="px-5 py-3">Notes</th>
-                      <th className="px-5 py-3">Date</th>
+                      <th className="px-5 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {(commitments || []).map((c) => {
-                      const p = Array.isArray(c.profiles) ? c.profiles[0] : c.profiles;
+                    {itemList.map((it) => {
+                      const p = (Array.isArray(it.products) ? it.products[0] : it.products) as ItemProduct | null;
+                      const d = demandByProduct.get(it.product_id);
+                      const cases = it.case_qty ? Math.floor((d?.units ?? 0) / it.case_qty) : null;
                       return (
-                        <tr key={c.id} className="table-row-hover border-b border-slate-100 last:border-b-0">
-                          <td className="px-5 py-3 font-black">{p?.business_name || "—"}</td>
-                          <td className="px-5 py-3 text-xs text-slate-600">{p?.email || "—"}</td>
-                          <td className="px-5 py-3 font-black text-base text-slate-900">{c.quantity}</td>
-                          <td className="px-5 py-3 font-semibold">{formatMoney(c.quantity * campaign.unit_price)}</td>
-                          <td className="px-5 py-3 max-w-40 truncate text-slate-500">{c.notes || "—"}</td>
-                          <td className="px-5 py-3 text-xs text-slate-400">{new Date(c.created_at).toLocaleDateString("en-CA")}</td>
+                        <tr key={it.id} className="border-b border-slate-100 last:border-b-0">
+                          <td className="px-5 py-3">
+                            <p className="font-bold text-slate-900">{p?.name || "—"}</p>
+                            <p className="font-mono text-xs text-slate-400">{p?.sku}</p>
+                          </td>
+                          <td className="px-5 py-3 text-slate-600">
+                            {formatMoney(it.unit_price)}/pc
+                            {it.case_price != null && <> · {formatMoney(it.case_price)}/case</>}
+                            {it.case_qty && <span className="text-slate-400"> ({it.case_qty} pcs)</span>}
+                          </td>
+                          <td className="px-5 py-3 font-black text-slate-900">
+                            {d?.units ?? 0} pcs{cases != null ? ` (${cases} cases)` : ""}
+                          </td>
+                          <td className="px-5 py-3 text-slate-600">{d?.buyers ?? 0}</td>
+                          <td className="px-5 py-3 font-semibold">{formatMoney((d?.units ?? 0) * Number(it.unit_price || 0))}</td>
+                          <td className="px-5 py-3 text-right">
+                            <DangerForm
+                              action={deletePreorderItemAction.bind(null, it.id, id)}
+                              confirmMessage={`Remove "${p?.name}" from this campaign?`}
+                              submitLabel="Remove"
+                              className="contents"
+                            />
+                          </td>
                         </tr>
                       );
                     })}
                   </tbody>
                 </table>
               </div>
-              {!commitments?.length && (
-                <div className="p-8 text-center text-sm font-bold text-slate-500">No commitments yet.</div>
+              {!itemList.length && (
+                <div className="p-8 text-center text-sm font-bold text-slate-500">No products yet — add some below.</div>
+              )}
+            </section>
+
+            {/* Add product */}
+            <section className="card p-5">
+              <h2 className="mb-3 text-base font-black text-slate-900">Add a product</h2>
+              <form action={addPreorderItemAction} className="grid gap-3 md:grid-cols-[1fr_auto]">
+                <input type="hidden" name="campaign_id" value={id} />
+                <label className="label md:col-span-2">
+                  Product
+                  <select className="field" name="product_id" required defaultValue="">
+                    <option value="" disabled>Select a product…</option>
+                    {availableProducts.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name} ({p.sku}) — {formatMoney(p.unit_price)}/pc
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="grid grid-cols-3 gap-2 md:col-span-2">
+                  <label className="label">Unit price *<input className="field" name="unit_price" type="number" step="0.01" min="0" required placeholder="5.99" /></label>
+                  <label className="label">Case price<input className="field" name="case_price" type="number" step="0.01" min="0" placeholder="59.99" /></label>
+                  <label className="label">Case qty<input className="field" name="case_qty" type="number" step="1" min="1" placeholder="12" /></label>
+                </div>
+                <button className="btn-primary md:col-span-2" type="submit">Add to campaign</button>
+              </form>
+              {!availableProducts.length && (
+                <p className="mt-2 text-xs text-slate-400">All B2B products are already in this campaign.</p>
               )}
             </section>
           </div>
 
           {/* Sidebar */}
           <aside className="grid gap-4 xl:h-fit xl:sticky xl:top-20">
-            <section className="card p-4">
-              <h2 className="mb-3 text-base font-black">Demand summary</h2>
-              <div className="grid gap-2 text-sm">
-                <div className="flex justify-between rounded-lg bg-slate-50 px-3 py-2">
-                  <span className="font-semibold text-slate-500">Buyers</span>
-                  <span className="font-black">{commitments?.length || 0}</span>
-                </div>
-                <div className="flex justify-between rounded-lg bg-blue-50 px-3 py-2">
-                  <span className="font-semibold text-blue-600">Total units</span>
-                  <span className="font-black text-blue-900">{totalUnits} pcs</span>
-                </div>
-                {caseCount != null && (
-                  <div className="flex justify-between rounded-lg bg-blue-50 px-3 py-2">
-                    <span className="font-semibold text-blue-600">Cases</span>
-                    <span className="font-black text-blue-900">{caseCount} cases</span>
-                  </div>
-                )}
-                <div className="flex justify-between rounded-lg bg-slate-50 px-3 py-2">
-                  <span className="font-semibold text-slate-500">Est. revenue</span>
-                  <span className="font-black">{formatMoney(totalUnits * campaign.unit_price)}</span>
-                </div>
-              </div>
-            </section>
-
             <section className="card p-4">
               <h2 className="mb-3 text-base font-bold text-slate-900">Edit campaign</h2>
               <form action={updatePreorderCampaignAction} className="grid gap-3">
@@ -143,16 +183,6 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                   Description
                   <textarea className="field min-h-16 text-sm" name="description" defaultValue={campaign.description || ""} placeholder="Optional description for customers" />
                 </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <label className="label">
-                    Unit price
-                    <input className="field text-sm" name="unit_price" type="number" step="0.01" min="0" defaultValue={campaign.unit_price} required />
-                  </label>
-                  <label className="label">
-                    Case price
-                    <input className="field text-sm" name="case_price" type="number" step="0.01" min="0" defaultValue={campaign.case_price ?? ""} placeholder="Optional" />
-                  </label>
-                </div>
                 <label className="label">
                   Closing date
                   <input
@@ -180,10 +210,7 @@ export default async function AdminPreorderDetailPage({ params }: { params: Prom
                   </form>
                 )}
                 {campaign.status !== "cancelled" && (
-                  <form
-                    action={async () => { "use server"; await updatePreorderCampaignStatusAction(id, "cancelled"); }}
-                    onSubmit={undefined}
-                  >
+                  <form action={async () => { "use server"; await updatePreorderCampaignStatusAction(id, "cancelled"); }}>
                     <button className="btn-danger w-full text-sm" type="submit">Cancel campaign</button>
                   </form>
                 )}

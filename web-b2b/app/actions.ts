@@ -902,30 +902,57 @@ export async function setCustomerPriceAction(formData: FormData) {
 export async function createPreorderCampaignAction(formData: FormData) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
-  const productId = String(formData.get("product_id") || "");
   const title = String(formData.get("title") || "").trim();
   const description = String(formData.get("description") || "");
+  const rawClosesAt = formData.get("closes_at");
+
+  if (!title) return;
+
+  // A campaign is now a container; products are added on the detail page.
+  const { data: campaign, error } = await admin
+    .from("preorder_campaigns")
+    .insert({
+      title,
+      description,
+      status: "open",
+      closes_at: rawClosesAt ? new Date(String(rawClosesAt)).toISOString() : null,
+    })
+    .select("id")
+    .single();
+  if (error || !campaign) return;
+
+  revalidatePath("/admin/preorders");
+  redirect(`/admin/preorders/${campaign.id}`);
+}
+
+export async function addPreorderItemAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const campaignId = String(formData.get("campaign_id") || "");
+  const productId = String(formData.get("product_id") || "");
   const unitPrice = Number(formData.get("unit_price") || 0);
   const rawCasePrice = formData.get("case_price");
   const rawCaseQty = formData.get("case_qty");
-  const rawClosesAt = formData.get("closes_at");
+  if (!campaignId || !productId) return;
 
-  if (!productId || !title) return;
+  await admin.from("preorder_campaign_items").upsert(
+    {
+      campaign_id: campaignId,
+      product_id: productId,
+      unit_price: unitPrice,
+      case_price: rawCasePrice ? Number(rawCasePrice) : null,
+      case_qty: rawCaseQty ? Number(rawCaseQty) : null,
+    },
+    { onConflict: "campaign_id,product_id" }
+  );
+  revalidatePath(`/admin/preorders/${campaignId}`);
+}
 
-  const { error } = await admin.from("preorder_campaigns").insert({
-    product_id: productId,
-    title,
-    description,
-    unit_price: unitPrice,
-    case_price: rawCasePrice ? Number(rawCasePrice) : null,
-    case_qty: rawCaseQty ? Number(rawCaseQty) : null,
-    status: "open",
-    closes_at: rawClosesAt ? new Date(String(rawClosesAt)).toISOString() : null,
-  });
-  if (error) return;
-
-  revalidatePath("/admin/preorders");
-  redirect("/admin/preorders");
+export async function deletePreorderItemAction(itemId: string, campaignId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("preorder_campaign_items").delete().eq("id", itemId);
+  revalidatePath(`/admin/preorders/${campaignId}`);
 }
 
 export async function updatePreorderCampaignAction(formData: FormData) {
@@ -934,15 +961,11 @@ export async function updatePreorderCampaignAction(formData: FormData) {
   const campaignId = String(formData.get("campaign_id") || "");
   const title = String(formData.get("title") || "").trim();
   const description = String(formData.get("description") || "");
-  const unitPrice = Number(formData.get("unit_price") || 0);
-  const rawCasePrice = formData.get("case_price");
   const rawClosesAt = formData.get("closes_at");
   if (!campaignId || !title) return;
   await admin.from("preorder_campaigns").update({
     title,
     description,
-    unit_price: unitPrice,
-    case_price: rawCasePrice ? Number(rawCasePrice) : null,
     closes_at: rawClosesAt ? new Date(String(rawClosesAt)).toISOString() : null,
     updated_at: new Date().toISOString(),
   }).eq("id", campaignId);
@@ -965,27 +988,28 @@ export async function submitPreorderCommitmentAction(formData: FormData) {
   const profile = await requireProfile();
   const supabase = await createSupabaseServerClient();
   const campaignId = String(formData.get("campaign_id") || "");
+  const productId = String(formData.get("product_id") || "") || null;
   const cases = Math.max(1, Number(formData.get("cases") || 1));
-  const notes = String(formData.get("notes") || "") || null;
+  const caseQtyInput = Number(formData.get("case_qty") || 0);
 
   const { data: campaign } = await supabase
     .from("preorder_campaigns")
-    .select("id, status, case_qty")
+    .select("id, status")
     .eq("id", campaignId)
     .single();
 
   if (!campaign || campaign.status !== "open") return;
 
-  const caseQty = campaign.case_qty ?? 12;
+  const caseQty = caseQtyInput > 0 ? caseQtyInput : 12;
   const quantity = cases * caseQty;
 
   await supabase.from("preorder_commitments").upsert({
     campaign_id: campaignId,
     customer_id: profile.id,
+    product_id: productId,
     quantity,
-    notes,
     updated_at: new Date().toISOString(),
-  }, { onConflict: "campaign_id,customer_id" });
+  }, { onConflict: "campaign_id,customer_id,product_id" });
 
   revalidatePath("/preorders");
 }

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { AdminNav } from "@/components/admin/admin-nav";
-import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +10,7 @@ export default async function AdminPreordersPage() {
 
   const { data: campaigns } = await admin
     .from("preorder_campaigns")
-    .select("*, products(name, sku, image_url), preorder_commitments(quantity)")
+    .select("*, preorder_campaign_items(id), preorder_commitments(quantity)")
     .order("created_at", { ascending: false });
 
   const list = campaigns || [];
@@ -54,9 +53,7 @@ export default async function AdminPreordersPage() {
               <thead>
                 <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Campaign</th>
-                  <th className="px-5 py-3">Product</th>
-                  <th className="px-5 py-3">Unit price</th>
-                  <th className="px-5 py-3">Case price</th>
+                  <th className="px-5 py-3">Products</th>
                   <th className="px-5 py-3">Commitments</th>
                   <th className="px-5 py-3">Status</th>
                   <th className="px-5 py-3 text-right">Actions</th>
@@ -64,7 +61,7 @@ export default async function AdminPreordersPage() {
               </thead>
               <tbody>
                 {list.map((campaign) => {
-                  const product = Array.isArray(campaign.products) ? campaign.products[0] : campaign.products;
+                  const itemCount = (campaign.preorder_campaign_items || []).length;
                   const total = totalCommitments(campaign);
                   return (
                     <tr key={campaign.id} className="table-row-hover border-b border-slate-100 last:border-b-0">
@@ -72,11 +69,8 @@ export default async function AdminPreordersPage() {
                         <p className="font-black text-slate-900">{campaign.title}</p>
                         <p className="text-xs text-slate-400">{new Date(campaign.created_at).toLocaleDateString("en-CA")}</p>
                       </td>
-                      <td className="px-5 py-3 font-semibold text-slate-700">{product?.name || "—"}</td>
-                      <td className="px-5 py-3 font-black">{formatMoney(campaign.unit_price)}</td>
-                      <td className="px-5 py-3 font-semibold text-slate-600">
-                        {campaign.case_price != null ? formatMoney(campaign.case_price) : "—"}
-                        {campaign.case_qty ? <span className="ml-1 text-xs text-slate-400">/{campaign.case_qty} pcs</span> : ""}
+                      <td className="px-5 py-3 font-semibold text-slate-700">
+                        {itemCount} product{itemCount !== 1 ? "s" : ""}
                       </td>
                       <td className="px-5 py-3">
                         <strong className="text-base">{total}</strong>

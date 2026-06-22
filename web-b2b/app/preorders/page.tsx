@@ -12,9 +12,11 @@ export const metadata: Metadata = {
     "Reserve upcoming wholesale drops before they land. Pre-order campaigns for approved B2B accounts at Butterfly Fashion Trading, Toronto.",
   alternates: { canonical: "/preorders" },
 };
-import { PreorderList, type PreorderItem } from "./preorder-list";
+import { PreorderList, type PreorderCampaignGroup, type PreorderRow } from "./preorder-list";
 
 export const dynamic = "force-dynamic";
+
+type ItemProduct = { name: string; sku: string | null; image_url: string | null };
 
 export default async function PreordersPage() {
   const profile = await getCurrentProfile();
@@ -24,67 +26,73 @@ export default async function PreordersPage() {
   const { data: campaigns } = isApproved
     ? await supabase
         .from("preorder_campaigns")
-        .select("*, products(name, slug, image_url, sku, category)")
+        .select("id, title, description, closes_at")
         .eq("status", "open")
         .order("created_at", { ascending: false })
     : { data: null };
 
   const campaignIds = (campaigns || []).map((c) => c.id);
-  const { data: myCommitments } =
-    profile && campaignIds.length
-      ? await supabase
-          .from("preorder_commitments")
-          .select("campaign_id, quantity, notes")
-          .eq("customer_id", profile.id)
-          .in("campaign_id", campaignIds)
-      : { data: null };
+  const admin = createSupabaseAdminClient();
 
-  const commitMap = new Map((myCommitments || []).map((c) => [c.campaign_id, c]));
+  // Products in each campaign + my commitments + total buyers (server-only admin reads).
+  const [{ data: items }, { data: myCommitments }, { data: allCommits }] =
+    campaignIds.length
+      ? await Promise.all([
+          admin.from("preorder_campaign_items").select("*, products(name, sku, image_url)").in("campaign_id", campaignIds),
+          profile
+            ? supabase.from("preorder_commitments").select("campaign_id, product_id, quantity").eq("customer_id", profile.id).in("campaign_id", campaignIds)
+            : Promise.resolve({ data: null }),
+          admin.from("preorder_commitments").select("campaign_id, product_id").in("campaign_id", campaignIds),
+        ])
+      : [{ data: null }, { data: null }, { data: null }];
 
-  // Aggregate demand across all buyers (one commitment row per buyer per campaign).
-  // Queried with the admin client so the count is server-computed; only the
-  // buyer count — never per-buyer data — is sent to the client.
-  const { data: allCommits } =
-    isApproved && campaignIds.length
-      ? await createSupabaseAdminClient()
-          .from("preorder_commitments")
-          .select("campaign_id")
-          .in("campaign_id", campaignIds)
-      : { data: null };
+  const key = (campaignId: string, productId: string) => `${campaignId}:${productId}`;
+  const myCommitMap = new Map((myCommitments || []).map((c) => [key(c.campaign_id, c.product_id), c.quantity]));
   const buyerCountMap = new Map<string, number>();
   for (const c of allCommits || []) {
-    buyerCountMap.set(c.campaign_id, (buyerCountMap.get(c.campaign_id) ?? 0) + 1);
+    const k = key(c.campaign_id, c.product_id);
+    buyerCountMap.set(k, (buyerCountMap.get(k) ?? 0) + 1);
   }
 
-  // Flatten campaigns into serializable items for the client search list
-  const list = campaigns || [];
-  const items: PreorderItem[] = list.map((campaign) => {
-    const product = Array.isArray(campaign.products) ? campaign.products[0] : campaign.products;
-    const caseQty = campaign.case_qty ?? 12;
-    const myCommit = commitMap.get(campaign.id);
-    return {
-      id: campaign.id,
-      title: campaign.title ?? null,
-      name: product?.name ?? campaign.title ?? "",
-      description: campaign.description?.trim() || null,
+  const itemsByCampaign = new Map<string, PreorderRow[]>();
+  for (const it of items || []) {
+    const product = (Array.isArray(it.products) ? it.products[0] : it.products) as ItemProduct | null;
+    const caseQty = it.case_qty ?? 12;
+    const k = key(it.campaign_id, it.product_id);
+    const row: PreorderRow = {
+      campaignId: it.campaign_id,
+      productId: it.product_id,
+      name: product?.name ?? "",
       sku: product?.sku ?? null,
       imageUrl: product?.image_url ?? null,
-      category: product?.category ?? "Other",
       caseQty,
-      casePrice: campaign.case_price ?? campaign.unit_price * caseQty,
-      unitPrice: campaign.unit_price,
-      closesAt: campaign.closes_at ?? null,
-      committedQty: myCommit ? myCommit.quantity : null,
-      buyerCount: buyerCountMap.get(campaign.id) ?? 0,
+      casePrice: it.case_price ?? Number(it.unit_price || 0) * caseQty,
+      unitPrice: Number(it.unit_price || 0),
+      committedQty: myCommitMap.has(k) ? Number(myCommitMap.get(k)) : null,
+      buyerCount: buyerCountMap.get(k) ?? 0,
     };
-  });
+    if (!itemsByCampaign.has(it.campaign_id)) itemsByCampaign.set(it.campaign_id, []);
+    itemsByCampaign.get(it.campaign_id)!.push(row);
+  }
+
+  const groups: PreorderCampaignGroup[] = (campaigns || [])
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      description: c.description?.trim() || null,
+      closesAt: c.closes_at ?? null,
+      items: itemsByCampaign.get(c.id) ?? [],
+    }))
+    .filter((g) => g.items.length > 0);
+
+  const list = groups;
 
   // Summary counts
   const totalCommitted = (myCommitments || []).length;
   const totalCases = (myCommitments || []).reduce((sum, c) => {
-    const campaign = list.find((x) => x.id === c.campaign_id);
-    const caseQty = campaign?.case_qty ?? 12;
-    return sum + Math.round(c.quantity / caseQty);
+    const it = (items || []).find((x) => x.campaign_id === c.campaign_id && x.product_id === c.product_id);
+    const caseQty = it?.case_qty ?? 12;
+    return sum + Math.round(Number(c.quantity) / caseQty);
   }, 0);
 
   return (
@@ -178,7 +186,7 @@ export default async function PreordersPage() {
             )}
 
             {/* Searchable campaign list */}
-            {list.length > 0 && <PreorderList items={items} />}
+            {list.length > 0 && <PreorderList campaigns={list} />}
 
             {list.length > 0 && (
               <p className="mt-8 text-center text-xs text-slate-400">
