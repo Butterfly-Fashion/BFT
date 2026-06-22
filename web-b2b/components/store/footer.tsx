@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { MapPin, Clock, Mail, Phone } from "lucide-react";
 import { ButterflyLogo } from "@/components/butterfly-logo";
-
-const EMAIL = "jameskimkim1@gmail.com";
-const PHONE = "+1-416-785-5999";
+import { CONTACT_EMAIL as EMAIL, CONTACT_PHONE as PHONE } from "@/lib/contact";
 
 export function Footer() {
   return (
@@ -37,7 +35,7 @@ export function Footer() {
             <li><Link href="/products" className="transition-colors hover:text-gray-900">Catalog</Link></li>
             <li><Link href="/preorders" className="transition-colors hover:text-gray-900">Pre-orders</Link></li>
             <li><Link href="/lookbook" className="transition-colors hover:text-gray-900">Lookbook</Link></li>
-            <li><Link href="/account/quotes" className="transition-colors hover:text-gray-900">Request a quote</Link></li>
+            <li><Link href="/account/messages" className="transition-colors hover:text-gray-900">Contact us</Link></li>
           </ul>
         </div>
 

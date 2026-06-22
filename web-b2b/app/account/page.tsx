@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle, Clock, User, Building2, Mail, Phone, MapPin, ClipboardList, FileText } from "lucide-react";
+import { CheckCircle, Clock, User, Building2, Mail, Phone, MapPin, ClipboardList, MessageSquare } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { requireProfile } from "@/lib/auth";
 
@@ -82,7 +82,7 @@ export default async function AccountPage() {
 
             {!profile.is_b2b_approved && (
               <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold leading-relaxed text-amber-800">
-                Your account is pending B2B approval. You can browse and add items to cart, but order submission is available once approved.
+                Your account is pending B2B approval. You can browse the catalog now — wholesale pricing and ordering unlock once approved. In the meantime, contact us by phone or email to place an order.
               </div>
             )}
           </div>
@@ -103,15 +103,15 @@ export default async function AccountPage() {
             </Link>
 
             <Link
-              href="/account/quotes"
+              href="/account/messages"
               className="card flex items-center gap-4 p-4 transition-all hover:border-slate-400 hover:shadow-sm hover:-translate-y-0.5"
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-slate-200 bg-slate-50">
-                <FileText size={18} className="text-slate-600" />
+                <MessageSquare size={18} className="text-slate-600" />
               </span>
               <div>
-                <p className="text-sm font-black text-slate-900">Quote Requests</p>
-                <p className="text-xs font-semibold text-slate-500">Request bulk or custom pricing</p>
+                <p className="text-sm font-black text-slate-900">Messages</p>
+                <p className="text-xs font-semibold text-slate-500">Ask about pricing, stock, or orders</p>
               </div>
             </Link>
 

@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { ArrowRight, MapPin, Truck, Package2, ShieldCheck, FileText, Tag } from "lucide-react";
+import { ArrowRight, MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Phone } from "lucide-react";
+import { contactTel } from "@/lib/contact";
+import { OrderContactCta } from "@/components/store/order-contact-cta";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
 import { Header } from "@/components/store/header";
@@ -65,9 +67,9 @@ export default async function HomePage() {
                 <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/products">
                   Browse wholesale catalog <ArrowRight size={14} />
                 </Link>
-                <Link className="btn-secondary px-6 py-2.5 text-sm" href="/account/quotes">
-                  Request a quote
-                </Link>
+                <a className="btn-secondary gap-2 px-6 py-2.5 text-sm" href={contactTel}>
+                  <Phone size={14} /> Call to order
+                </a>
               </div>
             </div>
 
@@ -230,15 +232,18 @@ export default async function HomePage() {
           <div className="container-shell max-w-2xl">
             <h2 className="text-2xl font-black text-gray-900">Ready to order wholesale?</h2>
             <p className="mt-3 text-base text-gray-500">
-              Create a B2B account to unlock wholesale pricing. Approval typically takes under 24 hours.
-              Already have an account? Log in and start ordering.
+              Order the fastest way for you — call or email us directly with the Item Codes you want,
+              and we&apos;ll confirm availability and pricing within 1 business day.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <OrderContactCta className="mt-6" />
+            <p className="mt-6 text-sm text-gray-500">
+              Prefer to order online? Create a B2B account to unlock wholesale pricing — approval typically takes under 24 hours.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-3">
               <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/register">
                 Create B2B account <ArrowRight size={14} />
               </Link>
               <Link className="btn-secondary px-6 py-2.5 text-sm" href="/login">Sign in</Link>
-              <Link className="btn-ghost px-6 py-2.5 text-sm" href="/account/quotes">Submit a quote request</Link>
             </div>
           </div>
         </section>
