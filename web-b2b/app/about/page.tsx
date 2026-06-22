@@ -159,7 +159,7 @@ export default async function AboutPage() {
               <Link className="rounded-lg bg-white px-6 py-3 text-sm font-bold text-green-900 transition-opacity hover:opacity-90" href="/products">
                 Browse catalog
               </Link>
-              <Link className="rounded-lg border border-white/40 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10" href="/register">
+              <Link className="rounded-lg border border-white/50 bg-black/35 px-6 py-3 text-sm font-bold text-white backdrop-blur-sm transition-colors hover:bg-black/50" href="/register">
                 Create B2B account
               </Link>
             </div>
