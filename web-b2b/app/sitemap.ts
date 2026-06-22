@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/env";
 import { fetchCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { WHOLESALE_LANDINGS } from "@/lib/wholesale-landing";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "daily", priority: 1 },
     { url: `${base}/products`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${base}/wholesale-catalog`, changeFrequency: "monthly", priority: 0.8 },
+    ...WHOLESALE_LANDINGS.map((l) => ({
+      url: `${base}/wholesale/${l.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${base}/preorders`, changeFrequency: "weekly", priority: 0.6 },
     { url: `${base}/lookbook`, changeFrequency: "weekly", priority: 0.5 },
     { url: `${base}/about`, changeFrequency: "monthly", priority: 0.5 },
