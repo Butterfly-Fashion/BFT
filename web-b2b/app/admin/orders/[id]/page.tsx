@@ -27,6 +27,11 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
   const canApprove = order.status === "Pending Review";
   const canCreatePaymentLink = ["Approved", "Payment Link Sent"].includes(order.status);
 
+  // Curated lifecycle stages (replaces the old 11-option list). Legacy statuses on an
+  // existing order (e.g. Approved/Processing/Label Created) stay selectable so nothing breaks.
+  const STATUS_STAGES = ["Pending Review", "Payment Link Sent", "Paid", "Ready for Pickup", "Shipped", "Completed", "Cancelled", "Refunded"];
+  const statusOptions = STATUS_STAGES.includes(order.status) ? STATUS_STAGES : [order.status, ...STATUS_STAGES];
+
   return (
     <>
       <AdminNav />
@@ -149,17 +154,9 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                 <label className="label">
                   Order status
                   <select className="field" name="status" defaultValue={order.status}>
-                    <option>Pending Review</option>
-                    <option>Approved</option>
-                    <option>Payment Link Sent</option>
-                    <option>Paid</option>
-                    <option>Processing</option>
-                    <option>Label Created</option>
-                    <option>Ready for Pickup</option>
-                    <option>Shipped</option>
-                    <option>Completed</option>
-                    <option>Cancelled</option>
-                    <option>Refunded</option>
+                    {statusOptions.map((s) => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
                   </select>
                 </label>
                 <label className="label">
