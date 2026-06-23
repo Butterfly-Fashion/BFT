@@ -8,6 +8,7 @@ import type { FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
 import { ButterflyLogo } from "@/components/butterfly-logo";
+import { WHOLESALE_MODE, B2B_CONTACT_URL, WHOLESALE_CTA_LABEL } from "@/lib/site-mode";
 import dynamic from "next/dynamic";
 const CartDrawer = dynamic(
   () => import("@/components/store/cart-drawer").then((m) => ({ default: m.CartDrawer })),
@@ -172,18 +173,29 @@ export function Header() {
             <Search className="w-5 h-5" />
           </button>
 
-          <button
-            onClick={() => setDrawerOpen(true)}
-            aria-label="Cart"
-            className="relative flex items-center gap-1.5 text-gray-900 hover:text-brand transition-colors duration-150"
-          >
-            <ShoppingBag className="w-5 h-5" />
-            {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2.5 bg-brand text-white text-[10px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1 leading-none">
-                {itemCount > 99 ? "99+" : itemCount}
-              </span>
-            )}
-          </button>
+          {WHOLESALE_MODE ? (
+            <a
+              href={B2B_CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-brand px-3.5 py-2 text-xs font-bold text-white hover:bg-brand-hover transition-colors sm:text-sm"
+            >
+              {WHOLESALE_CTA_LABEL}
+            </a>
+          ) : (
+            <button
+              onClick={() => setDrawerOpen(true)}
+              aria-label="Cart"
+              className="relative flex items-center gap-1.5 text-gray-900 hover:text-brand transition-colors duration-150"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              {itemCount > 0 && (
+                <span className="absolute -top-2 -right-2.5 bg-brand text-white text-[10px] font-bold rounded-full min-w-4.5 h-4.5 flex items-center justify-center px-1 leading-none">
+                  {itemCount > 99 ? "99+" : itemCount}
+                </span>
+              )}
+            </button>
+          )}
 
           {/* Mobile menu toggle */}
           <button

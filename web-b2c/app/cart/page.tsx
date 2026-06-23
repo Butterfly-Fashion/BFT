@@ -7,6 +7,8 @@ import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { calculateTax, formatCAD } from "@/lib/money";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
+import { WHOLESALE_MODE } from "@/lib/site-mode";
+import { WholesaleNotice } from "@/components/store/wholesale-notice";
 import { trackBeginCheckout } from "@/lib/gtag";
 import { TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import { isSoldOut } from "@/lib/sold-out";
@@ -84,6 +86,11 @@ function StickerUpsell() {
 }
 
 export default function CartPage() {
+  if (WHOLESALE_MODE) return <WholesaleNotice />;
+  return <RetailCartPage />;
+}
+
+function RetailCartPage() {
   const { items, pricedItems, removeItem, updateQuantity, subtotal } = useCart();
   const pickupTax = calculateTax(subtotal, "ON");
   const estimatedTotal = subtotal + pickupTax;

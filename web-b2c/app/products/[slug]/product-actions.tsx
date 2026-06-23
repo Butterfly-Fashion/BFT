@@ -11,6 +11,8 @@ import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED } from "@/lib/checkout-stat
 import { StickyAddToCart } from "@/components/store/sticky-add-to-cart";
 import { JERSEY_KIT_SLUGS, JERSEY_TIERS, KIDS_KIT_SLUGS, jerseyUnitPrice } from "@/lib/jersey-pricing";
 import { formatCAD } from "@/lib/money";
+import { WHOLESALE_MODE } from "@/lib/site-mode";
+import { WholesaleCta } from "@/components/store/wholesale-cta";
 
 interface Props {
   product: Product;
@@ -73,6 +75,36 @@ export function ProductActions({ product }: Props) {
     addItem(buildCartItem());
     router.push("/checkout");
   };
+
+  if (WHOLESALE_MODE) {
+    return (
+      <div className="space-y-4">
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-4">
+          <p className="text-sm font-bold text-gray-900">Available wholesale / B2B</p>
+          <p className="mt-1 text-sm leading-6 text-gray-600">
+            We supply this and our full Canada 2026 fan-gear range to retailers and
+            event organizers. Contact us for B2B pricing and bulk quantities — better
+            prices the more you order.
+          </p>
+        </div>
+        <WholesaleCta className="w-full" />
+        <div className="grid grid-cols-3 gap-3 pt-3 text-center">
+          <div className="flex flex-col items-center gap-1">
+            <Truck className="h-5 w-5 text-brand" />
+            <span className="text-[11px] font-semibold text-gray-600">Ships across Canada</span>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <RotateCcw className="h-5 w-5 text-brand" />
+            <span className="text-[11px] font-semibold text-gray-600">Bulk & repeat orders</span>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <Lock className="h-5 w-5 text-brand" />
+            <span className="text-[11px] font-semibold text-gray-600">Trusted Toronto supplier</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const isJerseyKit = JERSEY_KIT_SLUGS.has(product.slug);
   const isKidsKit = KIDS_KIT_SLUGS.has(product.slug);

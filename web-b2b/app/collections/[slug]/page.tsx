@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { ProductGalleryGrid } from "@/components/store/product-gallery-grid";
+import { CollectionSidebar } from "@/components/store/collection-sidebar";
 import { BackToTop } from "@/components/store/back-to-top";
 import { getCurrentProfile } from "@/lib/auth";
 import { applyCustomerPrices } from "@/lib/pricing";
@@ -130,22 +131,28 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
           )}
         </div>
 
-        {/* Product grid */}
+        {/* Sidebar + product grid */}
         <div className="container-shell pb-12">
-          <div className="mb-4 flex items-baseline justify-between gap-2">
-            <p className="text-sm font-semibold text-gray-500">
-              {products.length} product{products.length !== 1 ? "s" : ""}
-            </p>
-          </div>
-          <ProductGalleryGrid products={products} profile={profile} />
-          {products.length === 0 && (
-            <div className="rounded-xl border border-dashed border-gray-200 py-16 text-center">
-              <p className="font-semibold text-gray-400">No products in this collection yet.</p>
-              <Link href="/products" className="mt-3 inline-flex text-sm font-semibold" style={{ color: "var(--primary)" }}>
-                Browse full catalog →
-              </Link>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-5">
+            <CollectionSidebar categories={categories} activeSlug={slug} />
+
+            <div className="min-w-0 flex-1">
+              <div className="mb-4 flex items-baseline justify-between gap-2">
+                <p className="text-sm font-semibold text-gray-500">
+                  {products.length} product{products.length !== 1 ? "s" : ""}
+                </p>
+              </div>
+              <ProductGalleryGrid products={products} profile={profile} />
+              {products.length === 0 && (
+                <div className="rounded-xl border border-dashed border-gray-200 py-16 text-center">
+                  <p className="font-semibold text-gray-400">No products in this collection yet.</p>
+                  <Link href="/products" className="mt-3 inline-flex text-sm font-semibold" style={{ color: "var(--primary)" }}>
+                    Browse full catalog →
+                  </Link>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
 
         {/* Other collections */}

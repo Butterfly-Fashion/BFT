@@ -2,6 +2,31 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { WHOLESALE_MODE, B2B_CONTACT_URL } from "@/lib/site-mode";
+
+export function AnnouncementBar() {
+  if (WHOLESALE_MODE) return <WholesaleAnnouncementBar />;
+  return <RetailAnnouncementBar />;
+}
+
+function WholesaleAnnouncementBar() {
+  return (
+    <div className="bg-[#003876] text-white">
+      <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-wide">
+        <span className="text-white/90">Wholesale · B2B · Canada-wide</span>
+        <span className="text-white/30">·</span>
+        <a
+          href={B2B_CONTACT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-yellow-300 font-black hover:underline"
+        >
+          Contact us for B2B pricing →
+        </a>
+      </div>
+    </div>
+  );
+}
 
 // June 12, 2026 7:00 PM ET — first match at BMO Field
 const KICKOFF = new Date("2026-06-12T23:00:00.000Z");
@@ -19,7 +44,7 @@ function getTimeLeft() {
   };
 }
 
-export function AnnouncementBar() {
+function RetailAnnouncementBar() {
   const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number } | null>(null);
   const [mounted, setMounted] = useState(false);
   const [idx, setIdx] = useState(0);

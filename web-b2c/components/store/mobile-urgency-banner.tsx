@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { WHOLESALE_MODE, B2B_CONTACT_URL, WHOLESALE_CTA_LABEL } from "@/lib/site-mode";
 
 const KICKOFF = new Date("2026-06-12T23:00:00.000Z");
 const ORDER_CUTOFF = new Date("2026-06-09T23:59:59.000Z");
@@ -32,33 +33,56 @@ export function MobileUrgencyBanner() {
 
   return (
     <div className="max-w-full overflow-hidden sm:hidden">
-      {/* Top urgency strip */}
+      {/* Top strip */}
       <div className="bg-brand px-4 py-3">
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-white font-black text-sm leading-tight">
-              {live ? (
-                <>🔥 World Cup 2026 is live!</>
-              ) : days !== null ? (
-                <>⚡ {days} days to kickoff</>
-              ) : (
-                <>⚡ World Cup starts June 12</>
-              )}
-            </p>
-            <p className="text-white/80 text-[11px] mt-0.5">
-              {live
-                ? "Shop fan gear · Ships from Toronto"
-                : pastCutoff
-                ? "Order now · Ships from Toronto"
-                : "Order by June 9 · Arrive before opening day"}
-            </p>
-          </div>
-          <Link
-            href="/products"
-            className="shrink-0 rounded-full bg-white text-brand px-4 py-2 text-xs font-black uppercase tracking-wide hover:bg-gray-100 transition-colors"
-          >
-            Shop Now
-          </Link>
+          {WHOLESALE_MODE ? (
+            <>
+              <div>
+                <p className="text-white font-black text-sm leading-tight">
+                  🇨🇦 Wholesale · B2B
+                </p>
+                <p className="text-white/80 text-[11px] mt-0.5">
+                  Bulk fan gear · Contact us for B2B pricing
+                </p>
+              </div>
+              <a
+                href={B2B_CONTACT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-full bg-white text-brand px-4 py-2 text-xs font-black uppercase tracking-wide hover:bg-gray-100 transition-colors"
+              >
+                {WHOLESALE_CTA_LABEL}
+              </a>
+            </>
+          ) : (
+            <>
+              <div>
+                <p className="text-white font-black text-sm leading-tight">
+                  {live ? (
+                    <>🔥 World Cup 2026 is live!</>
+                  ) : days !== null ? (
+                    <>⚡ {days} days to kickoff</>
+                  ) : (
+                    <>⚡ World Cup starts June 12</>
+                  )}
+                </p>
+                <p className="text-white/80 text-[11px] mt-0.5">
+                  {live
+                    ? "Shop fan gear · Ships from Toronto"
+                    : pastCutoff
+                    ? "Order now · Ships from Toronto"
+                    : "Order by June 9 · Arrive before opening day"}
+                </p>
+              </div>
+              <Link
+                href="/products"
+                className="shrink-0 rounded-full bg-white text-brand px-4 py-2 text-xs font-black uppercase tracking-wide hover:bg-gray-100 transition-colors"
+              >
+                Shop Now
+              </Link>
+            </>
+          )}
         </div>
       </div>
 

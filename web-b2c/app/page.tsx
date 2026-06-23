@@ -13,7 +13,7 @@ const HeroCarousel = dynamic(
 import { TrustStrip } from "@/components/store/trust-strip";
 import { ProductCard } from "@/components/store/product-card";
 import { SocialProof } from "@/components/store/social-proof";
-import { NewsletterForm } from "@/components/store/newsletter-form";
+import { WholesaleCta } from "@/components/store/wholesale-cta";
 import { MobileUrgencyBanner } from "@/components/store/mobile-urgency-banner";
 import { getFeaturedProducts } from "@/lib/products";
 import Link from "next/link";
@@ -78,79 +78,46 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Two-product focus */}
+      {/* Wholesale value band */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Link
-            href="/products?category=Jerseys"
-            className="group grid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm sm:grid-cols-[42%_1fr]"
-          >
-            <div className="relative aspect-square sm:aspect-auto sm:min-h-72">
-              <Image
-                src="/asset/jersey/canada-home-kit-main.webp"
-                alt="Canada soccer jersey and shorts set — red home kit"
-                fill
-                className="object-cover transition duration-500 group-hover:scale-[1.02]"
-                sizes="(max-width: 1024px) 100vw, 480px"
-              />
+        <div className="grid gap-4 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm lg:grid-cols-[44%_1fr]">
+          <div className="relative aspect-4/3 lg:aspect-auto lg:min-h-80">
+            <Image
+              src="/asset/jersey/canada-kit-fans.webp"
+              alt="Canada 2026 fan gear — jerseys, caps, and flags for wholesale"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 560px"
+              priority
+            />
+          </div>
+          <div className="flex flex-col justify-center p-6 sm:p-10">
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand">
+              Wholesale · B2B · Canada-wide
+            </p>
+            <h2 className="mt-2 text-2xl sm:text-3xl font-black leading-tight text-gray-900">
+              Canada 2026 fan gear at wholesale prices
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-gray-600">
+              We supply jerseys, 3D-embroidered caps, car flags, and more to retailers,
+              event organizers, and resellers across Canada. No retail checkout here —
+              tell us what you need and we&apos;ll send you a great B2B price. The more you
+              order, the better the price.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
+              <WholesaleCta />
+              <Link href="/products" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
+                Browse the range →
+              </Link>
             </div>
-            <div className="flex flex-col justify-center p-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand">
-                Canada Kits · Home & Away
-              </p>
-              <h2 className="mt-2 text-2xl font-black leading-tight text-gray-900">
-                Canada Jersey + Shorts
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                Red home and black away kits, adult S–2XL and kids sizes 12–30. Buy more,
-                pay less — any 8 sets for $199.
-              </p>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-black text-gray-900">$39.99</span>
-                <span className="text-sm text-gray-400">adult · $34.99 kids · 8 sets $199</span>
-              </div>
-              <p className="mt-4 text-sm font-bold text-brand">Shop jerseys →</p>
-            </div>
-          </Link>
-
-          <Link
-            href="/products/panini-fifa-world-cup-2026-sticker-box-50-packs"
-            className="group grid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm sm:grid-cols-[42%_1fr]"
-          >
-            <div className="relative aspect-square bg-[#0d1b3e] sm:aspect-auto sm:min-h-72">
-              <Image
-                src="/asset/stickers/world_cup_sticker_box_50.png"
-                alt="Panini FIFA World Cup 2026 sticker box — 50 packs"
-                fill
-                className="object-contain p-5 transition duration-500 group-hover:scale-[1.02]"
-                sizes="(max-width: 1024px) 100vw, 480px"
-              />
-            </div>
-            <div className="flex flex-col justify-center p-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand">
-                Official Panini · In Stock
-              </p>
-              <h2 className="mt-2 text-2xl font-black leading-tight text-gray-900">
-                50-Pack Sticker Box
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-gray-600">
-                350 stickers covering all 48 nations. Albums are sold out — sticker boxes
-                and loose packs are still in stock and ship from Toronto.
-              </p>
-              <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-3xl font-black text-gray-900">$114.99</span>
-                <span className="text-sm text-gray-400">packs from $3.99</span>
-              </div>
-              <p className="mt-4 text-sm font-bold text-brand">Shop stickers →</p>
-            </div>
-          </Link>
+          </div>
         </div>
       </section>
 
       {/* Products */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Shop 2026 Fan Gear</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Our 2026 Wholesale Range</h2>
           <Link
             href="/products"
             className="text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
@@ -166,7 +133,7 @@ export default function HomePage() {
             href="/products"
             className="inline-flex items-center gap-2 rounded-xl bg-brand px-8 py-3 text-sm font-bold text-white hover:bg-brand-hover transition-colors"
           >
-            Browse all products →
+            Browse the full range →
           </Link>
         </div>
       </section>
@@ -177,15 +144,16 @@ export default function HomePage() {
       {/* Reviews */}
       <SocialProof />
 
-      {/* Newsletter */}
-      <section className="border-t border-gray-100 bg-gray-50 py-12">
+      {/* B2B contact */}
+      <section className="border-t border-gray-100 bg-gray-50 py-14">
         <div className="max-w-xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-xl font-bold text-gray-900 mb-1">Get exclusive fan deals</h2>
-          <p className="text-sm text-gray-500 mb-5">
-            Join Canadian fans getting 2026 gear alerts — no spam.
+          <h2 className="text-2xl font-black text-gray-900 mb-2">Ready to order wholesale?</h2>
+          <p className="text-sm leading-6 text-gray-600 mb-6">
+            Send us your product list and quantities. We&apos;ll reply with B2B pricing,
+            lead times, and availability — usually within one business day.
           </p>
           <div className="flex justify-center">
-            <NewsletterForm source="inline" variant="light" />
+            <WholesaleCta />
           </div>
         </div>
       </section>

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { B2B_CONTACT_URL } from "@/lib/site-mode";
 
 const INTERVAL_MS = 5000;
 
@@ -19,34 +19,36 @@ function JerseySlide() {
           className="font-bold uppercase tracking-widest text-white/70"
           style={{ fontSize: "clamp(0.5rem, 1.1vw, 0.8rem)" }}
         >
-          Canada Jersey + Shorts
+          Wholesale · Canada 2026 Fan Gear
         </p>
         <h2
           className="mt-2 font-black leading-tight text-white"
           style={{ fontSize: "clamp(1.1rem, 3.2vw, 2.6rem)" }}
         >
-          Match-day kit.
+          Jerseys, caps & flags.
           <br />
-          Pickup today.
+          Wholesale prices.
         </h2>
         <p
           className="mt-2 text-white/80"
           style={{ fontSize: "clamp(0.6rem, 1.3vw, 0.95rem)" }}
         >
-          Home red & away black · adult $39.99, kids $34.99 · any 8 sets $199
+          B2B bulk supply across Canada — contact us for pricing. Better prices the more you order.
         </p>
         <div className="mt-4 sm:mt-6">
-          <Link
-            href="/products?category=Jerseys"
-            aria-label="Shop Canada jersey and shorts"
+          <a
+            href={B2B_CONTACT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Get B2B wholesale pricing"
             className="inline-flex items-center gap-1.5 rounded-full bg-white font-black uppercase tracking-widest text-[#b51224] shadow-xl transition-all duration-150 hover:bg-gray-100 active:scale-95"
             style={{
               fontSize: "clamp(0.6rem, 1.4vw, 1rem)",
               padding: "clamp(6px, 1.2vw, 14px) clamp(14px, 3vw, 36px)",
             }}
           >
-            Shop Jerseys ›
-          </Link>
+            Get B2B Pricing ›
+          </a>
         </div>
       </div>
       <div className="relative w-[48%]">

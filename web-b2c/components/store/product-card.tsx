@@ -2,6 +2,8 @@ import Link from "next/link";
 import { formatCAD } from "@/lib/money";
 import type { Product } from "@/lib/types";
 import { normalizeStockStatus, stockStatusDisplay } from "@/lib/stock-status";
+import { WHOLESALE_MODE } from "@/lib/site-mode";
+import { WholesaleCta } from "./wholesale-cta";
 import { ProductImage } from "./product-image";
 
 interface Props {
@@ -48,18 +50,26 @@ export function ProductCard({ product, priority = false }: Props) {
         <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand transition-colors duration-150 leading-snug line-clamp-2">
           {product.name}
         </h3>
-        <div className="flex items-baseline gap-2 mt-1">
-          <span className="text-sm font-bold text-gray-900">{formatCAD(product.price)}</span>
-          {product.comparePrice && (
-            <span className="text-xs text-gray-400 line-through">
-              {formatCAD(product.comparePrice)}
-            </span>
-          )}
-        </div>
-        {product.inStock && (
-          <p className={`mt-1 text-[11px] font-medium ${stock.textClass}`}>
-            {stock.shortLabel}
-          </p>
+        {WHOLESALE_MODE ? (
+          <div className="mt-1.5">
+            <WholesaleCta variant="label" />
+          </div>
+        ) : (
+          <>
+            <div className="flex items-baseline gap-2 mt-1">
+              <span className="text-sm font-bold text-gray-900">{formatCAD(product.price)}</span>
+              {product.comparePrice && (
+                <span className="text-xs text-gray-400 line-through">
+                  {formatCAD(product.comparePrice)}
+                </span>
+              )}
+            </div>
+            {product.inStock && (
+              <p className={`mt-1 text-[11px] font-medium ${stock.textClass}`}>
+                {stock.shortLabel}
+              </p>
+            )}
+          </>
         )}
       </div>
     </Link>

@@ -8,6 +8,8 @@ import { CANADIAN_PROVINCES, US_STATES } from "@/lib/types";
 import type { CheckoutAddress, Order } from "@/lib/types";
 import type { ShippingRate } from "@/app/api/shipping-rates/route";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
+import { WHOLESALE_MODE } from "@/lib/site-mode";
+import { WholesaleNotice } from "@/components/store/wholesale-notice";
 import Link from "next/link";
 
 type DeliveryMethod = "shipping" | "pickup";
@@ -60,6 +62,11 @@ function generateOrderId(): string {
 }
 
 export default function CheckoutPage() {
+  if (WHOLESALE_MODE) return <WholesaleNotice />;
+  return <RetailCheckoutPage />;
+}
+
+function RetailCheckoutPage() {
   const { items, pricedItems, subtotal } = useCart();
   const [form, setForm] = useState<CheckoutAddress>(EMPTY_ADDRESS);
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("pickup");

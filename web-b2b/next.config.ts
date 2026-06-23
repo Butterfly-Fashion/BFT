@@ -16,6 +16,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  experimental: {
+    // Server Actions default to a 1 MB body limit. Admin image uploads (blog
+    // cover, product, lookbook, hero) go through Server Actions as multipart
+    // form data, so a normal-sized photo (the blog form allows up to 5 MB)
+    // exceeds the default and fails on Vercel. Raise the limit to fit them.
+    serverActions: {
+      bodySizeLimit: "8mb",
+    },
+  },
   images: {
     remotePatterns: [
       // Supabase storage buckets

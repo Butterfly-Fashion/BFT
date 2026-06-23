@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { formatCAD } from "@/lib/money";
 import { ProductActions } from "./product-actions";
+import { WholesaleCta } from "@/components/store/wholesale-cta";
+import { WHOLESALE_MODE } from "@/lib/site-mode";
 import { ProductGallery } from "@/components/store/product-gallery";
 import { ProductCard } from "@/components/store/product-card";
 import {
@@ -131,38 +133,46 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.name}
           </h1>
 
-          <div className="flex items-baseline gap-3 mb-3">
-            <span className="text-2xl font-bold text-gray-900">
-              {formatCAD(product.price)}
-            </span>
-            {product.comparePrice && (
-              <span className="text-base text-gray-400 line-through">
-                {formatCAD(product.comparePrice)}
-              </span>
-            )}
-            <span className="text-xs text-gray-400">CAD</span>
-          </div>
-
-          <div className="flex items-center gap-2 mb-5">
-            {(() => {
-              const stock = product.inStock
-                ? stockStatusDisplay(normalizeStockStatus(product.stockStatus))
-                : stockStatusDisplay("sold_out");
-              return (
-                <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${stock.pillClass}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${stock.dotClass}`} />
-                  {stock.label}
+          {WHOLESALE_MODE ? (
+            <div className="mb-5">
+              <WholesaleCta variant="label" className="text-sm" />
+            </div>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-3 mb-3">
+                <span className="text-2xl font-bold text-gray-900">
+                  {formatCAD(product.price)}
                 </span>
-              );
-            })()}
-          </div>
+                {product.comparePrice && (
+                  <span className="text-base text-gray-400 line-through">
+                    {formatCAD(product.comparePrice)}
+                  </span>
+                )}
+                <span className="text-xs text-gray-400">CAD</span>
+              </div>
+
+              <div className="flex items-center gap-2 mb-5">
+                {(() => {
+                  const stock = product.inStock
+                    ? stockStatusDisplay(normalizeStockStatus(product.stockStatus))
+                    : stockStatusDisplay("sold_out");
+                  return (
+                    <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${stock.pillClass}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${stock.dotClass}`} />
+                      {stock.label}
+                    </span>
+                  );
+                })()}
+              </div>
+            </>
+          )}
 
           <p className="text-sm text-gray-600 leading-relaxed mb-6">
             {product.description}
           </p>
 
           {/* World Cup delivery deadline — dynamic */}
-          {product.inStock && (() => {
+          {!WHOLESALE_MODE && product.inStock && (() => {
             const now = new Date();
             const kickoff = new Date("2026-06-12T23:00:00Z");
             const cutoff = new Date("2026-06-09T23:59:59Z");
@@ -191,22 +201,45 @@ export default async function ProductDetailPage({ params }: Props) {
           <ProductActions product={product} />
 
           <div className="mt-5 grid grid-cols-1 gap-2 rounded-xl border border-gray-100 bg-gray-50 p-4 text-xs text-gray-600 sm:grid-cols-2">
-            <div className="flex items-center gap-2">
-              <span className="text-green-600">✓</span>
-              <span>Free pickup in North York</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-600">✓</span>
-              <span>Same-day pickup available</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-600">✓</span>
-              <span>Secure checkout with Stripe</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-green-600">✓</span>
-              <span>30-day returns on unused items</span>
-            </div>
+            {WHOLESALE_MODE ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Wholesale &amp; bulk quantities</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Better pricing the more you order</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Ships across Canada</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Trusted Toronto supplier since 1996</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Free pickup in North York</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Same-day pickup available</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>Secure checkout with Stripe</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-600">✓</span>
+                  <span>30-day returns on unused items</span>
+                </div>
+              </>
+            )}
           </div>
 
         </div>

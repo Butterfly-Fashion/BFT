@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NewsletterForm } from "@/components/store/newsletter-form";
+import { WHOLESALE_MODE, B2B_CONTACT_URL } from "@/lib/site-mode";
 import {
   AEO_STORE_DESCRIPTION,
   BUSINESS_EMAIL,
@@ -22,23 +23,47 @@ const popularSearches = [
 export function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-24">
-      {/* Newsletter section */}
+      {/* Wholesale / Newsletter section */}
       <div className="border-b border-gray-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-            <div>
-              <p className="text-[#FFD700] text-xs font-black uppercase tracking-widest mb-1">
-                Join the 2026 Fan List
-              </p>
-              <p className="text-white text-lg font-bold">
-                Be first for drops, deals &amp; game day tips
-              </p>
-              <p className="text-gray-400 text-sm mt-1">
-                No spam. Just the best Canada 2026 fan gear news.
-              </p>
+          {WHOLESALE_MODE ? (
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+              <div>
+                <p className="text-[#FFD700] text-xs font-black uppercase tracking-widest mb-1">
+                  Wholesale · B2B
+                </p>
+                <p className="text-white text-lg font-bold">
+                  Stock Canada 2026 fan gear at wholesale prices
+                </p>
+                <p className="text-gray-400 text-sm mt-1">
+                  Retailers &amp; event organizers — contact us for B2B pricing and bulk quantities.
+                </p>
+              </div>
+              <a
+                href={B2B_CONTACT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="shrink-0 rounded-full bg-brand px-7 py-3 text-sm font-bold text-white hover:bg-brand-hover transition-colors"
+              >
+                Get B2B Pricing →
+              </a>
             </div>
-            <NewsletterForm source="footer" variant="dark" />
-          </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+              <div>
+                <p className="text-[#FFD700] text-xs font-black uppercase tracking-widest mb-1">
+                  Join the 2026 Fan List
+                </p>
+                <p className="text-white text-lg font-bold">
+                  Be first for drops, deals &amp; game day tips
+                </p>
+                <p className="text-gray-400 text-sm mt-1">
+                  No spam. Just the best Canada 2026 fan gear news.
+                </p>
+              </div>
+              <NewsletterForm source="footer" variant="dark" />
+            </div>
+          )}
         </div>
       </div>
 
