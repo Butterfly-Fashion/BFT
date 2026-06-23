@@ -42,3 +42,6 @@ supabase/.temp/
 # One-off audit reports & scratch folders (kept locally, not tracked)
 /*_audit_report_*.md
 fb-listing/
+
+# Cold-email outreach tooling (contact info / lists — kept local, not tracked)
+cold-email/
