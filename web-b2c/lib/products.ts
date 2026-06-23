@@ -3,6 +3,7 @@ import type { Product } from "./types";
 import { getB2CDescription, getB2CName } from "./product-copy";
 import { SOLD_OUT_PRODUCT_SLUGS } from "./sold-out";
 import { normalizeStockStatus } from "./stock-status";
+import { HIDDEN_CATEGORIES, HIDDEN_PRODUCT_SLUGS } from "./hidden-products";
 import sourceData from "./source-products.json";
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
@@ -379,11 +380,16 @@ async function getB2CDbProducts(): Promise<Product[]> {
 // B2C and B2B use different product lists. Only products explicitly tagged for
 // B2C can join this storefront; the checked-in catalog remains the fallback.
 
+function isVisible(product: Product): boolean {
+  return !HIDDEN_CATEGORIES.has(product.category) && !HIDDEN_PRODUCT_SLUGS.has(product.slug);
+}
+
 export async function getAllProducts(): Promise<Product[]> {
   const dbProducts = await getB2CDbProducts();
-  if (!dbProducts.length) return staticProducts.map(withForcedStock);
+  if (!dbProducts.length) return staticProducts.filter(isVisible).map(withForcedStock);
   const dbSlugs = new Set(dbProducts.map((product) => product.slug));
   return [...dbProducts, ...staticProducts.filter((product) => !dbSlugs.has(product.slug))]
+    .filter(isVisible)
     .map(withForcedStock);
 }
 
@@ -425,4 +431,4 @@ export async function getTrendingProducts(): Promise<Product[]> {
 // These are kept only for SSG generateStaticParams which needs sync slugs at build time.
 // Pages should prefer the async functions above.
 
-export const products: Product[] = staticProducts.map(withForcedStock);
+export const products: Product[] = staticProducts.filter(isVisible).map(withForcedStock);
