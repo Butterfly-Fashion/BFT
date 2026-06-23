@@ -23,6 +23,66 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "wholesale-canada-2026-fan-gear",
+    title: "Now Available Wholesale: Canada 2026 Fan Gear for Retailers & Teams",
+    description:
+      "The same Canada 2026 jerseys, caps, and car flags you see here are available wholesale — for shops, teams, and event organizers across Canada. No minimum order, better pricing by the case. Contact us for B2B pricing.",
+    publishedAt: "2026-06-23",
+    category: "Wholesale",
+    heroImage: "/asset/jersey/canada-kit-model.webp",
+    heroAlt: "Woman wearing the Canada 2026 soccer jersey and shorts in downtown Toronto — wholesale fan gear",
+    productSlugs: [
+      "canada-soccer-jersey-shorts-set-2026",
+      "canada-away-jersey-shorts-set-2026",
+      "canada-home-kit-kids-2026",
+      "canada-away-kit-kids-2026",
+    ],
+    sections: [
+      {
+        heading: "We're a wholesale supplier — not just a store",
+        body: [
+          "If you run a shop, manage a team, or organize an event, you don't need one jersey — you need a case of them. The Canada 2026 fan gear you see across this site is exactly what we stock and ship in bulk, straight from our Toronto warehouse.",
+          "That means the same red home kit, the 3D-embroidered caps, and the country car flags fans are buying for the tournament are available to you at wholesale pricing — ready to resell, kit out a squad, or stock an event.",
+        ],
+      },
+      {
+        heading: "What we supply",
+        body: [
+          "Canada home and away jersey + shorts sets in adult and kids sizes. 3D-embroidered flag caps across dozens of nations. Country car flags. And more World Cup 2026 fan gear arriving as the tournament builds.",
+          "Everything ships from Toronto across Canada and the USA — no overseas lead times, no waiting on freight. Stock now, sell through the summer.",
+        ],
+      },
+      {
+        heading: "Built for shops, teams, and event organizers",
+        body: [
+          "Independent retailers stocking up for match days. Clubs and rec teams outfitting players and supporters. Fan zones, festivals, and corporate events that need volume on short notice.",
+          "You order the quantities that fit your business — single units to full cases — and the per-unit price drops as the volume goes up.",
+        ],
+      },
+      {
+        heading: "How wholesale pricing works",
+        body: [
+          "There's no minimum order. Tell us the products and quantities you're after and we'll send you B2B pricing — usually within one business day. Case pricing gives you a better per-unit rate when you buy in bulk.",
+          "Ready to talk numbers? Use the wholesale contact button below and we'll get you a quote.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Do you sell Canada 2026 fan gear wholesale?",
+        a: "Yes. Jerseys, caps, car flags, and more are available wholesale to retailers, teams, and event organizers across Canada and the USA, shipped from Toronto.",
+      },
+      {
+        q: "Is there a minimum order for wholesale?",
+        a: "No minimum — you can order any quantity, from single units to full cases. Case pricing gives you a lower per-unit rate on bulk volume.",
+      },
+      {
+        q: "How do I get wholesale pricing?",
+        a: "Send us your product list and quantities through our wholesale contact and we'll reply with B2B pricing and availability, usually within one business day.",
+      },
+    ],
+  },
+  {
     slug: "world-cup-2026-fan-gear-canada",
     title: "Best World Cup 2026 Fan Gear to Buy in Canada",
     description:

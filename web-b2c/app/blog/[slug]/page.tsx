@@ -2,6 +2,7 @@ import { ProductCard } from "@/components/store/product-card";
 import { getBlogPost, getPostListImage, getPostProducts, isPostPublished } from "@/lib/blog-posts";
 import { absoluteUrl, breadcrumbJsonLd, jsonLd } from "@/lib/seo";
 import { BlogUrgencyBanner } from "@/components/store/blog-urgency-banner";
+import { WHOLESALE_MODE, B2B_CONTACT_URL, WHOLESALE_CTA_LABEL } from "@/lib/site-mode";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -202,18 +203,39 @@ export default async function BlogPostPage({ params }: Props) {
         <p className="text-xs font-bold uppercase tracking-widest text-red-200">
           World Fan Gear
         </p>
-        <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
-          Ready to rep your team at Canada 2026?
-        </h2>
-        <p className="mt-2 text-sm text-red-100">
-          Caps, bucket hats, car flags &amp; more — shipped from Toronto.
-        </p>
-        <Link
-          href="/products"
-          className="mt-5 inline-block rounded-full bg-white px-7 py-3 text-sm font-black text-brand transition-opacity hover:opacity-90"
-        >
-          Shop Fan Gear →
-        </Link>
+        {WHOLESALE_MODE ? (
+          <>
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+              Stock Canada 2026 fan gear at wholesale prices
+            </h2>
+            <p className="mt-2 text-sm text-red-100">
+              Retailers, teams &amp; events — no minimum order, shipped from Toronto.
+            </p>
+            <a
+              href={B2B_CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-block rounded-full bg-white px-7 py-3 text-sm font-black text-brand transition-opacity hover:opacity-90"
+            >
+              {WHOLESALE_CTA_LABEL} →
+            </a>
+          </>
+        ) : (
+          <>
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+              Ready to rep your team at Canada 2026?
+            </h2>
+            <p className="mt-2 text-sm text-red-100">
+              Caps, bucket hats, car flags &amp; more — shipped from Toronto.
+            </p>
+            <Link
+              href="/products"
+              className="mt-5 inline-block rounded-full bg-white px-7 py-3 text-sm font-black text-brand transition-opacity hover:opacity-90"
+            >
+              Shop Fan Gear →
+            </Link>
+          </>
+        )}
       </div>
     </main>
   );
