@@ -131,7 +131,7 @@ function buildPayload() {
       category: rule.category,
       sales_channels: ["b2b"],
       status: "active",
-      availability_status: "Manual Confirm",
+      availability_status: "Available",
       is_bulk_available: true,
       is_hidden: false,
     });
@@ -153,7 +153,7 @@ function buildPayload() {
       category: "Soccer Jerseys",
       sales_channels: ["b2b"],
       status: "active",
-      availability_status: "Manual Confirm",
+      availability_status: "Available",
       is_bulk_available: true,
       is_hidden: false,
     });

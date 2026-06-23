@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { BlogEditor } from "@/components/admin/blog-editor";
+import { CoverImageInput } from "@/components/admin/cover-image-input";
 import type { BlogPost } from "@/lib/types";
 
 type BlogState = { error?: string } | null;
@@ -63,12 +64,7 @@ export function BlogPostForm({ action, post }: { action: Action; post?: BlogPost
 
         <section className="card p-5 grid gap-3">
           <p className="text-sm font-bold text-slate-700">Cover image</p>
-          {post?.cover_image_url && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={post.cover_image_url} alt="cover" className="aspect-video w-full rounded-lg border border-slate-200 object-cover" />
-          )}
-          <input className="field" name="cover_image" type="file" accept="image/*" />
-          <p className="text-xs text-slate-400">Optional. Shown at the top of the post and on the blog list. Max 5 MB.</p>
+          <CoverImageInput name="cover_image" defaultPreviewUrl={post?.cover_image_url} />
         </section>
 
         <section className="card p-5 grid gap-3">
