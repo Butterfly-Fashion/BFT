@@ -47,7 +47,7 @@ const CATEGORY_GROUPS = [
 const WHY_B2B = [
   { icon: MapPin, title: "Toronto warehouse", desc: "Same-day pickup or next-business-day ship from our North York location. No waiting on overseas freight." },
   { icon: Truck, title: "Canada & USA shipping", desc: "Ship cross-border to US buyers. We handle the documentation — you focus on selling." },
-  { icon: Package2, title: "MOQ from 1 case", desc: "Most items start at 12–50 units. No massive minimum orders — right-size your inventory." },
+  { icon: Package2, title: "No minimum order", desc: "Order any quantity — single units or full cases. Case pricing gives a better per-unit rate on bulk." },
   { icon: ShieldCheck, title: "B2B pricing on approval", desc: "Register, get approved in 24 hours, unlock wholesale pricing immediately." },
   { icon: FileText, title: "Invoice + NET terms", desc: "Professional invoicing on every order. NET 30 available for established accounts." },
   { icon: Tag, title: "30+ years sourcing", desc: "We've been doing this since 1996. We know which products sell and which don't." },

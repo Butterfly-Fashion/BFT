@@ -11,7 +11,7 @@ import type { FaqSection } from "@/components/store/faq-accordion";
 
 export const metadata: Metadata = {
   title: "FAQ | Butterfly Fashion Trading Wholesale",
-  description: "Frequently asked questions about wholesale ordering, B2B accounts, MOQ, payment, and shipping at Butterfly Fashion Trading.",
+  description: "Frequently asked questions about wholesale ordering, B2B accounts, order quantities, payment, and shipping at Butterfly Fashion Trading.",
   alternates: { canonical: "/faq" },
 };
 
@@ -38,11 +38,11 @@ const FAQ_SECTIONS: FaqSection[] = [
     ],
   },
   {
-    title: "Ordering & MOQ",
+    title: "Ordering",
     items: [
       {
-        q: "What is the minimum order quantity (MOQ)?",
-        a: "Most products start at 1 case, typically 12–50 units depending on the product. There is no dollar minimum on orders. You can mix and match products to build your order.",
+        q: "Is there a minimum order quantity?",
+        a: "No — you can order any quantity, from a single unit up to full cases. Case pricing gives you a better per-unit rate on bulk, but it isn't required. You can mix and match products to build your order.",
       },
       {
         q: "How do I place an order?",

@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const category = categories.find((c) => c.slug === slug);
   if (!category) return {};
   const title = `Wholesale ${category.name} | Butterfly Fashion Trading`;
-  const description = `Buy wholesale ${category.name} in bulk. MOQ from 1 case. Ships across Canada and USA. B2B pricing for approved accounts.`;
+  const description = `Buy wholesale ${category.name} in bulk. No minimum order — any quantity. Ships across Canada and USA. B2B pricing for approved accounts.`;
   return {
     title,
     description,
@@ -63,7 +63,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: `Wholesale ${category.name}`,
-    description: `Buy wholesale ${category.name} in bulk. MOQ from 1 case. Ships across Canada and USA.`,
+    description: `Buy wholesale ${category.name} in bulk. No minimum order — any quantity. Ships across Canada and USA.`,
     url: `${siteUrl()}/collections/${slug}`,
   };
 
@@ -91,7 +91,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500">
               Wholesale {category.name.toLowerCase()} in bulk. Approved B2B accounts see wholesale pricing.
-              MOQ from 1 case — ships across Canada and USA.
+              No minimum order — ships across Canada and USA.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link

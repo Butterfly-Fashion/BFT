@@ -80,7 +80,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
               <th style={{ width: 320 }}>Product</th>
               <th style={{ width: 120 }} className="hidden md:table-cell">Item Code</th>
               <th style={{ width: 120 }} className="hidden lg:table-cell">Category</th>
-              <th style={{ width: 100 }}>MOQ</th>
+              <th style={{ width: 100 }}>Case</th>
               <th style={{ width: 110 }}>Price / ea</th>
               {isApproved && <th style={{ width: 90 }}>Qty</th>}
               {isApproved && <th style={{ width: 80 }}></th>}

@@ -368,13 +368,7 @@ export async function createOrderRequestAction(input: {
     };
   });
 
-  // Enforce minimum order quantity (one case) per item.
-  const belowMoq = itemSnapshots.filter((item) => item.product.case_qty && item.quantity < item.product.case_qty);
-  if (belowMoq.length) {
-    const detail = belowMoq.map((item) => `${item.product.name} (min ${item.product.case_qty})`).join(", ");
-    return { error: `These items are below their minimum order quantity: ${detail}. Please order at least one full case of each.` };
-  }
-
+  // No minimum order quantity — any quantity (1+) can be ordered.
   const totals = calculateTotals(itemSnapshots.map((item) => ({ quantity: item.quantity, unitPrice: item.unitPrice })));
 
   const { data: order, error: orderError } = await supabase

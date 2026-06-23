@@ -18,7 +18,7 @@ export type WholesaleLanding = {
 
 const SHARED_HIGHLIGHTS = [
   "Canadian inventory — stocked in Toronto, no long overseas lead times",
-  "True wholesale pricing — bulk tiers, MOQ from a single case",
+  "True wholesale pricing — bulk tiers, no minimum order",
   "Fast shipping across Canada & the USA",
   "Net terms available for approved accounts",
 ];
@@ -45,7 +45,7 @@ export const WHOLESALE_LANDINGS: WholesaleLanding[] = [
     buyers: SHARED_BUYERS,
     faqs: [
       { q: "Where can I buy wholesale squishies in Canada?", a: "Butterfly Fashion Trading supplies squishy toys wholesale from our Toronto warehouse, shipping across Canada and the USA. Request the catalog for current bulk pricing." },
-      { q: "What is the minimum order for squishy toys?", a: "Minimum order is one full case per item. Larger volumes qualify for lower bulk pricing tiers." },
+      { q: "What is the minimum order for squishy toys?", a: "There's no minimum — order any quantity, from a single unit to full cases. Larger volumes qualify for lower bulk pricing tiers." },
       { q: "How fast do wholesale squishy orders ship?", a: "In-stock items ship from Canada, typically within 1–2 business days of an approved order." },
     ],
   },
@@ -60,7 +60,7 @@ export const WHOLESALE_LANDINGS: WholesaleLanding[] = [
     highlights: SHARED_HIGHLIGHTS,
     buyers: SHARED_BUYERS,
     faqs: [
-      { q: "Do you sell squishies by the case or pallet?", a: "Both. Order from a single case up to pallet quantities, with better pricing at higher volumes." },
+      { q: "Do you sell squishies by the case or pallet?", a: "Any quantity — from a single unit to full cases and pallets, with better pricing at higher volumes." },
       { q: "Can I get a bulk quote?", a: "Yes — request our catalog with your expected quantity and we'll send wholesale pricing." },
     ],
   },
@@ -91,7 +91,7 @@ export const WHOLESALE_LANDINGS: WholesaleLanding[] = [
     buyers: SHARED_BUYERS,
     faqs: [
       { q: "Are you a Canadian fidget toy distributor?", a: "Yes — we're based in Toronto and ship wholesale fidget toys across Canada and the USA." },
-      { q: "What are your wholesale terms?", a: "MOQ from one case, bulk pricing tiers, and net terms for approved accounts." },
+      { q: "What are your wholesale terms?", a: "No minimum order, bulk pricing tiers, and net terms for approved accounts." },
     ],
   },
   {

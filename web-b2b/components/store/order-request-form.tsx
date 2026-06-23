@@ -201,12 +201,6 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
 
   function submit() {
     setError("");
-    const belowMoq = cart.items.filter((item) => item.caseQty && item.quantity < item.caseQty);
-    if (belowMoq.length) {
-      const detail = belowMoq.map((item) => `${item.name} (min ${item.caseQty})`).join(", ");
-      setError(`Minimum order not met: ${detail}. Please order at least one full case of each before submitting.`);
-      return;
-    }
     startTransition(async () => {
       const result = await createOrderRequestAction({
         items: cart.items,
@@ -528,11 +522,6 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
                   Qty {item.quantity}
                   {item.sku && <> · {item.sku}</>}
                 </p>
-                {item.caseQty && item.quantity < item.caseQty && (
-                  <p className="mt-0.5 text-[11px] font-bold text-red-600">
-                    Below minimum — order at least {item.caseQty} (1 case)
-                  </p>
-                )}
               </div>
               <span className="shrink-0 text-sm font-black">
                 {item.price ? formatMoney(item.price * item.quantity) : "TBD"}

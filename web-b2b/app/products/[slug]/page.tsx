@@ -28,11 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     .single();
   if (!data) return { title: "Product" };
 
-  const moq = data.case_qty ? `MOQ ${data.case_qty} units` : "wholesale";
+  const caseInfo = data.case_qty ? `case of ${data.case_qty}` : "wholesale";
   const title = `${data.name} — ${data.category} Wholesale`;
   const description =
     (data.description?.trim().slice(0, 155)) ||
-    `${data.name} (${data.category}) wholesale — Item Code ${data.sku}, ${moq}. Order from Butterfly Fashion Trading, Toronto.`;
+    `${data.name} (${data.category}) wholesale — Item Code ${data.sku}, ${caseInfo}, no minimum order. Order from Butterfly Fashion Trading, Toronto.`;
 
   return {
     title,
@@ -240,7 +240,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 )}
                 {isApproved && product.case_qty && (
                   <div className="flex items-center justify-between px-4 py-2.5">
-                    <p className="text-xs font-semibold text-slate-500">MOQ (minimum order)</p>
+                    <p className="text-xs font-semibold text-slate-500">Case size</p>
                     <span className="rounded border border-(--primary-border) bg-(--primary-light) px-2.5 py-1 text-sm font-black" style={{ color: "var(--primary)" }}>
                       {product.case_qty} units / 1 case
                     </span>

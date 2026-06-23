@@ -100,7 +100,7 @@ export default async function HomePage() {
 
             {/* Key facts — quick, single line */}
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-gray-100 pt-6">
-              {["Toronto warehouse stock", "Ships Canada & USA", "MOQ from 1 case"].map((fact) => (
+              {["Toronto warehouse stock", "Ships Canada & USA", "No minimum order"].map((fact) => (
                 <span key={fact} className="flex items-center gap-2 text-sm font-semibold text-gray-500">
                   <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--primary)" }} />
                   {fact}

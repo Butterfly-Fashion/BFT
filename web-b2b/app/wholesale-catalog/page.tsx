@@ -12,11 +12,11 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Request Wholesale Catalog",
   description:
-    "Get the Butterfly Fashion Trading wholesale catalog and bulk pricing. Canadian inventory in Toronto, MOQ from one case, fast shipping across Canada & the USA.",
+    "Get the Butterfly Fashion Trading wholesale catalog and bulk pricing. Canadian inventory in Toronto, no minimum order, fast shipping across Canada & the USA.",
   alternates: { canonical: "/wholesale-catalog" },
   openGraph: {
     title: "Request Wholesale Catalog — Butterfly Fashion Trading",
-    description: "Canadian wholesale supplier — bulk pricing, MOQ from one case, fast domestic shipping. Request the catalog.",
+    description: "Canadian wholesale supplier — bulk pricing, no minimum order, fast domestic shipping. Request the catalog.",
     url: "/wholesale-catalog",
   },
 };
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 const POINTS = [
   "Wholesale pricing & bulk tiers",
   "Canadian inventory — stocked in Toronto",
-  "MOQ from a single case",
+  "No minimum order — any quantity",
   "Fast shipping across Canada & the USA",
   "Net terms for approved accounts",
 ];

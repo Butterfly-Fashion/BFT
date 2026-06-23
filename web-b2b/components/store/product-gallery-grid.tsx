@@ -227,7 +227,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   {/* Info grid */}
                   <div className="grid grid-cols-2 gap-x-1 gap-y-1.5 border-t border-gray-100 pt-2">
                     <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">MOQ</p>
+                      <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500">Case</p>
                       <p className="mt-0.5 text-sm font-semibold text-gray-900">
                         {product.case_qty ? `${product.case_qty}` : <span className="text-gray-400">—</span>}
                       </p>

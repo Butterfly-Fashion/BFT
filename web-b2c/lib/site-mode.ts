@@ -4,9 +4,9 @@
 // restore the full retail storefront.
 export const WHOLESALE_MODE = true;
 
-// Where "Get B2B pricing" CTAs send visitors (the B2B catalog request form).
+// Where "Get B2B pricing" CTAs send visitors (the wholesale site).
 export const B2B_CONTACT_URL =
-  process.env.NEXT_PUBLIC_B2B_URL ?? "https://b2b.fifa2026.ca/wholesale-catalog";
+  process.env.NEXT_PUBLIC_B2B_URL ?? "https://www.mask12.com";
 
 export const WHOLESALE_TAGLINE = "Wholesale only — contact us for B2B pricing";
 export const WHOLESALE_CTA_LABEL = "Get B2B Pricing";

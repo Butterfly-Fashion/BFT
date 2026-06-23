@@ -18,7 +18,7 @@ export function ProductDetailActions({
   const cart = useCart();
   const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
-  const [quantity, setQuantity] = useState(product.case_qty || 1);
+  const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -34,7 +34,6 @@ export function ProductDetailActions({
   function addToCart() {
     if (!profile) { router.push(`/login?next=/products/${product.slug}`); return; }
     if (quantity <= 0) return;
-    if (caseQty && quantity < caseQty) return;
     cart.addItem({
       productId: product.id,
       quantity,
@@ -50,7 +49,6 @@ export function ProductDetailActions({
   }
 
   const total = product.display_price * quantity;
-  const belowMoq = caseQty ? quantity < caseQty : false;
 
   // Pricing and online ordering are gated to approved B2B accounts. Until then,
   // buyers can still order this item by phone or email.
@@ -146,7 +144,7 @@ export function ProductDetailActions({
       <button
         className={`btn-primary w-full gap-2 py-3 text-sm ${added ? "opacity-80" : ""}`}
         type="button"
-        disabled={quantity <= 0 || belowMoq}
+        disabled={quantity <= 0}
         onClick={addToCart}
       >
         {added ? (
@@ -155,12 +153,6 @@ export function ProductDetailActions({
           <><ShoppingCart size={16} />Add to Cart</>
         )}
       </button>
-
-      {belowMoq && (
-        <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-amber-800">
-          Minimum order is {caseQty} units (1 case). Increase the quantity to add this item.
-        </p>
-      )}
 
       {/* B2B note */}
       <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
