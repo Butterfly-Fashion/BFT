@@ -2,5 +2,15 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/cron/outreach?slot=edt",
+      "schedule": "5 14 * * 1-5"
+    },
+    {
+      "path": "/api/cron/outreach?slot=est",
+      "schedule": "5 15 * * 1-5"
+    }
+  ]
 }
