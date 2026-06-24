@@ -4,6 +4,8 @@ import { ButterflyLogo } from "@/components/butterfly-logo";
 import { loginAction } from "@/app/actions";
 import { AuthActionForm } from "@/components/auth/action-form-status";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function LoginPage({
   searchParams,
 }: {

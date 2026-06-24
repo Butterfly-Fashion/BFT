@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!data) return { title: "Product" };
 
   const caseInfo = data.case_qty ? `case of ${data.case_qty}` : "wholesale";
-  const title = `${data.name} — ${data.category} Wholesale`;
+  const title = `${data.name} — Wholesale`;
   const description =
     (data.description?.trim().slice(0, 155)) ||
     `${data.name} (${data.category}) wholesale — Item Code ${data.sku}, ${caseInfo}, no minimum order. Order from Butterfly Fashion Trading, Toronto.`;
@@ -93,6 +93,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         : product.availability_status === "Manual Confirm"
           ? "https://schema.org/PreOrder"
           : "https://schema.org/OutOfStock";
+  // Only emit an Offer when there is a price we actually show on the page —
+  // putting a price in JSON-LD that the visitor can't see is a structured-data
+  // violation. Anonymous/unapproved crawlers see Product without offers.
+  const showPrice = isApproved && Boolean(product.display_price);
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -102,14 +106,19 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     ...(galleryImages.length ? { image: galleryImages } : {}),
     ...(product.description ? { description: product.description } : {}),
     brand: { "@type": "Brand", name: "Butterfly Fashion Trading" },
-    offers: {
-      "@type": "Offer",
-      availability: availabilityUrl,
-      itemCondition: "https://schema.org/NewCondition",
-      priceCurrency: "CAD",
-      url: `${base}/products/${product.slug}`,
-      seller: { "@type": "Organization", name: "Butterfly Fashion Trading" },
-    },
+    ...(showPrice
+      ? {
+          offers: {
+            "@type": "Offer",
+            availability: availabilityUrl,
+            itemCondition: "https://schema.org/NewCondition",
+            priceCurrency: "CAD",
+            price: product.display_price,
+            url: `${base}/products/${product.slug}`,
+            seller: { "@type": "Organization", name: "Butterfly Fashion Trading" },
+          },
+        }
+      : {}),
   };
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",

@@ -14,7 +14,7 @@ Dollar & variety stores, toy & gift shops, convenience stores, arcades, and even
 resellers across Canada and the USA.
 
 ## Wholesale terms
-- Minimum order: from one case per item (most items 12–50 units/case)
+- Minimum order: none — order any quantity. Some custom or special-order items require one case per item (most items 12–50 units/case)
 - Pricing: wholesale pricing visible after free B2B account approval (usually within 24 hours)
 - Fulfillment: pickup or shipping from our Toronto warehouse; ships across Canada & the USA
 - Payment: Stripe payment link, e-transfer, cash (pickup), or bank transfer
@@ -27,8 +27,9 @@ resellers across Canada and the USA.
 - Phone: +1-416-785-5999
 
 ## Key pages
-- Request wholesale catalog: /wholesale-catalog
-- Product catalog: /products
-- Buyer guides / blog: /blog
-- Pre-orders: /preorders
-- About: /about
+- Request wholesale catalog: https://www.mask12.com/wholesale-catalog
+- Product catalog: https://www.mask12.com/products
+- Buyer guides / blog: https://www.mask12.com/blog
+- Pre-orders: https://www.mask12.com/preorders
+- About: https://www.mask12.com/about
+- FAQ: https://www.mask12.com/faq

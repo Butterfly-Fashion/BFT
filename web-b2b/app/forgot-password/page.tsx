@@ -3,6 +3,8 @@ import { forgotPasswordAction } from "@/app/actions";
 import { AuthActionForm } from "@/components/auth/action-form-status";
 import { ButterflyLogo } from "@/components/butterfly-logo";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default function ForgotPasswordPage() {
   return (
     <main className="container-shell grid min-h-screen place-items-center py-8">
