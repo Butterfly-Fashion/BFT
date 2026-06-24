@@ -174,7 +174,8 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── How it works ── */}
+        {/* ── How it works (onboarding — hide once signed in) ── */}
+        {!profile && (
         <section className="border-y border-gray-200 bg-gray-50">
           <div className="container-shell py-10">
             <div className="mb-6">
@@ -232,6 +233,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── Why buy from us ── */}
         <section className="border-t border-gray-200 bg-white py-10 sm:py-14">
@@ -266,12 +268,16 @@ export default async function HomePage() {
               <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/wholesale-catalog">
                 Request wholesale catalog <ArrowRight size={14} />
               </Link>
-              <Link className="btn-secondary px-6 py-2.5 text-sm" href="/register">Create B2B account</Link>
+              {!profile && (
+                <Link className="btn-secondary px-6 py-2.5 text-sm" href="/register">Create B2B account</Link>
+              )}
             </div>
             <OrderContactCta className="mt-6" />
-            <p className="mt-4 text-sm text-gray-500">
-              Already have an account? <Link href="/login" className="font-semibold underline" style={{ color: "var(--primary)" }}>Sign in</Link>.
-            </p>
+            {!profile && (
+              <p className="mt-4 text-sm text-gray-500">
+                Already have an account? <Link href="/login" className="font-semibold underline" style={{ color: "var(--primary)" }}>Sign in</Link>.
+              </p>
+            )}
           </div>
         </section>
 

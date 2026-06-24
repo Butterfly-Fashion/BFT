@@ -90,16 +90,18 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
               {category.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500">
-              Wholesale {category.name.toLowerCase()} in bulk. Approved B2B accounts see wholesale pricing.
+              Wholesale {category.name.toLowerCase()} in bulk.{!isApproved && " Approved B2B accounts see wholesale pricing."}{" "}
               No minimum order — ships across Canada and USA.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              <Link
-                href="/register"
-                className="btn-primary min-h-8 gap-1.5 px-4 text-sm"
-              >
-                Get B2B access <ArrowRight size={13} />
-              </Link>
+              {!profile && (
+                <Link
+                  href="/register"
+                  className="btn-primary min-h-8 gap-1.5 px-4 text-sm"
+                >
+                  Get B2B access <ArrowRight size={13} />
+                </Link>
+              )}
               <Link href="/products" className="btn-secondary min-h-8 px-4 text-sm">
                 Full catalog
               </Link>
