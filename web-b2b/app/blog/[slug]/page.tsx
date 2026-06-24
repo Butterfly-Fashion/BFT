@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!post) return { title: "Article" };
   const description = post.meta_description || post.excerpt || undefined;
   return {
-    title: post.title,
+    title: { absolute: post.title },
     description,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
