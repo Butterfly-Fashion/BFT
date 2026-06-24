@@ -22,6 +22,7 @@ web-b2b/tests/*-state.json
 scripts/outreach/*.csv
 scripts/outreach/*.json
 scripts/outreach/*.xlsx
+excel/
 
 # Spreadsheets & temp files
 *.xlsx
