@@ -14,11 +14,13 @@ alter table public.contact_messages enable row level security;
 alter table public.b2c_products enable row level security;
 alter table public.hero_banners enable row level security;
 
+drop policy if exists "hero banners public read" on public.hero_banners;
 create policy "hero banners public read"
   on public.hero_banners
   for select
   using (is_published = true or public.is_admin());
 
+drop policy if exists "hero banners admin write" on public.hero_banners;
 create policy "hero banners admin write"
   on public.hero_banners
   for all
