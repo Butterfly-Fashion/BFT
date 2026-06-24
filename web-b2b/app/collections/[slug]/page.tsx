@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const categories = await fetchCategories();
   const category = categories.find((c) => c.slug === slug);
   if (!category) return {};
-  const title = `Wholesale ${category.name} | Butterfly Fashion Trading`;
+  const title = `Wholesale ${category.name} Canada`;
   const description = `Buy wholesale ${category.name} in bulk. No minimum order — any quantity. Ships across Canada and USA. B2B pricing for approved accounts.`;
   return {
     title,

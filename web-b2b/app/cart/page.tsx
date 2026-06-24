@@ -6,6 +6,8 @@ import { Truck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = { robots: { index: false, follow: false } };
+
 export default async function CheckoutPage() {
   const profile = await requireProfile();
   const defaultAddress = [

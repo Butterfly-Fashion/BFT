@@ -71,7 +71,11 @@ export default async function HomePage() {
 
         {/* ── Hero ── */}
         {banners.length > 0 ? (
-          <HeroCarousel banners={banners} />
+          <>
+            {/* Carousel slide titles are <h2>; keep one real H1 for SEO. */}
+            <h1 className="sr-only">Wholesale Variety, Novelty &amp; Seasonal Goods in Canada</h1>
+            <HeroCarousel banners={banners} />
+          </>
         ) : (
         <section className="border-b border-gray-200 bg-white">
           <div className="container-shell py-12 sm:py-16">

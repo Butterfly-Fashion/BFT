@@ -10,7 +10,7 @@ import { getCurrentProfile } from "@/lib/auth";
 import type { FaqSection } from "@/components/store/faq-accordion";
 
 export const metadata: Metadata = {
-  title: "FAQ | Butterfly Fashion Trading Wholesale",
+  title: "Wholesale Ordering FAQ",
   description: "Frequently asked questions about wholesale ordering, B2B accounts, order quantities, payment, and shipping at Butterfly Fashion Trading.",
   alternates: { canonical: "/faq" },
 };
