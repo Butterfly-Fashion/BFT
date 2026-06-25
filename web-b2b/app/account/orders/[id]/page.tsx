@@ -9,7 +9,6 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
 import { ReorderButton } from "@/components/store/reorder-button";
-import { PurchaseConversion } from "@/components/store/purchase-conversion";
 
 export const dynamic = "force-dynamic";
 
@@ -64,14 +63,6 @@ export default async function AccountOrderDetailPage({
               </p>
             </div>
           </div>
-        )}
-
-        {sp.payment === "success" && (
-          <PurchaseConversion
-            value={Number(order.total_amount || 0)}
-            currency="CAD"
-            transactionId={order.id}
-          />
         )}
 
         {sp.payment === "success" && (
