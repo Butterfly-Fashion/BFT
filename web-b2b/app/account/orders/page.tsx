@@ -7,6 +7,7 @@ import { formatMoney } from "@/lib/money";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
+import { ReorderButton } from "@/components/store/reorder-button";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export default async function AccountOrdersPage() {
   const supabase = await createSupabaseServerClient();
   const { data: orders } = await supabase
     .from("orders")
-    .select("*, order_items(product_name_snapshot, quantity, unit_price_snapshot, products(image_url))")
+    .select("*, order_items(product_id, product_name_snapshot, sku_snapshot, quantity, unit_price_snapshot, products(image_url, slug))")
     .eq("customer_id", profile.id)
     .order("created_at", { ascending: false });
 
@@ -55,13 +56,26 @@ export default async function AccountOrdersPage() {
               const isPaid = order.payment_status === "Paid";
               const canPayNow = !!order.stripe_payment_link && !isPaid;
               const items = (order.order_items as Array<{
+                product_id: string;
                 product_name_snapshot: string;
+                sku_snapshot: string | null;
                 quantity: number;
                 unit_price_snapshot: number;
-                products: { image_url?: string } | null;
+                products: { image_url?: string; slug?: string } | null;
               }>) || [];
               const previewItems = items.slice(0, 4);
               const extraCount = items.length - previewItems.length;
+              const reorderItems = items
+                .filter((item) => item.product_id)
+                .map((item) => ({
+                  productId: item.product_id,
+                  name: item.product_name_snapshot,
+                  sku: item.sku_snapshot || "",
+                  quantity: item.quantity,
+                  price: Number(item.unit_price_snapshot || 0),
+                  imageUrl: item.products?.image_url ?? undefined,
+                  slug: item.products?.slug ?? undefined,
+                }));
 
               return (
                 <div
@@ -133,7 +147,10 @@ export default async function AccountOrdersPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="shrink-0">
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="relative z-20">
+                        <ReorderButton items={reorderItems} />
+                      </span>
                       {canPayNow ? (
                         <a
                           href={order.stripe_payment_link!}

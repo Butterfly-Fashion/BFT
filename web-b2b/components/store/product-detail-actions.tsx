@@ -50,17 +50,15 @@ export function ProductDetailActions({
 
   const total = product.display_price * quantity;
 
-  // Pricing and online ordering are gated to approved B2B accounts. Until then,
-  // buyers can still order this item by phone or email.
+  // Wholesale pricing and online ordering are shown to signed-in accounts.
+  // Anonymous visitors can still order by phone or email, or register to order online.
   if (!isApproved) {
     return (
       <div className="grid gap-3">
         <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Order this item</p>
         <OrderContactCta showMessages={!!profile} />
         <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
-          {profile
-            ? "Your B2B account is pending approval — wholesale pricing and online ordering unlock once approved. In the meantime, call or email us to order."
-            : "Call or email to order, or sign in with an approved B2B account to see wholesale pricing and order online."}
+          Call or email to order, or register and sign in to see wholesale pricing and order online.
         </p>
       </div>
     );

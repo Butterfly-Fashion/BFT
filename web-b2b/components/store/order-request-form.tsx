@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Truck, Store, AlertCircle, ShoppingCart, Plus, MapPin, Pencil, Trash2 } from "lucide-react";
+import { Truck, Store, AlertCircle, ShoppingCart, Plus, Minus, MapPin, Pencil, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import { createOrderRequestAction } from "@/app/actions";
 import { useCart } from "@/components/store/cart-provider";
@@ -516,12 +516,49 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
         <div className="max-h-72 overflow-auto px-4 py-3">
           {cart.items.map((item) => (
             <div key={item.productId} className="flex items-start justify-between gap-3 border-b border-slate-100 py-2.5 last:border-b-0">
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-slate-900 line-clamp-1">{item.name}</p>
-                <p className="text-xs font-semibold text-slate-500">
-                  Qty {item.quantity}
-                  {item.sku && <> · {item.sku}</>}
-                </p>
+                {item.sku && <p className="text-xs font-semibold text-slate-500">{item.sku}</p>}
+                <div className="mt-1.5 flex items-center gap-1.5">
+                  <div className="flex h-7 items-center overflow-hidden rounded-md border border-slate-200">
+                    <button
+                      type="button"
+                      aria-label="Decrease quantity"
+                      onClick={() => cart.setQuantity(item.productId, Math.max(0, item.quantity - 1))}
+                      className="flex h-full w-7 items-center justify-center text-slate-500 transition-colors hover:bg-slate-50"
+                    >
+                      <Minus size={12} />
+                    </button>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min={0}
+                      max={9999}
+                      value={item.quantity || ""}
+                      aria-label={`Quantity for ${item.name}`}
+                      onChange={(e) =>
+                        cart.setQuantity(item.productId, Math.max(0, Math.min(9999, parseInt(e.target.value || "0") || 0)))
+                      }
+                      className="quantity-input h-full w-10 border-x border-slate-200 text-center text-xs font-bold text-slate-900 outline-none"
+                    />
+                    <button
+                      type="button"
+                      aria-label="Increase quantity"
+                      onClick={() => cart.setQuantity(item.productId, Math.min(9999, item.quantity + 1))}
+                      className="flex h-full w-7 items-center justify-center text-slate-500 transition-colors hover:bg-slate-50"
+                    >
+                      <Plus size={12} />
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${item.name}`}
+                    onClick={() => cart.setQuantity(item.productId, 0)}
+                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-200 text-slate-400 transition-colors hover:border-red-300 hover:bg-red-50 hover:text-red-500"
+                  >
+                    <Trash2 size={12} />
+                  </button>
+                </div>
               </div>
               <span className="shrink-0 text-sm font-black">
                 {item.price ? formatMoney(item.price * item.quantity) : "TBD"}
