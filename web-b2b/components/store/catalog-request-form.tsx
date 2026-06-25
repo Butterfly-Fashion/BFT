@@ -19,6 +19,15 @@ export function CatalogRequestForm() {
     sourceRef.current.value = utm ? `${utm} (ref: ${ref})` : ref;
   }, []);
 
+  // Fire a GA4 lead conversion when the request succeeds, so Google Ads can
+  // measure & optimize toward catalog requests (mark `generate_lead` as a key
+  // event in GA4, then import it into Ads).
+  useEffect(() => {
+    if (!state?.success || typeof window === "undefined") return;
+    const w = window as unknown as { gtag?: (...args: unknown[]) => void };
+    w.gtag?.("event", "generate_lead", { event_category: "wholesale", value: 1 });
+  }, [state?.success]);
+
   if (state?.success) {
     return (
       <div className="rounded-xl border border-green-200 bg-green-50 p-6 text-center">
