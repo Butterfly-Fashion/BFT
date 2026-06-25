@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ShoppingCart, CheckCircle } from "lucide-react";
+import { ShoppingCart, CheckCircle, ArrowRight } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
+import { useCartOpen } from "@/components/store/cart-open-context";
 import { OrderContactCta } from "@/components/store/order-contact-cta";
 
 export function ProductDetailActions({
@@ -16,10 +18,12 @@ export function ProductDetailActions({
   profile: Profile | null;
 }) {
   const cart = useCart();
+  const { setCartOpen } = useCartOpen();
   const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [hasAdded, setHasAdded] = useState(false);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const caseQty = product.case_qty || null;
@@ -45,6 +49,8 @@ export function ProductDetailActions({
       caseQty: product.case_qty,
     });
     setAdded(true);
+    setHasAdded(true);
+    setCartOpen(true);
     addedTimer.current = setTimeout(() => setAdded(false), 2000);
   }
 
@@ -151,6 +157,28 @@ export function ProductDetailActions({
           <><ShoppingCart size={16} />Add to Cart</>
         )}
       </button>
+
+      {/* Post-add CTA — keep a clear path to the cart once something is added */}
+      {hasAdded && cart.count > 0 && (
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setCartOpen(true)}
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-2.5 text-sm font-bold text-slate-700 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <ShoppingCart size={14} />
+            View cart ({cart.count})
+          </button>
+          <Link
+            href="/cart"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-(--primary-border) bg-(--primary-light) py-2.5 text-sm font-black transition-opacity hover:opacity-90"
+            style={{ color: "var(--primary)" }}
+          >
+            Review &amp; request
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      )}
 
       {/* B2B note */}
       <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">

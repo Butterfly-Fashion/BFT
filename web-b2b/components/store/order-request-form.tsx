@@ -218,7 +218,7 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
 
   return (
     <>
-      {!cart.items.length && (
+      {cart.hydrated && !cart.items.length && (
         <div className="mb-6 flex flex-wrap items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm">
           <span className="font-semibold text-amber-800">
             Your cart is empty — add products before submitting a request.
@@ -565,11 +565,23 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
               </span>
             </div>
           ))}
-          {!cart.items.length && (
+          {!cart.hydrated ? (
+            <div className="animate-pulse space-y-3 py-2">
+              {[0, 1].map((i) => (
+                <div key={i} className="flex items-center justify-between gap-3 border-b border-slate-100 py-2.5 last:border-b-0">
+                  <div className="min-w-0 flex-1 space-y-2">
+                    <div className="h-3 w-3/4 rounded bg-slate-100" />
+                    <div className="h-6 w-24 rounded bg-slate-100" />
+                  </div>
+                  <div className="h-3 w-10 rounded bg-slate-100" />
+                </div>
+              ))}
+            </div>
+          ) : !cart.items.length ? (
             <p className="py-4 text-center text-sm font-bold text-slate-400">
               Your request cart is empty. Add products before submitting.
             </p>
-          )}
+          ) : null}
         </div>
 
         <div className="border-t border-slate-200 p-4">
@@ -582,7 +594,7 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
           </div>
           <button
             className="btn-primary w-full py-3 text-sm text-white"
-            disabled={isPending || !cart.items.length}
+            disabled={isPending || !cart.hydrated || !cart.items.length}
             onClick={submit}
             type="button"
           >

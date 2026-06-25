@@ -6,6 +6,7 @@ import type { CartItem } from "@/lib/types";
 type CartContextValue = {
   items: CartItem[];
   count: number;
+  hydrated: boolean;
   addItem: (item: CartItem | string, quantity?: number) => void;
   setItem: (item: CartItem, quantity: number) => void;
   setQuantity: (productId: string, quantity: number) => void;
@@ -34,6 +35,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<CartContextValue>(() => ({
     items,
     count: items.reduce((sum, item) => sum + item.quantity, 0),
+    hydrated: isLoaded,
     addItem(item, quantity = 1) {
       const next: CartItem =
         typeof item === "string"
@@ -72,7 +74,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     clearCart() {
       setItems([]);
     },
-  }), [items]);
+  }), [items, isLoaded]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

@@ -19,7 +19,7 @@ export function CartButton() {
         <ShoppingCart size={16} />
         Cart
         <span className="grid h-5 min-w-5 place-items-center rounded-full bg-white px-1 text-xs text-(--primary)">
-          {cart.count}
+          {cart.hydrated ? cart.count : ""}
         </span>
       </button>
 
