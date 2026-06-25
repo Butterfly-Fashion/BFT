@@ -46,3 +46,7 @@ fb-listing/
 
 # Cold-email outreach tooling (contact info / lists — kept local, not tracked)
 cold-email/
+
+# Product catalog source flyers & import scratch (kept local, not tracked)
+catalog/
+blogs_full.json
