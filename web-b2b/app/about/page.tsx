@@ -48,7 +48,7 @@ const WHY_B2B = [
   { icon: MapPin, title: "Toronto warehouse", desc: "Same-day pickup or next-business-day ship from our North York location. No waiting on overseas freight." },
   { icon: Truck, title: "Canada & USA shipping", desc: "Ship cross-border to US buyers. We handle the documentation — you focus on selling." },
   { icon: Package2, title: "No minimum order", desc: "Order any quantity — single units or full cases. Case pricing gives a better per-unit rate on bulk." },
-  { icon: ShieldCheck, title: "B2B pricing on approval", desc: "Register, get approved in 24 hours, unlock wholesale pricing immediately." },
+  { icon: ShieldCheck, title: "Instant B2B pricing", desc: "Register and unlock wholesale pricing immediately — no approval wait." },
   { icon: FileText, title: "Invoice + NET terms", desc: "Professional invoicing on every order. NET 30 available for established accounts." },
   { icon: Tag, title: "30+ years sourcing", desc: "We've been doing this since 1996. We know which products sell and which don't." },
 ];
@@ -173,7 +173,7 @@ export default async function AboutPage() {
               { value: "30+", label: "Years in business" },
               { value: "Toronto", label: "Warehouse location" },
               { value: "CA & USA", label: "Ships to" },
-              { value: "24 hrs", label: "B2B approval time" },
+              { value: "Instant", label: "Wholesale pricing access" },
             ].map(({ value, label }) => (
               <div key={label} className="px-6 py-10 text-center">
                 <p className="text-3xl font-black text-gray-900">{value}</p>

@@ -11,8 +11,18 @@ export async function createSupabaseServerClient() {
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
+        // When the user opted out of "Keep me signed in" (bft_remember=0), drop the
+        // persistence (maxAge/expires) from the Supabase auth cookies so they become
+        // session cookies that clear when the browser closes. Default: persist.
+        const persist = cookieStore.get("bft_remember")?.value !== "0";
         try {
-          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const opts =
+              !persist && name.startsWith("sb-")
+                ? { ...options, maxAge: undefined, expires: undefined }
+                : options;
+            cookieStore.set(name, value, opts);
+          });
         } catch {
           // Server Components cannot set cookies; route handlers and actions can.
         }

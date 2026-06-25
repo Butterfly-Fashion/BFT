@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle, Clock, User, Building2, Mail, Phone, MapPin, ClipboardList, MessageSquare } from "lucide-react";
+import { CheckCircle, User, Building2, Mail, Phone, MapPin, ClipboardList, MessageSquare } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { requireProfile } from "@/lib/auth";
 
@@ -25,12 +25,8 @@ export default async function AccountPage() {
                 <h2 className="text-xl font-black text-slate-900">{profile.business_name}</h2>
                 <p className="mt-0.5 text-sm font-semibold text-slate-500">{profile.business_type}</p>
               </div>
-              <span className={`badge ${profile.is_b2b_approved ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-amber-200 bg-amber-50 text-amber-800"}`}>
-                {profile.is_b2b_approved ? (
-                  <><CheckCircle size={10} className="mr-1" />Approved B2B</>
-                ) : (
-                  <><Clock size={10} className="mr-1" />Pending Approval</>
-                )}
+              <span className="badge border-emerald-200 bg-emerald-50 text-emerald-800">
+                <CheckCircle size={10} className="mr-1" />Wholesale account
               </span>
             </div>
 
@@ -80,11 +76,6 @@ export default async function AccountPage() {
               )}
             </div>
 
-            {!profile.is_b2b_approved && (
-              <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold leading-relaxed text-amber-800">
-                Your account is pending B2B approval. You can browse the catalog now — wholesale pricing and ordering unlock once approved. In the meantime, contact us by phone or email to place an order.
-              </div>
-            )}
           </div>
 
           {/* Quick links */}

@@ -9,16 +9,16 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
   const admin = createSupabaseAdminClient();
-  const [{ data: orders }, { count: customers }, { count: products }, leadsRes, approvalsRes] =
+  const [{ data: orders }, { count: customers }, { count: products }, leadsRes, unreadRes] =
     await Promise.all([
       admin.from("orders").select("*, profiles(business_name,email)").eq("channel", "b2b").order("created_at", { ascending: false }),
       admin.from("profiles").select("*", { count: "exact", head: true }),
       admin.from("products").select("*", { count: "exact", head: true }).eq("is_hidden", false),
       admin.from("wholesale_leads").select("id", { count: "exact", head: true }).eq("status", "New"),
-      admin.from("profiles").select("id", { count: "exact", head: true }).eq("is_b2b_approved", false).eq("role", "customer"),
+      admin.from("b2b_messages").select("id", { count: "exact", head: true }).eq("is_read", false).eq("is_from_admin", false),
     ]);
   const newLeads = leadsRes?.count ?? 0;
-  const pendingApprovals = approvalsRes?.count ?? 0;
+  const unreadMessages = unreadRes?.count ?? 0;
 
   const orderList = orders || [];
   let revenue = 0;
@@ -79,7 +79,7 @@ export default async function AdminDashboardPage() {
             <p className="section-label">Operations</p>
             <h1 className="mt-1 text-3xl font-black text-slate-900">Dashboard</h1>
             <p className="mt-1.5 text-sm font-medium text-slate-500">
-              Order requests, approvals, revenue, and customer activity.
+              Order requests, revenue, and customer activity.
             </p>
           </div>
           <div className="flex gap-2">
@@ -93,7 +93,7 @@ export default async function AdminDashboardPage() {
           {[
             { label: "New order requests", value: pendingCount, href: "/admin/orders?status=Pending%20Review", border: "border-l-amber-400", text: "text-amber-600" },
             { label: "New catalog leads", value: newLeads, href: "/admin/leads", border: "border-l-sky-400", text: "text-sky-600" },
-            { label: "Pending approvals", value: pendingApprovals, href: "/admin/approvals", border: "border-l-green-400", text: "text-green-600" },
+            { label: "Unread messages", value: unreadMessages, href: "/admin/messages", border: "border-l-green-400", text: "text-green-600" },
           ].map((item) => (
             <Link
               key={item.label}

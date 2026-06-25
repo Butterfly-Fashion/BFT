@@ -22,7 +22,7 @@ export default function RegisterPage() {
           <div className="border-b border-slate-100 bg-slate-50 px-6 py-5">
             <h1 className="text-2xl font-black text-slate-900">Create a B2B account</h1>
             <p className="mt-1 text-sm font-medium text-slate-500">
-              Fill in your business details below. Your account will be reviewed before B2B pricing is unlocked.
+              Fill in your business details below. Wholesale pricing and ordering unlock as soon as you register.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function RegisterPage() {
         <div className="mt-4 flex items-start gap-2 rounded-lg border border-slate-200 bg-white px-4 py-3">
           <Info size={14} className="mt-0.5 shrink-0 text-slate-400" />
           <p className="text-xs font-semibold leading-relaxed text-slate-500">
-            After registration, your account will be reviewed by our team. Once approved, you will have access to B2B pricing and can submit order requests.
+            As soon as you register, you can see wholesale pricing and submit order requests. We confirm availability and final pricing on each order before sending a payment link.
           </p>
         </div>
 

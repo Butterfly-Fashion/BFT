@@ -90,7 +90,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
               {category.name}
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500">
-              Wholesale {category.name.toLowerCase()} in bulk.{!isApproved && " Approved B2B accounts see wholesale pricing."}{" "}
+              Wholesale {category.name.toLowerCase()} in bulk.{!profile && " Register to see wholesale pricing."}{" "}
               No minimum order — ships across Canada and USA.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">

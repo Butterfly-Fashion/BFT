@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { approveB2BCustomerAction, setCustomerPriceAction, deleteCustomerPriceAction, deleteCustomerAction } from "@/app/actions";
+import { setCustomerPriceAction, deleteCustomerPriceAction, deleteCustomerAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -80,11 +80,6 @@ export default async function AdminCustomerDetailPage({
             <p className="section-label">Customer profile</p>
             <h1 className="mt-2 text-4xl font-black leading-tight text-slate-950">{customer.business_name}</h1>
             <div className="mt-3 flex flex-wrap gap-2">
-              {customer.is_b2b_approved ? (
-                <span className="badge border-green-200 bg-green-50 text-green-800">Approved B2B</span>
-              ) : (
-                <span className="badge border-amber-200 bg-amber-50 text-amber-900">B2B Pending</span>
-              )}
               <span className="badge border-slate-200 bg-slate-50 text-slate-700">{customer.business_type || "No business type"}</span>
               <span className="badge border-slate-200 bg-slate-50 text-slate-700">{customer.role}</span>
             </div>
@@ -92,9 +87,6 @@ export default async function AdminCustomerDetailPage({
           </div>
           <div className="flex flex-wrap gap-2">
             <Link className="btn-secondary" href="/admin/customers">Back to customers</Link>
-            <form action={async () => { "use server"; await approveB2BCustomerAction(customer.id, !customer.is_b2b_approved); }}>
-              <button className="btn-primary" type="submit">{customer.is_b2b_approved ? "Remove B2B" : "Approve B2B"}</button>
-            </form>
           </div>
           </div>
 
@@ -110,6 +102,21 @@ export default async function AdminCustomerDetailPage({
             <div className="rounded border border-slate-200 bg-[#fafafa] p-4">
               <p className="text-xs font-black uppercase text-slate-500">Phone</p>
               <p className="mt-2 text-xl font-black text-slate-950">{customer.phone || "Not provided"}</p>
+            </div>
+            <div className="rounded border border-slate-200 bg-[#fafafa] p-4">
+              <p className="text-xs font-black uppercase text-slate-500">Website</p>
+              {customer.website ? (
+                <a
+                  href={customer.website.startsWith("http") ? customer.website : `https://${customer.website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 block break-all text-lg font-black text-(--primary) hover:underline"
+                >
+                  {customer.website.replace(/^https?:\/\//, "")}
+                </a>
+              ) : (
+                <p className="mt-2 text-xl font-black text-slate-950">Not provided</p>
+              )}
             </div>
             <div className="rounded border border-slate-200 bg-[#fafafa] p-4 md:col-span-2 xl:col-span-1">
               <p className="text-xs font-black uppercase text-slate-500">Address</p>
@@ -133,7 +140,6 @@ export default async function AdminCustomerDetailPage({
               <h2 className="mb-3 text-xl font-black">Customer info</h2>
               <dl className="grid gap-2 text-sm">
                 <div><dt className="font-black text-slate-500">Business type</dt><dd className="font-semibold">{customer.business_type}</dd></div>
-                <div><dt className="font-black text-slate-500">B2B status</dt><dd>{customer.is_b2b_approved ? <span className="badge border-green-200 bg-green-50 text-green-800">Approved</span> : <span className="badge border-amber-200 bg-amber-50 text-amber-900">Pending</span>}</dd></div>
                 <div><dt className="font-black text-slate-500">Address</dt><dd className="font-semibold">{customer.business_address}, {customer.city}, {customer.province} {customer.postal_code}, {customer.country}</dd></div>
                 {customer.notes && <div><dt className="font-black text-slate-500">Notes</dt><dd className="font-semibold">{customer.notes}</dd></div>}
               </dl>

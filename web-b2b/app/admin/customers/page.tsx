@@ -13,13 +13,12 @@ type CustomerRow = {
   business_type: string;
   city: string;
   province: string;
-  is_b2b_approved: boolean;
 };
 
 export default async function AdminCustomersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; type?: string; approval?: string }>;
+  searchParams: Promise<{ q?: string; type?: string }>;
 }) {
   const params = await searchParams;
   const admin = createSupabaseAdminClient();
@@ -32,19 +31,15 @@ export default async function AdminCustomersPage({
     );
   }
   if (params.type) customerQuery = customerQuery.eq("business_type", params.type);
-  if (params.approval === "approved") customerQuery = customerQuery.eq("is_b2b_approved", true);
-  if (params.approval === "pending") customerQuery = customerQuery.eq("is_b2b_approved", false);
 
   const [{ data: customers }, { data: allCustomers }] = await Promise.all([
     customerQuery,
-    admin.from("profiles").select("business_type,is_b2b_approved"),
+    admin.from("profiles").select("business_type"),
   ]);
 
   const customerList = (customers || []) as CustomerRow[];
   const all = allCustomers || [];
   const businessTypes = [...new Set(all.map((c) => c.business_type).filter(Boolean))].sort();
-  const approvedCount = all.filter((c) => c.is_b2b_approved).length;
-  const pendingCount = all.filter((c) => !c.is_b2b_approved).length;
 
   return (
     <>
@@ -54,16 +49,14 @@ export default async function AdminCustomersPage({
           <p className="section-label">Customer management</p>
           <h1 className="mt-1 text-3xl font-black text-slate-900">Customers</h1>
           <p className="mt-1.5 text-sm font-medium text-slate-500">
-            Search and manage B2B customer accounts, approval status, and pricing.
+            Search and manage B2B customer accounts and pricing.
           </p>
         </section>
 
         {/* Stats */}
-        <section className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mb-5 grid gap-3 sm:grid-cols-2">
           {[
             { label: "Total customers", value: all.length },
-            { label: "Approved B2B", value: approvedCount },
-            { label: "Pending approval", value: pendingCount },
             { label: "Business types", value: businessTypes.length },
           ].map(({ label, value }) => (
             <div key={label} className="card p-4">
@@ -75,7 +68,7 @@ export default async function AdminCustomersPage({
 
         {/* Filters */}
         <form className="mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_170px_auto] lg:items-end">
+          <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_auto] lg:items-end">
             <label className="label">
               Search customers
               <input className="field" defaultValue={params.q || ""} name="q" placeholder="Name, email, phone, city…" />
@@ -85,14 +78,6 @@ export default async function AdminCustomersPage({
               <select className="field" defaultValue={params.type || ""} name="type">
                 <option value="">All types</option>
                 {businessTypes.map((t) => <option key={t}>{t}</option>)}
-              </select>
-            </label>
-            <label className="label">
-              B2B status
-              <select className="field" defaultValue={params.approval || ""} name="approval">
-                <option value="">All</option>
-                <option value="approved">Approved</option>
-                <option value="pending">Pending</option>
               </select>
             </label>
             <button className="btn-primary" type="submit">Search</button>
@@ -109,7 +94,6 @@ export default async function AdminCustomersPage({
                   <th className="px-5 py-3">Contact</th>
                   <th className="px-5 py-3">Type</th>
                   <th className="px-5 py-3">Location</th>
-                  <th className="px-5 py-3">B2B status</th>
                   <th className="px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -127,13 +111,6 @@ export default async function AdminCustomersPage({
                     <td className="px-5 py-3 text-slate-600">{customer.business_type}</td>
                     <td className="px-5 py-3 text-slate-600">
                       {customer.city}, {customer.province}
-                    </td>
-                    <td className="px-5 py-3">
-                      {customer.is_b2b_approved ? (
-                        <span className="badge border-emerald-200 bg-emerald-50 text-emerald-800">Approved</span>
-                      ) : (
-                        <span className="badge border-amber-200 bg-amber-50 text-amber-900">Pending</span>
-                      )}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <Link className="btn-secondary min-h-8 px-3 text-xs" href={`/admin/customers/${customer.id}`}>

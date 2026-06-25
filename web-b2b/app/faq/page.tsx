@@ -21,19 +21,19 @@ const FAQ_SECTIONS: FaqSection[] = [
     items: [
       {
         q: "How do I create a B2B wholesale account?",
-        a: "Register with your business name, contact info, and business type. Approval typically takes under 24 hours. Once approved, you'll unlock wholesale pricing and can start ordering.",
+        a: "Register with your business name, contact info, and business type. There's no approval wait — wholesale pricing and ordering unlock as soon as you create your account.",
       },
       {
         q: "What types of businesses can apply?",
         a: "We work with retailers, convenience stores, variety shops, event resellers, market vendors, and any business that resells products to end consumers. Both brick-and-mortar and online sellers are welcome.",
       },
       {
-        q: "How long does B2B approval take?",
-        a: "Most applications are reviewed and approved within 24 hours on business days. You'll receive an email once your account is approved.",
+        q: "When can I see wholesale pricing?",
+        a: "Immediately after registering. There's no approval step — create your account, sign in, and wholesale pricing is shown across the catalog right away.",
       },
       {
-        q: "Can I browse products before getting approved?",
-        a: "Yes — you can browse the catalog and see product names and images before approval. Wholesale pricing is unlocked after your account is approved.",
+        q: "Can I browse products before registering?",
+        a: "Yes — anyone can browse the catalog and see product names and images. Wholesale pricing is shown once you register and sign in.",
       },
     ],
   },

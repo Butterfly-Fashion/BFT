@@ -32,7 +32,7 @@ export default async function LoginPage({
             <div className="mb-4 flex items-start gap-2.5 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-3">
               <CheckCircle size={15} className="mt-0.5 shrink-0 text-blue-600" />
               <p className="text-sm font-semibold leading-relaxed text-blue-800">
-                Account created. You can log in now while we review your B2B approval.
+                Account created. Log in to see wholesale pricing and start ordering.
               </p>
             </div>
           )}
@@ -56,7 +56,11 @@ export default async function LoginPage({
                   Password
                   <input className="field" name="password" required type="password" autoComplete="current-password" />
                 </label>
-                <div className="flex justify-end">
+                <div className="flex items-center justify-between gap-2">
+                  <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold text-gray-600">
+                    <input type="checkbox" name="remember" defaultChecked className="accent-(--primary)" />
+                    Keep me signed in
+                  </label>
                   <Link className="text-xs font-bold text-(--primary) hover:underline" href="/forgot-password">
                     Forgot password?
                   </Link>
@@ -69,7 +73,7 @@ export default async function LoginPage({
           <div className="mt-4 flex items-start gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3">
             <ShieldCheck size={14} className="mt-0.5 shrink-0 text-blue-500" />
             <p className="text-xs font-semibold leading-relaxed text-gray-500">
-              This is a B2B platform. Accounts are reviewed before wholesale pricing is activated.
+              This is a B2B wholesale platform. Wholesale pricing is shown to registered accounts.
             </p>
           </div>
 

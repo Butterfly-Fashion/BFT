@@ -41,7 +41,7 @@ function pickDiverse(products: Product[], max: number): Product[] {
 const WHY_BUY = [
   { icon: Clock, title: "30+ years sourcing", desc: "We've supplied Canadian retailers since 1996 — we know which products sell." },
   { icon: Package2, title: "Real Toronto inventory", desc: "Stocked locally. Pick up same-day or ship next business day — no overseas wait." },
-  { icon: ShieldCheck, title: "Approved in 24 hours", desc: "Register and unlock wholesale pricing fast — most accounts approved same day." },
+  { icon: ShieldCheck, title: "Instant wholesale pricing", desc: "Register and see wholesale pricing right away — no approval wait." },
   { icon: FileText, title: "Invoice & NET 30", desc: "Professional invoicing on every order; NET 30 available for established accounts." },
   { icon: Truck, title: "Ships across Canada & USA", desc: "Canada-wide and cross-border shipping on all wholesale orders." },
   { icon: Tag, title: "Easy reorders", desc: "Every product has a unique Item Code — reorder the exact styles in seconds." },
@@ -193,10 +193,10 @@ export default async function HomePage() {
                 },
                 {
                   step: "02",
-                  title: "Get approved",
-                  desc: "We review your application and approve B2B accounts within 24 hours.",
-                  href: null,
-                  cta: null,
+                  title: "See wholesale pricing",
+                  desc: "Pricing unlocks the moment you register — no waiting, no approval step.",
+                  href: "/products",
+                  cta: "Browse catalog →",
                 },
                 {
                   step: "03",
@@ -208,7 +208,7 @@ export default async function HomePage() {
                 {
                   step: "04",
                   title: "We confirm & invoice",
-                  desc: "We review your order, confirm availability, then send a payment link. No charge until approved.",
+                  desc: "We review your order, confirm availability, then send a payment link. No charge until you pay.",
                   href: null,
                   cta: null,
                 },

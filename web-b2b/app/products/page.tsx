@@ -7,7 +7,6 @@ import { ProductGalleryGrid } from "@/components/store/product-gallery-grid";
 import { CatalogFilterSidebar } from "@/components/store/catalog-filter-sidebar";
 import { CatalogTopBar } from "@/components/store/catalog-top-bar";
 import { getCurrentProfile } from "@/lib/auth";
-import { contactTel } from "@/lib/contact";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { fetchCategories, buildCategoryTree, resolveFilterCategories } from "@/lib/categories";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -58,18 +57,6 @@ export default async function ProductsPage({
       <Header profile={profile} />
       <main className="container-shell py-6">
         {/* Access banners */}
-        {profile && !isApproved && (
-          <div className="mb-5 flex flex-wrap items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm">
-            <span className="stock-dot" style={{ background: "#D97706" }} />
-            <span className="font-semibold text-amber-800">
-              Wholesale pricing is visible to approved B2B accounts only.
-              <span className="ml-2 font-normal text-amber-600">· Pending approval</span>
-            </span>
-            <a href={contactTel} className="ml-auto font-semibold underline" style={{ color: "var(--primary)" }}>
-              Call to order while you wait →
-            </a>
-          </div>
-        )}
         {!profile && (
           <div className="mb-5 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm">
             <span className="stock-dot bg-gray-400" />

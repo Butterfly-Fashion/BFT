@@ -30,8 +30,8 @@ export default async function TermsPage() {
           <div>
             <h2 className="text-lg font-bold text-gray-900">B2B Accounts</h2>
             <p className="mt-2">
-              Wholesale accounts are reviewed before approval. We may request business documentation
-              and reserve the right to approve, decline, or suspend accounts at our discretion.
+              Wholesale accounts are open to businesses and unlock pricing on registration. We may request
+              business documentation and reserve the right to decline or suspend accounts at our discretion.
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { calculateTotals } from "@/lib/money";
@@ -241,7 +242,7 @@ async function _registerActionInner(
     postal_code: data.postal_code,
     country: data.country,
     business_type: data.business_type,
-    is_b2b_approved: false,
+    is_b2b_approved: true,
     tax_number: data.tax_number || null,
     website: data.website || null,
     notes: data.notes || null,
@@ -287,6 +288,11 @@ function safeRedirectPath(value: unknown): string {
 export async function loginAction(_prevState: unknown, formData: FormData) {
   const email = String(formData.get("email") || "");
   const password = String(formData.get("password") || "");
+  const remember = formData.get("remember") === "on";
+  // Record the preference before signing in so the cookie adapter (server.ts)
+  // can decide whether to persist the Supabase session cookies on this device.
+  const cookieStore = await cookies();
+  cookieStore.set("bft_remember", remember ? "1" : "0", { path: "/", maxAge: 60 * 60 * 24 * 365 });
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) return { error: friendlyAuthError(error.message) };
