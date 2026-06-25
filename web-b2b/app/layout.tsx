@@ -14,6 +14,7 @@ import { siteUrl } from "@/lib/env";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const GA_MEASUREMENT_ID = "G-RZV3Q4DEWK";
+const GOOGLE_ADS_TAG_ID = "G-WPC4HFZ8N3";
 
 const DESCRIPTION =
   "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, rolling papers, and trending variety goods. Register for wholesale pricing — no minimum order, ships across Canada & the USA.";
@@ -102,6 +103,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}');
+            gtag('config', '${GOOGLE_ADS_TAG_ID}');
           `}
         </Script>
       </body>
