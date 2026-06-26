@@ -9,10 +9,11 @@ import {
   sendEmail, emailHtml,
   registrationEmail, orderReceivedEmail, adminNewOrderEmail,
   paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
+  adminNewMessageEmail,
 } from "@/lib/email";
 import { createOrderCheckoutSession } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
-import { requireAdmin, requireProfile } from "@/lib/auth";
+import { getCurrentProfile, requireAdmin, requireProfile } from "@/lib/auth";
 import { siteUrl } from "@/lib/env";
 
 function slugify(value: string) {
@@ -1109,6 +1110,22 @@ export async function deleteCustomerPriceAction(priceId: string, customerId: str
 
 // ── CS Messaging ───────────────────────────────────────────────────────────────
 
+// Fire-and-forget email to the store admin when a customer sends a message.
+// Content is intentionally omitted — the alert just says who messaged + a link.
+async function notifyAdminOfMessage(businessName: string, profileId: string) {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  if (!adminEmail) return;
+  try {
+    await sendEmail({
+      to: adminEmail,
+      subject: `New customer message — ${businessName}`,
+      html: adminNewMessageEmail(businessName, profileId, siteUrl()),
+    });
+  } catch (err) {
+    console.error("notifyAdminOfMessage failed:", errorMessage(err));
+  }
+}
+
 export async function sendCustomerMessageAction(formData: FormData) {
   const profile = await requireProfile();
   const content = String(formData.get("content") || "").trim();
@@ -1122,7 +1139,17 @@ export async function sendCustomerMessageAction(formData: FormData) {
     is_from_admin: false,
     is_read: false,
   });
+  await notifyAdminOfMessage(profile.business_name || profile.contact_name, profile.id);
   revalidatePath("/account/messages");
+}
+
+// Called by the floating chat widget, which inserts the message client-side.
+// Derives the profile from the session so the caller can't spoof another account.
+export async function notifyAdminNewMessageAction() {
+  const profile = await getCurrentProfile();
+  if (!profile) return { ok: false };
+  await notifyAdminOfMessage(profile.business_name || profile.contact_name, profile.id);
+  return { ok: true };
 }
 
 export async function adminReplyMessageAction(formData: FormData) {

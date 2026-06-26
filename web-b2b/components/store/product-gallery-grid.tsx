@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, ShoppingCart, Package, X } from "lucide-react";
 import { formatMoney } from "@/lib/money";
+import { formatUnitLabel } from "@/lib/units";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
@@ -53,7 +54,10 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
                   <div className="min-w-0">
                     <p className="truncate text-[11px] font-bold text-gray-700">{item.name}</p>
                     <p className="text-[10px] font-semibold text-gray-400">
-                      {item.price ? formatMoney(item.price) : "TBD"} × {item.quantity}
+                      {item.price ? `${formatMoney(item.price)}/ea` : "TBD"}
+                    </p>
+                    <p className="text-[10px] font-semibold text-gray-500">
+                      {formatUnitLabel(item.quantity, item.caseQty)}
                     </p>
                   </div>
                   <button
@@ -218,6 +222,10 @@ export function ProductGalleryGrid({ products, profile }: Props) {
 
                 {/* Info */}
                 <div className="flex flex-1 flex-col gap-2 p-3">
+                  {/* Item code — bold red so similar products (chargers, squishies) are easy to tell apart */}
+                  {product.sku && (
+                    <p className="text-sm font-black tracking-wide text-red-600">{product.sku}</p>
+                  )}
                   <Link href={`/products/${product.slug}`}>
                     <p className="line-clamp-2 text-sm font-bold leading-snug text-gray-900 hover:text-[#166534] transition-colors">
                       {product.name}
@@ -254,17 +262,21 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   {isApproved && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
                       <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-500">
-                        Qty{product.case_qty ? ` · 1cs = ${product.case_qty}ea` : ""}
+                        {product.case_qty ? `Displays · 1 = ${product.case_qty} ea` : "Qty (units)"}
                       </p>
                       <div className="flex items-center gap-1.5">
                         <input
-                          aria-label={`Quantity for ${product.name}`}
+                          aria-label={product.case_qty ? `Displays for ${product.name}` : `Quantity for ${product.name}`}
                           type="number"
                           inputMode="numeric"
                           min={0}
-                          value={qty || ""}
+                          value={product.case_qty ? (qty ? qty / product.case_qty : "") : (qty || "")}
                           placeholder="0"
-                          onChange={(e) => setQty(product, e.target.value)}
+                          onChange={(e) =>
+                            product.case_qty
+                              ? setQty(product, String((parseInt(e.target.value || "0") || 0) * product.case_qty))
+                              : setQty(product, e.target.value)
+                          }
                           className="quantity-input h-9 w-14 shrink-0 rounded-lg border px-1 text-center text-sm font-bold outline-none transition-colors"
                           style={
                             selected
@@ -278,17 +290,17 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                               onClick={() => setQty(product, String(Math.max(0, qty - product.case_qty!)))}
                               className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:border-red-300 hover:text-red-600 transition-colors"
                               style={{ borderColor: "var(--line)" }}
-                              title={`Remove 1 case (${product.case_qty})`}
+                              title={`Remove 1 display (${product.case_qty} ea)`}
                             >
-                              −1cs
+                              −1
                             </button>
                             <button
                               onClick={() => addCase(product)}
                               className="h-9 flex-1 rounded-lg border text-xs font-bold text-gray-500 hover:border-green-400 hover:text-green-700 transition-colors"
                               style={{ borderColor: "var(--line)" }}
-                              title={`Add 1 case (${product.case_qty})`}
+                              title={`Add 1 display (${product.case_qty} ea)`}
                             >
-                              +1cs
+                              +1
                             </button>
                           </>
                         ) : (
@@ -306,6 +318,11 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                           </>
                         )}
                       </div>
+                      {product.case_qty && qty > 0 && (
+                        <p className="mt-1.5 text-[11px] font-bold text-gray-500">
+                          = {qty} units
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>

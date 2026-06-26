@@ -125,6 +125,14 @@ export function adminNewLeadEmail(lead: {
   `);
 }
 
+export function adminNewMessageEmail(businessName: string, profileId: string, siteOrigin: string) {
+  return emailHtml("New customer message", `
+    <p><strong>${businessName}</strong> just sent a new message in the support chat.</p>
+    <p style="font-size:13px;color:#6B7280;">Open the admin panel to read and reply.</p>
+    ${btn("View message →", `${siteOrigin}/admin/messages/${profileId}`)}
+  `);
+}
+
 export function paymentLinkEmail(businessName: string, orderId: string, paymentLink: string, siteOrigin: string) {
   return emailHtml("Your order is approved — pay now", `
     <p>Hi ${businessName},</p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Truck, Store, AlertCircle, ShoppingCart, Plus, Minus, MapPin, Pencil, Trash2 } from "lucide-react";
 import { formatMoney } from "@/lib/money";
+import { formatUnitLabel } from "@/lib/units";
 import { createOrderRequestAction } from "@/app/actions";
 import { useCart } from "@/components/store/cart-provider";
 
@@ -519,12 +520,13 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-slate-900 line-clamp-1">{item.name}</p>
                 {item.sku && <p className="text-xs font-semibold text-slate-500">{item.sku}</p>}
+                <p className="text-xs font-semibold text-slate-400">{formatUnitLabel(item.quantity, item.caseQty)}</p>
                 <div className="mt-1.5 flex items-center gap-1.5">
                   <div className="flex h-7 items-center overflow-hidden rounded-md border border-slate-200">
                     <button
                       type="button"
                       aria-label="Decrease quantity"
-                      onClick={() => cart.setQuantity(item.productId, Math.max(0, item.quantity - 1))}
+                      onClick={() => cart.setQuantity(item.productId, Math.max(0, item.quantity - (item.caseQty || 1)))}
                       className="flex h-full w-7 items-center justify-center text-slate-500 transition-colors hover:bg-slate-50"
                     >
                       <Minus size={12} />
@@ -544,7 +546,7 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
                     <button
                       type="button"
                       aria-label="Increase quantity"
-                      onClick={() => cart.setQuantity(item.productId, Math.min(9999, item.quantity + 1))}
+                      onClick={() => cart.setQuantity(item.productId, Math.min(9999, item.quantity + (item.caseQty || 1)))}
                       className="flex h-full w-7 items-center justify-center text-slate-500 transition-colors hover:bg-slate-50"
                     >
                       <Plus size={12} />

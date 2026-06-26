@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { X, ShoppingCart, Package, Trash2, ArrowRight } from "lucide-react";
 import { formatMoney } from "@/lib/money";
+import { formatUnitLabel } from "@/lib/units";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 
@@ -98,6 +99,9 @@ export function CartDrawer({ open, onClose }: Props) {
                     {item.sku && <p className="text-xs font-mono text-slate-400">{item.sku}</p>}
                     <p className="mt-0.5 text-xs font-semibold text-slate-500">
                       {item.price ? formatMoney(item.price) : "TBD"} / ea
+                    </p>
+                    <p className="text-xs font-semibold text-slate-400">
+                      {formatUnitLabel(item.quantity, item.caseQty)}
                     </p>
                   </div>
 

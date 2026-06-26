@@ -6,6 +6,7 @@ import { MessageCircle, X, Send, ImagePlus, Loader2, ChevronDown } from "lucide-
 import { usePathname } from "next/navigation";
 import { useCartOpen } from "@/components/store/cart-open-context";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import { notifyAdminNewMessageAction } from "@/app/actions";
 
 type Message = {
   id: string;
@@ -100,7 +101,11 @@ export function ChatWidget() {
       .insert({ profile_id: profileId, content: text.trim() || "", image_url: imageUrl || null, is_from_admin: false, is_read: false })
       .select("id,content,image_url,is_from_admin,created_at")
       .single();
-    if (data) setMessages((prev) => [...prev, data as Message]);
+    if (data) {
+      setMessages((prev) => [...prev, data as Message]);
+      // Fire-and-forget: alert the store admin by email (no content sent).
+      notifyAdminNewMessageAction().catch(() => {});
+    }
     setText("");
     removeImage();
     setSending(false);
