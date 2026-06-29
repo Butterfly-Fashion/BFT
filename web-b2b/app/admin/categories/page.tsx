@@ -90,7 +90,7 @@ export default async function AdminCategoriesPage() {
                   className="field"
                   name="name"
                   required
-                  placeholder="e.g. Rolling Papers"
+                  placeholder="e.g. Winter Gloves"
                   autoComplete="off"
                 />
               </label>

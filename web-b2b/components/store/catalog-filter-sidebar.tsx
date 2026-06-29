@@ -11,7 +11,6 @@ const FALLBACK: CategoryTree[] = [
   { id: "2", name: "Winter Hats", slug: "winter-hats", sort_order: 2, is_active: true, parent_id: null, children: [] },
   { id: "3", name: "Winter Masks", slug: "winter-masks", sort_order: 3, is_active: true, parent_id: null, children: [] },
   { id: "4", name: "Fidget Toy", slug: "fidget-toy", sort_order: 4, is_active: true, parent_id: null, children: [] },
-  { id: "5", name: "Rolling Papers", slug: "rolling-papers", sort_order: 5, is_active: true, parent_id: null, children: [] },
 ];
 
 export function CatalogFilterSidebar({ productCount, categories }: { productCount: number; categories?: Category[] }) {
