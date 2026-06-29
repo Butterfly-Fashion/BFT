@@ -311,7 +311,7 @@ export async function forgotPasswordAction(_prevState: unknown, formData: FormDa
   if (!email) return { error: "Please enter your email address." };
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${siteUrl()}/reset-password`,
+    redirectTo: `${siteUrl()}/auth/callback?next=/reset-password`,
   });
   if (error) {
     // "For security purposes, you can only request this once every 60 seconds"
