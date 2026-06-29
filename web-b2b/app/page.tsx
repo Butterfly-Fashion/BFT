@@ -86,7 +86,7 @@ export default async function HomePage() {
                 <span style={{ color: "var(--primary)" }}>for Canadian retailers.</span>
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-gray-500">
-                Bulk winter accessories, novelty &amp; fidget toys, rolling papers, and trending variety goods.
+                Bulk winter accessories, novelty &amp; fidget toys, and trending variety goods.
                 Direct from our Toronto warehouse to retailers, convenience stores, and resellers across Canada and the USA.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">

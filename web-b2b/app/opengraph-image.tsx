@@ -28,7 +28,7 @@ export default function OpengraphImage() {
             B2B Wholesale, Toronto
           </div>
           <div style={{ fontSize: 36, fontWeight: 500, opacity: 0.9, maxWidth: 900 }}>
-            Winter accessories, novelty &amp; fidget toys, smoke-shop supplies, and trending variety goods. No minimum order — ships across Canada &amp; the USA.
+            Winter accessories, novelty &amp; fidget toys, and trending variety goods. No minimum order — ships across Canada &amp; the USA.
           </div>
         </div>
         <div style={{ fontSize: 30, fontWeight: 700, opacity: 0.85 }}>

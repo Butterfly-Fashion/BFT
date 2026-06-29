@@ -1,13 +1,12 @@
 # Butterfly Fashion Trading
 
 > Canadian B2B wholesale supplier based in Toronto (North York, Ontario). We supply
-> variety, novelty, seasonal, and smoke-shop goods in bulk to retailers across Canada
+> variety, novelty, and seasonal goods in bulk to retailers across Canada
 > and the United States. In business since 1996.
 
 ## What we sell (wholesale, by the case)
 - Winter accessories: gloves, toques/hats, balaclavas, masks
 - Fidget & novelty toys: squishies, fidgets, trending impulse items
-- Smoke shop: rolling papers and accessories
 
 ## Who we serve
 Dollar & variety stores, toy & gift shops, convenience stores, arcades, and event

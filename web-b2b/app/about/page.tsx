@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Leaf, Snowflake, Gamepad2, Phone } from "lucide-react";
+import { MapPin, Truck, Package2, ShieldCheck, FileText, Tag, Snowflake, Gamepad2, Phone } from "lucide-react";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { BackToTop } from "@/components/store/back-to-top";
@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Butterfly Fashion Trading — over 30 years supplying Canadian retailers from our Toronto warehouse with wholesale variety, novelty, seasonal, and smoke-shop goods.",
+    "Butterfly Fashion Trading — over 30 years supplying Canadian retailers from our Toronto warehouse with wholesale variety, novelty, and seasonal goods.",
   alternates: { canonical: "/about" },
 };
 
@@ -34,13 +34,6 @@ const CATEGORY_GROUPS = [
     desc: "Squishies, fidgets and trending novelty toys — fast-moving impulse buys for variety, gift and convenience stores.",
     categories: ["Fidget Toy"],
     queryCategories: ["Fidget Toy"],
-  },
-  {
-    icon: Leaf,
-    title: "Smoke Shop",
-    desc: "Rolling papers and smoke-shop accessories at competitive wholesale pricing for convenience and specialty retailers.",
-    categories: ["Rolling Papers"],
-    queryCategories: ["Rolling Papers"],
   },
 ];
 
@@ -359,8 +352,8 @@ export default async function AboutPage() {
               <p className="section-label mb-6" style={{ color: "var(--primary)" }}>From the founder</p>
               <blockquote className="text-lg font-medium leading-8 text-gray-700 sm:text-xl">
                 &ldquo;We&apos;ve spent 30 years supplying retailers across Canada with quality products.
-                Whether it&apos;s seasonal accessories, rolling papers for convenience stores,
-                or novelty items before the season — we know what retailers need and how fast they need it.
+                Whether it&apos;s seasonal accessories, novelty and fidget toys,
+                or trending variety goods before the season — we know what retailers need and how fast they need it.
                 Every product we carry is something we&apos;d personally stand behind.&rdquo;
               </blockquote>
               <div className="mt-8 flex items-center gap-4">

@@ -18,7 +18,7 @@ const GOOGLE_ADS_TAG_ID = "G-WPC4HFZ8N3";
 const GOOGLE_ADS_CONVERSION_ID = "AW-18182505943";
 
 const DESCRIPTION =
-  "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, rolling papers, and trending variety goods. Register for wholesale pricing — no minimum order, ships across Canada & the USA.";
+  "Toronto B2B wholesale: winter accessories (gloves, hats, masks), novelty & fidget toys, and trending variety goods. Register for wholesale pricing — no minimum order, ships across Canada & the USA.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),

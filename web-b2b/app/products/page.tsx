@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Wholesale Catalog",
   description:
-    "Browse the Butterfly Fashion Trading wholesale catalog — winter accessories, novelty & fidget toys, rolling papers, and trending variety goods with Item Codes, no minimum order, and B2B pricing for approved accounts. Ships from Toronto across Canada & the USA.",
+    "Browse the Butterfly Fashion Trading wholesale catalog — winter accessories, novelty & fidget toys, and trending variety goods with Item Codes, no minimum order, and B2B pricing for approved accounts. Ships from Toronto across Canada & the USA.",
   alternates: { canonical: "/products" },
 };
 
