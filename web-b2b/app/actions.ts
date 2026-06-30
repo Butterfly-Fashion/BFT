@@ -627,21 +627,52 @@ export async function updateOrderReviewAction(formData: FormData) {
   revalidatePath("/admin/orders");
 }
 
+// Upload a QuickBooks invoice PDF to public storage and return its URL. The bucket is
+// created on first use so no manual Supabase setup is needed.
+async function saveInvoicePdf(file: File, orderId: string) {
+  if (file.type !== "application/pdf") throw new Error("Please upload a PDF file.");
+  if (file.size > 10 * 1024 * 1024) throw new Error("PDF must be under 10 MB.");
+  const admin = createSupabaseAdminClient();
+  await admin.storage.createBucket("invoices", { public: true }).catch(() => {}); // ignore "already exists"
+  const safeName = `${orderId}-${Date.now()}.pdf`;
+  const bytes = Buffer.from(await file.arrayBuffer());
+  const { error } = await admin.storage.from("invoices").upload(safeName, bytes, {
+    contentType: "application/pdf",
+    upsert: false,
+  });
+  if (error) throw new Error(`Invoice upload failed: ${error.message}`);
+  const { data: { publicUrl } } = admin.storage.from("invoices").getPublicUrl(safeName);
+  return publicUrl;
+}
+
 // Record (or clear) a QuickBooks invoice reference for an order. Stored in the existing
-// invoices table (one row per order) so admins can keep the QB invoice number + PDF link
-// attached to the order. This does not call QuickBooks — it's a manual reference.
+// invoices table (one row per order) so admins can keep the QB invoice number + PDF
+// attached to the order. The uploaded PDF (or pasted link) is shown to the customer.
+// This does not call QuickBooks — it's a manual reference.
 export async function saveInvoiceRefAction(formData: FormData) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const orderId = String(formData.get("order_id") || "");
-  const invoiceNumber = String(formData.get("invoice_number") || "").trim();
-  const pdfUrl = String(formData.get("pdf_url") || "").trim() || null;
   if (!orderId) return;
-  if (!invoiceNumber) {
+  const invoiceNumber = String(formData.get("invoice_number") || "").trim();
+  let pdfUrl = String(formData.get("pdf_url") || "").trim() || null;
+
+  const pdfFile = formData.get("pdf_file");
+  if (pdfFile instanceof File && pdfFile.size > 0) {
+    try {
+      pdfUrl = await saveInvoicePdf(pdfFile, orderId);
+    } catch (err) {
+      console.error("[saveInvoiceRefAction] pdf upload failed:", errorMessage(err));
+      redirect(`/admin/orders/${orderId}?invoice_error=1`);
+    }
+  }
+
+  if (!invoiceNumber && !pdfUrl) {
     await admin.from("invoices").delete().eq("order_id", orderId);
   } else {
     await admin.from("invoices").upsert(
-      { order_id: orderId, invoice_number: invoiceNumber, pdf_url: pdfUrl },
+      // invoice_number is required + unique; fall back to the order id when only a PDF is given.
+      { order_id: orderId, invoice_number: invoiceNumber || `ORD-${orderId.slice(0, 8).toUpperCase()}`, pdf_url: pdfUrl },
       { onConflict: "order_id" }
     );
   }

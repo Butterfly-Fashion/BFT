@@ -12,9 +12,16 @@ import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function AdminOrderDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ invoice_error?: string }>;
+}) {
   await requireAdmin();
   const { id } = await params;
+  const { invoice_error } = await searchParams;
   const admin = createSupabaseAdminClient();
   const { data: order } = await admin.from("orders").select("*, profiles(*)").eq("id", id).single();
   const { data: items } = await admin.from("order_items").select("*").eq("order_id", id);
@@ -235,25 +242,38 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         <section className="card mt-5 p-5">
           <h2 className="text-base font-bold text-slate-900">QuickBooks invoice</h2>
           <p className="mt-0.5 text-xs text-slate-500">
-            Record the invoice you created for this order in QuickBooks so it stays linked here. The PDF / link is shown to the customer on their order page. Leave the number blank and save to remove it.
+            Download the invoice PDF from QuickBooks and upload it here. It is shown to the customer on their order page. Leave everything blank and save to remove it.
           </p>
-          <form action={saveInvoiceRefAction} className="mt-3 grid gap-3 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
+          {invoice_error && (
+            <p className="mt-2 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700">
+              The PDF couldn&apos;t be uploaded. Make sure it&apos;s a PDF under 10 MB and try again.
+            </p>
+          )}
+          <form action={saveInvoiceRefAction} encType="multipart/form-data" className="mt-3 grid gap-3">
             <input name="order_id" type="hidden" value={order.id} />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="label">
+                Invoice #
+                <input className="field" name="invoice_number" defaultValue={invoice?.invoice_number || ""} placeholder="e.g. 1042" />
+              </label>
+              <label className="label">
+                Upload QuickBooks PDF
+                <input className="field" type="file" name="pdf_file" accept="application/pdf" />
+              </label>
+            </div>
             <label className="label">
-              Invoice #
-              <input className="field" name="invoice_number" defaultValue={invoice?.invoice_number || ""} placeholder="e.g. 1042" />
-            </label>
-            <label className="label">
-              PDF / link (optional)
+              Or paste a link instead (optional)
               <input className="field" name="pdf_url" defaultValue={invoice?.pdf_url || ""} placeholder="https://…" />
             </label>
-            <button className="btn-primary text-sm" type="submit">Save invoice</button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button className="btn-primary text-sm" type="submit">Save invoice</button>
+              {invoice?.pdf_url && (
+                <a href={invoice.pdf_url} target="_blank" rel="noreferrer" className="text-xs font-semibold" style={{ color: "var(--primary)" }}>
+                  Open saved invoice ({invoice.invoice_number}) →
+                </a>
+              )}
+            </div>
           </form>
-          {invoice?.pdf_url && (
-            <a href={invoice.pdf_url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs font-semibold" style={{ color: "var(--primary)" }}>
-              Open saved invoice ({invoice.invoice_number}) →
-            </a>
-          )}
         </section>
       </main>
     </>
