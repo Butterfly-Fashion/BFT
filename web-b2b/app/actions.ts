@@ -343,7 +343,13 @@ export async function createOrderRequestAction(input: {
   customerNotes?: string;
 }) {
   const profile = await requireProfile();
-  const supabase = await createSupabaseServerClient();
+  // Use the service-role client (like every other write in this file) and enforce auth in
+  // app code via requireProfile above. The order insert previously ran under the user-session
+  // client and depended on RLS + a live auth.uid(); during a mid-request token refresh that uid
+  // could read as null, making the insert fail with a row-level-security error that surfaced to
+  // signed-in customers as "you do not have permission". customer_id is always the authenticated
+  // profile.id and prices are computed server-side, so a user cannot order on another account.
+  const supabase = createSupabaseAdminClient();
 
   if (!input.items.length) return { error: "Your request cart is empty. Add at least one product before submitting." };
 
