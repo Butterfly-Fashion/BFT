@@ -41,7 +41,7 @@ const ROLE_LOCALPARTS = ["info", "sales", "orders", "admin", "office", "contact"
 const SEGMENT_RULES = [
   ["soccer", /soccer|world ?cup|fifa|jersey|fan ?gear|sporting|\bsports?\b/i],
   ["squishy", /toy|squish|fidget|hobby|arcade|playful|\bgames?\b|\bkids?\b|\bplay\b/i],
-  ["counter", /convenience|grocery|supermarket|market|\bmart\b|mini.?mart|food|pharmac(y|ie)|\bdrug|smoke|tobacco|vape|variety/i],
+  ["counter", /convenience|grocery|supermarket|market|\bmart\b|mini.?mart|food|pharmac(y|ie)|\bdrug|variety/i],
   ["novelty", /dollar|\bbuck|loonie|toonie|discount|bargain|\bdepot\b|surplus|liquidation|\bdeals?\b|99 ?cents?|\bcents?\b/i],
   ["gift", /gift|boutique|fashion|accessor|jewel|beaut|salon|\bspa\b|craft|decor|clothing|apparel|\bwear\b|florist|flower/i],
 ];

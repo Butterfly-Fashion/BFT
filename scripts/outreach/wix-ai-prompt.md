@@ -14,7 +14,7 @@ How to use:
 
 Create a B2B wholesale email campaign announcing our new online wholesale catalog.
 
-BUSINESS: Butterfly Fashion Trading — a wholesale supplier in Toronto (North York, ON), serving Canadian retailers since 1996. We sell variety, novelty, seasonal and impulse goods in bulk: fidget/squishy & novelty toys, winter accessories (gloves, hats, masks), gift & fashion accessories, smoke-shop supplies, and World Cup 2026 fan gear.
+BUSINESS: Butterfly Fashion Trading — a wholesale supplier in Toronto (North York, ON), serving Canadian retailers since 1996. We sell variety, novelty, seasonal and impulse goods in bulk: fidget/squishy & novelty toys, winter accessories (gloves, hats, masks), gift & fashion accessories, and World Cup 2026 fan gear.
 
 WEBSITE TO PROMOTE: mask12.com — our full wholesale catalog, online for the first time.
 
@@ -55,6 +55,6 @@ Also give me 3 alternative subject lines to choose from.
 - wix-announce  → (delete the product-focus line entirely; keep it general)
 - wix-gift      → New for your shelves: novelty gifts, fashion accessories, and seasonal décor — by the case.
 - wix-novelty   → Built for dollar & variety stores: impulse novelties, fidgets, and seasonal goods at case pricing.
-- wix-counter   → Easy counter impulse buys: fidget & novelty toys, winter accessories, and smoke-shop supplies.
+- wix-counter   → Easy counter impulse buys: fidget & novelty toys, winter accessories, and gift accessories.
 - wix-squishy   → Restock the toy wall: squishies, fidgets, and trending impulse toys, shipped from Toronto.
 - wix-soccer    → The 2026 World Cup is coming to Canada — stock Canada jerseys, country caps, and car flags now.

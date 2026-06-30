@@ -44,6 +44,6 @@ Reply "unsubscribe" and we'll remove you.
 - announce: (none)
 - gift:     New for your shelves: novelty gifts, fashion accessories, and seasonal décor — by the case.
 - novelty:  Built for dollar & variety stores: impulse novelties, fidgets, and seasonal goods at case pricing.
-- counter:  Easy counter impulse buys: fidget & novelty toys, winter accessories, and smoke-shop supplies.
+- counter:  Easy counter impulse buys: fidget & novelty toys, winter accessories, and gift accessories.
 - squishy:  Restock the toy wall: squishies, fidgets, and trending impulse toys, shipped from Toronto.
 - soccer:   The 2026 World Cup is coming to Canada — stock Canada jerseys, country caps, and car flags now.
