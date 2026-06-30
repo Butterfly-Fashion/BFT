@@ -14,6 +14,7 @@ import {
 import { createOrderCheckoutSession } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentProfile, requireAdmin, requireProfile } from "@/lib/auth";
+import { isOutOfStock } from "@/lib/availability";
 import { siteUrl } from "@/lib/env";
 
 function slugify(value: string) {
@@ -367,6 +368,16 @@ export async function createOrderRequestAction(input: {
   const productMap = new Map(products.map((product) => [product.id, product]));
   if (input.items.some((item) => !productMap.has(item.productId))) {
     return { error: "A product in your cart is no longer available. Please remove it and try again." };
+  }
+
+  // Reject out-of-stock items at submit time — the cart may have been filled before the
+  // item sold out, so the client-side block alone isn't enough.
+  const soldOutNames = input.items
+    .map((item) => productMap.get(item.productId))
+    .filter((product) => product && isOutOfStock(product))
+    .map((product) => product!.name);
+  if (soldOutNames.length) {
+    return { error: `These items are sold out and can't be ordered: ${soldOutNames.join(", ")}. Please remove them and try again.` };
   }
   const itemSnapshots = input.items.map((item) => {
     const product = productMap.get(item.productId);

@@ -57,15 +57,17 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               <h1 className="mt-1 text-2xl font-black text-slate-900">
                 #{order.id.slice(0, 8).toUpperCase()}
               </h1>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 <StatusBadge status={order.status} />
                 <StatusBadge status={order.payment_status} type="payment" />
+                {invoice?.invoice_number && (
+                  <span className="badge border-slate-300 bg-slate-50 font-mono text-slate-700">
+                    QB #{invoice.invoice_number}
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link href={`/admin/orders/${order.id}/invoice`} target="_blank" className="btn-secondary text-sm">
-                Print invoice
-              </Link>
               <form action={async () => { "use server"; await approveOrderAction(order.id); }}>
                 <button
                   className="btn-primary text-sm"
@@ -233,7 +235,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         <section className="card mt-5 p-5">
           <h2 className="text-base font-bold text-slate-900">QuickBooks invoice</h2>
           <p className="mt-0.5 text-xs text-slate-500">
-            Record the invoice you created for this order in QuickBooks so it stays linked here. Leave the number blank and save to remove it.
+            Record the invoice you created for this order in QuickBooks so it stays linked here. The PDF / link is shown to the customer on their order page. Leave the number blank and save to remove it.
           </p>
           <form action={saveInvoiceRefAction} className="mt-3 grid gap-3 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
             <input name="order_id" type="hidden" value={order.id} />

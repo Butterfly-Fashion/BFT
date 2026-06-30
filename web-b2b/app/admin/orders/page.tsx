@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminOrdersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ status?: string; q?: string }>;
 }) {
   const sp = await searchParams;
   const admin = createSupabaseAdminClient();
@@ -19,6 +19,10 @@ export default async function AdminOrdersPage({
     .eq("channel", "b2b")
     .order("created_at", { ascending: false });
   const allOrders = orders || [];
+
+  // QuickBooks invoice numbers, keyed by order, for display and search.
+  const { data: invoiceRows } = await admin.from("invoices").select("order_id, invoice_number");
+  const invoiceByOrderId = new Map((invoiceRows || []).map((r) => [r.order_id, r.invoice_number as string]));
 
   // Status tabs with live counts. Filtering happens in-memory off the full B2B list.
   const TABS = [
@@ -37,7 +41,18 @@ export default async function AdminOrdersPage({
   const tally = new Map<string, number>();
   for (const o of allOrders) tally.set(o.status, (tally.get(o.status) ?? 0) + 1);
   const activeStatus = sp.status && TABS.includes(sp.status) ? sp.status : "";
-  const orderList = activeStatus ? allOrders.filter((o) => o.status === activeStatus) : allOrders;
+  const query = (sp.q || "").trim().toLowerCase();
+  const orderList = allOrders.filter((o) => {
+    if (activeStatus && o.status !== activeStatus) return false;
+    if (!query) return true;
+    const invoiceNumber = (invoiceByOrderId.get(o.id) || "").toLowerCase();
+    return (
+      invoiceNumber.includes(query) ||
+      o.id.toLowerCase().includes(query) ||
+      (o.profiles?.business_name || "").toLowerCase().includes(query) ||
+      (o.profiles?.email || "").toLowerCase().includes(query)
+    );
+  });
 
   return (
     <>
@@ -82,12 +97,30 @@ export default async function AdminOrdersPage({
           })}
         </div>
 
+        <form method="get" className="mb-4 flex flex-wrap gap-2">
+          {activeStatus && <input type="hidden" name="status" value={activeStatus} />}
+          <input
+            type="search"
+            name="q"
+            defaultValue={sp.q || ""}
+            placeholder="Search by QuickBooks invoice #, order #, or customer…"
+            className="field max-w-md"
+          />
+          <button type="submit" className="btn-secondary text-sm">Search</button>
+          {query && (
+            <Link href={activeStatus ? `/admin/orders?status=${encodeURIComponent(activeStatus)}` : "/admin/orders"} className="btn-secondary text-sm">
+              Clear
+            </Link>
+          )}
+        </form>
+
         <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
           <div className="overflow-auto">
             <table className="w-full min-w-230 text-sm">
               <thead>
                 <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
                   <th className="px-5 py-3">Order</th>
+                  <th className="px-5 py-3">QB Inv #</th>
                   <th className="px-5 py-3">Customer</th>
                   <th className="px-5 py-3">Order status</th>
                   <th className="px-5 py-3">Payment</th>
@@ -105,6 +138,9 @@ export default async function AdminOrdersPage({
                   >
                     <td className="px-5 py-3 font-mono text-xs font-black text-slate-700">
                       #{order.id.slice(0, 8).toUpperCase()}
+                    </td>
+                    <td className="px-5 py-3 font-mono text-xs text-slate-600">
+                      {invoiceByOrderId.get(order.id) || <span className="text-slate-300">—</span>}
                     </td>
                     <td className="px-5 py-3">
                       <p className="font-bold text-slate-900">{order.profiles?.business_name}</p>

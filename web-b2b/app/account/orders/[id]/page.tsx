@@ -33,6 +33,11 @@ export default async function AccountOrderDetailPage({
   const isPaid = order.status === "Paid" || order.payment_status === "Paid";
   const isPaymentReady = !!order.stripe_payment_link && !isPaid;
 
+  // QuickBooks invoice PDF the admin saved for this order. Once recorded (after the order
+  // is confirmed/reviewed), it's the real invoice we show the customer.
+  const { data: invoice } = await supabase.from("invoices").select("invoice_number, pdf_url").eq("order_id", id).maybeSingle();
+  const invoicePdfUrl = invoice?.pdf_url || null;
+
   const reorderItems = (items || []).map((item) => ({
     productId: item.product_id,
     name: item.product_name_snapshot,
@@ -108,14 +113,23 @@ export default async function AccountOrderDetailPage({
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status={order.status} />
               <StatusBadge status={order.payment_status} type="payment" />
-              {isPaid && (
+              {invoicePdfUrl ? (
+                <a
+                  href={invoicePdfUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
+                >
+                  <FileText size={12} /> Invoice (PDF){invoice?.invoice_number ? ` #${invoice.invoice_number}` : ""}
+                </a>
+              ) : isPaid ? (
                 <Link
                   href={`/account/orders/${id}/invoice`}
                   className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
                 >
                   <FileText size={12} /> Invoice
                 </Link>
-              )}
+              ) : null}
               <ReorderButton items={reorderItems} />
             </div>
           </div>
