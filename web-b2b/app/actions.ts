@@ -993,7 +993,10 @@ export async function updatePreorderCampaignStatusAction(campaignId: string, sta
 
 export async function submitPreorderCommitmentAction(formData: FormData) {
   const profile = await requireProfile();
-  const supabase = await createSupabaseServerClient();
+  // Service-role client (auth enforced by requireProfile). The commitment upsert keys on
+  // customer_id = profile.id, so it can't write to another account; using the user-session
+  // client here risked the same RLS denial as the order flow on a mid-request token refresh.
+  const supabase = createSupabaseAdminClient();
   const campaignId = String(formData.get("campaign_id") || "");
   const productId = String(formData.get("product_id") || "") || null;
   const cases = Math.max(1, Number(formData.get("cases") || 1));
@@ -1137,7 +1140,9 @@ export async function sendCustomerMessageAction(formData: FormData) {
   const content = String(formData.get("content") || "").trim();
   const imageUrl = String(formData.get("image_url") || "").trim() || null;
   if (!content && !imageUrl) return;
-  const supabase = await createSupabaseServerClient();
+  // Service-role client (auth enforced by requireProfile). profile_id is the authenticated
+  // profile.id, so a user can't post into another thread; avoids the RLS token-refresh race.
+  const supabase = createSupabaseAdminClient();
   await supabase.from("b2b_messages").insert({
     profile_id: profile.id,
     content: content || "",
