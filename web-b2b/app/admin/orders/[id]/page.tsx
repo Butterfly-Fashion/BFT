@@ -6,8 +6,8 @@ import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { CopyPaymentLink } from "@/components/admin/copy-payment-link";
 import { ShippingLabel } from "@/components/admin/shipping-label";
+import { OrderEditor } from "@/components/admin/order-editor";
 import { requireAdmin } from "@/lib/auth";
-import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -180,33 +180,6 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
                     <option>Card (in-person)</option>
                   </select>
                 </label>
-                <label className="label">
-                  Shipping ($)
-                  <input className="field" name="shipping_fee" defaultValue={order.shipping_fee} step="0.01" type="number" />
-                </label>
-                <label className="label">
-                  Discount ($)
-                  <input className="field" name="discount_amount" defaultValue={order.discount_amount} step="0.01" type="number" />
-                </label>
-                <label className="label">
-                  HST ($)
-                  <input className="field" name="tax_amount" defaultValue={order.tax_amount} step="0.01" type="number" />
-                </label>
-                <label className="label md:col-span-3">
-                  Final total override ($) — optional
-                  <input
-                    className="field"
-                    name="total_override"
-                    defaultValue={order.total_override ?? ""}
-                    step="0.01"
-                    min={0}
-                    type="number"
-                    placeholder={`Leave blank to auto-calculate (${formatMoney(order.total_amount)})`}
-                  />
-                  <span className="mt-1 text-xs text-slate-400">
-                    Set this to bill a custom negotiated total. When filled, it replaces the calculated total on the order and payment link.
-                  </span>
-                </label>
                 <label className="label md:col-span-3">
                   Shipping address
                   <input className="field" name="shipping_address" defaultValue={order.shipping_address || ""} placeholder="Full shipping address" />
@@ -219,74 +192,22 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             </section>
           </div>
 
-          {/* Line items */}
-          <section className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-            <div className="border-b border-slate-100 px-5 py-3">
-              <h2 className="text-base font-bold text-slate-900">Order items</h2>
-              <p className="mt-0.5 text-xs text-slate-500">Edit quantity and unit price per item. Totals are recalculated on save.</p>
-            </div>
-            <div className="overflow-auto">
-              <table className="w-full min-w-160 text-sm">
-                <thead>
-                  <tr className="border-b border-slate-100 text-left text-xs font-semibold text-slate-500">
-                    <th className="px-5 py-3">Product</th>
-                    <th className="px-5 py-3">Item Code</th>
-                    <th className="px-5 py-3">Qty</th>
-                    <th className="px-5 py-3">Unit price</th>
-                    <th className="px-5 py-3 text-right">Line total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(items || []).map((item) => (
-                    <tr key={item.id} className="border-b border-slate-100 last:border-b-0">
-                      <td className="px-5 py-3 font-semibold text-slate-900">{item.product_name_snapshot}</td>
-                      <td className="px-5 py-3 font-mono text-xs text-slate-500">{item.sku_snapshot}</td>
-                      <td className="px-5 py-3">
-                        <input
-                          className="field w-24 text-center"
-                          name={`quantity_${item.id}`}
-                          defaultValue={item.quantity}
-                          min={1}
-                          type="number"
-                        />
-                      </td>
-                      <td className="px-5 py-3">
-                        <input
-                          className="field w-28"
-                          name={`unit_price_${item.id}`}
-                          defaultValue={item.unit_price_snapshot}
-                          step="0.01"
-                          min={0}
-                          type="number"
-                        />
-                      </td>
-                      <td className="px-5 py-3 text-right font-black">{formatMoney(item.line_total)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* Totals */}
-          <section className="card ml-auto w-full max-w-sm p-5">
-            <h2 className="mb-3 text-base font-bold text-slate-900">Order total</h2>
-            <div className="grid gap-2 text-sm">
-              <div className="flex justify-between text-slate-600"><span>Subtotal</span><span>{formatMoney(order.subtotal)}</span></div>
-              <div className="flex justify-between text-slate-600"><span>Discount</span><span>−{formatMoney(order.discount_amount)}</span></div>
-              <div className="flex justify-between text-slate-600"><span>Shipping</span><span>{formatMoney(order.shipping_fee)}</span></div>
-              <div className="flex justify-between text-slate-600"><span>HST</span><span>{formatMoney(order.tax_amount)}</span></div>
-              <div className="flex justify-between border-t border-slate-200 pt-2 text-base font-black text-slate-900">
-                <span>Total</span>
-                <span>{formatMoney(order.total_amount)}</span>
-              </div>
-            </div>
-            <p className="mt-3 text-xs text-slate-400">
-              {order.total_override != null
-                ? "Total is set manually (override). Clear the override field to recalculate from items."
-                : "Total is recalculated from items when you save."}
-            </p>
-          </section>
+          {/* Line items + pricing + live totals */}
+          <OrderEditor
+            initialItems={(items || []).map((item) => ({
+              key: item.id,
+              product_id: item.product_id ?? null,
+              name: item.product_name_snapshot,
+              sku: item.sku_snapshot ?? null,
+              quantity: Number(item.quantity),
+              unit_price: Number(item.unit_price_snapshot),
+            }))}
+            initialShipping={Number(order.shipping_fee) || 0}
+            initialTax={Number(order.tax_amount) || 0}
+            initialDiscount={Number(order.discount_amount) || 0}
+            initialTotalOverride={order.total_override != null ? Number(order.total_override) : null}
+            paid={isPaid}
+          />
 
           <div className="sticky bottom-0 flex justify-end gap-3 border-t border-slate-200 bg-[#f6f6f3]/95 py-3 backdrop-blur">
             <Link className="btn-secondary" href="/admin/orders">Cancel</Link>

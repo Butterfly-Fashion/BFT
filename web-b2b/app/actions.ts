@@ -498,7 +498,6 @@ export async function updateOrderReviewAction(formData: FormData) {
   const admin = createSupabaseAdminClient();
   const orderId = String(formData.get("order_id"));
   const shipping = Number(formData.get("shipping_fee") || 0);
-  const discount = Number(formData.get("discount_amount") || 0);
   const tax = Number(formData.get("tax_amount") || 0);
   const adminNotes = String(formData.get("admin_notes") || "");
   const deliveryMethod = String(formData.get("delivery_method")) as "Pickup" | "Shipping";
@@ -509,20 +508,67 @@ export async function updateOrderReviewAction(formData: FormData) {
   const rawTotalOverride = String(formData.get("total_override") || "").trim();
   const totalOverride = rawTotalOverride === "" ? null : Number(rawTotalOverride);
 
-  const { data: items } = await admin.from("order_items").select("*").eq("order_id", orderId);
-  const updatedItems = (items || []).map((item) => {
-    const quantity = Math.max(1, Number(formData.get(`quantity_${item.id}`) || item.quantity));
-    const unitPrice = Number(formData.get(`unit_price_${item.id}`) || item.unit_price_snapshot);
-    return { ...item, quantity, unit_price_snapshot: unitPrice, line_total: Number((quantity * unitPrice).toFixed(2)) };
-  });
-  for (const item of updatedItems) {
-    await admin.from("order_items").update({
-      quantity: item.quantity,
-      unit_price_snapshot: item.unit_price_snapshot,
-      line_total: item.line_total,
-    }).eq("id", item.id);
+  // The admin editor posts the full desired line-item set as JSON (existing rows + any
+  // added via product search, minus any removed). We swap the order's items to match.
+  const hasItemsPayload = formData.get("items_json") !== null;
+  type EditItem = { product_id: string | null; name: string; sku: string | null; quantity: number; unit_price: number };
+  let editItems: EditItem[] = [];
+  try {
+    const parsed = JSON.parse(String(formData.get("items_json") || "[]"));
+    if (Array.isArray(parsed)) {
+      editItems = parsed
+        .map((it) => ({
+          product_id: it.product_id ? String(it.product_id) : null,
+          name: String(it.name || "").trim(),
+          sku: it.sku ? String(it.sku) : null,
+          quantity: Math.max(1, Math.floor(Number(it.quantity) || 1)),
+          unit_price: Math.max(0, Number(it.unit_price) || 0),
+        }))
+        .filter((it) => it.name);
+    }
+  } catch { editItems = []; }
+
+  let updatedItems: Array<{ product_id: string | null; quantity: number; line_total: number }> = [];
+
+  if (hasItemsPayload) {
+    const newRows = editItems.map((it) => ({
+      order_id: orderId,
+      product_id: it.product_id,
+      product_name_snapshot: it.name,
+      sku_snapshot: it.sku,
+      quantity: it.quantity,
+      unit_price_snapshot: it.unit_price,
+      line_total: Number((it.quantity * it.unit_price).toFixed(2)),
+    }));
+    // Insert the new set first, then delete the previous rows — so a failed insert
+    // never wipes the existing items.
+    const { data: existing } = await admin.from("order_items").select("id").eq("order_id", orderId);
+    let insertOk = true;
+    if (newRows.length) {
+      const { error: insErr } = await admin.from("order_items").insert(newRows);
+      insertOk = !insErr;
+    }
+    if (insertOk && existing?.length) {
+      await admin.from("order_items").delete().in("id", existing.map((r) => r.id));
+    }
+    updatedItems = newRows.map((r) => ({ product_id: r.product_id, quantity: r.quantity, line_total: r.line_total }));
+  } else {
+    // No items payload (legacy/no-JS): keep the stored items as-is.
+    const { data: items } = await admin.from("order_items").select("*").eq("order_id", orderId);
+    updatedItems = (items || []).map((item) => ({ product_id: item.product_id, quantity: item.quantity, line_total: Number(item.line_total) }));
   }
+
   const subtotal = updatedItems.reduce((sum, item) => sum + Number(item.line_total), 0);
+
+  // Discount: a percentage of subtotal (QuickBooks-style) takes precedence; otherwise a flat dollar amount.
+  const rawDiscountPct = String(formData.get("discount_percent") || "").trim();
+  const discountPct = rawDiscountPct === "" ? null : Number(rawDiscountPct);
+  const flatDiscount = Number(formData.get("discount_amount") || 0);
+  const discount =
+    discountPct != null && Number.isFinite(discountPct) && discountPct > 0
+      ? Number(((subtotal * discountPct) / 100).toFixed(2))
+      : flatDiscount;
+
   const computedTotal = subtotal - discount + shipping + tax;
   // A manual override (per-customer negotiated total) wins over the item-based calculation.
   const total = totalOverride != null && Number.isFinite(totalOverride) && totalOverride >= 0
@@ -568,6 +614,29 @@ export async function updateOrderReviewAction(formData: FormData) {
   }
   revalidatePath(`/admin/orders/${orderId}`);
   revalidatePath("/admin/orders");
+}
+
+// Product search for the admin order editor: add a product to an order by name or item code.
+export async function searchProductsAction(query: string) {
+  await requireAdmin();
+  const term = query.trim();
+  if (term.length < 2) return [];
+  const admin = createSupabaseAdminClient();
+  const pattern = `%${term.replace(/[%_]/g, "\\$&")}%`;
+  const { data } = await admin
+    .from("products")
+    .select("id, name, sku, unit_price, image_url")
+    .or(`name.ilike.${pattern},sku.ilike.${pattern}`)
+    .eq("is_hidden", false)
+    .order("name")
+    .limit(10);
+  return (data || []).map((p) => ({
+    id: p.id as string,
+    name: (p.name as string) || "",
+    sku: (p.sku as string) || "",
+    unit_price: p.unit_price != null ? Number(p.unit_price) : 0,
+    image_url: (p.image_url as string) || null,
+  }));
 }
 
 export async function approveOrderAction(orderId: string) {
