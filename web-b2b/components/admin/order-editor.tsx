@@ -12,6 +12,7 @@ export type EditorItem = {
   sku: string | null;
   quantity: number;
   unit_price: number;
+  image_url?: string | null;
 };
 
 type SearchResult = { id: string; name: string; sku: string; unit_price: number; image_url: string | null };
@@ -77,7 +78,7 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
       }
       return [
         ...current,
-        { key: crypto.randomUUID(), product_id: p.id, name: p.name, sku: p.sku || null, quantity: 1, unit_price: p.unit_price },
+        { key: crypto.randomUUID(), product_id: p.id, name: p.name, sku: p.sku || null, quantity: 1, unit_price: p.unit_price, image_url: p.image_url },
       ];
     });
     setQuery("");
@@ -196,11 +197,24 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
             <tbody>
               {items.map((item) => (
                 <tr key={item.key} className="border-b border-slate-100 last:border-b-0">
-                  <td className="px-5 py-3 font-semibold text-slate-900">{item.name}</td>
+                  <td className="px-5 py-3">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded border border-slate-200 bg-slate-50">
+                        {item.image_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img src={item.image_url} alt="" className="h-full w-full object-contain" />
+                        ) : (
+                          <span className="text-[10px] font-bold text-slate-300">N/A</span>
+                        )}
+                      </span>
+                      <span className="font-semibold text-slate-900">{item.name}</span>
+                    </div>
+                  </td>
                   <td className="px-5 py-3 font-mono text-xs text-slate-500">{item.sku}</td>
                   <td className="px-5 py-3">
                     <input
                       className="field w-20 text-center"
+                      aria-label={`Quantity for ${item.name}`}
                       value={item.quantity}
                       min={1}
                       type="number"
@@ -210,6 +224,7 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
                   <td className="px-5 py-3">
                     <input
                       className="field w-28"
+                      aria-label={`Unit price for ${item.name}`}
                       value={item.unit_price}
                       step="0.01"
                       min={0}

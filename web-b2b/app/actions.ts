@@ -616,6 +616,27 @@ export async function updateOrderReviewAction(formData: FormData) {
   revalidatePath("/admin/orders");
 }
 
+// Record (or clear) a QuickBooks invoice reference for an order. Stored in the existing
+// invoices table (one row per order) so admins can keep the QB invoice number + PDF link
+// attached to the order. This does not call QuickBooks — it's a manual reference.
+export async function saveInvoiceRefAction(formData: FormData) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const orderId = String(formData.get("order_id") || "");
+  const invoiceNumber = String(formData.get("invoice_number") || "").trim();
+  const pdfUrl = String(formData.get("pdf_url") || "").trim() || null;
+  if (!orderId) return;
+  if (!invoiceNumber) {
+    await admin.from("invoices").delete().eq("order_id", orderId);
+  } else {
+    await admin.from("invoices").upsert(
+      { order_id: orderId, invoice_number: invoiceNumber, pdf_url: pdfUrl },
+      { onConflict: "order_id" }
+    );
+  }
+  revalidatePath(`/admin/orders/${orderId}`);
+}
+
 // Product search for the admin order editor: add a product to an order by name or item code.
 export async function searchProductsAction(query: string) {
   await requireAdmin();

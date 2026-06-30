@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { approveOrderAction, createPaymentLinkAction, updateOrderReviewAction, cancelOrderAction } from "@/app/actions";
+import { approveOrderAction, createPaymentLinkAction, updateOrderReviewAction, cancelOrderAction, saveInvoiceRefAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -19,6 +19,16 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
   const { data: order } = await admin.from("orders").select("*, profiles(*)").eq("id", id).single();
   const { data: items } = await admin.from("order_items").select("*").eq("order_id", id);
   if (!order) return null;
+
+  // Look up current product images so the editor can show a thumbnail per line item.
+  const productIds = [...new Set((items || []).map((i) => i.product_id).filter(Boolean))] as string[];
+  const { data: prodImages } = productIds.length
+    ? await admin.from("products").select("id, image_url").in("id", productIds)
+    : { data: [] as { id: string; image_url: string | null }[] };
+  const imageByProductId = new Map((prodImages || []).map((p) => [p.id, p.image_url]));
+
+  // Existing QuickBooks invoice reference for this order, if recorded.
+  const { data: invoice } = await admin.from("invoices").select("invoice_number, pdf_url").eq("order_id", id).maybeSingle();
 
   const customer = Array.isArray(order.profiles) ? order.profiles[0] : order.profiles;
 
@@ -53,6 +63,9 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
+              <Link href={`/admin/orders/${order.id}/invoice`} target="_blank" className="btn-secondary text-sm">
+                Print invoice
+              </Link>
               <form action={async () => { "use server"; await approveOrderAction(order.id); }}>
                 <button
                   className="btn-primary text-sm"
@@ -201,6 +214,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               sku: item.sku_snapshot ?? null,
               quantity: Number(item.quantity),
               unit_price: Number(item.unit_price_snapshot),
+              image_url: item.product_id ? imageByProductId.get(item.product_id) ?? null : null,
             }))}
             initialShipping={Number(order.shipping_fee) || 0}
             initialTax={Number(order.tax_amount) || 0}
@@ -214,6 +228,31 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             <button className="btn-primary" type="submit">Save changes</button>
           </div>
         </form>
+
+        {/* QuickBooks invoice reference — kept outside the edit form so it saves independently */}
+        <section className="card mt-5 p-5">
+          <h2 className="text-base font-bold text-slate-900">QuickBooks invoice</h2>
+          <p className="mt-0.5 text-xs text-slate-500">
+            Record the invoice you created for this order in QuickBooks so it stays linked here. Leave the number blank and save to remove it.
+          </p>
+          <form action={saveInvoiceRefAction} className="mt-3 grid gap-3 sm:grid-cols-[1fr_2fr_auto] sm:items-end">
+            <input name="order_id" type="hidden" value={order.id} />
+            <label className="label">
+              Invoice #
+              <input className="field" name="invoice_number" defaultValue={invoice?.invoice_number || ""} placeholder="e.g. 1042" />
+            </label>
+            <label className="label">
+              PDF / link (optional)
+              <input className="field" name="pdf_url" defaultValue={invoice?.pdf_url || ""} placeholder="https://…" />
+            </label>
+            <button className="btn-primary text-sm" type="submit">Save invoice</button>
+          </form>
+          {invoice?.pdf_url && (
+            <a href={invoice.pdf_url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs font-semibold" style={{ color: "var(--primary)" }}>
+              Open saved invoice ({invoice.invoice_number}) →
+            </a>
+          )}
+        </section>
       </main>
     </>
   );
