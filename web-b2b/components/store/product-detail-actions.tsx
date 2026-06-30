@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, CheckCircle, ArrowRight } from "lucide-react";
 import { formatMoney } from "@/lib/money";
+import { isOutOfStock } from "@/lib/availability";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
 import { useCartOpen } from "@/components/store/cart-open-context";
@@ -55,6 +56,19 @@ export function ProductDetailActions({
   }
 
   const total = product.display_price * quantity;
+
+  // Out of stock — no ordering. Customers can still ask about restock by phone/email.
+  if (isOutOfStock(product)) {
+    return (
+      <div className="grid gap-3">
+        <div className="flex items-center justify-center rounded-lg border border-red-200 bg-red-50 py-3 text-sm font-black uppercase tracking-wide text-red-700">
+          Out of Stock
+        </div>
+        <p className="text-xs font-semibold text-slate-500">This item is currently sold out. Contact us to ask about restock or alternatives.</p>
+        <OrderContactCta showMessages={!!profile} />
+      </div>
+    );
+  }
 
   // Wholesale pricing and online ordering are shown to signed-in accounts.
   // Anonymous visitors can still order by phone or email, or register to order online.

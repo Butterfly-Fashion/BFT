@@ -13,7 +13,7 @@ export type OrderStatus =
   | "Refunded";
 export type PaymentStatus = "Unpaid" | "Payment Link Sent" | "Paid" | "Refunded" | "Failed";
 export type DeliveryMethod = "Pickup" | "Shipping";
-export type AvailabilityStatus = "Available" | "Limited" | "Manual Confirm" | "Hidden";
+export type AvailabilityStatus = "Available" | "Limited" | "Manual Confirm" | "Out of Stock" | "Hidden";
 export type PreorderStatus = "open" | "closed" | "cancelled";
 export type SalesChannel = "b2c" | "b2b";
 

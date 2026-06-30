@@ -737,6 +737,7 @@ export function ProductForm({ mode, product, categories }: ProductFormProps) {
                   <option value="Available">Available</option>
                   <option value="Limited">Limited stock</option>
                   <option value="Manual Confirm">Manual confirm</option>
+                  <option value="Out of Stock">Out of stock / Sold out</option>
                   <option value="Hidden">Hidden</option>
                 </select>
               </label>

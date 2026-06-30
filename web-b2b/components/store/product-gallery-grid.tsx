@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Lock, ShoppingCart, Package, X } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import { formatUnitLabel } from "@/lib/units";
+import { isOutOfStock } from "@/lib/availability";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
@@ -180,7 +181,8 @@ export function ProductGalleryGrid({ products, profile }: Props) {
           {products.map((product) => {
             const qty = cartMap.get(product.id) || 0;
             const selected = qty > 0;
-            const isPreorder = product.availability_status === "Manual Confirm";
+            const out = isOutOfStock(product);
+            const isPreorder = !out && product.availability_status === "Manual Confirm";
 
             return (
               <div
@@ -209,15 +211,22 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   >
                     {product.category}
                   </span>
-                  {/* Pre-order badge */}
-                  {isPreorder && (
+                  {/* Out of stock badge (takes priority over pre-order) */}
+                  {out ? (
+                    <span
+                      className="absolute right-2.5 top-2.5 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+                      style={{ background: "rgba(220,38,38,0.92)" }}
+                    >
+                      Out of Stock
+                    </span>
+                  ) : isPreorder ? (
                     <span
                       className="absolute right-2.5 top-2.5 rounded-md px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
                       style={{ background: "rgba(124,58,237,0.9)" }}
                     >
                       Pre-order
                     </span>
-                  )}
+                  ) : null}
                 </Link>
 
                 {/* Info */}
@@ -258,8 +267,17 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                     </div>
                   </div>
 
+                  {/* Sold out — no ordering controls */}
+                  {isApproved && out && (
+                    <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
+                      <div className="flex h-9 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-xs font-bold uppercase tracking-wide text-red-700">
+                        Sold Out
+                      </div>
+                    </div>
+                  )}
+
                   {/* Qty input (approved only) */}
-                  {isApproved && (
+                  {isApproved && !out && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
                       <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-500">
                         {product.case_qty ? `Displays · 1 = ${product.case_qty} ea` : "Qty (units)"}

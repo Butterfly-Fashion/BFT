@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, CheckCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { availabilityStyle } from "@/lib/availability";
+import { stockBadge, isOutOfStock } from "@/lib/availability";
 import { formatMoney } from "@/lib/money";
 import type { PricedProduct, Profile } from "@/lib/types";
 import { useCart } from "@/components/store/cart-provider";
@@ -16,10 +16,13 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
   const [added, setAdded] = useState(false);
   const [qty, setQty] = useState(1);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const outOfStock = isOutOfStock(product);
+  const badge = stockBadge(product);
 
   useEffect(() => () => { if (addedTimer.current) clearTimeout(addedTimer.current); }, []);
 
   function addToCart() {
+    if (outOfStock) return;
     if (!profile) {
       router.push("/login?next=/products");
       return;
@@ -50,8 +53,8 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
           src={product.image_url}
           alt={product.name}
         />
-        <span className={`badge absolute left-2.5 top-2.5 shadow-sm ${availabilityStyle(product.availability_status)}`}>
-          {product.availability_status}
+        <span className={`badge absolute left-2.5 top-2.5 shadow-sm ${badge.className}`}>
+          {badge.label}
         </span>
         {product.has_customer_price && (
           <span className="badge absolute right-2.5 top-2.5 border-amber-200 bg-amber-50 text-amber-800 shadow-sm">
@@ -107,11 +110,14 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
 
         {/* Button */}
         <button
-          className={`btn-primary w-full text-xs text-white transition-all ${added ? "opacity-80" : ""}`}
+          className={`btn-primary w-full text-xs text-white transition-all ${added ? "opacity-80" : ""} ${outOfStock ? "cursor-not-allowed opacity-50" : ""}`}
           type="button"
+          disabled={outOfStock}
           onClick={addToCart}
         >
-          {added ? (
+          {outOfStock ? (
+            "Sold Out"
+          ) : added ? (
             <><CheckCircle size={13} />Added to Cart</>
           ) : (
             <><ShoppingCart size={13} />Add to Cart</>

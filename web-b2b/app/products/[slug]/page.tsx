@@ -7,7 +7,7 @@ import { Footer } from "@/components/store/footer";
 import { ProductDetailActions } from "@/components/store/product-detail-actions";
 import { ProductImageGallery } from "@/components/store/product-image-gallery";
 import { getCurrentProfile } from "@/lib/auth";
-import { availabilityStyle } from "@/lib/availability";
+import { availabilityStyle, isOutOfStock } from "@/lib/availability";
 import { formatMoney } from "@/lib/money";
 import { applyCustomerPrices } from "@/lib/pricing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -62,7 +62,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   const [product] = await applyCustomerPrices([data as Product], profile);
 
   const isApproved = profile?.is_b2b_approved ?? false;
-  const isPreorder = product.availability_status === "Manual Confirm";
+  const isOut = isOutOfStock(product);
+  const isPreorder = !isOut && product.availability_status === "Manual Confirm";
   const availabilityLabel = isPreorder ? "Pre-order" : product.availability_status;
   const hasDimensions = product.weight_kg || product.box_length_cm || product.box_width_cm || product.box_height_cm;
 
@@ -184,9 +185,14 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             {/* Name */}
             <h1 className="text-2xl font-black leading-tight text-slate-900 sm:text-3xl">{product.name}</h1>
 
-            {/* Pre-order tag + custom pricing */}
-            {(isPreorder || product.has_customer_price) && (
+            {/* Stock / pre-order tag + custom pricing */}
+            {(isOut || isPreorder || product.has_customer_price) && (
               <div className="flex flex-wrap items-center gap-2">
+                {isOut && (
+                  <span className="badge border-red-200 bg-red-50 text-red-800">
+                    Out of Stock
+                  </span>
+                )}
                 {isPreorder && (
                   <span className={`badge ${availabilityStyle(product.availability_status)}`}>
                     {availabilityLabel}
