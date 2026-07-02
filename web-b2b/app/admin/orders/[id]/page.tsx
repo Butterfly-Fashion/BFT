@@ -64,14 +64,14 @@ export default async function AdminOrderDetailPage({
               <h1 className="mt-1 text-2xl font-black text-slate-900">
                 #{order.id.slice(0, 8).toUpperCase()}
               </h1>
+              {invoice?.invoice_number && (
+                <p className="mt-1 font-mono text-sm font-semibold text-slate-600">
+                  QuickBooks Invoice #{invoice.invoice_number}
+                </p>
+              )}
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <StatusBadge status={order.status} />
                 <StatusBadge status={order.payment_status} type="payment" />
-                {invoice?.invoice_number && (
-                  <span className="badge border-slate-300 bg-slate-50 font-mono text-slate-700">
-                    QB #{invoice.invoice_number}
-                  </span>
-                )}
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
