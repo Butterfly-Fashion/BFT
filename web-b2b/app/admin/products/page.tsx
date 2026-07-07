@@ -4,6 +4,7 @@ import { AdminNav } from "@/components/admin/admin-nav";
 import { AdminProductsFilter } from "@/components/admin/products-filter";
 import { AdminProductsTable } from "@/components/admin/products-table";
 import { formatMoney } from "@/lib/money";
+import { fetchAllCategories, buildCategoryTree, resolveFilterCategories } from "@/lib/categories";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -15,9 +16,13 @@ export default async function AdminProductsPage({
 }) {
   const params = await searchParams;
   const admin = createSupabaseAdminClient();
+  const categoryTree = buildCategoryTree(await fetchAllCategories());
 
   let query = admin.from("products").select("*").order("updated_at", { ascending: false });
-  if (params.category) query = query.eq("category", params.category);
+  if (params.category) {
+    const filterNames = resolveFilterCategories(params.category, categoryTree);
+    query = filterNames.length === 1 ? query.eq("category", filterNames[0]) : query.in("category", filterNames);
+  }
   if (params.visibility === "visible") query = query.eq("is_hidden", false);
   if (params.visibility === "hidden") query = query.eq("is_hidden", true);
   if (params.channel === "b2c") query = query.contains("sales_channels", ["b2c"]);
@@ -78,7 +83,7 @@ export default async function AdminProductsPage({
 
         {/* Filters */}
         <AdminProductsFilter
-          categories={categories}
+          tree={categoryTree}
           initial={{
             q: params.q || "",
             category: params.category || "",

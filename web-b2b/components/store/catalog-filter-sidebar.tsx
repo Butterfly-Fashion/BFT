@@ -30,21 +30,11 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
   const activeCategory = params.get("category") || "";
   const hasFilters = !!activeCategory;
 
-  function catBtn(name: string, indent = false) {
-    const active = activeCategory === name;
-    return (
-      <button
-        key={name}
-        onClick={() => setCategory(name)}
-        className={`w-full rounded-md text-left text-sm transition-colors ${
-          indent ? "py-1 pl-5 pr-2.5" : "px-2.5 py-1.5"
-        } ${active ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-50"}`}
-        style={active ? { background: "var(--primary)" } : {}}
-      >
-        {name}
-      </button>
-    );
-  }
+  // The active top-level category: either selected directly, or the parent of a selected subcategory.
+  const activeParent =
+    tree.find((c) => c.name === activeCategory) ||
+    tree.find((c) => c.children.some((child) => child.name === activeCategory));
+  const activeSubcategory = activeParent && activeParent.name !== activeCategory ? activeCategory : "";
 
   return (
     <aside className="w-full shrink-0 lg:w-52">
@@ -76,46 +66,39 @@ export function CatalogFilterSidebar({ productCount, categories }: { productCoun
         </div>
 
         <div className={`${open ? "mt-4 block" : "hidden"} lg:mt-4 lg:block`}>
-        {/* Category */}
-        <div className="mb-5">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Category</p>
-          <div className="space-y-0.5">
-            {/* All */}
-            <button
-              onClick={() => setCategory("")}
-              className={`w-full rounded-md px-2.5 py-1.5 text-left text-sm transition-colors ${
-                !activeCategory ? "font-semibold text-white" : "text-gray-600 hover:bg-gray-50"
-              }`}
-              style={!activeCategory ? { background: "var(--primary)" } : {}}
+          {/* Category */}
+          <label className="mb-2 block">
+            <span className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-gray-400">
+              <span>Category</span>
+              {!activeCategory && <span className="normal-case text-gray-400">({productCount})</span>}
+            </span>
+            <select
+              className="w-full rounded-md border border-gray-200 px-2.5 py-1.5 text-sm text-gray-700 outline-none"
+              value={activeParent?.name || ""}
+              onChange={(e) => setCategory(e.target.value)}
             >
-              All categories
-              <span className="ml-1.5 text-xs opacity-60">({productCount})</span>
-            </button>
+              <option value="">All categories</option>
+              {tree.map((parent) => (
+                <option key={parent.id} value={parent.name}>{parent.name}</option>
+              ))}
+            </select>
+          </label>
 
-            {tree.map((parent) =>
-              parent.children.length === 0 ? (
-                catBtn(parent.name)
-              ) : (
-                <div key={parent.id}>
-                  {/* Parent as clickable group header */}
-                  <button
-                    onClick={() => setCategory(parent.name)}
-                    className={`w-full rounded-md px-2.5 py-1.5 text-left text-sm font-bold transition-colors ${
-                      activeCategory === parent.name ? "text-white" : "text-gray-700 hover:bg-gray-50"
-                    }`}
-                    style={activeCategory === parent.name ? { background: "var(--primary)" } : {}}
-                  >
-                    {parent.name}
-                  </button>
-                  {/* Children indented */}
-                  <div className="mb-1 ml-2 space-y-0.5 border-l-2 border-gray-100 pl-2">
-                    {parent.children.map((child) => catBtn(child.name, true))}
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        </div>
+          {/* Subcategory — only meaningful once a parent with children is selected */}
+          <label className="mb-1 block">
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-gray-400">Subcategory</span>
+            <select
+              className="w-full rounded-md border border-gray-200 px-2.5 py-1.5 text-sm text-gray-700 outline-none disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-400"
+              value={activeSubcategory}
+              onChange={(e) => setCategory(e.target.value || activeParent?.name || "")}
+              disabled={!activeParent || activeParent.children.length === 0}
+            >
+              <option value="">{activeParent ? "All in category" : "—"}</option>
+              {(activeParent?.children || []).map((child) => (
+                <option key={child.id} value={child.name}>{child.name}</option>
+              ))}
+            </select>
+          </label>
         </div>
       </div>
     </aside>

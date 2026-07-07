@@ -2,14 +2,15 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+import type { CategoryTree } from "@/lib/categories";
 
 type FilterValues = { q: string; category: string; visibility: string; channel: string };
 
 export function AdminProductsFilter({
-  categories,
+  tree,
   initial,
 }: {
-  categories: string[];
+  tree: CategoryTree[];
   initial: FilterValues;
 }) {
   const router = useRouter();
@@ -41,9 +42,27 @@ export function AdminProductsFilter({
     };
   }
 
+  // The active top-level category: either selected directly, or the parent of a selected subcategory.
+  const activeParent =
+    tree.find((c) => c.name === values.category) ||
+    tree.find((c) => c.children.some((child) => child.name === values.category));
+  const activeSubcategory = activeParent && activeParent.name !== values.category ? values.category : "";
+
+  function handleParentSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = { ...values, category: e.target.value };
+    setValues(next);
+    pushURL(next);
+  }
+
+  function handleSubcategorySelect(e: React.ChangeEvent<HTMLSelectElement>) {
+    const next = { ...values, category: e.target.value || activeParent?.name || "" };
+    setValues(next);
+    pushURL(next);
+  }
+
   return (
     <div className="mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white">
-      <div className="grid gap-3 p-4 lg:grid-cols-[1fr_190px_170px_170px]">
+      <div className="grid gap-3 p-4 lg:grid-cols-[1fr_170px_170px_150px_150px]">
         <label className="label">
           Search products
           <input
@@ -55,9 +74,25 @@ export function AdminProductsFilter({
         </label>
         <label className="label">
           Category
-          <select className="field" value={values.category} onChange={handleSelect("category")}>
+          <select className="field" value={activeParent?.name || ""} onChange={handleParentSelect}>
             <option value="">All categories</option>
-            {categories.map((c) => <option key={c}>{c}</option>)}
+            {tree.map((c) => (
+              <option key={c.id} value={c.name}>{c.name}</option>
+            ))}
+          </select>
+        </label>
+        <label className="label">
+          Subcategory
+          <select
+            className="field"
+            value={activeSubcategory}
+            onChange={handleSubcategorySelect}
+            disabled={!activeParent || activeParent.children.length === 0}
+          >
+            <option value="">{activeParent ? "All in category" : "—"}</option>
+            {(activeParent?.children || []).map((c) => (
+              <option key={c.id} value={c.name}>{c.name}</option>
+            ))}
           </select>
         </label>
         <label className="label">
