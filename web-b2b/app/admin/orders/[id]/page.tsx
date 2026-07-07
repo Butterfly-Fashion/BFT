@@ -75,6 +75,9 @@ export default async function AdminOrderDetailPage({
               </div>
             </div>
             <div className="flex flex-wrap gap-2">
+              <Link href={`/admin/orders/${order.id}/invoice`} target="_blank" className="btn-secondary text-sm">
+                Print invoice
+              </Link>
               <form action={async () => { "use server"; await approveOrderAction(order.id); }}>
                 <button
                   className="btn-primary text-sm"
