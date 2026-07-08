@@ -19,7 +19,7 @@ type SearchResult = { id: string; name: string; sku: string; unit_price: number;
 
 type Props = {
   initialItems: EditorItem[];
-  initialShipping: number;
+  initialShipping: number | null;
   initialTax: number;
   initialDiscount: number;
   initialTotalOverride: number | null;
@@ -30,7 +30,9 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
   const [items, setItems] = useState<EditorItem[]>(initialItems);
   const [discountPct, setDiscountPct] = useState("");
   const [discountAmt, setDiscountAmt] = useState(initialDiscount || 0);
-  const [shipping, setShipping] = useState(initialShipping || 0);
+  // Kept as a string so a never-entered shipping fee ("") can be told apart from an
+  // explicitly confirmed $0 — the payment-link flow requires the latter before sending.
+  const [shipping, setShipping] = useState<string>(initialShipping != null ? String(initialShipping) : "");
   const [tax, setTax] = useState(initialTax || 0);
   const [override, setOverride] = useState<string>(initialTotalOverride != null ? String(initialTotalOverride) : "");
 
@@ -118,7 +120,7 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
       <input type="hidden" name="items_json" value={itemsJson} />
       <input type="hidden" name="discount_percent" value={usingPct ? String(pctNum) : ""} />
       <input type="hidden" name="discount_amount" value={String(effectiveDiscount)} />
-      <input type="hidden" name="shipping_fee" value={String(Number(shipping) || 0)} />
+      <input type="hidden" name="shipping_fee" value={shipping} />
       <input type="hidden" name="tax_amount" value={String(Number(tax) || 0)} />
       <input type="hidden" name="total_override" value={usingOverride ? String(overrideNum) : ""} />
 
@@ -291,7 +293,20 @@ export function OrderEditor({ initialItems, initialShipping, initialTax, initial
             </label>
             <label className="label">
               Shipping ($)
-              <input className="field" value={shipping} step="0.01" min={0} type="number" onChange={(e) => setShipping(Math.max(0, Number(e.target.value) || 0))} />
+              <input
+                className="field"
+                value={shipping}
+                step="0.01"
+                min={0}
+                type="number"
+                placeholder="Not entered yet"
+                onChange={(e) => setShipping(e.target.value)}
+              />
+              {shipping.trim() === "" && (
+                <span className="mt-1 text-xs font-semibold text-amber-600">
+                  Required for Shipping orders before the payment link can be sent — enter 0 if shipping is free.
+                </span>
+              )}
             </label>
             <label className="label">
               HST ($)

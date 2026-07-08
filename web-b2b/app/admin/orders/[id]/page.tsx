@@ -17,11 +17,11 @@ export default async function AdminOrderDetailPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ invoice_error?: string }>;
+  searchParams: Promise<{ invoice_error?: string; order_error?: string }>;
 }) {
   await requireAdmin();
   const { id } = await params;
-  const { invoice_error } = await searchParams;
+  const { invoice_error, order_error } = await searchParams;
   const admin = createSupabaseAdminClient();
   const { data: order } = await admin.from("orders").select("*, profiles(*)").eq("id", id).single();
   const { data: items } = await admin.from("order_items").select("*").eq("order_id", id);
@@ -83,9 +83,9 @@ export default async function AdminOrderDetailPage({
                   className="btn-primary text-sm"
                   disabled={!canApprove}
                   type="submit"
-                  title={canApprove ? "Approve and send payment link" : "Order is not in Pending Review status"}
+                  title={canApprove ? "Approve and send a payment request" : "Order is not in Pending Review status"}
                 >
-                  Approve &amp; Send Payment Link
+                  Approve &amp; Send Payment Request
                 </button>
               </form>
               <form action={async () => { "use server"; await createPaymentLinkAction(order.id); }}>
@@ -93,9 +93,9 @@ export default async function AdminOrderDetailPage({
                   className="btn-secondary text-sm"
                   disabled={!canCreatePaymentLink}
                   type="submit"
-                  title={canCreatePaymentLink ? "Regenerate payment link" : "Approve the order first"}
+                  title={canCreatePaymentLink ? "Resend the payment request" : "Approve the order first"}
                 >
-                  Resend Payment Link
+                  Resend Payment Request
                 </button>
               </form>
               {!isPaid && !isCancelled && (
@@ -109,6 +109,12 @@ export default async function AdminOrderDetailPage({
             </div>
           </div>
         </div>
+
+        {order_error && (
+          <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            {order_error}
+          </div>
+        )}
 
         {order.stripe_payment_link && <div className="mb-5"><CopyPaymentLink url={order.stripe_payment_link} /></div>}
 
@@ -197,13 +203,17 @@ export default async function AdminOrderDetailPage({
                 <label className="label">
                   Payment method
                   <select className="field" name="payment_method" defaultValue={order.payment_method || ""}>
-                    <option value="">— Not set —</option>
+                    <option value="">— Not set (defaults to Stripe) —</option>
                     <option>Stripe</option>
+                    <option>Card by Text</option>
                     <option>E-Transfer</option>
                     <option>Cash</option>
                     <option>Bank Transfer</option>
                     <option>Card (in-person)</option>
                   </select>
+                  <span className="mt-1 text-xs text-slate-400">
+                    Save changes here first — the payment request sent below follows this method.
+                  </span>
                 </label>
                 <label className="label md:col-span-3">
                   Shipping address
@@ -228,7 +238,7 @@ export default async function AdminOrderDetailPage({
               unit_price: Number(item.unit_price_snapshot),
               image_url: item.product_id ? imageByProductId.get(item.product_id) ?? null : null,
             }))}
-            initialShipping={Number(order.shipping_fee) || 0}
+            initialShipping={order.shipping_fee != null ? Number(order.shipping_fee) : null}
             initialTax={Number(order.tax_amount) || 0}
             initialDiscount={Number(order.discount_amount) || 0}
             initialTotalOverride={order.total_override != null ? Number(order.total_override) : null}

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
 
 type EmailInput = {
   to: string;
@@ -142,6 +143,39 @@ export function paymentLinkEmail(businessName: string, orderId: string, paymentL
     </table>
     ${btn("Complete payment →", paymentLink)}
     <p style="margin:16px 0 0;font-size:12px;color:#9CA3AF;">Or copy this link: <a href="${paymentLink}" style="color:#166534;">${paymentLink}</a></p>
+  `);
+}
+
+export function cardByTextPaymentEmail(businessName: string, orderId: string, amountDue: string) {
+  return emailHtml("Your order is approved — pay by card", `
+    <p>Hi ${businessName},</p>
+    <p>Your wholesale order has been reviewed and approved. To pay by card, text your card number, expiry date, CVC, and billing postal code to <strong>${CONTACT_PHONE}</strong> and we'll process it manually.</p>
+    <table style="width:100%;margin:16px 0;border-collapse:collapse;">
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Order ID</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;font-family:monospace;">#${orderId.slice(0, 8).toUpperCase()}</td></tr>
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Amount due</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;">${amountDue}</td></tr>
+    </table>
+  `);
+}
+
+export function eTransferPaymentEmail(businessName: string, orderId: string, amountDue: string) {
+  return emailHtml("Your order is approved — pay by e-Transfer", `
+    <p>Hi ${businessName},</p>
+    <p>Your wholesale order has been reviewed and approved. Please send an Interac e-Transfer for the amount below to <strong>${CONTACT_EMAIL}</strong> and include your order number in the message.</p>
+    <table style="width:100%;margin:16px 0;border-collapse:collapse;">
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Order ID</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;font-family:monospace;">#${orderId.slice(0, 8).toUpperCase()}</td></tr>
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Amount due</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;">${amountDue}</td></tr>
+    </table>
+  `);
+}
+
+export function manualPaymentEmail(businessName: string, orderId: string, amountDue: string, method: string) {
+  return emailHtml("Your order is approved — payment details", `
+    <p>Hi ${businessName},</p>
+    <p>Your wholesale order has been reviewed and approved. We'll be in touch to arrange payment via <strong>${method}</strong>.</p>
+    <table style="width:100%;margin:16px 0;border-collapse:collapse;">
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Order ID</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;font-family:monospace;">#${orderId.slice(0, 8).toUpperCase()}</td></tr>
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Amount due</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;">${amountDue}</td></tr>
+    </table>
   `);
 }
 

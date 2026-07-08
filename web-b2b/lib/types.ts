@@ -111,7 +111,7 @@ export type Order = {
   status: OrderStatus;
   payment_status: PaymentStatus;
   subtotal: number;
-  shipping_fee: number;
+  shipping_fee: number | null;
   discount_amount: number;
   tax_amount: number;
   total_amount: number;

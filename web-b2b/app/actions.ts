@@ -4,11 +4,12 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { calculateTotals } from "@/lib/money";
+import { calculateTotals, formatMoney } from "@/lib/money";
 import {
   sendEmail, emailHtml,
   registrationEmail, orderReceivedEmail, adminNewOrderEmail,
-  paymentLinkEmail, b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
+  paymentLinkEmail, cardByTextPaymentEmail, eTransferPaymentEmail, manualPaymentEmail,
+  b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
   adminNewMessageEmail,
 } from "@/lib/email";
 import { createOrderCheckoutSession } from "@/lib/stripe";
@@ -403,7 +404,10 @@ export async function createOrderRequestAction(input: {
       status: "Pending Review",
       payment_status: "Unpaid",
       subtotal: totals.subtotal,
-      shipping_fee: 0,
+      // Shipping cost isn't known until the admin reviews the order, so it's left unset
+      // (null) for Shipping orders rather than defaulting to 0 — that keeps a genuine "$0
+      // shipping" distinguishable from "not decided yet" when the payment link is sent.
+      shipping_fee: input.deliveryMethod === "Shipping" ? null : 0,
       discount_amount: 0,
       tax_amount: totals.tax,
       total_amount: totals.total,
@@ -508,7 +512,11 @@ export async function updateOrderReviewAction(formData: FormData) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();
   const orderId = String(formData.get("order_id"));
-  const shipping = Number(formData.get("shipping_fee") || 0);
+  // A blank shipping field means "not decided yet" (stored as null) — distinct from an
+  // explicitly entered $0. Only the latter allows the payment link to be sent for a
+  // Shipping order. Totals below always treat a blank field as 0 for the running total.
+  const rawShipping = String(formData.get("shipping_fee") ?? "").trim();
+  const shipping: number | null = rawShipping === "" ? null : Math.max(0, Number(rawShipping) || 0);
   const tax = Number(formData.get("tax_amount") || 0);
   const adminNotes = String(formData.get("admin_notes") || "");
   const deliveryMethod = String(formData.get("delivery_method")) as "Pickup" | "Shipping";
@@ -580,7 +588,7 @@ export async function updateOrderReviewAction(formData: FormData) {
       ? Number(((subtotal * discountPct) / 100).toFixed(2))
       : flatDiscount;
 
-  const computedTotal = subtotal - discount + shipping + tax;
+  const computedTotal = subtotal - discount + (shipping ?? 0) + tax;
   // A manual override (per-customer negotiated total) wins over the item-based calculation.
   const total = totalOverride != null && Number.isFinite(totalOverride) && totalOverride >= 0
     ? totalOverride
@@ -702,62 +710,54 @@ export async function searchProductsAction(query: string) {
   }));
 }
 
-export async function approveOrderAction(orderId: string) {
-  await requireAdmin();
+// Shared by approveOrderAction and createPaymentLinkAction: sends the customer a payment
+// request using whichever method the admin recorded on the order (payment_method field),
+// defaulting to Stripe when it's blank. Requires a confirmed shipping cost for Shipping
+// orders — a picked shipping fee of exactly $0 is fine, but an unset one blocks sending.
+async function sendOrderPaymentRequest(orderId: string): Promise<{ error: string } | { success: true; paymentLink: string | null }> {
   const admin = createSupabaseAdminClient();
-  const { data: order } = await admin.from("orders").select("*, profiles(email)").eq("id", orderId).single();
-  if (!order) return;
-
-  if (process.env.STRIPE_SECRET_KEY && Number(order.total_amount) > 0 && order.profiles?.email) {
-    const session = await createOrderCheckoutSession({
-      id: order.id,
-      total_amount: Number(order.total_amount),
-      customer_email: order.profiles.email,
-    });
-    const paymentLink = session.url || `${siteUrl()}/account/orders/${orderId}`;
-    await admin.from("orders").update({
-      status: "Payment Link Sent",
-      payment_status: "Payment Link Sent",
-      stripe_payment_link: paymentLink,
-      stripe_session_id: session.id,
-      updated_at: new Date().toISOString(),
-    }).eq("id", orderId);
-    await sendEmail({
-      to: order.profiles.email,
-      subject: "Your order is approved — pay now",
-      html: paymentLinkEmail(order.profiles.business_name || order.profiles.email, order.id, paymentLink, siteUrl()),
-    });
-  } else {
-    await admin.from("orders").update({ status: "Approved", updated_at: new Date().toISOString() }).eq("id", orderId);
-  }
-
-  revalidatePath("/admin/orders");
-  revalidatePath(`/admin/orders/${orderId}`);
-}
-
-export async function createPaymentLinkAction(orderId: string): Promise<{ error: string } | { success: true; paymentLink: string }> {
-  await requireAdmin();
-  const admin = createSupabaseAdminClient();
-  const { data: order } = await admin.from("orders").select("*, profiles(email)").eq("id", orderId).single();
-
+  const { data: order } = await admin.from("orders").select("*, profiles(email, business_name)").eq("id", orderId).single();
   if (!order) return { error: "We could not find this order. It may have been removed or you may need to refresh the page." };
-  if (!["Approved", "Payment Link Sent"].includes(order.status)) {
-    return { error: "Approve this order before creating a payment link." };
-  }
+  if (!order.profiles?.email) return { error: "This customer has no email on file." };
   if (Number(order.total_amount) <= 0) {
-    return { error: "Enter a final order total greater than $0 before creating a payment link." };
+    return { error: "Enter a final order total greater than $0 before sending a payment request." };
+  }
+  if (order.delivery_method === "Shipping" && order.shipping_fee == null) {
+    return { error: "Enter a shipping cost (0 if free) before sending a payment request for a Shipping order." };
   }
 
-  let paymentLink = `${siteUrl()}/account/orders/${orderId}`;
+  const email = order.profiles.email as string;
+  const businessName = (order.profiles.business_name as string) || email;
+  const method = String(order.payment_method || "").trim();
+  const amountDue = formatMoney(Number(order.total_amount));
+
+  let paymentLink: string | null = null;
   let sessionId: string | null = null;
-  if (process.env.STRIPE_SECRET_KEY) {
-    const session = await createOrderCheckoutSession({
-      id: order.id,
-      total_amount: Number(order.total_amount),
-      customer_email: order.profiles.email,
-    });
-    paymentLink = session.url || paymentLink;
-    sessionId = session.id;
+  let subject: string;
+  let html: string;
+
+  if (method === "E-Transfer") {
+    subject = "Your order is approved — pay by e-Transfer";
+    html = eTransferPaymentEmail(businessName, order.id, amountDue);
+  } else if (method === "Card by Text") {
+    subject = "Your order is approved — pay by card";
+    html = cardByTextPaymentEmail(businessName, order.id, amountDue);
+  } else if (method && method !== "Stripe") {
+    subject = "Your order is approved — payment details";
+    html = manualPaymentEmail(businessName, order.id, amountDue, method);
+  } else {
+    paymentLink = `${siteUrl()}/account/orders/${orderId}`;
+    if (process.env.STRIPE_SECRET_KEY) {
+      const session = await createOrderCheckoutSession({
+        id: order.id,
+        total_amount: Number(order.total_amount),
+        customer_email: email,
+      });
+      paymentLink = session.url || paymentLink;
+      sessionId = session.id;
+    }
+    subject = "Your order is approved — pay now";
+    html = paymentLinkEmail(businessName, order.id, paymentLink, siteUrl());
   }
 
   await admin.from("orders").update({
@@ -768,14 +768,29 @@ export async function createPaymentLinkAction(orderId: string): Promise<{ error:
     updated_at: new Date().toISOString(),
   }).eq("id", orderId);
 
-  await sendEmail({
-    to: order.profiles.email,
-    subject: "Your order is approved — pay now",
-    html: paymentLinkEmail(order.profiles.business_name || order.profiles.email, order.id, paymentLink, siteUrl()),
-  });
+  await sendEmail({ to: email, subject, html });
+
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${orderId}`);
   return { success: true, paymentLink };
+}
+
+export async function approveOrderAction(orderId: string) {
+  await requireAdmin();
+  const result = await sendOrderPaymentRequest(orderId);
+  if ("error" in result) redirect(`/admin/orders/${orderId}?order_error=${encodeURIComponent(result.error)}`);
+}
+
+export async function createPaymentLinkAction(orderId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  const { data: order } = await admin.from("orders").select("status").eq("id", orderId).single();
+  if (!order) redirect(`/admin/orders/${orderId}`);
+  if (!["Approved", "Payment Link Sent"].includes(order.status)) {
+    redirect(`/admin/orders/${orderId}?order_error=${encodeURIComponent("Approve this order before creating a payment link.")}`);
+  }
+  const result = await sendOrderPaymentRequest(orderId);
+  if ("error" in result) redirect(`/admin/orders/${orderId}?order_error=${encodeURIComponent(result.error)}`);
 }
 
 export async function approveB2BCustomerAction(customerId: string, approved: boolean) {
