@@ -42,7 +42,7 @@ export default async function AdminOrderDetailPage({
   const isPaid = order.status === "Paid" || order.payment_status === "Paid";
   const isCancelled = order.status === "Cancelled";
   const canApprove = order.status === "Pending Review";
-  const canCreatePaymentLink = ["Approved", "Payment Link Sent"].includes(order.status);
+  const canCreatePaymentLink = ["Approved", "Payment Link Sent", "Ready for Pickup"].includes(order.status);
 
   // Curated lifecycle stages (replaces the old 11-option list). Legacy statuses on an
   // existing order (e.g. Approved/Processing/Label Created) stay selectable so nothing breaks.
@@ -207,12 +207,14 @@ export default async function AdminOrderDetailPage({
                     <option>Stripe</option>
                     <option>Card by Text</option>
                     <option>E-Transfer</option>
+                    <option>Pay at Pickup</option>
                     <option>Cash</option>
                     <option>Bank Transfer</option>
                     <option>Card (in-person)</option>
                   </select>
                   <span className="mt-1 text-xs text-slate-400">
                     Save changes here first — the payment request sent below follows this method.
+                    &quot;Pay at Pickup&quot; only works for Pickup orders (no charge collected in advance).
                   </span>
                 </label>
                 <label className="label md:col-span-3">

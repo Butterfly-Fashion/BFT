@@ -168,6 +168,17 @@ export function eTransferPaymentEmail(businessName: string, orderId: string, amo
   `);
 }
 
+export function payAtPickupEmail(businessName: string, orderId: string, amountDue: string) {
+  return emailHtml("Your order is approved — ready for pickup", `
+    <p>Hi ${businessName},</p>
+    <p>Your wholesale order has been reviewed and approved, and is ready for pickup. Pay in person by cash or card when you collect it — no payment is needed in advance.</p>
+    <table style="width:100%;margin:16px 0;border-collapse:collapse;">
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Order ID</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;font-family:monospace;">#${orderId.slice(0, 8).toUpperCase()}</td></tr>
+      <tr><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280;">Amount due</td><td style="padding:8px 0;border-top:1px solid #E5E7EB;font-size:13px;font-weight:700;text-align:right;">${amountDue}</td></tr>
+    </table>
+  `);
+}
+
 export function manualPaymentEmail(businessName: string, orderId: string, amountDue: string, method: string) {
   return emailHtml("Your order is approved — payment details", `
     <p>Hi ${businessName},</p>

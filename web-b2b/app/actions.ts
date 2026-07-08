@@ -8,7 +8,7 @@ import { calculateTotals, formatMoney } from "@/lib/money";
 import {
   sendEmail, emailHtml,
   registrationEmail, orderReceivedEmail, adminNewOrderEmail,
-  paymentLinkEmail, cardByTextPaymentEmail, eTransferPaymentEmail, manualPaymentEmail,
+  paymentLinkEmail, cardByTextPaymentEmail, eTransferPaymentEmail, manualPaymentEmail, payAtPickupEmail,
   b2bApprovedEmail, b2bRejectedEmail, adminNewLeadEmail,
   adminNewMessageEmail,
 } from "@/lib/email";
@@ -731,12 +731,19 @@ async function sendOrderPaymentRequest(orderId: string): Promise<{ error: string
   const method = String(order.payment_method || "").trim();
   const amountDue = formatMoney(Number(order.total_amount));
 
+  if (method === "Pay at Pickup" && order.delivery_method !== "Pickup") {
+    return { error: '"Pay at Pickup" only applies to Pickup orders — change the delivery method or pick a different payment method.' };
+  }
+
   let paymentLink: string | null = null;
   let sessionId: string | null = null;
   let subject: string;
   let html: string;
 
-  if (method === "E-Transfer") {
+  if (method === "Pay at Pickup") {
+    subject = "Your order is approved — ready for pickup";
+    html = payAtPickupEmail(businessName, order.id, amountDue);
+  } else if (method === "E-Transfer") {
     subject = "Your order is approved — pay by e-Transfer";
     html = eTransferPaymentEmail(businessName, order.id, amountDue);
   } else if (method === "Card by Text") {
@@ -760,9 +767,13 @@ async function sendOrderPaymentRequest(orderId: string): Promise<{ error: string
     html = paymentLinkEmail(businessName, order.id, paymentLink, siteUrl());
   }
 
+  // "Pay at Pickup" collects no payment now — the order moves to Ready for Pickup and
+  // stays Unpaid until the customer pays in person. Every other method is a payment
+  // request, so it moves to the generic Payment Link Sent stage.
+  const isPayAtPickup = method === "Pay at Pickup";
   await admin.from("orders").update({
-    status: "Payment Link Sent",
-    payment_status: "Payment Link Sent",
+    status: isPayAtPickup ? "Ready for Pickup" : "Payment Link Sent",
+    payment_status: isPayAtPickup ? "Unpaid" : "Payment Link Sent",
     stripe_payment_link: paymentLink,
     stripe_session_id: sessionId,
     updated_at: new Date().toISOString(),
@@ -786,7 +797,7 @@ export async function createPaymentLinkAction(orderId: string) {
   const admin = createSupabaseAdminClient();
   const { data: order } = await admin.from("orders").select("status").eq("id", orderId).single();
   if (!order) redirect(`/admin/orders/${orderId}`);
-  if (!["Approved", "Payment Link Sent"].includes(order.status)) {
+  if (!["Approved", "Payment Link Sent", "Ready for Pickup"].includes(order.status)) {
     redirect(`/admin/orders/${orderId}?order_error=${encodeURIComponent("Approve this order before creating a payment link.")}`);
   }
   const result = await sendOrderPaymentRequest(orderId);
