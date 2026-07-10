@@ -43,11 +43,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+async function getRelatedPosts(category: string | null, excludeSlug: string) {
+  if (!category) return [];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("blog_posts")
+    .select("slug, title, excerpt")
+    .eq("status", "published")
+    .eq("category", category)
+    .neq("slug", excludeSlug)
+    .lte("published_at", new Date().toISOString())
+    .order("published_at", { ascending: false })
+    .limit(3);
+  return data || [];
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) notFound();
-  const profile = await getCurrentProfile();
+  const [profile, related] = await Promise.all([
+    getCurrentProfile(),
+    getRelatedPosts(post.category, post.slug),
+  ]);
   const base = siteUrl();
 
   const articleJsonLd = {
@@ -98,6 +116,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           )}
 
           <div className="blog-content mt-8" dangerouslySetInnerHTML={{ __html: post.body_html || "" }} />
+
+          {/* Related guides — same-category internal links for readers and crawlers */}
+          {related.length > 0 && (
+            <div className="mt-12 border-t border-slate-200 pt-8">
+              <h2 className="text-lg font-black text-slate-950">More {post.category} guides</h2>
+              <ul className="mt-4 grid gap-3">
+                {related.map((r) => (
+                  <li key={r.slug}>
+                    <Link href={`/blog/${r.slug}`} className="group block rounded-xl border border-slate-200 bg-white p-4 transition-colors hover:border-slate-300">
+                      <p className="font-bold text-slate-900 group-hover:underline">{r.title}</p>
+                      {r.excerpt && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{r.excerpt}</p>}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* CTA */}
           <div className="mt-12 rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center">
