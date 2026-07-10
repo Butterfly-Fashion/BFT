@@ -22,6 +22,8 @@ export default async function BlogIndexPage() {
     .from("blog_posts")
     .select("slug, title, excerpt, cover_image_url, category, published_at")
     .eq("status", "published")
+    // Scheduled publishing: future-dated posts stay hidden until their time.
+    .lte("published_at", new Date().toISOString())
     .order("published_at", { ascending: false });
   const list = posts || [];
 

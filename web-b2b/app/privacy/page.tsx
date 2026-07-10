@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { getCurrentProfile } from "@/lib/auth";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -55,8 +56,8 @@ export default async function PrivacyPage() {
             <h2 className="text-lg font-bold text-gray-900">Contact</h2>
             <p className="mt-2">
               For privacy questions or data requests, contact{" "}
-              <a href="mailto:orders@butterfly-fashion.ca" className="font-semibold text-gray-900 underline">
-                orders@butterfly-fashion.ca
+              <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold text-gray-900 underline">
+                {CONTACT_EMAIL}
               </a>.
             </p>
           </div>

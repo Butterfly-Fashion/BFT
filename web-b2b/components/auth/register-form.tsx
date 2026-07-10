@@ -105,29 +105,34 @@ export function RegisterForm() {
         </div>
       </div>
 
-      {/* Address */}
+      {/* Address — optional at signup; shipping details are confirmed on the first order */}
       <div>
-        <p className="mb-3 text-xs font-black uppercase tracking-widest text-slate-500">Business address</p>
+        <p className="mb-1 text-xs font-black uppercase tracking-widest text-slate-500">
+          Business address <span className="normal-case font-semibold">(optional)</span>
+        </p>
+        <p className="mb-3 text-xs font-medium text-slate-400">
+          You can skip this for now — we confirm delivery details on your first order.
+        </p>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="label sm:col-span-2">
-            Street address <Required />
-            <input className="field" name="business_address" required defaultValue={v.business_address} />
+            Street address
+            <input className="field" name="business_address" defaultValue={v.business_address} />
           </label>
           <label className="label">
-            City <Required />
-            <input className="field" name="city" required defaultValue={v.city} />
+            City
+            <input className="field" name="city" defaultValue={v.city} />
           </label>
           <label className="label">
-            Province / State <Required />
-            <input className="field" name="province" required defaultValue={v.province} />
+            Province / State
+            <input className="field" name="province" defaultValue={v.province} />
           </label>
           <label className="label">
-            Postal / ZIP code <Required />
-            <input className="field" name="postal_code" required defaultValue={v.postal_code} />
+            Postal / ZIP code
+            <input className="field" name="postal_code" defaultValue={v.postal_code} />
           </label>
           <label className="label">
-            Country <Required />
-            <input className="field" name="country" required defaultValue={v.country || "Canada"} />
+            Country
+            <input className="field" name="country" defaultValue={v.country || "Canada"} />
           </label>
         </div>
       </div>
@@ -158,11 +163,11 @@ export function RegisterForm() {
 
       {/* Newsletter consent */}
       <label className="flex cursor-pointer items-start gap-3 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
-        <input name="newsletter_consent" type="checkbox" className="mt-0.5 shrink-0 accent-(--primary)" defaultChecked />
+        <input name="newsletter_consent" type="checkbox" className="mt-0.5 shrink-0 accent-(--primary)" />
         <span>
-          <span className="font-semibold">Subscribe to the Butterfly Fashion wholesale newsletter</span>
+          <span className="font-semibold">Yes, email me wholesale updates</span>
           <span className="mt-0.5 block text-xs font-normal text-slate-400">
-            New arrivals, seasonal promotions, restock alerts, and exclusive wholesale deals. Unsubscribe anytime.
+            2–4 emails a month: new arrivals, restock alerts, and wholesale promotions. Unsubscribe anytime.
           </span>
         </span>
       </label>

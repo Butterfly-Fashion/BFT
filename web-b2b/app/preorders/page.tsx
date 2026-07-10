@@ -9,7 +9,7 @@ import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/sup
 export const metadata: Metadata = {
   title: "Pre-orders",
   description:
-    "Reserve upcoming wholesale drops before they land. Pre-order campaigns for approved B2B accounts at Butterfly Fashion Trading, Toronto.",
+    "Reserve upcoming wholesale drops before they land. Pre-order campaigns for B2B accounts at Butterfly Fashion Trading, Toronto — registration is free and instant.",
   alternates: { canonical: "/preorders" },
 };
 import { PreorderList, type PreorderCampaignGroup, type PreorderRow } from "./preorder-list";
@@ -116,11 +116,11 @@ export default async function PreordersPage() {
             <Lock size={28} className="text-slate-300" />
             <div>
               <p className="font-black text-slate-700">Login required</p>
-              <p className="mt-1 text-sm text-slate-500">Sign in with your approved B2B account to view campaigns.</p>
+              <p className="mt-1 text-sm text-slate-500">Sign in with your B2B account to view campaigns — registration is free and instant.</p>
             </div>
             <div className="flex gap-3">
               <Link href="/login" className="btn-primary text-sm">Sign in</Link>
-              <Link href="/register" className="btn-secondary text-sm">Request account</Link>
+              <Link href="/register" className="btn-secondary text-sm">Create account</Link>
             </div>
           </div>
         )}

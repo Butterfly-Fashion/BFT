@@ -54,7 +54,8 @@ export default async function WholesaleCatalogPage() {
             </h1>
             <p className="mt-3 max-w-xl text-base text-slate-600">
               Butterfly Fashion Trading is a Toronto-based wholesale supplier serving retailers across Canada and the
-              USA. Tell us a bit about your business and we&apos;ll send the catalog with current bulk pricing.
+              USA. Tell us a bit about your business and we&apos;ll email you the current catalog — product photos,
+              Item Codes, case quantities, and wholesale pricing — within 1 business day.
             </p>
             <ul className="mt-6 grid gap-2.5">
               {POINTS.map((p) => (

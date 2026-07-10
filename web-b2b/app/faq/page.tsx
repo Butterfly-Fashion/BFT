@@ -42,7 +42,7 @@ const FAQ_SECTIONS: FaqSection[] = [
     items: [
       {
         q: "Is there a minimum order quantity?",
-        a: "No — you can order any quantity, from a single unit up to full cases. Case pricing gives you a better per-unit rate on bulk, but it isn't required. You can mix and match products to build your order.",
+        a: "No — you can order any quantity, from a single unit up to full cases. Case pricing gives you a better per-unit rate on bulk, but it isn't required. You can mix and match products to build your order. A few allocation-limited items (for example, Panini World Cup sticker boxes) carry their own minimum, which is always stated on the product page.",
       },
       {
         q: "How do I place an order?",
@@ -109,7 +109,7 @@ const FAQ_SECTIONS: FaqSection[] = [
       },
       {
         q: "What is a Pre-order Campaign?",
-        a: "When a product is out of stock, we create a Pre-order Campaign to gauge demand before placing the wholesale order. Approved B2B buyers can commit a quantity. Once the campaign closes, we confirm availability and process commitments.",
+        a: "When a product is out of stock, we create a Pre-order Campaign to gauge demand before placing the wholesale order. Signed-in B2B buyers can commit a quantity. Once the campaign closes, we confirm availability and process commitments.",
       },
       {
         q: "How do I know if a product is in stock?",

@@ -18,6 +18,8 @@ async function getPost(slug: string) {
     .select("*")
     .eq("slug", slug)
     .eq("status", "published")
+    // Scheduled publishing: future-dated posts stay hidden until their time.
+    .lte("published_at", new Date().toISOString())
     .maybeSingle();
   return data;
 }

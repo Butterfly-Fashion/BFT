@@ -18,12 +18,12 @@ type Props = {
 
 // ── Cart side panel (xl screens) ─────────────────────────────────────────────
 
-function CartPanel({ isApproved }: { isApproved: boolean }) {
+function CartPanel({ visible, showPricing }: { visible: boolean; showPricing: boolean }) {
   const cart = useCart();
   const cartItems = cart.items;
   const cartTotal = cartItems.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
 
-  if (!isApproved) return null;
+  if (!visible) return null;
 
   return (
     <aside className="hidden xl:block xl:w-72 shrink-0 sticky top-24 self-start">
@@ -43,7 +43,11 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
                 <p className="text-[10px] font-black uppercase tracking-wide text-gray-500">
                   In cart · {cart.count} units
                 </p>
-                <p className="text-xs font-black text-gray-700">{formatMoney(cartTotal)}</p>
+                {showPricing ? (
+                  <p className="text-xs font-black text-gray-700">{formatMoney(cartTotal)}</p>
+                ) : (
+                  <p className="text-[10px] font-bold text-gray-400">Sign in for pricing</p>
+                )}
               </div>
               {cartItems.map((item) => (
                 <div key={item.productId} className="grid grid-cols-[28px_1fr_auto] items-center gap-2 border-b border-gray-100 px-3 py-2 last:border-b-0">
@@ -96,18 +100,20 @@ function CartPanel({ isApproved }: { isApproved: boolean }) {
 
 // ── Mobile / tablet sticky bottom bar ────────────────────────────────────────
 
-function CartBottomBar({ isApproved }: { isApproved: boolean }) {
+function CartBottomBar({ visible, showPricing }: { visible: boolean; showPricing: boolean }) {
   const cart = useCart();
   const cartTotal = cart.items.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
   const cartCount = cart.count;
 
-  if (!isApproved || cartCount === 0) return null;
+  if (!visible || cartCount === 0) return null;
 
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 xl:hidden border-t border-gray-200 bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
       <div className="container-shell flex items-center gap-3 py-2.5">
         <div className="flex-1 min-w-0 text-sm">
-          <span className="font-semibold text-gray-600">{cartCount} in cart · {formatMoney(cartTotal)}</span>
+          <span className="font-semibold text-gray-600">
+            {cartCount} in cart{showPricing && <> · {formatMoney(cartTotal)}</>}
+          </span>
         </div>
         <Link
           href="/cart"
@@ -127,6 +133,9 @@ export function ProductGalleryGrid({ products, profile }: Props) {
   const cart = useCart();
   const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
+  // Guests can build a cart (prices hidden, login at submit); only signed-in
+  // unapproved accounts are locked out of cart controls.
+  const canCart = !profile || isApproved;
 
   const cartMap = useMemo(
     () => new Map(cart.items.map((i) => [i.productId, i.quantity])),
@@ -134,7 +143,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
   );
 
   function setQty(product: PricedProduct, value: string) {
-    if (!isApproved) { router.push("/login?next=/products"); return; }
+    if (!canCart) return;
     const qty = Math.max(0, Math.min(9999, parseInt(value || "0") || 0));
     cart.setItem(
       {
@@ -142,7 +151,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
         quantity: qty,
         name: product.name,
         sku: product.sku,
-        price: product.display_price,
+        price: isApproved ? product.display_price : undefined,
         imageUrl: product.image_url,
         slug: product.slug,
         caseQty: product.case_qty,
@@ -259,8 +268,8 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                             <Lock size={11} /><span className="text-[11px] font-semibold">Pending</span>
                           </span>
                         ) : (
-                          <Link href="/login" className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-1 text-gray-400 hover:bg-gray-50 hover:underline">
-                            <Lock size={11} /><span className="text-[11px] font-semibold">Login</span>
+                          <Link href="/register" className="-ml-1 inline-flex items-center gap-1 rounded px-1 py-1 text-gray-400 hover:bg-gray-50 hover:underline">
+                            <Lock size={11} /><span className="text-[11px] font-semibold">Register free</span>
                           </Link>
                         )}
                       </div>
@@ -268,7 +277,7 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                   </div>
 
                   {/* Sold out — no ordering controls */}
-                  {isApproved && out && (
+                  {canCart && out && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
                       <div className="flex h-9 items-center justify-center rounded-lg border border-red-200 bg-red-50 text-xs font-bold uppercase tracking-wide text-red-700">
                         Sold Out
@@ -276,8 +285,8 @@ export function ProductGalleryGrid({ products, profile }: Props) {
                     </div>
                   )}
 
-                  {/* Qty input (approved only) */}
-                  {isApproved && !out && (
+                  {/* Qty input — guests and approved accounts */}
+                  {canCart && !out && (
                     <div className="mt-auto border-t border-gray-100 pt-3 pb-1">
                       <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-gray-500">
                         {product.case_qty ? `Displays · 1 = ${product.case_qty} ea` : "Qty (units)"}
@@ -350,11 +359,11 @@ export function ProductGalleryGrid({ products, profile }: Props) {
         </div>
 
         {/* Cart side panel (xl only) */}
-        <CartPanel isApproved={isApproved} />
+        <CartPanel visible={canCart} showPricing={isApproved} />
       </div>
 
       {/* Mobile/tablet bottom bar */}
-      <CartBottomBar isApproved={isApproved} />
+      <CartBottomBar visible={canCart} showPricing={isApproved} />
     </>
   );
 }

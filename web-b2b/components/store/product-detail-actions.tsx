@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ShoppingCart, CheckCircle, ArrowRight } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import { isOutOfStock } from "@/lib/availability";
@@ -20,7 +19,6 @@ export function ProductDetailActions({
 }) {
   const cart = useCart();
   const { setCartOpen } = useCartOpen();
-  const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -37,14 +35,14 @@ export function ProductDetailActions({
   function cases() { return caseQty ? Math.floor(quantity / caseQty) : null; }
 
   function addToCart() {
-    if (!profile) { router.push(`/login?next=/products/${product.slug}`); return; }
     if (quantity <= 0) return;
+    // Guests can add to cart — pricing stays hidden and login happens at order submit.
     cart.addItem({
       productId: product.id,
       quantity,
       name: product.name,
       sku: product.sku,
-      price: product.display_price,
+      price: isApproved ? product.display_price : undefined,
       imageUrl: product.image_url,
       slug: product.slug,
       caseQty: product.case_qty,
@@ -70,15 +68,16 @@ export function ProductDetailActions({
     );
   }
 
-  // Wholesale pricing and online ordering are shown to signed-in accounts.
-  // Anonymous visitors can still order by phone or email, or register to order online.
-  if (!isApproved) {
+  // Signed-in but not approved (declined/edge case) — contact-only ordering.
+  // Guests fall through to the quantity UI below: they can build a cart, and
+  // pricing/login happen when they sign in or submit the order request.
+  if (profile && !isApproved) {
     return (
       <div className="grid gap-3">
         <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Order this item</p>
-        <OrderContactCta showMessages={!!profile} />
+        <OrderContactCta showMessages />
         <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
-          Call or email to order, or register and sign in to see wholesale pricing and order online.
+          Call or email to order — our team will confirm pricing and availability.
         </p>
       </div>
     );
@@ -95,7 +94,7 @@ export function ProductDetailActions({
           <div className="mb-2 flex items-center justify-between">
             <p className="text-xs font-bold uppercase tracking-wide text-slate-500">Units</p>
             <p className="text-xs font-semibold text-slate-400">
-              {quantity} ea · <span className="font-black text-slate-800">{formatMoney(total)}</span>
+              {quantity} ea{isApproved && <> · <span className="font-black text-slate-800">{formatMoney(total)}</span></>}
             </p>
           </div>
           <div className="flex h-10 overflow-hidden rounded-lg border border-slate-200 bg-white">
@@ -195,9 +194,19 @@ export function ProductDetailActions({
       )}
 
       {/* B2B note */}
-      <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
-        No payment collected now — we confirm availability and final pricing within 1 business day, then send a payment link.
-      </p>
+      {isApproved ? (
+        <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
+          No payment collected now — we confirm availability and final pricing within 1 business day, then send a payment link.
+        </p>
+      ) : (
+        <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-semibold leading-relaxed text-slate-600">
+          Your cart is saved on this device.{" "}
+          <Link href="/register" className="underline" style={{ color: "var(--primary)" }}>Register free</Link>
+          {" "}or{" "}
+          <Link href={`/login?next=/products/${product.slug}`} className="underline" style={{ color: "var(--primary)" }}>sign in</Link>
+          {" "}to see wholesale pricing and submit your order — it takes under 2 minutes.
+        </p>
+      )}
     </div>
   );
 }

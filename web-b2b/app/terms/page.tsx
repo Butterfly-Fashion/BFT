@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/store/header";
 import { Footer } from "@/components/store/footer";
 import { getCurrentProfile } from "@/lib/auth";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Terms of Use",
@@ -56,8 +57,8 @@ export default async function TermsPage() {
             <h2 className="text-lg font-bold text-gray-900">Contact</h2>
             <p className="mt-2">
               Questions about these terms? Reach us at{" "}
-              <a href="mailto:orders@butterfly-fashion.ca" className="font-semibold text-gray-900 underline">
-                orders@butterfly-fashion.ca
+              <a href={`mailto:${CONTACT_EMAIL}`} className="font-semibold text-gray-900 underline">
+                {CONTACT_EMAIL}
               </a>{" "}
               or see our{" "}
               <Link href="/faq" className="font-semibold text-gray-900 underline">FAQ</Link>.

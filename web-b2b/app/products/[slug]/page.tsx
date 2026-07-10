@@ -266,8 +266,8 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                     <Lock size={14} className="shrink-0 text-slate-400" />
                     <p className="text-sm font-semibold text-slate-500">
                       {profile
-                        ? "Case pricing & ordering available after B2B approval"
-                        : <><Link href="/login" className="underline" style={{ color: "var(--primary)" }}>Sign in</Link> or <Link href="/register" className="underline" style={{ color: "var(--primary)" }}>register</Link> to order</>
+                        ? "Contact us to enable wholesale pricing on your account"
+                        : <><Link href="/login" className="underline" style={{ color: "var(--primary)" }}>Sign in</Link> or <Link href="/register" className="underline" style={{ color: "var(--primary)" }}>register free</Link> to see wholesale pricing — instant, no approval wait</>
                       }
                     </p>
                   </div>

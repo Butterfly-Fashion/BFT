@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { requireProfile } from "@/lib/auth";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { PrintButton } from "./print-button";
@@ -150,7 +151,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ id: st
 
           <div className="border-t border-slate-100 bg-slate-50 px-8 py-4">
             <p className="text-xs text-slate-400">
-              Thank you for your business. Questions about this invoice? Contact us at orders@butterfly-fashion.ca.
+              Thank you for your business. Questions about this invoice? Contact us at {CONTACT_EMAIL}.
             </p>
           </div>
         </div>

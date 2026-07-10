@@ -16,6 +16,7 @@ import { createOrderCheckoutSession } from "@/lib/stripe";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/supabase/server";
 import { getCurrentProfile, requireAdmin, requireProfile } from "@/lib/auth";
 import { isOutOfStock } from "@/lib/availability";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { siteUrl } from "@/lib/env";
 
 function slugify(value: string) {
@@ -143,11 +144,12 @@ const registerSchema = z
     phone: z.string().optional(),
     password: z.string().min(6, "Password must be at least 6 characters."),
     confirm_password: z.string().min(1, "Please confirm your password."),
-    business_address: z.string().min(3, "Please enter your street address."),
-    city: z.string().min(2, "Please enter your city."),
-    province: z.string().min(2, "Please enter your province or state."),
-    postal_code: z.string().min(3, "Please enter your postal code."),
-    country: z.string().min(2, "Please enter your country."),
+    // Address is optional at signup — delivery details are confirmed on the first order.
+    business_address: z.string().optional(),
+    city: z.string().optional(),
+    province: z.string().optional(),
+    postal_code: z.string().optional(),
+    country: z.string().optional(),
     business_type: z.string().min(2, "Please choose or enter your business type."),
     agree_to_terms: z.literal("on", { error: "Please agree to the terms before creating an account." }),
     tax_number: z.string().optional(),
@@ -239,11 +241,11 @@ async function _registerActionInner(
     contact_name: data.contact_name,
     email: data.email,
     phone: data.phone || "",
-    business_address: data.business_address,
-    city: data.city,
-    province: data.province,
-    postal_code: data.postal_code,
-    country: data.country,
+    business_address: data.business_address || "",
+    city: data.city || "",
+    province: data.province || "",
+    postal_code: data.postal_code || "",
+    country: data.country || "",
     business_type: data.business_type,
     is_b2b_approved: true,
     tax_number: data.tax_number || null,
@@ -481,7 +483,7 @@ export async function submitWholesaleLeadAction(_prev: LeadState, formData: Form
   });
   if (error) {
     console.error("[submitWholesaleLeadAction]", error.message);
-    return { error: "We couldn't submit your request right now. Please email orders@butterfly-fashion.ca instead." };
+    return { error: `We couldn't submit your request right now. Please email ${CONTACT_EMAIL} instead.` };
   }
 
   const adminEmail = process.env.ADMIN_EMAIL;

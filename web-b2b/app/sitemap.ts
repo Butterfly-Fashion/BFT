@@ -43,7 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { data: blogPosts } = await supabase
       .from("blog_posts")
       .select("slug, updated_at")
-      .eq("status", "published");
+      .eq("status", "published")
+      // Scheduled publishing: future-dated posts stay out of the sitemap until live.
+      .lte("published_at", new Date().toISOString());
     blogRoutes = (blogPosts || [])
       .filter((p): p is { slug: string; updated_at: string | null } => Boolean(p.slug))
       .map((p) => ({

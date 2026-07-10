@@ -73,8 +73,20 @@ export default async function HomePage() {
         {banners.length > 0 ? (
           <>
             {/* Carousel slide titles are <h2>; keep one real H1 for SEO. */}
-            <h1 className="sr-only">Wholesale Variety, Novelty &amp; Seasonal Goods in Canada</h1>
+            <h1 className="sr-only">Toronto Wholesale Supplier — Fast-Moving Toys, Novelty &amp; Seasonal Goods for Canadian Retailers</h1>
             <HeroCarousel banners={banners} />
+            {/* Value-prop strip — with banners on, this is the first plain statement
+                of who we are and why to buy, especially on mobile. */}
+            <div className="border-b border-gray-200 bg-white">
+              <div className="container-shell flex flex-wrap items-center gap-x-7 gap-y-1.5 py-3">
+                {["Toronto warehouse stock", "No minimum order", "Ships Canada & USA", "Wholesale since 1996"].map((fact) => (
+                  <span key={fact} className="flex items-center gap-2 text-xs font-semibold text-gray-500 sm:text-sm">
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--primary)" }} />
+                    {fact}
+                  </span>
+                ))}
+              </div>
+            </div>
           </>
         ) : (
         <section className="border-b border-gray-200 bg-white">
@@ -82,12 +94,13 @@ export default async function HomePage() {
             <div className="max-w-2xl">
               <span className="section-label">Toronto Wholesale · Variety & Novelty Goods</span>
               <h1 className="mt-3 text-4xl font-black leading-tight tracking-tight text-gray-900 sm:text-5xl">
-                Wholesale variety &amp; novelty goods<br />
-                <span style={{ color: "var(--primary)" }}>for Canadian retailers.</span>
+                Fast-moving wholesale products,<br />
+                <span style={{ color: "var(--primary)" }}>stocked in Toronto.</span>
               </h1>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-gray-500">
-                Bulk winter accessories, novelty &amp; fidget toys, and trending variety goods.
-                Direct from our Toronto warehouse to retailers, convenience stores, and resellers across Canada and the USA.
+                Novelty &amp; fidget toys, winter accessories, and trending impulse goods for convenience stores,
+                dollar stores, and independent retailers. Test small quantities, pick up locally or ship
+                across Canada &amp; the USA, and reorder proven sellers fast.
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/wholesale-catalog">
@@ -157,11 +170,21 @@ export default async function HomePage() {
             </div>
 
             {products.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} profile={profile} />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                  {products.map((product, i) => (
+                    // Mobile home was too long — show 6 items there, all 12 from sm: up.
+                    <div key={product.id} className={i >= 6 ? "hidden h-full sm:block" : "h-full"}>
+                      <ProductCard product={product} profile={profile} />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-5 sm:hidden">
+                  <Link className="btn-secondary w-full justify-center text-sm" href="/products">
+                    View the full catalog <ArrowRight size={13} className="ml-1" />
+                  </Link>
+                </div>
+              </>
             ) : (
               <div className="rounded-xl border border-dashed border-gray-200 bg-white py-16 text-center">
                 <Package2 size={28} className="mx-auto mb-3 text-gray-300" />

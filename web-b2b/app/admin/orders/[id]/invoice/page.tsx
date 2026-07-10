@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { PrintButton } from "@/components/admin/print-button";
@@ -11,7 +12,7 @@ const BUSINESS = {
   name: "Butterfly Fashion Trading",
   address: "178 Bentworth Ave, North York, ON M6A 1P7",
   phone: "416-785-5999",
-  email: "orders@butterfly-fashion.ca",
+  email: CONTACT_EMAIL,
 };
 
 export default async function OrderInvoicePage({ params }: { params: Promise<{ id: string }> }) {

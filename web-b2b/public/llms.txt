@@ -14,7 +14,7 @@ resellers across Canada and the USA.
 
 ## Wholesale terms
 - Minimum order: none — order any quantity. Some custom or special-order items require one case per item (most items 12–50 units/case)
-- Pricing: wholesale pricing visible after free B2B account approval (usually within 24 hours)
+- Pricing: wholesale pricing unlocks immediately after free B2B registration — no approval wait
 - Fulfillment: pickup or shipping from our Toronto warehouse; ships across Canada & the USA
 - Payment: Stripe payment link, e-transfer, cash (pickup), or bank transfer
 - Invoicing with NET 30 available for established accounts
@@ -22,7 +22,7 @@ resellers across Canada and the USA.
 ## Location & contact
 - Address: 178 Bentworth Ave, North York, ON M6A 1P7, Canada
 - Hours: Monday–Friday, 9 AM – 5 PM ET
-- Email: orders@butterfly-fashion.ca
+- Email: jameskimkim1@gmail.com
 - Phone: +1-416-785-5999
 
 ## Key pages

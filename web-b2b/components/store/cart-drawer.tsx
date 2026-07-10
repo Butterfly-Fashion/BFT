@@ -18,6 +18,8 @@ export function CartDrawer({ open, onClose }: Props) {
 
   const subtotal = cart.items.reduce((s, i) => s + (i.price || 0) * i.quantity, 0);
   const totalUnits = cart.items.reduce((s, i) => s + i.quantity, 0);
+  // Guest carts have no prices — swap the subtotal for a sign-in nudge.
+  const hasUnpriced = cart.items.some((i) => !i.price);
 
   if (!open) return null;
 
@@ -98,7 +100,7 @@ export function CartDrawer({ open, onClose }: Props) {
                     <p className="truncate text-sm font-bold text-slate-900">{item.name}</p>
                     {item.sku && <p className="text-xs font-mono text-slate-400">{item.sku}</p>}
                     <p className="mt-0.5 text-xs font-semibold text-slate-500">
-                      {item.price ? formatMoney(item.price) : "TBD"} / ea
+                      {item.price ? `${formatMoney(item.price)} / ea` : "Price at sign-in"}
                     </p>
                     <p className="text-xs font-semibold text-slate-400">
                       {formatUnitLabel(item.quantity, item.caseQty)}
@@ -129,7 +131,7 @@ export function CartDrawer({ open, onClose }: Props) {
                       </button>
                     </div>
                     <p className="text-xs font-black text-slate-800">
-                      {item.price ? formatMoney(item.price * item.quantity) : "TBD"}
+                      {item.price ? formatMoney(item.price * item.quantity) : ""}
                     </p>
                   </div>
                 </div>
@@ -141,13 +143,21 @@ export function CartDrawer({ open, onClose }: Props) {
         {/* Footer */}
         {cart.items.length > 0 && (
           <div className="border-t border-slate-200 px-5 py-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-slate-600">{totalUnits} units · Est. subtotal</span>
-              <span className="text-base font-black text-slate-900">{formatMoney(subtotal)}</span>
-            </div>
-            <p className="text-[11px] font-semibold text-amber-700 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2">
-              No payment now — we review and send a Pay Now link after approval.
-            </p>
+            {hasUnpriced ? (
+              <p className="text-[11px] font-semibold text-slate-600 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                {totalUnits} units saved on this device — sign in or register (free, instant) to see wholesale pricing and submit.
+              </p>
+            ) : (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold text-slate-600">{totalUnits} units · Est. subtotal</span>
+                  <span className="text-base font-black text-slate-900">{formatMoney(subtotal)}</span>
+                </div>
+                <p className="text-[11px] font-semibold text-amber-700 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2">
+                  No payment now — we review and send a Pay Now link after approval.
+                </p>
+              </>
+            )}
             <Link
               href="/cart"
               onClick={onClose}

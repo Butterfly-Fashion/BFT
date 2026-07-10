@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ShoppingCart, CheckCircle } from "lucide-react";
+import { ShoppingCart, CheckCircle, Lock } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { stockBadge, isOutOfStock } from "@/lib/availability";
 import { formatMoney } from "@/lib/money";
@@ -12,7 +11,7 @@ import { ProductImage } from "@/components/store/product-image";
 
 export function ProductCard({ product, profile }: { product: PricedProduct; profile: Profile | null }) {
   const cart = useCart();
-  const router = useRouter();
+  const isApproved = profile?.is_b2b_approved ?? false;
   const [added, setAdded] = useState(false);
   const [qty, setQty] = useState(1);
   const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -23,16 +22,14 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
 
   function addToCart() {
     if (outOfStock) return;
-    if (!profile) {
-      router.push("/login?next=/products");
-      return;
-    }
+    // Guests can build a cart too — pricing stays hidden until they sign in,
+    // and login is only required when submitting the order request.
     cart.addItem({
       productId: product.id,
       quantity: Math.max(1, qty),
       name: product.name,
       sku: product.sku,
-      price: product.display_price,
+      price: isApproved ? product.display_price : undefined,
       imageUrl: product.image_url,
       slug: product.slug,
     });
@@ -41,7 +38,7 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
   }
 
   return (
-    <article className="product-card flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white">
+    <article className="product-card flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white">
       {/* ── Image ── */}
       <Link
         className="relative block shrink-0 overflow-hidden border-b border-slate-100 bg-white"
@@ -76,20 +73,32 @@ export function ProductCard({ product, profile }: { product: PricedProduct; prof
           {product.name}
         </Link>
 
-        {/* Price */}
+        {/* Price — wholesale pricing is register-gated, same as the catalog */}
         <div className="mt-auto pt-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-            {product.has_customer_price ? "Your B2B price" : "Unit price / ea"}
-          </p>
-          <strong className="text-xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
-          {product.display_case_price && product.case_qty && (
-            <div className="mt-1.5 rounded border border-slate-100 bg-slate-50 px-2.5 py-1.5">
-              <p className="text-[10px] font-semibold text-slate-400">Case price ({product.case_qty} units)</p>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-sm font-black text-slate-700">{formatMoney(product.display_case_price)}</span>
-                <span className="text-[10px] text-slate-400">{formatMoney(product.display_case_price / product.case_qty)}/ea</span>
-              </div>
-            </div>
+          {isApproved ? (
+            <>
+              <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                {product.has_customer_price ? "Your B2B price" : "Unit price / ea"}
+              </p>
+              <strong className="text-xl font-black text-slate-900">{formatMoney(product.display_price)}</strong>
+              {product.display_case_price && product.case_qty && (
+                <div className="mt-1.5 rounded border border-slate-100 bg-slate-50 px-2.5 py-1.5">
+                  <p className="text-[10px] font-semibold text-slate-400">Case price ({product.case_qty} units)</p>
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-black text-slate-700">{formatMoney(product.display_case_price)}</span>
+                    <span className="text-[10px] text-slate-400">{formatMoney(product.display_case_price / product.case_qty)}/ea</span>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <Link
+              href={profile ? "/products" : "/register"}
+              className="inline-flex items-center gap-1.5 rounded border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800"
+            >
+              <Lock size={11} />
+              {profile ? "Pricing pending" : "Register free for wholesale price"}
+            </Link>
           )}
         </div>
 

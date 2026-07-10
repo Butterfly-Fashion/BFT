@@ -9,6 +9,7 @@ import { CartOpenProvider } from "@/components/store/cart-open-context";
 import { CategoriesProvider } from "@/components/store/categories-provider";
 import { ChatWidget } from "@/components/store/chat-widget";
 import { fetchCategories } from "@/lib/categories";
+import { CONTACT_EMAIL } from "@/lib/contact";
 import { siteUrl } from "@/lib/env";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -51,7 +52,7 @@ const organizationJsonLd = {
   name: "Butterfly Fashion Trading",
   url: siteUrl(),
   logo: `${siteUrl()}/asset/logo.jpg`,
-  email: "orders@butterfly-fashion.ca",
+  email: CONTACT_EMAIL,
   telephone: "+1-416-785-5999",
   priceRange: "$$",
   knowsLanguage: "en-CA",

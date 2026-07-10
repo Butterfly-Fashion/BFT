@@ -9,7 +9,8 @@ export const dynamic = "force-dynamic";
 export const metadata = { robots: { index: false, follow: false } };
 
 export default async function CheckoutPage() {
-  const profile = await requireProfile();
+  // Guests keep their locally-saved cart and come straight back here after signing in.
+  const profile = await requireProfile("/login?next=/cart");
   const defaultAddress = [
     profile.business_address,
     profile.city,

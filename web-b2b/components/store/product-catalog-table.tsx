@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { ShoppingCart, Lock, ChevronRight } from "lucide-react";
 import { formatMoney } from "@/lib/money";
 import type { PricedProduct, Profile } from "@/lib/types";
@@ -17,8 +16,10 @@ type Props = {
 
 export function ProductCatalogTable({ products, profile, compact }: Props) {
   const cart = useCart();
-  const router = useRouter();
   const isApproved = profile?.is_b2b_approved ?? false;
+  // Guests can build a cart (prices hidden, login at submit); only signed-in
+  // unapproved accounts are locked out of cart controls.
+  const canCart = !profile || isApproved;
 
   const cartMap = useMemo(
     () => new Map(cart.items.map((i) => [i.productId, i.quantity])),
@@ -31,10 +32,10 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
   );
 
   function setQty(product: PricedProduct, value: string) {
-    if (!isApproved) { router.push("/login?next=/products"); return; }
+    if (!canCart) return;
     const qty = Math.max(0, Math.min(9999, parseInt(value || "0") || 0));
     cart.setItem(
-      { productId: product.id, quantity: qty, name: product.name, sku: product.sku, price: product.display_price, imageUrl: product.image_url, slug: product.slug, caseQty: product.case_qty },
+      { productId: product.id, quantity: qty, name: product.name, sku: product.sku, price: isApproved ? product.display_price : undefined, imageUrl: product.image_url, slug: product.slug, caseQty: product.case_qty },
       qty
     );
   }
@@ -61,7 +62,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
         <div className="flex items-center justify-between border-b px-4 py-2.5" style={{ background: "var(--primary-light)", borderColor: "var(--primary-border)" }}>
           <span className="flex items-center gap-1.5 text-sm font-semibold" style={{ color: "var(--primary)" }}>
             <ShoppingCart size={13} />
-            {cart.count} items in cart · {formatMoney(cartTotal)}
+            {cart.count} items in cart{isApproved && <> · {formatMoney(cartTotal)}</>}
           </span>
           <Link
             href="/cart"
@@ -82,8 +83,8 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
               <th style={{ width: 120 }} className="hidden lg:table-cell">Category</th>
               <th style={{ width: 100 }}>Case</th>
               <th style={{ width: 110 }}>Price / ea</th>
-              {isApproved && <th style={{ width: 90 }}>Qty</th>}
-              {isApproved && <th style={{ width: 80 }}></th>}
+              {canCart && <th style={{ width: 90 }}>Qty</th>}
+              {canCart && <th style={{ width: 80 }}></th>}
             </tr>
           </thead>
           <tbody>
@@ -164,13 +165,13 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                     ) : (
                       <span className="flex items-center gap-1 text-sm text-gray-500">
                         <Lock size={12} />
-                        <Link href="/login" className="hover:underline">Login</Link>
+                        <Link href="/register" className="hover:underline">Register free</Link>
                       </span>
                     )}
                   </td>
 
                   {/* Qty input */}
-                  {isApproved && (
+                  {canCart && (
                     <td>
                       <input
                         type="number"
@@ -190,7 +191,7 @@ export function ProductCatalogTable({ products, profile, compact }: Props) {
                   )}
 
                   {/* +1 case button */}
-                  {isApproved && (
+                  {canCart && (
                     <td>
                       <button
                         onClick={() => addCase(product)}

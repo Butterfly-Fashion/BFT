@@ -379,7 +379,7 @@ export default async function AboutPage() {
               Ready to order wholesale?
             </h2>
             <p className="mx-auto mt-3 max-w-sm text-sm text-gray-500">
-              Create a B2B account to unlock wholesale pricing. Approval typically takes under 24 hours.
+              Create a B2B account and wholesale pricing unlocks immediately — free, no approval wait.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link className="btn-primary gap-2 px-6 py-2.5 text-sm" href="/register">
