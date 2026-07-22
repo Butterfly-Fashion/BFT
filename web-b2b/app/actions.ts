@@ -1270,6 +1270,16 @@ export async function cancelOrderAction(orderId: string) {
   revalidatePath(`/admin/orders/${orderId}`);
 }
 
+// Paid orders are protected from deletion to preserve financial records. order_items and
+// invoices cascade automatically when the order row is deleted (see migration 001).
+export async function deleteOrderAction(orderId: string) {
+  await requireAdmin();
+  const admin = createSupabaseAdminClient();
+  await admin.from("orders").delete().eq("id", orderId).neq("status", "Paid").neq("payment_status", "Paid");
+  revalidatePath("/admin/orders");
+  redirect("/admin/orders");
+}
+
 export async function deleteCustomerPriceAction(priceId: string, customerId: string) {
   await requireAdmin();
   const admin = createSupabaseAdminClient();

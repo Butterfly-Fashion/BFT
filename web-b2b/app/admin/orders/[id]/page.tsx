@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { approveOrderAction, createPaymentLinkAction, updateOrderReviewAction, cancelOrderAction, saveInvoiceRefAction } from "@/app/actions";
+import { approveOrderAction, createPaymentLinkAction, updateOrderReviewAction, cancelOrderAction, deleteOrderAction, saveInvoiceRefAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge } from "@/components/admin/status-badge";
@@ -103,6 +103,14 @@ export default async function AdminOrderDetailPage({
                   action={cancelOrderAction.bind(null, order.id)}
                   confirmMessage={`Cancel order #${order.id.slice(0, 8).toUpperCase()}?\n\nThis will set the status to Cancelled. Paid orders cannot be cancelled this way.`}
                   submitLabel="Cancel order"
+                  className="contents"
+                />
+              )}
+              {!isPaid && (
+                <DangerForm
+                  action={deleteOrderAction.bind(null, order.id)}
+                  confirmMessage={`Delete order #${order.id.slice(0, 8).toUpperCase()}?\n\nThis permanently removes the order and its line items. This cannot be undone.`}
+                  submitLabel="Delete order"
                   className="contents"
                 />
               )}

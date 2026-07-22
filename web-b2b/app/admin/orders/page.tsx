@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { deleteOrderAction } from "@/app/actions";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { DangerForm } from "@/components/admin/danger-form";
 import { StatusBadge, orderRowTone, orderStatusChip } from "@/components/admin/status-badge";
 import { formatMoney } from "@/lib/money";
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
@@ -154,9 +156,19 @@ export default async function AdminOrdersPage({
                       {new Date(order.created_at).toLocaleDateString("en-CA")}
                     </td>
                     <td className="px-5 py-3">
-                      <Link className="btn-secondary min-h-8 px-3 text-xs" href={`/admin/orders/${order.id}`}>
-                        Review
-                      </Link>
+                      <div className="flex justify-end gap-2">
+                        <Link className="btn-secondary min-h-8 px-3 text-xs" href={`/admin/orders/${order.id}`}>
+                          Review
+                        </Link>
+                        {order.status !== "Paid" && order.payment_status !== "Paid" && (
+                          <DangerForm
+                            action={deleteOrderAction.bind(null, order.id)}
+                            confirmMessage={`Delete order #${order.id.slice(0, 8).toUpperCase()} from ${order.profiles?.business_name || "this customer"}?\n\nThis cannot be undone.`}
+                            submitLabel="Delete"
+                            className="contents"
+                          />
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
