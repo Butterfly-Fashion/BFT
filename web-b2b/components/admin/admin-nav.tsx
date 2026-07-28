@@ -7,7 +7,7 @@ import {
   Package, LayoutDashboard, ShoppingBag, Users,
   ClipboardList, FileText, ExternalLink, LogOut,
   CalendarClock, Tag, MessageSquare,
-  ChevronDown, ShieldCheck, Images, Megaphone, Inbox,
+  ChevronDown, ShieldCheck, Images, Megaphone, Inbox, AlertTriangle,
 } from "lucide-react";
 import { logoutAction } from "@/app/actions";
 
@@ -42,6 +42,7 @@ const NAV: (NavItem | NavGroup)[] = [
       { label: "Pre-orders", href: "/admin/preorders", icon: CalendarClock },
     ],
   },
+  { label: "Emergency", href: "/admin/emergency", icon: AlertTriangle },
 ];
 
 function isGroup(item: NavItem | NavGroup): item is NavGroup {

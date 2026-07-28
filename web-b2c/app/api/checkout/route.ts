@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CHECKOUT_DISABLED_MESSAGE, CHECKOUT_ENABLED, SHIPPING_MIN_MESSAGE, SHIPPING_MIN_SUBTOTAL } from "@/lib/checkout-status";
+import { checkSwitch } from "@/lib/emergency-switches";
 import { stripeClient, siteUrl } from "@/lib/stripe";
 import { SHIPPING_LINE_ITEM_NAME, TAX_LINE_ITEM_NAME } from "@/lib/stripe-line-items";
 import { applyJerseyTiers, JERSEY_KIT_SLUGS } from "@/lib/jersey-pricing";
@@ -35,6 +36,17 @@ export async function POST(req: NextRequest) {
       { error: CHECKOUT_DISABLED_MESSAGE },
       { status: 503 }
     );
+  }
+
+  // This single endpoint both creates the order and starts Stripe payment, so
+  // either the order-creation or the payment-specific emergency switch blocks it.
+  const orderSwitch = await checkSwitch("tier2_b2c_orders");
+  if (orderSwitch.blocked) {
+    return NextResponse.json({ error: orderSwitch.message }, { status: 503 });
+  }
+  const paymentSwitch = await checkSwitch("tier1_payment");
+  if (paymentSwitch.blocked) {
+    return NextResponse.json({ error: paymentSwitch.message }, { status: 503 });
   }
 
   let body: CheckoutBody;

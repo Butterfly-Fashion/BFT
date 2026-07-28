@@ -18,6 +18,7 @@ import { getCurrentProfile, requireAdmin, requireProfile } from "@/lib/auth";
 import { isOutOfStock } from "@/lib/availability";
 import { CONTACT_EMAIL } from "@/lib/contact";
 import { siteUrl } from "@/lib/env";
+import { checkSwitch, SWITCH_KEYS, type SwitchKey } from "@/lib/emergency-switches";
 
 function slugify(value: string) {
   return value
@@ -347,6 +348,10 @@ export async function createOrderRequestAction(input: {
   customerNotes?: string;
 }) {
   const profile = await requireProfile();
+
+  const orderSwitch = await checkSwitch("tier2_b2b_orders");
+  if (orderSwitch.blocked) return { error: orderSwitch.message };
+
   // Use the service-role client (like every other write in this file) and enforce auth in
   // app code via requireProfile above. The order insert previously ran under the user-session
   // client and depended on RLS + a live auth.uid(); during a mid-request token refresh that uid
@@ -755,6 +760,15 @@ async function sendOrderPaymentRequest(orderId: string): Promise<{ error: string
     subject = "Your order is approved — payment details";
     html = manualPaymentEmail(businessName, order.id, amountDue, method);
   } else {
+    // Only the Stripe path is gated — a Tier 1 lockdown is meant to stop new
+    // Stripe checkout sessions specifically, not the manual payment methods above,
+    // which stay available as the fallback while Stripe is paused.
+    const paymentSwitch = await checkSwitch("tier1_payment");
+    if (paymentSwitch.blocked) {
+      return {
+        error: `${paymentSwitch.message} (Online card payment is paused — use "Pay at Pickup", "E-Transfer", or "Card by Text" instead.)`,
+      };
+    }
     paymentLink = `${siteUrl()}/account/orders/${orderId}`;
     if (process.env.STRIPE_SECRET_KEY) {
       const session = await createOrderCheckoutSession({
@@ -1285,6 +1299,34 @@ export async function deleteCustomerPriceAction(priceId: string, customerId: str
   const admin = createSupabaseAdminClient();
   await admin.from("customer_prices").delete().eq("id", priceId);
   revalidatePath(`/admin/customers/${customerId}`);
+}
+
+// ── Emergency Switches ──────────────────────────────────────────────────────
+
+export async function toggleEmergencySwitchAction(formData: FormData) {
+  const profile = await requireAdmin();
+  const key = String(formData.get("key") || "") as SwitchKey;
+  if (!SWITCH_KEYS.includes(key)) return;
+
+  const enabled = formData.get("enabled") === "true";
+  const message = String(formData.get("message") || "").trim();
+  const reason = String(formData.get("reason") || "").trim();
+  const now = new Date().toISOString();
+
+  const admin = createSupabaseAdminClient();
+  const update: Record<string, unknown> = {
+    enabled,
+    reason: reason || null,
+    enabled_by: profile.email || profile.contact_name || null,
+    updated_at: now,
+  };
+  if (message) update.customer_message = message;
+  if (enabled) update.enabled_at = now;
+  else update.disabled_at = now;
+
+  await admin.from("emergency_switches").update(update).eq("key", key);
+  revalidatePath("/admin/emergency");
+  revalidatePath("/admin");
 }
 
 // ── CS Messaging ───────────────────────────────────────────────────────────────
