@@ -5,7 +5,7 @@ import { Header } from "@/components/store/header";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { requireProfile } from "@/lib/auth";
 import { formatMoney } from "@/lib/money";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/server";
 import { BackToTop } from "@/components/store/back-to-top";
 import { Footer } from "@/components/store/footer";
 import { ReorderButton } from "@/components/store/reorder-button";
@@ -23,7 +23,10 @@ export default async function AccountOrderDetailPage({
   const profile = await requireProfile();
   const { id } = await params;
   const sp = await searchParams;
-  const supabase = await createSupabaseServerClient();
+  // Service-role client with ownership enforced by customer_id = profile.id (requireProfile above).
+  // Orders are inserted the same way; reading through the user-session client could return no row
+  // under RLS right after submit, which surfaced as a 404 on the confirmation redirect.
+  const supabase = createSupabaseAdminClient();
   const { data: order } = await supabase.from("orders").select("*").eq("id", id).eq("customer_id", profile.id).single();
   if (!order) notFound();
   const { data: items } = await supabase
