@@ -439,18 +439,24 @@ export async function createOrderRequestAction(input: {
   );
   if (itemsError) return { error: friendlyDatabaseError("save the products on your order request", itemsError.message) };
 
-  await sendEmail({
-    to: profile.email,
-    subject: "Order request received — Butterfly Fashion",
-    html: orderReceivedEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
-  });
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (adminEmail) {
+  // The order is already saved at this point, so an email failure must not fail the request —
+  // it would show the customer an error page and invite a duplicate submission.
+  try {
     await sendEmail({
-      to: adminEmail,
-      subject: `New order request — ${profile.business_name || profile.email}`,
-      html: adminNewOrderEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
+      to: profile.email,
+      subject: "Order request received — Butterfly Fashion",
+      html: orderReceivedEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
     });
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail) {
+      await sendEmail({
+        to: adminEmail,
+        subject: `New order request — ${profile.business_name || profile.email}`,
+        html: adminNewOrderEmail(profile.business_name || profile.contact_name, order.id, siteUrl()),
+      });
+    }
+  } catch (err) {
+    console.error("[order request] confirmation email failed", order.id, err);
   }
 
   revalidatePath("/admin/orders");

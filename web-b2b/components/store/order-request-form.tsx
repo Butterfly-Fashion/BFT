@@ -203,16 +203,21 @@ export function OrderRequestForm({ defaultAddress }: { defaultAddress: string })
   function submit() {
     setError("");
     startTransition(async () => {
-      const result = await createOrderRequestAction({
-        items: cart.items,
-        deliveryMethod,
-        shippingAddress,
-        customerNotes,
-      });
-      if ("error" in result && result.error) setError(result.error);
-      if ("orderId" in result && result.orderId) {
-        cart.clearCart();
-        router.push(`/account/orders/${result.orderId}?submitted=1`);
+      try {
+        const result = await createOrderRequestAction({
+          items: cart.items,
+          deliveryMethod,
+          shippingAddress,
+          customerNotes,
+        });
+        if ("error" in result && result.error) setError(result.error);
+        if ("orderId" in result && result.orderId) {
+          cart.clearCart();
+          router.push(`/account/orders/${result.orderId}?submitted=1`);
+        }
+      } catch {
+        // Without this, a thrown server-action error bubbles to Next's "This page couldn't load" page.
+        setError("We couldn't submit your order request. Please try again, or email us and we'll place it for you.");
       }
     });
   }
